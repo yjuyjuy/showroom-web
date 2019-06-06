@@ -10,6 +10,6 @@ return PhpCsFixer\Config::create()
 		'@PSR2' => true,
 	])
 	->setIndent("\t")
-	->setUsingCache(false)
+	->setUsingCache(true)
 	->setFinder($finder)
 ;

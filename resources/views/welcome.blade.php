@@ -81,17 +81,13 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    TheShowroom
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="/product">库存查看</a>
+                    <a href="/product/admin">管理后台</a>
+                    <a href="">更新日志</a>
                 </div>
             </div>
         </div>
