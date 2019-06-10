@@ -85,8 +85,8 @@
                 </div>
 
                 <div class="links">
-                    <a href="/product">库存查看</a>
-                    <a href="/product/admin">管理后台</a>
+                    <a href="/products">库存查看</a>
+                    <a href="/products/admin">管理后台</a>
                     <a href="">更新日志</a>
                 </div>
             </div>

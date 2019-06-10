@@ -42,7 +42,8 @@ class ProductPolicy
 	 */
 	public function update(User $user, Product $product)
 	{
-		return $user->id === 1;
+		return true;
+		// return $user->id === 1;
 	}
 
 	/**

@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
 	{
 		DB::table('users')->insert([
 					'name' => 'JIAYOU YUAN',
-					'email' => 'yjuyjuy@gmail.com',
+					'email' => 'test@test.com',
 					'password' => '123456789',
-					'username' => 'notchris',
+					'username' => 'user1',
 					'created_at' => now(),
 					'updated_at' => now(),
 		]);
@@ -175,6 +175,43 @@ class DatabaseSeeder extends Seeder
 				'id' => '2',
 				'name' => 'Thom Browne',
 				'full_name' => 'Thom Browne',
+			],
+		]);
+		// 默认排序
+		// 价格低到高
+		// 人气最高
+		// 销量最高
+		// 发布时间
+		// 最新到货
+		// 随机排序
+		DB::table('sortmethods')->insert([
+			[
+				'name' => 'default',
+				'name_cn' => '默认排序',
+			],
+			[
+				'name' => 'price high to low',
+				'name_cn' => '价格最高',
+			],
+			[
+				'name' => 'price low to high',
+				'name_cn' => '价格最低',
+			],
+			[
+				'name' => 'hottest',
+				'name_cn' => '人气最高',
+			],
+			[
+				'name' => 'best selling',
+				'name_cn' => '销量最高',
+			],
+			[
+				'name' => 'newest',
+				'name_cn' => '最新到货',
+			],
+			[
+				'name' => 'oldest',
+				'name_cn' => '发布最早',
 			],
 		]);
 		$products = [
@@ -780,8 +817,8 @@ class DatabaseSeeder extends Seeder
 			[8,'detail4','细节4','close-up'],
 			[9,'pose1','全身1','front'],
 			[10,'pose2','全身2','back'],
-			[11,'cover1','平铺1','front'],
-			[12,'cover2','平铺2','back'],
+			[11,'cover1','正面平铺','front'],
+			[12,'cover1','反面平铺','back'],
 			[14,'side','侧面','back'],
 		];
 		foreach ($types as $type) {

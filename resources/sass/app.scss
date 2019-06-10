@@ -6,3 +6,13 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+
+.form-control,.form-control:focus{
+	background-color: $body-bg;
+	border-color: $red-light;
+	color:$body-color;
+}
+.card{
+	background-color: $body-bg;
+}

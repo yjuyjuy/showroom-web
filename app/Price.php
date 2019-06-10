@@ -15,4 +15,9 @@ class Price extends Model
 	{
 		return $this->belongsTo(Product::class);
 	}
+
+	public function data()
+	{
+		return json_decode($this->data, true);
+	}
 }
