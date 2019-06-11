@@ -85,9 +85,13 @@
                 </div>
 
                 <div class="links">
-                    <a href="/products">库存查看</a>
-                    <a href="/products/admin">管理后台</a>
-                    <a href="">更新日志</a>
+                    <a href="{{ route('products.index') }}">所有商品</a>
+										@auth
+										@if(auth()->user()->vendor)
+										<a href="{{ route('admin',['vendor' => auth()->user()->vendor->id ]) }}">管理后台</a>
+										<a href="{{ route('log') }}">更新日志</a>
+										@endif
+										@endauth
                 </div>
             </div>
         </div>

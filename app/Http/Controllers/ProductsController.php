@@ -10,6 +10,7 @@ use App\Brand;
 use App\Sortmethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Arr;
 
 class ProductsController extends Controller
 {
@@ -25,7 +26,7 @@ class ProductsController extends Controller
 			'season.*' => 'sometimes|exists:seasons,id',
 			'color.*' => 'sometimes|exists:colors,id',
 			'brand.*' => 'sometimes|exists:brands,id',
-			'sort' => 'sometimes|exists:sortmethods,name',
+			'sort' => 'sometimes|in:'.implode(',', Arr::pluck($this->sortoptions(), 'name')),
 		]);
 		$query = Product::with([
 			'category','color','season','brand','prices','images' => function ($query) {
@@ -37,7 +38,7 @@ class ProductsController extends Controller
 				$query->whereIn("{$field}_id", $data[$field]);
 			}
 		}
-		$products = $this->sort_and_get($data['sort']??'default', $query);
+		$products = Product::sort_and_get($data['sort']??'default', $query);
 
 		$request->flash();
 		return view('products.index', compact('products'));
@@ -121,46 +122,6 @@ class ProductsController extends Controller
 		//
 	}
 
-	public function sort_and_get($name = 'default', $query)
-	{
-		if ($name === 'default') {
-			return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-		}
-
-		if ($name === 'price low to high') {
-			return $query->get()->sortBy(
-				function ($product, $key) {
-					return $product->minPrice(INF);
-				}
-			);
-		}
-
-		if ($name === 'price high to low') {
-			return $query->get()->sortByDesc(
-				function ($product, $key) {
-					return $product->minPrice(0);
-				}
-			);
-		}
-
-		if ($name === 'hottest') {
-			return $query->orderBy('season_id', 'desc')->get();
-		}
-
-		if ($name === 'best selling') {
-			return $query->orderBy('season_id', 'asc')->get();
-		}
-
-		if ($name === 'newest') {
-			return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-		}
-
-		if ($name === 'oldest') {
-			return $query->orderBy('season_id', 'asc')->orderBy('id', 'asc')->get();
-		}
-		return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-	}
-
 	public function validateRequest()
 	{
 		return request()->validate([
@@ -171,5 +132,17 @@ class ProductsController extends Controller
 			'category'=>'required|exists:categories,id',
 			'color'=>'required|exists:colors,id',
 		]);
+	}
+	public function sortoptions()
+	{
+		return [
+			1 => ['name' => 'default','name_cn' => '默认排序',],
+			2 => ['name' => 'price high to low','name_cn' => '价格最高',],
+			3 => ['name' => 'price low to high','name_cn' => '价格最低'],
+			4 => ['name' => 'hottest','name_cn' => '人气最高'],
+			5 => ['name' => 'best selling','name_cn' => '销量最高'],
+			6 => ['name' => 'newest','name_cn' => '最新到货'],
+			7 => ['name' => 'oldest','name_cn' => '发布最早'],
+		];
 	}
 }

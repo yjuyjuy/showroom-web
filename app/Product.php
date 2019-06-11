@@ -59,11 +59,51 @@ class Product extends Model
 	public function minPrice($default = false)
 	{
 		return ($this->prices->isEmpty())? $default : (int)$this->prices->map(function ($item, $key) {
-			return min(json_decode($item->data, true));
+			return min($item->data);
 		})->min();
 	}
 	public function displayPrice()
 	{
 		return $this->minPrice()? "\u{00a5}".$this->minPrice() : 'not available';
+	}
+
+	public static function sort_and_get($name = 'default', $query)
+	{
+		if ($name === 'default') {
+			return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
+		}
+
+		if ($name === 'price low to high') {
+			return $query->get()->sortBy(
+				function ($product, $key) {
+					return $product->minPrice(INF);
+				}
+			);
+		}
+
+		if ($name === 'price high to low') {
+			return $query->get()->sortByDesc(
+				function ($product, $key) {
+					return $product->minPrice(0);
+				}
+			);
+		}
+
+		if ($name === 'hottest') {
+			return $query->orderBy('season_id', 'desc')->get();
+		}
+
+		if ($name === 'best selling') {
+			return $query->orderBy('season_id', 'asc')->get();
+		}
+
+		if ($name === 'newest') {
+			return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
+		}
+
+		if ($name === 'oldest') {
+			return $query->orderBy('season_id', 'asc')->orderBy('id', 'asc')->get();
+		}
+		return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
 	}
 }

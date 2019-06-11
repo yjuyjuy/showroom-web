@@ -6,11 +6,11 @@
 <div class="d-flex flex-column text-center justify-content-center vh-100">
 
 	<div class="align-self-center mt-n5">
-		<a href="/products?=brand[]={{$product->brand->id}}">{{ $product->brand->full_name }}</a>
+		<a href="{{ route('products.index') }}?brand[]={{$product->brand->id}}">{{ $product->brand->full_name }}</a>
 	</div>
 
 	<div class="align-self-center">
-		<span><a href="/products?season[]={{$product->season->id}}">{{ $product->season->name }}</a> {{ $product->name_cn }}</span>
+		<span><a href="{{ route('products.index') }}?season[]={{$product->season->id}}">{{ $product->season->name }}</a> {{ $product->name_cn }}</span>
 	</div>
 
 	<div class="align-self-center">
@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="align-self-center">
-		<a href="/products/{{ $product->id }}/edit">edit</a>
+		<a href="{{ route('products.edit',['product' => $product->id ]) }}">edit</a>
 	</div>
 
 </div>

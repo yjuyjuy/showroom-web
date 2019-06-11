@@ -11,19 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-	return redirect('/products');
-});
+Route::view('/', 'welcome');
+
 
 Auth::routes();
 
-Route::get('/', function () {
-	return view('layouts.show');
-});
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/users', 'ProductsController@index');
+Route::get('/users', 'UsersController@index')->middleware('admin');
 
-Route::get('/vendor/{vendor}/products', 'VendorsController@index')->middleware('auth')->middleware('vendor');
+Route::get('/vendor/{vendor}/products', 'VendorsController@index')->middleware('auth')->middleware('vendor')->name('admin');
 Route::get('/vendor/{vendor}/products/{product}', 'VendorsController@show')->middleware('auth')->middleware('vendor');
+
+Route::get('/admin/log', 'LogsController@index')->name('log');
 
 Route::resource('products', 'ProductsController');

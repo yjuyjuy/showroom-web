@@ -49,7 +49,7 @@
 					<div class="product col-3 flex-column align-items-center" data-category="{{$product->category->id}}" data-color="{{$product->color->id}}" data-season="{{$product->season->id}}" data-brand="{{$product->brand->id}}">
 
 						<div class="image">
-							<a href="/products/{{$product->id}}">
+							<a href="{{ route('products.show',['product' => $product->id ]) }}">
 								<img class="w-100" src="/storage/images/{{ $product->images->first()->filename ?? '1101182005_1_6.jpg' }}">
 							</a>
 						</div>
@@ -58,15 +58,15 @@
 								<div class="flex-column text-center">
 
 									<div class="brand text-left pl-3">
-										<a href="/products/{{ $product->id }}" class="text-decoration-none" style="color:var(--red);">{{ $product->brand->name }}</a>
+										<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none" style="color:var(--red);">{{ $product->brand->name }}</a>
 									</div>
 
 									<div class="name">
-										<a href="/products/{{ $product->id }}" class="text-decoration-none" style="color:var(--red);">{{ $product->name_cn }}</a>
+										<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none" style="color:var(--red);">{{ $product->name_cn }}</a>
 									</div>
 
 									<div class="price">
-										<a href="/products/{{ $product->id }}" class="text-decoration-none" style="color:var(--red);">{{ $product->displayPrice() }}</a>
+										<a href="{{ route('products.show',['product' => $product->id ]) }}" style="color:var(--red);">{{ $product->displayPrice() }}</a>
 									</div>
 
 								</div>

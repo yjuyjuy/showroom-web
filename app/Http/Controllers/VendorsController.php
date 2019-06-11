@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Vendor;
+use App\Product;
 
 class VendorsController extends Controller
 {
@@ -11,7 +13,7 @@ class VendorsController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(Request $request)
+	public function index(Request $request, Vendor $vendor)
 	{
 		$data = $request->validate([
 			'category.*' => 'sometimes|exists:categories,id',
@@ -31,7 +33,7 @@ class VendorsController extends Controller
 				$query->whereIn("{$field}_id", $data[$field]);
 			}
 		}
-		$products = $this->sort_and_get($data['sort']??'default', $query);
+		$products = Product::sort_and_get($data['sort']??'default', $query);
 
 		$request->flash();
 		return view('products.index', compact('products'));
