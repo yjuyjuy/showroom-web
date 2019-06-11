@@ -16,8 +16,12 @@ class Price extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public function data()
+	public function getDataAttribute($attribute)
 	{
-		return json_decode($this->data, true);
+		return json_decode($attribute, true);
+	}
+	public function setDataAttribute($value)
+	{
+		$this->attributes['data'] = json_encode($value);
 	}
 }

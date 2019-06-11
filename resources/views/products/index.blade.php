@@ -76,9 +76,6 @@
 					@endforeach
 				  </div>
 
-					<div class="row justify-content-center">
-					  {{ $links }}
-					</div>
 				</div>
 				@endsection
 				@yield('center')

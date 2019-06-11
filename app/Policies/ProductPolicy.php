@@ -19,7 +19,7 @@ class ProductPolicy
 	 */
 	public function view(User $user, Product $product)
 	{
-		//
+		return true;
 	}
 
 	/**
@@ -30,7 +30,7 @@ class ProductPolicy
 	 */
 	public function create(User $user)
 	{
-		return $user->id === 1;
+		return is_admin();
 	}
 
 	/**
@@ -42,8 +42,7 @@ class ProductPolicy
 	 */
 	public function update(User $user, Product $product)
 	{
-		return true;
-		// return $user->id === 1;
+		return is_admin();
 	}
 
 	/**
@@ -55,9 +54,8 @@ class ProductPolicy
 	 */
 	public function delete(User $user, Product $product)
 	{
-		return $user->id === 1;
+		return is_admin();
 	}
-
 	/**
 	 * Determine whether the user can restore the product.
 	 *
@@ -67,7 +65,7 @@ class ProductPolicy
 	 */
 	public function restore(User $user, Product $product)
 	{
-		return $user->id === 1;
+		return is_admin();
 	}
 
 	/**
@@ -80,5 +78,9 @@ class ProductPolicy
 	public function forceDelete(User $user, Product $product)
 	{
 		return false;
+	}
+	private function is_admin()
+	{
+		return auth()->user() && auth()->user()->id === 1;
 	}
 }

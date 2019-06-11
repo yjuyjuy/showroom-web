@@ -27,7 +27,6 @@ class ProductsController extends Controller
 			'brand.*' => 'sometimes|exists:brands,id',
 			'sort' => 'sometimes|exists:sortmethods,name',
 		]);
-		$per_page = 4;
 		$query = Product::with([
 			'category','color','season','brand','prices','images' => function ($query) {
 				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
@@ -40,10 +39,8 @@ class ProductsController extends Controller
 		}
 		$products = $this->sort_and_get($data['sort']??'default', $query);
 
-		// $links = $products->appends($data)->links();
-		$links = '';
 		$request->flash();
-		return view('products.index', compact('products', 'links'));
+		return view('products.index', compact('products'));
 	}
 
 	/**

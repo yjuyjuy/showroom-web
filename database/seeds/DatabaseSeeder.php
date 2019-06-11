@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
 	{
 		DB::table('users')->insert([
 					'name' => 'JIAYOU YUAN',
-					'email' => 'test@test.com',
-					'password' => '123456789',
-					'username' => 'user1',
+					'email' => 'yjuyjuy@gmail.com',
+					'password' => '$2y$10$b1RJDPnhO/NHcHkSh..hNuwHKiztkoNtd.YD1m6.ue6KQ8QcghCZm',
+					'username' => 'admin',
 					'created_at' => now(),
 					'updated_at' => now(),
 		]);
@@ -861,7 +861,7 @@ class DatabaseSeeder extends Seeder
 				'name' =>$vendor[1],
 				'username' => $vendor[1],
 				'email' => $vendor[1].'@gmail.com',
-				'password' => '123456789',
+				'password' => '$2y$10$b1RJDPnhO/NHcHkSh..hNuwHKiztkoNtd.YD1m6.ue6KQ8QcghCZm',
 				'created_at' => now(),
 				'updated_at' => now(),
 			]);
