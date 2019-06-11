@@ -17,10 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/', function () {
+	return view('layouts.show');
+});
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users', 'ProductsController@index');
 
-Route::get('/vendor/{vendor}/products', 'VendorsController@index');
-Route::get('/vendor/{vendor}/products/{product}', 'VendorsController@show');
+Route::get('/vendor/{vendor}/products', 'VendorsController@index')->middleware('auth')->middleware('vendor');
+Route::get('/vendor/{vendor}/products/{product}', 'VendorsController@show')->middleware('auth')->middleware('vendor');
 
 Route::resource('products', 'ProductsController');

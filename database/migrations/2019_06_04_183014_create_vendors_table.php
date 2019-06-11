@@ -19,6 +19,7 @@ class CreateVendorsTable extends Migration
 			$table->string('name');
 			$table->string('wechat_id')->nullable();
 			$table->string('city');
+			$table->timestamps();
 
 			$table->index('user_id');
 		});

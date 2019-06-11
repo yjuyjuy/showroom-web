@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
 use Illuminate\Http\Request;
 
 class VendorsController extends Controller
@@ -12,20 +11,21 @@ class VendorsController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$data = $request->validate([
-				'category.*' => 'sometimes|exists:categories,id',
-				'season.*' => 'sometimes|exists:seasons,id',
-				'color.*' => 'sometimes|exists:colors,id',
-				'brand.*' => 'sometimes|exists:brands,id',
-				'sort' => 'sometimes|exists:sortmethods,name',
-			]);
-		$query = Product::with([
-				'category','color','season','brand','prices','images' => function ($query) {
-					$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
-				}
-			]);
+			'category.*' => 'sometimes|exists:categories,id',
+			'season.*' => 'sometimes|exists:seasons,id',
+			'color.*' => 'sometimes|exists:colors,id',
+			'brand.*' => 'sometimes|exists:brands,id',
+			'sort' => 'sometimes|exists:sortmethods,name',
+		]);
+		$per_page = 4;
+		$query = auth()->user()->vendor->products()->with([
+			'category','color','season','brand','prices','images' => function ($query) {
+				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+			}
+		]);
 		foreach (['category','color','brand','season'] as $field) {
 			if ($request->input($field)) {
 				$query->whereIn("{$field}_id", $data[$field]);

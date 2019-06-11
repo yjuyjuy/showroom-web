@@ -18,6 +18,7 @@ class CreateTypesTable extends Migration
 			$table->string('name');
 			$table->string('name_cn');
 			$table->enum('angle', ['front','back','close-up']);
+			$table->timestamps();
 		});
 	}
 

@@ -45,7 +45,7 @@ class Product extends Model
 
 	public function vendors()
 	{
-		return $this->belongsToMany(Vendor::class);
+		return $this->belongsToMany(Product::class, 'prices', 'product_id', 'vendor_id');
 	}
 
 	public function prices()
