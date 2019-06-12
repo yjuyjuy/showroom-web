@@ -41,4 +41,9 @@ class User extends Authenticatable
 	{
 		return $this->hasOne(Vendor::class);
 	}
+
+	public function isSuperAdmin()
+	{
+		return $this->id === 1;
+	}
 }

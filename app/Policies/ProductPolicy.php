@@ -9,6 +9,22 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class ProductPolicy
 {
 	use HandlesAuthorization;
+	public function before($user, $ability)
+	{
+		if ($user->isSuperAdmin() && $ability !== 'forceDelete') {
+			return true;
+		}
+	}
+	/**
+	 * Determine whether the user can view any products.
+	 *
+	 * @param  \App\User  $user
+	 * @return mixed
+	 */
+	public function viewAny(User $user)
+	{
+		//
+	}
 
 	/**
 	 * Determine whether the user can view the product.
@@ -19,7 +35,7 @@ class ProductPolicy
 	 */
 	public function view(User $user, Product $product)
 	{
-		return true;
+		//
 	}
 
 	/**
@@ -30,7 +46,7 @@ class ProductPolicy
 	 */
 	public function create(User $user)
 	{
-		return is_admin();
+		return $user->isSuperAdmin();
 	}
 
 	/**
@@ -42,7 +58,7 @@ class ProductPolicy
 	 */
 	public function update(User $user, Product $product)
 	{
-		return is_admin();
+		return $user->isSuperAdmin();
 	}
 
 	/**
@@ -54,7 +70,7 @@ class ProductPolicy
 	 */
 	public function delete(User $user, Product $product)
 	{
-		return is_admin();
+		return $user->isSuperAdmin();
 	}
 	/**
 	 * Determine whether the user can restore the product.
@@ -65,7 +81,7 @@ class ProductPolicy
 	 */
 	public function restore(User $user, Product $product)
 	{
-		return is_admin();
+		return $user->isSuperAdmin();
 	}
 
 	/**
@@ -78,9 +94,5 @@ class ProductPolicy
 	public function forceDelete(User $user, Product $product)
 	{
 		return false;
-	}
-	private function is_admin()
-	{
-		return auth()->user() && auth()->user()->id === 1;
 	}
 }

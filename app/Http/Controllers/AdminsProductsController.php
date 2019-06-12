@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Color;
 use App\Product;
-use App\Season;
-use App\Brand;
-use App\Sortmethod;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Arr;
 
-class ProductsController extends Controller
+class AdminsProductsController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
@@ -22,14 +15,18 @@ class ProductsController extends Controller
 	public function index(Request $request)
 	{
 		$data = $request->validate([
+			'show_available' => '',
+			'show_unavailable' => '',
 			'category.*' => 'sometimes|exists:categories,id',
 			'season.*' => 'sometimes|exists:seasons,id',
 			'color.*' => 'sometimes|exists:colors,id',
 			'brand.*' => 'sometimes|exists:brands,id',
-			'sort' => 'sometimes|in:'.implode(',', Arr::pluck($this->sortoptions(), 'name')),
+			'sort' => 'sometimes|exists:sortmethods,name',
 		]);
+
+		$per_page = 4;
 		$query = Product::with([
-			'brand','prices','images' => function ($query) {
+			'brand', 'prices', 'images' => function ($query) {
 				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
 			}
 		]);
@@ -40,8 +37,13 @@ class ProductsController extends Controller
 		}
 		$products = Product::sort_and_get($data['sort']??'default', $query);
 
+		if ($request->input('show_available')) {
+			$products = $products->filter(function ($product) {
+				return $product->prices->isNotEmpty();
+			});
+		}
 		$request->flash();
-		return view('products.index', compact('products'));
+		return view('admin.products.index', compact('products'));
 	}
 
 	/**
@@ -51,8 +53,7 @@ class ProductsController extends Controller
 	 */
 	public function create()
 	{
-		$product = new Product();
-		return view('products.create', compact('product'));
+		//
 	}
 
 	/**
@@ -63,8 +64,7 @@ class ProductsController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$product = Product::create($this->validateRequest());
-		return redirect("/products/{$product->id}");
+		//
 	}
 
 	/**
@@ -75,7 +75,7 @@ class ProductsController extends Controller
 	 */
 	public function show(Product $product)
 	{
-		$product->load('images', 'prices');
+		$product->load(['images',  'prices']);
 		$sizes = [];
 		$product->prices()->pluck('data')->map(function ($item) use (&$sizes) {
 			$sizes = array_merge_recursive($sizes, $item);
@@ -83,7 +83,7 @@ class ProductsController extends Controller
 		$sizes = array_map(function ($item) {
 			return (is_array($item))? min($item) : $item;
 		}, $sizes);
-		return view('products.show', compact('product', 'sizes'));
+		return view('admin.products.show', compact('product', 'sizes'));
 	}
 
 	/**
@@ -94,8 +94,7 @@ class ProductsController extends Controller
 	 */
 	public function edit(Product $product)
 	{
-		$this->authorize('update', $product);
-		return view('products.edit', compact('product'));
+		//
 	}
 
 	/**
@@ -107,8 +106,7 @@ class ProductsController extends Controller
 	 */
 	public function update(Request $request, Product $product)
 	{
-		$product->update($this->validateRequest());
-		return redirect("/products/{$product->id}");
+		//
 	}
 
 	/**
@@ -120,29 +118,5 @@ class ProductsController extends Controller
 	public function destroy(Product $product)
 	{
 		//
-	}
-
-	public function validateRequest()
-	{
-		return request()->validate([
-			'brand'=>'required|exists:brands,id',
-			'season'=>'required|exists:seasons,id',
-			'name_cn'=>'required',
-			'name'=>'required',
-			'category'=>'required|exists:categories,id',
-			'color'=>'required|exists:colors,id',
-		]);
-	}
-	public function sortoptions()
-	{
-		return [
-			1 => ['name' => 'default','name_cn' => '默认排序',],
-			2 => ['name' => 'price high to low','name_cn' => '价格最高',],
-			3 => ['name' => 'price low to high','name_cn' => '价格最低'],
-			4 => ['name' => 'hottest','name_cn' => '人气最高'],
-			5 => ['name' => 'best selling','name_cn' => '销量最高'],
-			6 => ['name' => 'newest','name_cn' => '最新到货'],
-			7 => ['name' => 'oldest','name_cn' => '发布最早'],
-		];
 	}
 }

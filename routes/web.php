@@ -19,8 +19,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users', 'UsersController@index')->middleware('admin');
 
-Route::get('/vendor/{vendor}/products', 'VendorsController@index')->middleware('auth')->middleware('vendor')->name('admin');
-Route::get('/vendor/{vendor}/products/{product}', 'VendorsController@show')->middleware('auth')->middleware('vendor');
+Route::prefix('vendor')->name('vendor.')->middleware(['auth','vendor'])->group(function () {
+	Route::resource('products', 'VendorsProductsController');
+});
+
+Route::prefix('admin')->name('admin.')->middleware(['auth','admin'])->group(function () {
+	Route::resource('products', 'AdminsProductsController');
+});
 
 Route::get('/admin/log', 'LogsController@index')->name('log');
 

@@ -17,9 +17,11 @@
 		<span>{{ $product->id }}</span>
 	</div>
 
+	@can('update',$product)
 	<div class="align-self-center">
-		<a href="{{ route('products.edit',['product' => $product->id ]) }}">edit</a>
+		<a href="{{ route('products.edit',['product' => $product->id ]) }}">修改</a>
 	</div>
+	@endcan
 
 </div>
 @endsection
@@ -37,7 +39,7 @@
 
 
 @section('right-aside')
-<div class="align-self-center">
+<div class="py-4 my-4 mx-auto col-10 col-md-8 border">
 	@if(!empty($sizes))
 	@foreach($sizes as $size => $price)
 	<div class="">{{ $size }} - &yen;{{$price}}</div>
@@ -45,5 +47,5 @@
 	@else
 	<div class="">Currently not available</div>
 	@endif
-<div>
+</div>
 @endsection

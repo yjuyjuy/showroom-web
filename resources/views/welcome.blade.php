@@ -88,7 +88,7 @@
                     <a href="{{ route('products.index') }}">所有商品</a>
 										@auth
 										@if(auth()->user()->vendor)
-										<a href="{{ route('admin',['vendor' => auth()->user()->vendor->id ]) }}">管理后台</a>
+										<a href="{{ route('admin.proudcts.index') }}">管理后台</a>
 										<a href="{{ route('log') }}">更新日志</a>
 										@endif
 										@endauth

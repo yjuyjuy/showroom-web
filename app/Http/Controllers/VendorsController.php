@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Vendor;
-use App\Product;
+use Illuminate\Http\Request;
 
 class VendorsController extends Controller
 {
@@ -13,30 +12,9 @@ class VendorsController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(Request $request, Vendor $vendor)
+	public function index()
 	{
-		$data = $request->validate([
-			'category.*' => 'sometimes|exists:categories,id',
-			'season.*' => 'sometimes|exists:seasons,id',
-			'color.*' => 'sometimes|exists:colors,id',
-			'brand.*' => 'sometimes|exists:brands,id',
-			'sort' => 'sometimes|exists:sortmethods,name',
-		]);
-		$per_page = 4;
-		$query = auth()->user()->vendor->products()->with([
-			'category','color','season','brand','prices','images' => function ($query) {
-				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
-			}
-		]);
-		foreach (['category','color','brand','season'] as $field) {
-			if ($request->input($field)) {
-				$query->whereIn("{$field}_id", $data[$field]);
-			}
-		}
-		$products = Product::sort_and_get($data['sort']??'default', $query);
-
-		$request->flash();
-		return view('products.index', compact('products'));
+		//
 	}
 
 	/**
@@ -63,10 +41,10 @@ class VendorsController extends Controller
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  \App\Product  $product
+	 * @param  \App\Vendor  $vendor
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(Product $product)
+	public function show(Vendor $vendor)
 	{
 		//
 	}
@@ -74,10 +52,10 @@ class VendorsController extends Controller
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  \App\Product  $product
+	 * @param  \App\Vendor  $vendor
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(Product $product)
+	public function edit(Vendor $vendor)
 	{
 		//
 	}
@@ -86,10 +64,10 @@ class VendorsController extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Product  $product
+	 * @param  \App\Vendor  $vendor
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, Product $product)
+	public function update(Request $request, Vendor $vendor)
 	{
 		//
 	}
@@ -97,10 +75,10 @@ class VendorsController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  \App\Product  $product
+	 * @param  \App\Vendor  $vendor
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Product $product)
+	public function destroy(Vendor $vendor)
 	{
 		//
 	}

@@ -34,8 +34,10 @@
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<!-- Left Side Of Navbar -->
-					<ul class="navbar-nav mr-auto">
-
+					<ul class="navbar-nav mr-auto pl-2 pt-1">
+						<li class="list-item px-2"><a href="{{ route('admin.products.index') }}">admin</a></li>
+						<li class="list-item px-2"><a href="{{ route('vendor.products.index') }}">vendor</a></li>
+						<li class="list-item px-2"><a href="{{ route('products.index') }}">customer</a></li>
 					</ul>
 
 					<!-- Right Side Of Navbar -->

@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class VendorMiddleware
+class AdminMiddleware
 {
 	/**
 	 * Handle an incoming request.
@@ -15,10 +15,7 @@ class VendorMiddleware
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (!auth()->user()) {
-			return route('login');
-		}
-		if (auth()->user()->vendor) {
+		if (auth()->user() && auth()->user()->isSuperAdmin()) {
 			return $next($request);
 		} else {
 			abort(403);
