@@ -12,7 +12,10 @@
 */
 
 Route::view('/', 'welcome');
-
+Route::get('/test/{price}', function (\App\Price $price) {
+	$product = $price->product;
+	return view('prices.edit', compact('price', 'product'));
+});
 
 Auth::routes();
 
@@ -30,3 +33,4 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','admin'])->group(func
 Route::get('/admin/log', 'LogsController@index')->name('log');
 
 Route::resource('products', 'ProductsController');
+Route::resource('prices', 'PricesController');

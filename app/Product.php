@@ -140,4 +140,22 @@ class Product extends Model
 		}
 		return $sizes;
 	}
+
+	public function displayName($level = 1)
+	{
+		switch ($level) {
+			case 1:
+				return $this->season->name.' '.$this->name_cn;
+				break;
+
+			case 2:
+				// code...
+				return $this->brand->name.' '.$this->season->name.' '.$this->name_cn;
+				break;
+
+			default:
+				return $this->season->name.' '.$this->name_cn;
+				break;
+		}
+	}
 }
