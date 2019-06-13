@@ -76,8 +76,7 @@ class AdminsProductsController extends Controller
 	public function show(Product $product)
 	{
 		$product->load(['images',  'prices']);
-		$sizes = $product->size_cost_price;
-		return view('admin.products.show', compact('product', 'sizes'));
+		return view('admin.products.show', compact('product'));
 	}
 
 	/**

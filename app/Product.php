@@ -122,7 +122,7 @@ class Product extends Model
 			}
 		}
 		foreach ($sizes as $size => $prices) {
-			$sizes[$size] = (int)min($prices) * 1.2;
+			$sizes[$size] = (int)(min($prices) * 1.2);
 		}
 		return $sizes;
 	}

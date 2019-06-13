@@ -76,8 +76,7 @@ class ProductsController extends Controller
 	public function show(Product $product)
 	{
 		$product->load('images', 'prices');
-		$sizes = $product->size_price;
-		return view('products.show', compact('product', 'sizes'));
+		return view('products.show', compact('product'));
 	}
 
 	/**

@@ -85,8 +85,7 @@ class VendorsProductsController extends Controller
 		$product->load(['images',  'prices' => function ($query) use ($vendor) {
 			$query->where('vendor_id', $vendor->id);
 		}]);
-		$sizes = $product->size_cost_price;
-		return view('vendors.products.show', compact('product', 'sizes'));
+		return view('vendors.products.show', compact('product'));
 	}
 
 	/**
