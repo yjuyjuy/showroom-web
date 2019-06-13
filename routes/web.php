@@ -17,9 +17,9 @@ Route::view('/', 'welcome');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/users', 'UsersController@index')->middleware('admin');
+Route::get('/users', 'UsersController@index')->middleware(['auth','admin']);
 
-Route::prefix('vendor')->name('vendor.')->middleware(['auth','vendor'])->group(function () {
+Route::prefix('vendors')->name('vendors.')->middleware(['auth','vendor'])->group(function () {
 	Route::resource('products', 'VendorsProductsController');
 });
 
@@ -30,3 +30,4 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','admin'])->group(func
 Route::get('/admin/log', 'LogsController@index')->name('log');
 
 Route::resource('products', 'ProductsController');
+Route::resource('prices', 'PricesController')->middleware(['auth','vendor']);

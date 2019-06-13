@@ -39,13 +39,13 @@
 						@if(auth()->user() && auth()->user()->isSuperAdmin())
 						<a href="{{ route('admin.products.index') }}">
 						@elseif(auth()->user() && auth()->user()->vendor)
-						<a href="{{ route('vendor.products.index') }}">
+						<a href="{{ route('vendors.products.index') }}">
 						@else
 						<a href="{{ route('products.index') }}">
 						@endif
 						所有商品</a></li>
 						<li class="list-item px-2"><a href="{{ route('admin.products.index') }}">管理员</a></li>
-						<li class="list-item px-2"><a href="{{ route('vendor.products.index') }}">合作商</a></li>
+						<li class="list-item px-2"><a href="{{ route('vendors.products.index') }}">合作商</a></li>
 						<li class="list-item px-2"><a href="{{ route('products.index') }}">用户</a></li>
 					</ul>
 
