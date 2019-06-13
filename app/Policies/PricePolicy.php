@@ -39,6 +39,10 @@ class PricePolicy
 		return $price->vendor->user_id === $user->id;
 	}
 
+	public function viewCost(User $user)
+	{
+		return $user->vendor;
+	}
 	/**
 	 * Determine whether the user can create prices.
 	 *

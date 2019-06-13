@@ -76,13 +76,7 @@ class AdminsProductsController extends Controller
 	public function show(Product $product)
 	{
 		$product->load(['images',  'prices']);
-		$sizes = [];
-		$product->prices()->pluck('data')->map(function ($item) use (&$sizes) {
-			$sizes = array_merge_recursive($sizes, $item);
-		});
-		$sizes = array_map(function ($item) {
-			return (is_array($item))? min($item) : $item;
-		}, $sizes);
+		$sizes = $product->size_cost_price;
 		return view('admin.products.show', compact('product', 'sizes'));
 	}
 

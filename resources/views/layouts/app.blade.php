@@ -35,9 +35,18 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<!-- Left Side Of Navbar -->
 					<ul class="navbar-nav mr-auto pl-2 pt-1">
-						<li class="list-item px-2"><a href="{{ route('admin.products.index') }}">admin</a></li>
-						<li class="list-item px-2"><a href="{{ route('vendor.products.index') }}">vendor</a></li>
-						<li class="list-item px-2"><a href="{{ route('products.index') }}">customer</a></li>
+						<li class="list-item px-2">
+						@if(auth()->user() && auth()->user()->isSuperAdmin())
+						<a href="{{ route('admin.products.index') }}">
+						@elseif(auth()->user() && auth()->user()->vendor)
+						<a href="{{ route('vendor.products.index') }}">
+						@else
+						<a href="{{ route('products.index') }}">
+						@endif
+						所有商品</a></li>
+						<li class="list-item px-2"><a href="{{ route('admin.products.index') }}">管理员</a></li>
+						<li class="list-item px-2"><a href="{{ route('vendor.products.index') }}">合作商</a></li>
+						<li class="list-item px-2"><a href="{{ route('products.index') }}">用户</a></li>
 					</ul>
 
 					<!-- Right Side Of Navbar -->

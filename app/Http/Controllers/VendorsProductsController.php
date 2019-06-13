@@ -85,13 +85,7 @@ class VendorsProductsController extends Controller
 		$product->load(['images',  'prices' => function ($query) use ($vendor) {
 			$query->where('vendor_id', $vendor->id);
 		}]);
-		$sizes = [];
-		$product->prices()->pluck('data')->map(function ($item) use (&$sizes) {
-			$sizes = array_merge_recursive($sizes, $item);
-		});
-		$sizes = array_map(function ($item) {
-			return (is_array($item))? min($item) : $item;
-		}, $sizes);
+		$sizes = $product->size_cost_price;
 		return view('vendors.products.show', compact('product', 'sizes'));
 	}
 
