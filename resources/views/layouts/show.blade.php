@@ -22,7 +22,7 @@
 			@yield('center')
 		</div>
 
-		<div class="col-2 min-vh-100 justify-content-center align-content-center d-flex flex-column text-left" style="position:absolute; top:0; right:0;">
+		<div class="col-2 min-vh-100 justify-content-center align-content-center d-flex flex-column text-left" style="position:absolute; right:0;">
 
 				@section('right-aside')
 				<div class="py-4 my-4 col-10 col-md-8 border">

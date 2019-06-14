@@ -57,7 +57,8 @@ class PricesController extends Controller
 	 */
 	public function edit(Price $price)
 	{
-		dd($price);
+		$product = $price->product;
+		return view('prices.edit', compact('price', 'product'));
 	}
 
 	/**

@@ -797,11 +797,16 @@ class DatabaseSeeder extends Seeder
 				[1137, 1101191017, 25, "{\"S\": \"1400\", \"XS\": \"1400\", \"XXS\": \"1400\"}", 1400, "2019-06-03 14:09:21", null]
 			];
 		foreach ($prices as $price) {
+			$data = [];
+			foreach (json_decode($price[3], true) as $size => $value) {
+				$data[] = [ 'size' => $size, 'cost' => $value, 'resell' => $value, 'retail' => $value * 1.2];
+			}
+			$data = json_encode($data);
 			DB::table('prices')->insert([
 					'id' => $price[0],
 					'vendor_id' => $price[2],
 					'product_id' => $price[1],
-					'data' => $price[3],
+					'data' => $data,
 					'created_at' => now(),
 					'updated_at' => now(),
 				]);
@@ -872,6 +877,7 @@ class DatabaseSeeder extends Seeder
 				'city' => $vendor[2],
 			]);
 		}
+		\App\Vendor::first()->update(['user_id'=>1]);
 		$websites=[
 			[1,'off---white'],
 			[2,'farfetch'],

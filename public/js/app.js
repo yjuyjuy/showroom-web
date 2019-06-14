@@ -1891,27 +1891,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: [],
+  props: {
+    current_values: ''
+  },
   data: function data() {
     return {
-      sizes: 'XXS',
+      size: '',
       cost: '',
       resell: '',
-      sale: ''
+      retail: ''
     };
   },
   mounted: function mounted() {
     console.log('Component mounted.');
+
+    if (this.current_values) {
+      var data = JSON.parse(this.current_values);
+
+      if (data.size) {
+        this.size = data.size;
+      }
+
+      if (data.cost) {
+        this.cost = data.cost;
+      }
+
+      if (data.resell) {
+        this.resell = data.resell;
+      }
+
+      if (data.retail) {
+        this.retail = data.retail;
+      }
+    }
   },
-  computed: {}
+  watch: {
+    cost: function cost() {
+      this.resell = Math.floor(this.cost * 0.12) * 10;
+    },
+    resell: function resell() {
+      this.retail = Math.floor(this.resell * 0.11) * 10;
+    }
+  }
 });
 
 /***/ }),
@@ -37252,115 +37274,103 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "py-4 my-4 mx-auto col-10 col-md-8 border" },
-    [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "sizes" } }, [_vm._v("尺码")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.sizes,
-              expression: "sizes"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", name: "", id: "sizes" },
-          domProps: { value: _vm.sizes },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.sizes = $event.target.value
-            }
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "form-group col" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.size,
+            expression: "size"
           }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "cost" } }, [_vm._v("成本")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.cost,
-              expression: "cost"
+        ],
+        staticClass: "form-control",
+        attrs: { type: "text", name: "size[]", id: "size" },
+        domProps: { value: _vm.size },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
             }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", id: "cost" },
-          domProps: { value: _vm.cost },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.cost = $event.target.value
-            }
+            _vm.size = $event.target.value
           }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "resell" } }, [_vm._v("调货价")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.resell,
-              expression: "resell"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", id: "resell" },
-          domProps: { value: _vm.resell },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.resell = $event.target.value
-            }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group col" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.cost,
+            expression: "cost"
           }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "sale" } }, [_vm._v("尺码")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.sale,
-              expression: "sale"
+        ],
+        staticClass: "form-control",
+        attrs: { type: "text", name: "cost[]", id: "cost" },
+        domProps: { value: _vm.cost },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
             }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", id: "sale" },
-          domProps: { value: _vm.sale },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.sale = $event.target.value
-            }
+            _vm.cost = $event.target.value
           }
-        })
-      ])
-    ]
-  )
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group col" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.resell,
+            expression: "resell"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: { type: "text", name: "resell[]", id: "resell" },
+        domProps: { value: _vm.resell },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.resell = $event.target.value
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group col" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.retail,
+            expression: "retail"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: { type: "text", name: "retail[]", id: "retail" },
+        domProps: { value: _vm.retail },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.retail = $event.target.value
+          }
+        }
+      })
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49758,8 +49768,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

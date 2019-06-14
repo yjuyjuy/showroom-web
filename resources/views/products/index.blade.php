@@ -31,7 +31,17 @@
 			</div>
 
 			<div class="price">
-				<a href="{{ route($targetRouteName,['product' => $product->id ]) }}" style="color:var(--red);">@can('viewCost','App\Price'){{ $product->displayCostPrice() }}@else{{ $product->displayPrice() }}@endcan</a>
+				<a href="{{ route($targetRouteName,['product' => $product->id ]) }}" style="color:var(--red);">
+					@if(!$product->getMinPrice())
+					not available
+					@else
+					@can('viewCost','App\Price')
+					调货 {{ $product->displayResellPrice() }} 零售 {{ $product->displayPrice() }}
+					@else
+					{{ $product->displayPrice() }}
+					@endcan
+					@endif
+				</a>
 			</div>
 
 		</div>

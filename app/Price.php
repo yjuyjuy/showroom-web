@@ -18,10 +18,6 @@ class Price extends Model
 
 	public function getDataAttribute($attribute)
 	{
-		return json_decode($attribute, true);
-	}
-	public function setDataAttribute($value)
-	{
-		$this->attributes['data'] = json_encode($value);
+		return collect(json_decode($attribute, true));
 	}
 }

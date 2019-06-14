@@ -45,28 +45,26 @@ class Product extends Model
 		return $this->hasMany(Image::class);
 	}
 
-	public function getMinPrice($default = false)
+	public function getMinPrice($type = 'retail', $default = false)
 	{
-		return ($this->prices->isEmpty())? $default : (int)$this->prices->map(function ($item, $key) {
-			return min($item->data);
-		})->min();
-	}
-
-	public function getMinCostPrice($default = false)
-	{
-		return ($this->prices->isEmpty())? $default : (int)$this->prices->map(function ($item, $key) {
-			return min($item->data);
+		return ($this->prices->isEmpty())? $default : (int)$this->prices->map(function ($item, $key) use ($type) {
+			return $item->data->pluck($type)->min();
 		})->min();
 	}
 
 	public function getPriceAttribute($attribute)
 	{
-		return $this->getMinPrice()? (int)($this->getMinPrice() * 1.2) : 0;
+		return $this->getMinPrice() ?? 0;
 	}
 
 	public function getCostPriceAttribute($attribute)
 	{
-		return $this->getMinCostPrice()? $this->getMinPrice() : 0;
+		return $this->getMinPrice('cost') ?? 0;
+	}
+
+	public function getResellPriceAttribute($attribute)
+	{
+		return $this->getMinPrice('resell') ?? 0;
 	}
 
 	public function displayPrice()
@@ -79,20 +77,26 @@ class Product extends Model
 		return ($this->cost_price) ? "\u{00a5}".$this->cost_price : 'not available';
 	}
 
-	public static function sort_and_get($name = 'default', $query)
+	public function displayResellPrice()
 	{
-		switch ($name) {
+		return ($this->resell_price) ? "\u{00a5}".$this->resell_price : 'not available';
+	}
+
+
+	public static function sort_and_get($sortBy = 'default', $query)
+	{
+		switch ($sortBy) {
 			case 'price low to high':
 				return $query->get()->sortBy(
 					function ($product, $key) {
-						return $product->minPrice(INF);
+						return $product->getMinPrice('retail', INF);
 					}
 				);
 
 			case 'price high to low':
 				return $query->get()->sortByDesc(
 					function ($product, $key) {
-						return $product->minPrice(0);
+						return $product->getMinPrice('retail', 0);
 					}
 				);
 
@@ -115,28 +119,19 @@ class Product extends Model
 
 	public function getSizePriceAttribute()
 	{
-		$sizes = [];
-		foreach ($this->prices->pluck('data') as $data) {
-			foreach ($data as $size => $price) {
-				$sizes[$size][] = $price;
-			}
-		}
-		foreach ($sizes as $size => $prices) {
-			$sizes[$size] = (int)(min($prices) * 1.2);
-		}
-		return $sizes;
+		return $this->getSizePrice('retail');
 	}
 
-	public function getSizeCostPriceAttribute()
+	public function getSizePrice($type = 'retail')
 	{
 		$sizes = [];
 		foreach ($this->prices->pluck('data') as $data) {
-			foreach ($data as $size => $price) {
-				$sizes[$size][] = $price;
+			foreach ($data as $row) {
+				$sizes[$row['size']][] = $row[$type];
 			}
 		}
 		foreach ($sizes as $size => $prices) {
-			$sizes[$size] = (int)min($prices);
+			$sizes[$size] = min($prices);
 		}
 		return $sizes;
 	}
