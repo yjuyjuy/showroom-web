@@ -30,7 +30,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','admin'])->group(func
 	Route::resource('products', 'AdminsProductsController');
 });
 
-Route::resource('prices', 'PricesController')->middleware(['auth','vendor']);
 Route::get('/products/{product}/prices/create', 'PricesController@create')->middleware(['auth','vendor'])->name('prices.create');
+Route::resource('prices', 'PricesController')->middleware(['auth','vendor']);
 
 Route::get('/admin/log', 'LogsController@index')->name('log');

@@ -18,6 +18,10 @@ class Price extends Model
 
 	public function getDataAttribute($attribute)
 	{
-		return collect(json_decode($attribute, true));
+		return collect(json_decode($attribute, true))->sortBy(
+			function ($row) {
+				return array_search($row['size'], ['XXS','XS','S','M','L','XL','XXL']);
+			}
+		);
 	}
 }

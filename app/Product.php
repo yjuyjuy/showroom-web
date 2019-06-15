@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Arr;
 
 class Product extends Model
 {
@@ -133,8 +134,34 @@ class Product extends Model
 		foreach ($sizes as $size => $prices) {
 			$sizes[$size] = min($prices);
 		}
+
 		return $sizes;
 	}
+
+
+	public function getSizeAllPrice()
+	{
+		$prices = [];
+		foreach ($this->prices->pluck('data') as $data) {
+			foreach ($data as $row) {
+				$prices[$row['size']]['cost'][] = $row['cost'];
+				$prices[$row['size']]['resell'][] = $row['resell'];
+				$prices[$row['size']]['retail'][] = $row['retail'];
+			}
+		}
+		foreach ($prices as $size => $values) {
+			$prices[$size]['cost'] = min($values['cost']);
+			$prices[$size]['resell'] = min($values['resell']);
+			$prices[$size]['retail'] = min($values['retail']);
+		}
+
+		uksort($prices, function ($a, $b) {
+			return ($a === $b)? 0 : ((array_search($a, ['XXS','XS','S','M','L','XL','XXL']) < array_search($b, ['XXS','XS','S','M','L','XL','XXL'])) ? -1 : 1);
+		});
+
+		return $prices;
+	}
+
 
 	public function displayName($level = 1)
 	{
