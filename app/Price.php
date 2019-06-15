@@ -22,6 +22,6 @@ class Price extends Model
 			function ($row) {
 				return array_search($row['size'], ['XXS','XS','S','M','L','XL','XXL']);
 			}
-		);
+		)->values();
 	}
 }

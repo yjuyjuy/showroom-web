@@ -8,11 +8,11 @@ class Image extends Model
 {
 	public function scopeFront($query)
 	{
-		return $query->whereIn('type_id', [1,2,9,10,11]);
+		return $query->whereIn('type_id', [1,2,9,10,11])->orderBy('website_id', 'asc')->orderBy('type_id', 'asc');
 	}
 	public function scopeBack($query)
 	{
-		return $query->whereIn('type_id', [3,4,12]);
+		return $query->whereIn('type_id', [3,4,12])->orderBy('website_id', 'asc')->orderBy('type_id', 'asc');
 	}
 	public function product()
 	{

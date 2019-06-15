@@ -1,40 +1,60 @@
-@extends('layouts.edit')
+@extends('layouts.app')
 
-@section('title','修改价格 - '.$price->product->displayName(1).' - TheShowroom')
+@section('content')
+<div class="container">
+	<div class="row">
+		<div class="col-12 col-md-6">
+			<div class="row">
+				@foreach($product->images as $image)
+				<div class="col-6 mb-3">
+					<img class="w-100" src="/storage/images/{{ $image->filename }}">
+				</div>
+				@endforeach
 
-@section('left-aside')
-<div class="row">
-	<div class="col-12">
-		<img src="/storage/images/{{$product->images()->first()->filename}}" alt="" class="w-100">
+			</div>
+		</div>
+		<div class="col-12 col-md-6">
+			<div class="col-12 my-3">
+				<div class="row text-center align-content-center">
+					<div class="col-12">
+						<a href="{{ route('products.index') }}?brand[]={{$product->brand->id}}">{{ $product->brand->full_name }}</a>
+					</div>
+					<div class="col-12">
+						<span><a href="{{ route('products.index') }}?season[]={{$product->season->id}}">{{ $product->season->name }}</a> {{ $product->name_cn }}</span>
+					</div>
+					<div class="col-12">
+						<span>{{ $product->id }}</span>
+						<a class="text-info ml-2" href="{{ route('products.edit',['product' => $product->id ]) }}">修改</a>
+					</div>
+				</div>
+			</div>
+			<div class="py-4 my-2 col-12 border">
+				<div class="row">
+					<span class="col text-center">尺码</span>
+					<span class="col text-center">成本</span>
+					<span class="col text-center">调货</span>
+					<span class="col text-center">零售</span>
+				</div>
+				@foreach($product->getSizeAllPrice() as $size => $values)
+				<div class="row">
+					<span class="col text-center">{{$size}}</span>
+					<span class="col text-center">{{$values['cost']}}</span>
+					<span class="col text-center">{{$values['resell']}}</span>
+					<span class="col text-center">{{$values['retail']}}</span>
+				</div>
+				@endforeach
+			</div>
+
+			<div class="py-4 my-2 col-12 border">
+				<div class="row">
+					<div class="col my-2 text-center">{{$price->vendor->name}} - {{$price->vendor->city}}</div>
+				</div>
+				<edit-price-component input='@json($price->data)'></edit-price-component>
+
+			</div>
+
+
+		</div>
 	</div>
-</div>
-@include('products.properties')
-@endsection
-
-
-@section('right-aside')
-<div class="py-4 my-4 mx-auto col-10 col-md-8 border">
-	<form action="{{route('prices.update',['price'=>$price,])}}" method="post">
-	@csrf
-	@method('PATCH')
-	<div class="row mb-2">
-	  <div class="col">
-			<span>尺码</span>
-	  </div>
-		<div class="col">
-			<span>成本</span>
-	  </div>
-		<div class="col">
-			<span>调货价</span>
-	  </div>
-		<div class="col">
-			<span>零售价</span>
-	  </div>
-	</div>
-	@foreach($price->data as $row)
-	<price-input-component current_values='{{ json_encode($row) }}'></price-input-component>
-	@endforeach
-	<button type="submit" class="btn btn-primary text-center">Update</button>
-	</form>
 </div>
 @endsection

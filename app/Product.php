@@ -9,6 +9,11 @@ use Illuminate\Support\Arr;
 class Product extends Model
 {
 	protected $guarded = [];
+	/**
+	 * The model's default values for attributes.
+	 *
+	 * @var array
+	 */
 	protected $attributes = [];
 
 	public function category()
@@ -40,7 +45,14 @@ class Product extends Model
 	{
 		return $this->hasMany(Price::class);
 	}
-
+	public function getImageAttribute()
+	{
+		return $this->images()->orderBy('website_id', 'asc')->orderBy('type_id', 'asc')->first();
+	}
+	public function getImagesAttribute()
+	{
+		return $this->images()->orderBy('website_id', 'asc')->orderBy('type_id', 'asc')->get();
+	}
 	public function images()
 	{
 		return $this->hasMany(Image::class);
@@ -81,41 +93,6 @@ class Product extends Model
 	public function displayResellPrice()
 	{
 		return ($this->resell_price) ? "\u{00a5}".$this->resell_price : 'not available';
-	}
-
-
-	public static function sort_and_get($sortBy = 'default', $query)
-	{
-		switch ($sortBy) {
-			case 'price low to high':
-				return $query->get()->sortBy(
-					function ($product, $key) {
-						return $product->getMinPrice('retail', INF);
-					}
-				);
-
-			case 'price high to low':
-				return $query->get()->sortByDesc(
-					function ($product, $key) {
-						return $product->getMinPrice('retail', 0);
-					}
-				);
-
-			case 'hottest':
-				return $query->orderBy('season_id', 'desc')->get();
-
-			case 'best selling':
-				return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-
-			case 'newest':
-				return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-
-			case 'oldest':
-				return $query->orderBy('season_id', 'asc')->orderBy('id', 'asc')->get();
-
-			default:
-				return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-		}
 	}
 
 	public function getSizePriceAttribute()
@@ -179,5 +156,39 @@ class Product extends Model
 				return $this->season->name.' '.$this->name_cn;
 				break;
 		}
+	}
+
+	public static function sort_and_get($sortBy = 'default', $query)
+	{
+		switch ($sortBy) {
+				case 'price low to high':
+					return $query->get()->sortBy(
+						function ($product, $key) {
+							return $product->getMinPrice('retail', INF);
+						}
+					);
+
+				case 'price high to low':
+					return $query->get()->sortByDesc(
+						function ($product, $key) {
+							return $product->getMinPrice('retail', 0);
+						}
+					);
+
+				case 'hottest':
+					return $query->orderBy('season_id', 'desc')->get();
+
+				case 'best selling':
+					return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
+
+				case 'newest':
+					return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
+
+				case 'oldest':
+					return $query->orderBy('season_id', 'asc')->orderBy('id', 'asc')->get();
+
+				default:
+					return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
+			}
 	}
 }
