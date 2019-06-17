@@ -49,7 +49,7 @@
 				<div class="row">
 					<div class="col my-2 text-center">{{$price->vendor->name}} - {{$price->vendor->city}}</div>
 				</div>
-				<edit-price-component input='@json($price->data)' resource-id='{{$price->id}}'></edit-price-component>
+				<edit-price-component input='@json($price->data)' resource-id='{{$price->id}}' submit-action='update'></edit-price-component>
 			</div>
 			<div class="col-12 text-right">
 				<a href="{{route(((auth()->user()->isSuperAdmin())? 'admin.products.show' : 'vendors.products.show')

@@ -1877,10 +1877,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['input', 'resourceId'],
+  props: ['input', 'resourceId', 'submitAction', 'productId'],
   data: function data() {
     return {
-      prices: []
+      prices: [],
+      vendorId: ''
     };
   },
   mounted: function mounted() {
@@ -2054,15 +2055,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     submit: function submit() {
       this.update_prices();
       this.validate();
-      axios.patch('/prices/' + this.resourceId, {
-        data: this.prices
-      }).then(function (response) {
-        console.log(response.data); // window.location.reload();
-      })["catch"](function (errors) {
-        if (errors.response.status == 401) {
-          window.location = '/login';
-        }
-      });
+
+      if (this.submitAction === 'update') {
+        axios.patch('/prices/' + this.resourceId, {
+          data: this.prices
+        }).then(function (response) {
+          if (response.data.success && response.data.redirect) {
+            window.location = response.data.redirect;
+          }
+        })["catch"](function (errors) {
+          if (errors.response.status == 401) {
+            window.location = '/login';
+          }
+        });
+      } else if (this.submitAction === 'store') {
+        this.vendorId = document.getElementById('vendor-id-selector').value;
+        axios.post('/prices', {
+          data: this.prices,
+          vendor_id: this.vendorId,
+          product_id: this.productId
+        }).then(function (response) {
+          if (response.data.success && response.data.redirect) {
+            window.location = response.data.redirect;
+          }
+        })["catch"](function (errors) {
+          if (errors.response.status == 401) {
+            window.location = '/login';
+          }
+        });
+      }
     }
   }
 });

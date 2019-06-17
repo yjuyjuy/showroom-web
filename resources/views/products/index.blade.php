@@ -31,16 +31,8 @@
 			</div>
 
 			<div class="price">
-				<a href="{{ route($targetRouteName,['product' => $product->id ]) }}" style="color:var(--red);">
-					@if(!$product->getMinPrice())
-					not available
-					@else
-						@if(auth()->user()->vendor)
-						调货 {{ $product->displayResellPrice() }} 零售 {{ $product->displayPrice() }}
-						@else
-						{{ $product->displayPrice() }}
-						@endif
-					@endif
+				<a href="{{ route('products.show',['product' => $product ]) }}" style="color:var(--red);">
+						{{ ($product->price)?"\u{00a5}".$product->price:'SOLD OUT' }}
 				</a>
 			</div>
 

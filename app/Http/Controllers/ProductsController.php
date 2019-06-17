@@ -40,7 +40,7 @@ class ProductsController extends Controller
 			}
 		}
 		$products = Product::sort_and_get($data['sort']??'default', $query);
-		if ($data['show_available']) {
+		if (!empty($data['show_available'])) {
 			$products = $products->filter(function ($product) {
 				return $product->prices->isNotEmpty();
 			});

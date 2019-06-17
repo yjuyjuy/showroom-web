@@ -67,17 +67,17 @@ class Product extends Model
 
 	public function getPriceAttribute($attribute)
 	{
-		return $this->getMinPrice() ?? 0;
+		return $this->getMinPrice();
 	}
 
 	public function getCostPriceAttribute($attribute)
 	{
-		return $this->getMinPrice('cost') ?? 0;
+		return $this->getMinPrice('cost');
 	}
 
 	public function getResellPriceAttribute($attribute)
 	{
-		return $this->getMinPrice('resell') ?? 0;
+		return $this->getMinPrice('resell');
 	}
 
 	public function displayPrice()

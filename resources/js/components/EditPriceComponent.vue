@@ -30,10 +30,11 @@
 
 <script>
 export default {
-	props: ['input', 'resourceId', ],
+	props: ['input', 'resourceId', 'submitAction', 'productId'],
 	data: function() {
 		return {
 			prices: [],
+			vendorId: '',
 		};
 	},
 	mounted() {
@@ -147,18 +148,38 @@ export default {
 		submit: function() {
 			this.update_prices();
 			this.validate();
-			axios.patch('/prices/' + this.resourceId, {
-					data: this.prices,
-				})
-				.then(response => {
-					console.log(response.data);
-					// window.location.reload();
-				})
-				.catch(errors => {
-					if (errors.response.status == 401) {
-						window.location = '/login';
-					}
-				});
+			if (this.submitAction === 'update') {
+				axios.patch('/prices/' + this.resourceId, {
+						data: this.prices,
+					})
+					.then(response => {
+						if (response.data.success && response.data.redirect) {
+							window.location = response.data.redirect;
+						}
+					})
+					.catch(errors => {
+						if (errors.response.status == 401) {
+							window.location = '/login';
+						}
+					});
+			} else if (this.submitAction === 'store') {
+				this.vendorId = document.getElementById('vendor-id-selector').value;
+				axios.post('/prices', {
+						data: this.prices,
+						vendor_id: this.vendorId,
+						product_id: this.productId
+					})
+					.then(response => {
+						if (response.data.success && response.data.redirect) {
+							window.location = response.data.redirect;
+						}
+					})
+					.catch(errors => {
+						if (errors.response.status == 401) {
+							window.location = '/login';
+						}
+					});
+			}
 		},
 	}
 }
