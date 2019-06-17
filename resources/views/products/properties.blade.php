@@ -12,10 +12,10 @@
 		<span>{{ $product->id }}</span>
 	</div>
 
-	@can('update',$product)
+	@if(auth()->user()->isSuperAdmin())
 	<div class="align-self-center col-12">
 		<a href="{{ route('products.edit',['product' => $product->id ]) }}">修改</a>
 	</div>
-	@endcan
+	@endif
 
 </div>

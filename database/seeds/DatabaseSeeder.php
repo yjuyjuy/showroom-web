@@ -811,6 +811,14 @@ class DatabaseSeeder extends Seeder
 					'updated_at' => now(),
 				]);
 		}
+		foreach (\App\Price::all() as $price) {
+			$data = $price->data;
+			$data = Arr::sort($data, function ($row) {
+				return array_search($row['size'], ['XXS','XS','S','M','L','XL','XXL']);
+			});
+			$price->data = $data;
+			$price->save();
+		}
 		$types = [
 			[1,'front','正面','front'],
 			[2,'front-angled','正侧面','front'],

@@ -58,8 +58,12 @@
 				@endforeach
 				<div class="row">
 					<div class="col text-right">
-						<a href="{{route('prices.edit',['price' => $price])}}" class="mr-2 text-info">修改</a>
-						<a href="{{route('prices.destroy',['price' => $price])}}" class="mr-2 text-danger">删除</a>
+						<a href="{{route('prices.edit',['price' => $price])}}" class="mr-2 btn btn-sm btn-info">修改</a>
+						<form class="d-inline" action="{{route('prices.destroy',['price' => $price])}}" method="post">
+							@csrf
+							@method('DELETE')
+							<button class="mr-2 btn btn-danger btn-sm" type="submit">删除</button>
+						</form>
 					</div>
 				</div>
 

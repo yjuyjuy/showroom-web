@@ -1876,57 +1876,80 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    'input': String
-  },
+  props: ['input', 'resourceId'],
   data: function data() {
     return {
-      prices: Object.values(JSON.parse(this.input)),
-      new_price: {
-        'size': '',
-        'cost': '',
-        'resell': '',
-        'retail': ''
-      }
+      prices: []
     };
   },
   mounted: function mounted() {
     console.log('Component mounted.');
+    this.reset_prices();
+    console.log(this.prices);
   },
+  computed: {},
   watch: {},
   methods: {
-    add_price: function add_price() {
-      this.prices.push(this.new_price);
-      this.new_price = {
+    validate: function validate() {
+      // remove rows with empty fields or invalid types of data
+      this.prices = this.prices.filter(function (price) {
+        return price.size && price.cost && price.resell && price.retail && (/^[0-9]+$/.test(price.size) || /^[X]*[SML]+$/.test(price.size)) && [price.cost, price.resell, price.retail].every(function (element) {
+          return /^[1-9]+[0-9]*$/.test(element);
+        });
+      });
+      var obj = {};
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.prices[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var price = _step.value;
+          obj[price.size] = price;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      this.prices = Object.values(obj);
+    },
+    clear_empty: function clear_empty() {
+      this.prices = this.prices.filter(function (price) {
+        return price.size || price.cost || price.resell || price.retail;
+      });
+    },
+    add_empty: function add_empty() {
+      this.prices.push({
         'size': '',
         'cost': '',
         'resell': '',
         'retail': ''
-      };
+      });
     },
-    remove_price: function remove_price(index) {
+    add_price: function add_price() {
+      this.clear_empty();
+      this.add_empty();
+    },
+    delete_price: function delete_price(index) {
       this.prices.splice(index, 1);
     },
     update_prices: function update_prices() {
+      this.clear_empty();
+
       for (var i in this.prices) {
+        this.prices[i].size = this.prices[i].size.toUpperCase();
         var cost = this.prices[i].cost;
         var resell = this.prices[i].resell;
         var retail = this.prices[i].retail;
@@ -1953,7 +1976,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               'retail': retail
             });
           }
-        } else if (/^[XSML]+[-][XSML]+$/.test(this.prices[i].size)) {
+        } else if (/^[X]*[SML]+[-][X]*[SML]+$/.test(this.prices[i].size)) {
           var _this$prices$i$size$s3 = this.prices[i].size.split('-'),
               _this$prices$i$size$s4 = _slicedToArray(_this$prices$i$size$s3, 2),
               _start = _this$prices$i$size$s4[0],
@@ -1981,19 +2004,65 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               });
             }
           }
+        } else if (/^([X]*[SML]+,)+[X]*[SML]+$/.test(this.prices[i].size) || /^([0-9]+,)[0-9]+$/.test(this.prices[i].size)) {
+          var _sizes = this.prices[i].size.split(',');
+
+          this.prices.splice(i, 1);
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = _sizes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var size = _step2.value;
+              this.prices.push({
+                'size': size,
+                'cost': cost,
+                'resell': resell,
+                'retail': retail
+              });
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                _iterator2["return"]();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
+            }
+          }
         } else {
           continue;
         }
       }
+
+      this.add_empty();
     },
     clear_prices: function clear_prices() {
       this.prices = [];
+      this.add_empty();
     },
     reset_prices: function reset_prices() {
       this.prices = Object.values(JSON.parse(this.input));
+      this.add_empty();
     },
     submit: function submit() {
-      console.log(JSON.stringify(this.prices));
+      this.update_prices();
+      this.validate();
+      axios.patch('/prices/' + this.resourceId, {
+        data: this.prices
+      }).then(function (response) {
+        console.log(response.data); // window.location.reload();
+      })["catch"](function (errors) {
+        if (errors.response.status == 401) {
+          window.location = '/login';
+        }
+      });
     }
   }
 });
@@ -37342,6 +37411,7 @@ var render = function() {
               attrs: { type: "text" },
               domProps: { value: price.size },
               on: {
+                blur: _vm.add_price,
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -37366,6 +37436,7 @@ var render = function() {
               attrs: { type: "text" },
               domProps: { value: price.cost },
               on: {
+                blur: _vm.add_price,
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -37390,6 +37461,7 @@ var render = function() {
               attrs: { type: "text" },
               domProps: { value: price.resell },
               on: {
+                blur: _vm.add_price,
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -37414,6 +37486,7 @@ var render = function() {
               attrs: { type: "text" },
               domProps: { value: price.retail },
               on: {
+                blur: _vm.add_price,
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -37439,7 +37512,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.remove_price(index)
+                      return _vm.delete_price(index)
                     }
                   }
                 },
@@ -37449,130 +37522,6 @@ var render = function() {
           )
         ])
       }),
-      _vm._v(" "),
-      _c("div", { staticClass: "row mx-n1 mx-lg-n3" }, [
-        _c("div", { staticClass: "col text-center py-2 px-1 px-lg-3" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.new_price.size,
-                expression: "new_price.size"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text" },
-            domProps: { value: _vm.new_price.size },
-            on: {
-              change: _vm.add_price,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.new_price, "size", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col text-center py-2 px-1 px-lg-3" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.new_price.cost,
-                expression: "new_price.cost"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text" },
-            domProps: { value: _vm.new_price.cost },
-            on: {
-              change: _vm.add_price,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.new_price, "cost", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col text-center py-2 px-1 px-lg-3" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.new_price.resell,
-                expression: "new_price.resell"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text" },
-            domProps: { value: _vm.new_price.resell },
-            on: {
-              change: _vm.add_price,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.new_price, "resell", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col text-center py-2 px-1 px-lg-3" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.new_price.retail,
-                expression: "new_price.retail"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text" },
-            domProps: { value: _vm.new_price.retail },
-            on: {
-              change: _vm.add_price,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.new_price, "retail", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "col-auto py-2 px-1 px-lg-3 d-flex align-items-center"
-          },
-          [
-            _c(
-              "a",
-              {
-                staticClass: "text-danger",
-                attrs: { href: "" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                  }
-                }
-              },
-              [_vm._v("删除")]
-            )
-          ]
-        )
-      ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-auto text-right mt-2 ml-auto" }, [

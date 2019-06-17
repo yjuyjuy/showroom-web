@@ -35,11 +35,11 @@
 					@if(!$product->getMinPrice())
 					not available
 					@else
-					@can('viewCost','App\Price')
-					调货 {{ $product->displayResellPrice() }} 零售 {{ $product->displayPrice() }}
-					@else
-					{{ $product->displayPrice() }}
-					@endcan
+						@if(auth()->user()->vendor)
+						调货 {{ $product->displayResellPrice() }} 零售 {{ $product->displayPrice() }}
+						@else
+						{{ $product->displayPrice() }}
+						@endif
 					@endif
 				</a>
 			</div>

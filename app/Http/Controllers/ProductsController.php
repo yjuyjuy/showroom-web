@@ -22,6 +22,7 @@ class ProductsController extends Controller
 	public function index(Request $request)
 	{
 		$data = $request->validate([
+			'show_available' => '',
 			'category.*' => 'sometimes|exists:categories,id',
 			'season.*' => 'sometimes|exists:seasons,id',
 			'color.*' => 'sometimes|exists:colors,id',
@@ -39,7 +40,11 @@ class ProductsController extends Controller
 			}
 		}
 		$products = Product::sort_and_get($data['sort']??'default', $query);
-
+		if ($data['show_available']) {
+			$products = $products->filter(function ($product) {
+				return $product->prices->isNotEmpty();
+			});
+		}
 		$request->flash();
 		return view('products.index', compact('products'));
 	}

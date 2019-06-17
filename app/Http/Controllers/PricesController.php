@@ -70,7 +70,15 @@ class PricesController extends Controller
 	 */
 	public function update(Request $request, Price $price)
 	{
-		//
+		$validated = request()->validate([
+			'data' => 'required|array',
+			'data.*.size' => ['required','regex:/^([0-9]+)|([X]*[SML]+)$/'],
+			'data.*.cost' => ['required','integer'],
+			'data.*.resell' => ['required','integer'],
+			'data.*.retail' => ['required','integer'],
+		]);
+		$price->data = $validated['data'];
+		return $price->save();
 	}
 
 	/**
@@ -81,6 +89,8 @@ class PricesController extends Controller
 	 */
 	public function destroy(Price $price)
 	{
-		//
+		$this->authorize('delete', $price);
+		$price->delete();
+		return redirect(route(((auth()->user()->isSuperAdmin())?'admin.products.show':'vendors.products.show'), ['product' => $price->product]));
 	}
 }

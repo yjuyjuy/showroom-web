@@ -2,36 +2,19 @@
 <div class="">
 	<div v-for="(price,index) in prices" class="row mx-n1 mx-lg-n3">
 		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" v-model="price.size">
+			<input class="form-control" @blur="add_price" type="text" v-model="price.size">
 		</div>
 		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" v-model="price.cost">
+			<input class="form-control" @blur="add_price" type="text" v-model="price.cost">
 		</div>
 		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" v-model="price.resell">
+			<input class="form-control" @blur="add_price" type="text" v-model="price.resell">
 		</div>
 		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" v-model="price.retail">
+			<input class="form-control" @blur="add_price" type="text" v-model="price.retail">
 		</div>
 		<div class="col-auto py-2 px-1 px-lg-3 d-flex align-items-center">
-			<a href="" class="text-danger" @click.prevent="remove_price(index)">删除</a>
-		</div>
-	</div>
-	<div class="row mx-n1 mx-lg-n3">
-		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" @change="add_price" v-model="new_price.size">
-		</div>
-		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" @change="add_price" v-model="new_price.cost">
-		</div>
-		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" @change="add_price" v-model="new_price.resell">
-		</div>
-		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" type="text" @change="add_price" v-model="new_price.retail">
-		</div>
-		<div class="col-auto py-2 px-1 px-lg-3 d-flex align-items-center">
-			<a href="" class="text-danger" @click.prevent="">删除</a>
+			<a href="" class="text-danger" @click.prevent="delete_price(index)">删除</a>
 		</div>
 	</div>
 	<div class="row">
@@ -47,39 +30,55 @@
 
 <script>
 export default {
-	props: {
-		'input': String,
-	},
+	props: ['input', 'resourceId', ],
 	data: function() {
 		return {
-			prices: Object.values(JSON.parse(this.input)),
-			new_price: {
-				'size': '',
-				'cost': '',
-				'resell': '',
-				'retail': '',
-			},
+			prices: [],
 		};
 	},
 	mounted() {
 		console.log('Component mounted.');
+		this.reset_prices();
+		console.log(this.prices);
 	},
+	computed: {},
 	watch: {},
 	methods: {
-		add_price: function() {
-			this.prices.push(this.new_price);
-			this.new_price = {
+		validate() {
+			// remove rows with empty fields or invalid types of data
+			this.prices = this.prices.filter(price => {
+				return (price.size && price.cost && price.resell && price.retail) && (
+					(/^[0-9]+$/.test(price.size) || /^[X]*[SML]+$/.test(price.size)) && [price.cost, price.resell, price.retail].every(element => /^[1-9]+[0-9]*$/.test(element))
+				);
+			});
+			let obj = {};
+			for (let price of this.prices) {
+				obj[price.size] = price;
+			}
+			this.prices = Object.values(obj);
+		},
+		clear_empty() {
+			this.prices = this.prices.filter(price => price.size || price.cost || price.resell || price.retail);
+		},
+		add_empty() {
+			this.prices.push({
 				'size': '',
 				'cost': '',
 				'resell': '',
 				'retail': '',
-			};
+			});
 		},
-		remove_price: function(index) {
-			this.prices.splice(index, 1)
+		add_price: function() {
+			this.clear_empty();
+			this.add_empty();
+		},
+		delete_price: function(index) {
+			this.prices.splice(index, 1);
 		},
 		update_prices: function() {
+			this.clear_empty();
 			for (let i in this.prices) {
+				this.prices[i].size = this.prices[i].size.toUpperCase();
 				let cost = this.prices[i].cost;
 				let resell = this.prices[i].resell;
 				let retail = this.prices[i].retail;
@@ -99,7 +98,7 @@ export default {
 							'retail': retail,
 						});
 					}
-				} else if (/^[XSML]+[-][XSML]+$/.test(this.prices[i].size)) {
+				} else if (/^[X]*[SML]+[-][X]*[SML]+$/.test(this.prices[i].size)) {
 					let [start, end] = this.prices[i].size.split('-');
 					this.prices.splice(i, 1);
 					let sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -120,20 +119,47 @@ export default {
 							});
 						}
 					}
+				} else if (/^([X]*[SML]+,)+[X]*[SML]+$/.test(this.prices[i].size) || /^([0-9]+,)[0-9]+$/.test(this.prices[i].size)) {
+					let sizes = this.prices[i].size.split(',');
+					this.prices.splice(i, 1);
+					for (let size of sizes) {
+						this.prices.push({
+							'size': size,
+							'cost': cost,
+							'resell': resell,
+							'retail': retail,
+						});
+					}
 				} else {
 					continue;
 				}
 			}
+			this.add_empty();
 		},
 		clear_prices: function() {
 			this.prices = [];
+			this.add_empty();
 		},
 		reset_prices: function() {
 			this.prices = Object.values(JSON.parse(this.input));
+			this.add_empty();
 		},
 		submit: function() {
-			console.log(JSON.stringify(this.prices));
-		}
+			this.update_prices();
+			this.validate();
+			axios.patch('/prices/' + this.resourceId, {
+					data: this.prices,
+				})
+				.then(response => {
+					console.log(response.data);
+					// window.location.reload();
+				})
+				.catch(errors => {
+					if (errors.response.status == 401) {
+						window.location = '/login';
+					}
+				});
+		},
 	}
 }
 </script>

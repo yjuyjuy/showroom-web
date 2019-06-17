@@ -61,7 +61,7 @@ class Product extends Model
 	public function getMinPrice($type = 'retail', $default = false)
 	{
 		return ($this->prices->isEmpty())? $default : (int)$this->prices->map(function ($item, $key) use ($type) {
-			return $item->data->pluck($type)->min();
+			return min(Arr::pluck($item->data, $type));
 		})->min();
 	}
 
