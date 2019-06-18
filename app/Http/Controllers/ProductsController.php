@@ -146,33 +146,20 @@ class ProductsController extends Controller
 		} else {
 			$sort = 'default';
 		}
-		switch ($sort) {
-				case 'price low to high':
-					$products->sortBy(function ($product, $key) {
-						return $product->getMinPrice('retail', INF);
-					});
-					break;
-
-				case 'price high to low':
-					$products->sortByDesc(function ($product, $key) {
-						return $product->getMinPrice('retail', 0);
-					});
-					break;
-
-				case 'hottest':
-				case 'best selling':
-				case 'newest':
-					$products->sortBy('id')->sortByDesc('season_id');
-					break;
-
-				case 'oldest':
-					$products->sortBy('id')->sortBy('season_id');
-					break;
-
-				default:
-					$products->sortBy('id')->sortByDesc('season_id');
-					break;
-			}
+		$products = $products->sortBy(function ($item) {
+			return $item->category_id.$item->season_id.$item->id;
+		});
 		return $products;
 	}
+	// public function season_asc()
+	// {
+	// 	return function ($a, $b) {
+	// 		return
+	// 		($a->season_id == $b->season_id)?
+	// 			($a->category_id == $b->category_id)?
+	// 				$a->id - $b->id :
+	// 			$a->category_id - $b->category_id :
+	// 		$a->season_id - $b->season_id;
+	// 	}
+	// }
 }

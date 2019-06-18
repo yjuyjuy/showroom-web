@@ -1,9 +1,9 @@
-<div class="py-4 my-4 mx-auto col-10 col-md-8 border">
-	@if($product->prices->isNotEmpty())
-	@foreach($product->size_price as $size => $price)
-	<div class="">{{ $size }} - &yen;{{$price}}</div>
-	@endforeach
-	@else
-	<div class="">Currently not available</div>
-	@endif
+@forelse($product->size_price as $size => $price)
+<div class="row text-center no-gutters">
+	<span class="col-4">{{ $size }}</span>
+	<span class="col-4"> - </span>
+	<span class="col-4">&yen;{{$price}}</span>
 </div>
+@empty
+<div class="text center">Currently not available</div>
+@endforelse

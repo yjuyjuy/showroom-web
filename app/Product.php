@@ -103,15 +103,17 @@ class Product extends Model
 	public function getSizePrice($type = 'retail')
 	{
 		$sizes = [];
-		foreach ($this->prices->pluck('data') as $data) {
-			foreach ($data as $row) {
+		foreach ($this->prices as $price) {
+			foreach ($price->data as $row) {
 				$sizes[$row['size']][] = $row[$type];
 			}
 		}
 		foreach ($sizes as $size => $prices) {
 			$sizes[$size] = min($prices);
 		}
-
+		$sizes = Arr::sort($sizes, function ($value, $key) {
+			return array_search($key, ['XXS','XS','S','M','L','XL','XXL']);
+		});
 		return $sizes;
 	}
 
