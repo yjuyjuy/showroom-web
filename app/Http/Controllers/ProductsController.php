@@ -21,28 +21,14 @@ class ProductsController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$data = $request->validate([
-			'show_available' => '',
-			'category.*' => 'sometimes|exists:categories,id',
-			'season.*' => 'sometimes|exists:seasons,id',
-			'color.*' => 'sometimes|exists:colors,id',
-			'brand.*' => 'sometimes|exists:brands,id',
-			'sort' => 'sometimes|in:'.implode(',', Arr::pluck($this->sortoptions(), 'name')),
-		]);
-		$query = Product::with([
-			'brand','prices','images' => function ($query) {
-				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
-			}
-		]);
-		foreach (['category','color','brand','season'] as $field) {
-			if ($request->input($field)) {
-				$query->whereIn("{$field}_id", $data[$field]);
-			}
-		}
-		$products = Product::sort_and_get($data['sort']??'default', $query);
-		if (!empty($data['show_available'])) {
-			$products = $products->filter(function ($product) {
-				return $product->prices->isNotEmpty();
+		$query = Product::with(['images' => function ($query) {
+			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+		},'brand','prices']);
+		$products = $this->filter($query)->get();
+		$products = $this->sort($products);
+		if ($request->input('show_available_only')) {
+			$products = $products->filter(function ($item) {
+				return $item->prices->isNotEmpty();
 			});
 		}
 		$request->flash();
@@ -68,7 +54,7 @@ class ProductsController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$product = Product::create($this->validateRequest());
+		$product = Product::create($this->validateProduct());
 		return redirect("/products/{$product->id}");
 	}
 
@@ -105,7 +91,7 @@ class ProductsController extends Controller
 	 */
 	public function update(Request $request, Product $product)
 	{
-		$product->update($this->validateRequest());
+		$product->update($this->validateProduct());
 		return redirect("/products/{$product->id}");
 	}
 
@@ -120,7 +106,7 @@ class ProductsController extends Controller
 		//
 	}
 
-	public function validateRequest()
+	public function validateProduct()
 	{
 		return request()->validate([
 			'brand'=>'required|exists:brands,id',
@@ -131,16 +117,62 @@ class ProductsController extends Controller
 			'color'=>'required|exists:colors,id',
 		]);
 	}
-	public function sortoptions()
+
+	public function validateFilters()
 	{
-		return [
-			1 => ['name' => 'default','name_cn' => '默认排序',],
-			2 => ['name' => 'price high to low','name_cn' => '价格最高',],
-			3 => ['name' => 'price low to high','name_cn' => '价格最低'],
-			4 => ['name' => 'hottest','name_cn' => '人气最高'],
-			5 => ['name' => 'best selling','name_cn' => '销量最高'],
-			6 => ['name' => 'newest','name_cn' => '最新到货'],
-			7 => ['name' => 'oldest','name_cn' => '发布最早'],
-		];
+		return request()->validate([
+			'category.*' => 'sometimes|exists:categories,id',
+			'season.*' => 'sometimes|exists:seasons,id',
+			'color.*' => 'sometimes|exists:colors,id',
+			'brand.*' => 'sometimes|exists:brands,id',
+		]);
+	}
+
+	public function filter($query)
+	{
+		$filters = $this->validateFilters();
+		foreach ($filters as $field => $values) {
+			$query->whereIn("{$field}_id", $values);
+		}
+		return $query;
+	}
+
+	public function sort($products)
+	{
+		if (request()->input('sort')) {
+			$sort = request()->validate([
+				'sort' => 'sometimes|exists:sortmethods,name',
+			]);
+		} else {
+			$sort = 'default';
+		}
+		switch ($sort) {
+				case 'price low to high':
+					$products->sortBy(function ($product, $key) {
+						return $product->getMinPrice('retail', INF);
+					});
+					break;
+
+				case 'price high to low':
+					$products->sortByDesc(function ($product, $key) {
+						return $product->getMinPrice('retail', 0);
+					});
+					break;
+
+				case 'hottest':
+				case 'best selling':
+				case 'newest':
+					$products->sortBy('id')->sortByDesc('season_id');
+					break;
+
+				case 'oldest':
+					$products->sortBy('id')->sortBy('season_id');
+					break;
+
+				default:
+					$products->sortBy('id')->sortByDesc('season_id');
+					break;
+			}
+		return $products;
 	}
 }

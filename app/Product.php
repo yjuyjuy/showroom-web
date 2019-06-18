@@ -157,38 +157,4 @@ class Product extends Model
 				break;
 		}
 	}
-
-	public static function sort_and_get($sortBy = 'default', $query)
-	{
-		switch ($sortBy) {
-				case 'price low to high':
-					return $query->get()->sortBy(
-						function ($product, $key) {
-							return $product->getMinPrice('retail', INF);
-						}
-					);
-
-				case 'price high to low':
-					return $query->get()->sortByDesc(
-						function ($product, $key) {
-							return $product->getMinPrice('retail', 0);
-						}
-					);
-
-				case 'hottest':
-					return $query->orderBy('season_id', 'desc')->get();
-
-				case 'best selling':
-					return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-
-				case 'newest':
-					return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-
-				case 'oldest':
-					return $query->orderBy('season_id', 'asc')->orderBy('id', 'asc')->get();
-
-				default:
-					return $query->orderBy('season_id', 'desc')->orderBy('id', 'asc')->get();
-			}
-	}
 }
