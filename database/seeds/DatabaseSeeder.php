@@ -799,7 +799,7 @@ class DatabaseSeeder extends Seeder
 		foreach ($prices as $price) {
 			$data = [];
 			foreach (json_decode($price[3], true) as $size => $value) {
-				$data[] = [ 'size' => $size, 'cost' => $value, 'resell' => $value, 'retail' => $value * 1.2];
+				$data[] = [ 'size' => $size, 'cost' => $value, 'resell' => $value, 'retail' => ceil($value * 0.12)*10];
 			}
 			$data = json_encode($data);
 			DB::table('prices')->insert([

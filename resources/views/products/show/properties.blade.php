@@ -7,5 +7,8 @@
 	</div>
 	<div class="">
 		<span>{{ $product->id }}</span>
+		@can('update',$product)
+			<a href="{{route('products.edit', ['product' => $product])}}" class="ml-2">Edit</a>
+		@endcan
 	</div>
 </div>

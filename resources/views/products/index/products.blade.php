@@ -1,5 +1,5 @@
 <div class="row">
-	@foreach($products as $product)
+	@forelse($products as $product)
 	<div class="product col-6 col-md-3 flex-column align-items-center">
 		<div class="image">
 			<a href="{{ route('products.show',['product' => $product->id ]) }}">
@@ -9,18 +9,22 @@
 		<div class="text mt-n4">
 			<div class="flex-column text-center">
 				<div class="brand text-left pl-3">
-					<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none" style="color:var(--red);">{{ $product->brand->name }}</a>
+					<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none">{{ $product->brand->name }}</a>
 				</div>
 				<div class="name">
-					<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none" style="color:var(--red);">{{ $product->name_cn }}</a>
+					<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none">{{ $product->name_cn }}</a>
 				</div>
 				<div class="price">
-					<a href="{{ route('products.show',['product' => $product ]) }}" style="color:var(--red);">
-						{{ ($product->price)?"\u{00a5}".$product->price:'SOLD OUT' }}
+					<a href="{{ route('products.show',['product' => $product ]) }}">
+						{{ ($product->price)?"\u{00a5}".$product->price:'-' }}
 					</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	@endforeach
+	@empty
+	<div class="col-12 text-center my-5">
+			no result
+	</div>
+	@endforelse
 </div>

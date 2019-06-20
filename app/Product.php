@@ -21,14 +21,27 @@ class Product extends Model
 		return $this->belongsTo(Category::class);
 	}
 
+	public function setCategoryAttribute($value)
+	{
+		$this->category_id = $value;
+	}
+
 	public function season()
 	{
 		return $this->belongsTo(Season::class);
 	}
 
+	public function setSeasonAttribute($value)
+	{
+		$this->season_id = $value;
+	}
 	public function color()
 	{
 		return $this->belongsTo(Color::class);
+	}
+	public function setColorAttribute($value)
+	{
+		$this->color_id = $value;
 	}
 
 	public function brand()
@@ -36,6 +49,10 @@ class Product extends Model
 		return $this->belongsTo(Brand::class);
 	}
 
+	public function setBrandAttribute($value)
+	{
+		$this->brand_id = $value;
+	}
 	public function vendors()
 	{
 		return $this->belongsToMany(Product::class, 'prices', 'product_id', 'vendor_id');
@@ -47,11 +64,7 @@ class Product extends Model
 	}
 	public function getImageAttribute()
 	{
-		return $this->images()->orderBy('website_id', 'asc')->orderBy('type_id', 'asc')->first();
-	}
-	public function getImagesAttribute()
-	{
-		return $this->images()->orderBy('website_id', 'asc')->orderBy('type_id', 'asc')->get();
+		return $this->images->sortBy('website_id')->sortBy('type_id')->first();
 	}
 	public function images()
 	{
@@ -83,16 +96,6 @@ class Product extends Model
 	public function displayPrice()
 	{
 		return ($this->price) ? "\u{00a5}".$this->price : 'not available';
-	}
-
-	public function displayCostPrice()
-	{
-		return ($this->cost_price) ? "\u{00a5}".$this->cost_price : 'not available';
-	}
-
-	public function displayResellPrice()
-	{
-		return ($this->resell_price) ? "\u{00a5}".$this->resell_price : 'not available';
 	}
 
 	public function getSizePriceAttribute()

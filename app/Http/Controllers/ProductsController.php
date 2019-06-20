@@ -21,16 +21,32 @@ class ProductsController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$query = Product::with(['images' => function ($query) {
-			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
-		},'brand','prices']);
-		$products = $this->filter($query)->get();
-		$products = $this->sort($products);
-		if ($request->input('show_available_only')) {
-			$products = $products->filter(function ($item) {
-				return $item->prices->isNotEmpty();
-			});
-		}
+		$products = Cache::remember(url()->full(), 10, function () use ($request) {
+			$query = Product::with(['images' => function ($query) {
+				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+			},'brand','prices']);
+			$products = $this->filter($query)->get();
+			$products = $this->sort($products);
+			if ($request->input('show_available_only')) {
+				$products = $products->filter(function ($item) {
+					return $item->prices->isNotEmpty();
+				});
+			}
+
+			if (($user = auth()->user()) && ($vendor = $user->vendor)) {
+				if ($request->input('show_vendor_only')) {
+					$products = $products->filter(function ($item) use ($vendor) {
+						return $item->prices->firstWhere('vendor_id', $vendor->id);
+					});
+				}
+				if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
+					$products = $products->filter(function ($item) use ($vendors) {
+						return $item->prices->whereIn('vendor_id', $vendors)->first();
+					});
+				}
+			}
+			return $products;
+		});
 		$request->flash();
 		return view('products.index', compact('products'));
 	}
@@ -42,6 +58,7 @@ class ProductsController extends Controller
 	 */
 	public function create()
 	{
+		$this->authorize('create', Product::class);
 		$product = new Product();
 		return view('products.create', compact('product'));
 	}
@@ -54,8 +71,16 @@ class ProductsController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$product = Product::create($this->validateProduct());
-		return redirect("/products/{$product->id}");
+		$this->authorize('create', $product);
+		$product = new Product($this->validateProduct());
+		$lastProduct = Product::where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
+		if ($lastProduct) {
+			$product->id = $lastProduct->id + 1;
+		} else {
+			$product->id = $product->category_id.$product->season_id.'001';
+		}
+		$product->save();
+		return redirect(route('products.show', ['product' => $product]));
 	}
 
 	/**
@@ -66,7 +91,7 @@ class ProductsController extends Controller
 	 */
 	public function show(Product $product)
 	{
-		$product->load('images', 'prices');
+		$product->load('images', 'prices', 'brand', 'season');
 		return view('products.show', compact('product'));
 	}
 
@@ -91,8 +116,9 @@ class ProductsController extends Controller
 	 */
 	public function update(Request $request, Product $product)
 	{
+		$this->authorize('update', $product);
 		$product->update($this->validateProduct());
-		return redirect("/products/{$product->id}");
+		return redirect(route('products.show', ['product' => $product]));
 	}
 
 	/**
@@ -103,7 +129,9 @@ class ProductsController extends Controller
 	 */
 	public function destroy(Product $product)
 	{
-		//
+		$this->authorize('delete', $product);
+		$product->delete();
+		return redirect(route('products.index'));
 	}
 
 	public function validateProduct()
@@ -111,10 +139,11 @@ class ProductsController extends Controller
 		return request()->validate([
 			'brand'=>'required|exists:brands,id',
 			'season'=>'required|exists:seasons,id',
-			'name_cn'=>'required',
-			'name'=>'required',
+			'name' => ['required', 'string', 'max:255'],
+			'name_cn' => ['required', 'string', 'max:255'],
 			'category'=>'required|exists:categories,id',
 			'color'=>'required|exists:colors,id',
+			'comment' => ['nullable','string','max:255'],
 		]);
 	}
 
@@ -147,7 +176,7 @@ class ProductsController extends Controller
 			$sort = 'default';
 		}
 		$products = $products->sortBy(function ($item) {
-			return $item->category_id.$item->season_id.$item->id;
+			return $item->category_id.(999-$item->season_id).$item->id;
 		});
 		return $products;
 	}

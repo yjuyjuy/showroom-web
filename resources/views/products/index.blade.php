@@ -1,18 +1,18 @@
 @extends('layouts.app')
 @section('title','所有商品 - TheShowroom')
 @section('content')
-<div class="container-fluid">
+<div class="container">
 	<form action="{{ url()->current() }}" class="row justify-content-center">
-		<div class="col-2 d-flex">
-			<div class="ml-auto">
+		<div class="col-auto d-flex">
+			<div class="mx-auto">
 				@include('products.index.filters')
 			</div>
 		</div>
-		<div class="col-6">
+		<div class="col">
 				@include('products.index.products')
 		</div>
-		<div class="col-2">
-			<div class="mr-auto">
+		<div class="col-auto d-flex">
+			<div class="mx-auto">
 				@include('products.index.sort')
 			</div>
 		</div>
