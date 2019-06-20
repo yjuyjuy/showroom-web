@@ -10733,7 +10733,13 @@ a.text-dark:focus {
   color: #abb2bf;
 }
 
-.card {
+.card,
+.dropdown-menu,
+.dropdown-item {
   background-color: #282c34;
+}
+
+.dropdown-item:hover {
+  background-color: #333842;
 }
 

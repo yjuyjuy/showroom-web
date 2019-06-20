@@ -13,6 +13,9 @@
 	border-color: $red-light;
 	color:$body-color;
 }
-.card{
+.card, .dropdown-menu, .dropdown-item{
 	background-color: $body-bg;
+}
+.dropdown-item:hover{
+	background-color: lighten($body-bg,5%);
 }

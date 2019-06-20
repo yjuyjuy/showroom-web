@@ -11,15 +11,25 @@
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+	return redirect(route('products.index'));
+});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UsersController')->middleware('auth');
-Route::resource('products', 'ProductsController');
-Route::resource('prices', 'PricesController')->middleware(['auth','vendor']);
+Route::get('/products', 'ProductsController@index')->name('products.index');
+Route::get('/products/{product}', 'ProductsController@show')->name('products.show');
+Route::resource('products', 'ProductsController')->middleware(['auth','admin'])->except(['index','show']);
+Route::middleware(['auth','vendor'])->group(function () {
+	Route::get('/products/{product}/prices/create', 'PricesController@create')->name('prices.create');
+	Route::patch('/products/{product}/prices', 'PricesController@store')->name('prices.store');
+	Route::resource('price', 'PricesController')->except(['create','store','index']);
+	Route::get('/vendors/prices', 'PricesController@index')->name('prices.index');
+});
+
 
 
 // deprecate
