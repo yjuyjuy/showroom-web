@@ -1,7 +1,9 @@
-@forelse($product->prices->load('vendor') as $price)
+@forelse($product->prices->loadMissing('vendor') as $price)
 <div class="row text-center no-gutters my-3">
 	<div class="col-12 border-bottom pb-2 mb-2">
+		<a href="{{route('prices.edit',['price'=>$price])}}">
 		{{$price->vendor->name.' - '.$price->vendor->city}}
+		</a>
 	</div>
 	<div class="col-12">
 		@foreach($price->data as $row)

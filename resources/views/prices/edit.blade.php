@@ -1,59 +1,33 @@
 @extends('layouts.app')
 
+@section('title','修改报价-'.$product->displayName().'-TheShowroom')
+
 @section('content')
 <div class="container">
-	<div class="row">
-		<div class="col-12 col-md-6">
-			<div class="row">
-				@foreach($product->images as $image)
-				<div class="col-6 mb-3">
-					<img class="w-100" src="/storage/images/{{ $image->filename }}">
-				</div>
-				@endforeach
-
-			</div>
+	<div class="row justify-content-center">
+		<div class="col-md-6 order-2 order-md-1">
+			@include('products.show.images')
 		</div>
-		<div class="col-12 col-md-6">
-			<div class="col-12 my-3">
-				<div class="row text-center align-content-center">
-					<div class="col-12">
-						<a href="{{ route('products.index') }}?brand[]={{$product->brand->id}}">{{ $product->brand->full_name }}</a>
-					</div>
-					<div class="col-12">
-						<span><a href="{{ route('products.index') }}?season[]={{$product->season->id}}">{{ $product->season->name }}</a> {{ $product->name_cn }}</span>
-					</div>
-					<div class="col-12">
-						<span>{{ $product->id }}</span>
-						<a class="text-info ml-2" href="{{ route('products.edit',['product' => $product->id ]) }}">修改</a>
-					</div>
+		<div class="col-md-5 order-1 order-md-2">
+			<form action="{{route('prices.update',['price' => $price])}}" method="post" class="row mb-3" id="update-form">
+				@csrf
+				@method('PATCH')
+				<prices-editor v-bind:input='@json(array_values($price->data))'></prices-editor>
+			</form>
+			<div class="row justify-content-end mb-3" >
+				<div class="col-auto">
+					<form action="{{route('prices.destroy',['price' => $price])}}" method="post" class="row mb-3" id="delete-form">
+						@csrf
+						@method('DELETE')
+					</form>
+					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-primary mr-2">Back</a>
+					<button type="submit" class="btn btn-primary mr-2" form="update-form">
+						Submit
+					</button>
+					<button type="submit" class="btn btn-danger" form="delete-form">
+						Delete All
+					</button>
 				</div>
-			</div>
-			<div class="py-4 my-2 col-12 border">
-				<div class="row">
-					<span class="col text-center">尺码</span>
-					<span class="col text-center">成本</span>
-					<span class="col text-center">调货</span>
-					<span class="col text-center">零售</span>
-				</div>
-				@foreach($product->getSizeAllPrice() as $size => $values)
-				<div class="row">
-					<span class="col text-center">{{$size}}</span>
-					<span class="col text-center">{{$values['cost']}}</span>
-					<span class="col text-center">{{$values['resell']}}</span>
-					<span class="col text-center">{{$values['retail']}}</span>
-				</div>
-				@endforeach
-			</div>
-
-			<div class="py-4 my-2 col-12 border">
-				<div class="row">
-					<div class="col my-2 text-center">{{$price->vendor->name}} - {{$price->vendor->city}}</div>
-				</div>
-				<edit-price-component input='@json($price->data)' resource-id='{{$price->id}}' submit-action='update'></edit-price-component>
-			</div>
-			<div class="col-12 text-right">
-				<a href="{{route(((auth()->user()->isSuperAdmin())? 'admin.products.show' : 'vendors.products.show')
-				,['product' => $product])}}" class="btn btn-primary">返回</a>
 			</div>
 		</div>
 	</div>

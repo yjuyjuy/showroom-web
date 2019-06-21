@@ -2132,12 +2132,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -2167,7 +2169,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      prices: this.input
+      prices: this.input,
+      json_prices: ''
     };
   },
   mounted: function mounted() {
@@ -2177,38 +2180,113 @@ __webpack_require__.r(__webpack_exports__);
   computed: {},
   watch: {},
   methods: {
-    check_empty: function check_empty() {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+    update: function update(index) {
+      this.clear_empty();
 
-      try {
-        for (var _iterator = this.prices[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var price = _step.value;
-
-          if (!(price.size || price.cost || price.resell || price.retail)) {
-            return;
-          }
+      for (var i in this.prices) {
+        if (!this.prices[i].size || !this.prices[i].cost || !this.prices[i].resell || !this.prices[i].retail) {
+          continue;
         }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
+
+        this.prices[i].size = this.prices[i].size.toUpperCase();
+        var cost = this.prices[i].cost;
+        var resell = this.prices[i].resell;
+        var retail = this.prices[i].retail;
+
+        if (/^[0-9]+[-][0-9]+$/.test(this.prices[i].size)) {
+          var _this$prices$i$size$s = this.prices[i].size.split('-'),
+              _this$prices$i$size$s2 = _slicedToArray(_this$prices$i$size$s, 2),
+              start = _this$prices$i$size$s2[0],
+              end = _this$prices$i$size$s2[1];
+
+          this.prices.splice(i, 1);
+
+          for (var j = start; j <= end; j++) {
+            for (var k in this.prices) {
+              if (this.prices[k].size === j) {
+                this.prices.splice(k, 1);
+              }
+            }
+
+            this.prices.push({
+              'size': j,
+              'cost': cost,
+              'resell': resell,
+              'retail': retail
+            });
           }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
+        } else if (/^[X]*[SML]+[-][X]*[SML]+$/.test(this.prices[i].size)) {
+          var _this$prices$i$size$s3 = this.prices[i].size.split('-'),
+              _this$prices$i$size$s4 = _slicedToArray(_this$prices$i$size$s3, 2),
+              _start = _this$prices$i$size$s4[0],
+              _end = _this$prices$i$size$s4[1];
+
+          this.prices.splice(i, 1);
+          var sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+          if (sizes.includes(_start) && sizes.includes(_end)) {
+            _start = sizes.indexOf(_start);
+            _end = sizes.indexOf(_end);
+
+            for (var _j = _start; _j <= _end; _j++) {
+              for (var _k in this.prices) {
+                if (this.prices[_k].size === sizes[_j]) {
+                  this.prices.splice(_k, 1);
+                }
+              }
+
+              this.prices.push({
+                'size': sizes[_j],
+                'cost': cost,
+                'resell': resell,
+                'retail': retail
+              });
+            }
           }
+        } else if (/^([X]*[SML]+,)+[X]*[SML]+$/.test(this.prices[i].size) || /^([0-9]+,)[0-9]+$/.test(this.prices[i].size)) {
+          var _sizes = this.prices[i].size.split(',');
+
+          this.prices.splice(i, 1);
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = _sizes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var size = _step.value;
+              this.prices.push({
+                'size': size,
+                'cost': cost,
+                'resell': resell,
+                'retail': retail
+              });
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                _iterator["return"]();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        } else {
+          continue;
         }
       }
 
-      this.prices.push({});
+      this.check_empty();
     },
-    update_price: function update_price() {
-      console.log('onchange event fired');
+    delete_price: function delete_price(index) {
+      this.prices.splice(index, 1);
+      this.check_empty();
+    },
+    check_empty: function check_empty() {
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
@@ -2217,9 +2295,8 @@ __webpack_require__.r(__webpack_exports__);
         for (var _iterator2 = this.prices[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var price = _step2.value;
 
-          if (price.cost && !price.resell && !price.retail) {
-            price.resell = price.cost * 1.1;
-            price.retail = price.cost * 1.1 * 1.2;
+          if (!price.size && !price.cost && !price.resell && !price.retail) {
+            return;
           }
         }
       } catch (err) {
@@ -2236,6 +2313,56 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }
+
+      this.prices.push({});
+    },
+    clear_empty: function clear_empty() {
+      for (var index in this.prices) {
+        if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].resell && !this.prices[index].retail) {
+          this.prices.splice(index, 1);
+        }
+      }
+    },
+    computed_resell: function computed_resell(index) {
+      if (this.prices[index].cost) {
+        return Math.ceil(this.prices[index].cost * 0.11) * 10;
+      } else {
+        return '';
+      }
+    },
+    computed_retail: function computed_retail(index) {
+      if (this.prices[index].cost) {
+        return Math.ceil(this.prices[index].cost * 1.1 * 0.12) * 10;
+      } else {
+        return '';
+      }
+    },
+    apply_computed: function apply_computed(event) {
+      event.target.value = event.target.placeholder;
+    },
+    prepare: function prepare(evt) {
+      console.log('submit event fired');
+      evt.preventDefault();
+
+      for (var index in this.prices) {
+        if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].resell && !this.prices[index].retail) {
+          this.prices.splice(index, 1);
+        } else if (this.prices[index].size && this.prices[index].cost && this.prices[index].resell && this.prices[index].retail) {
+          continue;
+        } else if (this.prices[index].size && this.prices[index].cost) {
+          if (!this.prices[index].resell) {
+            this.prices[index].resell = computed_resell(index);
+          }
+
+          if (!this.prices[index].retail) {
+            this.prices[index].retail = computed_retail(index);
+          }
+        } else {
+          this.prices.splice(index, 1);
+        }
+      }
+
+      this.json_prices = JSON.stringify(this.prices);
     }
   }
 });
@@ -37826,11 +37953,11 @@ var render = function() {
                     }
                     _vm.$set(price, "size", $event.target.value)
                   },
-                  function($event) {
-                    $event.preventDefault()
-                    return _vm.check_empty()
-                  }
-                ]
+                  _vm.check_empty
+                ],
+                change: function($event) {
+                  return _vm.update(index)
+                }
               }
             })
           ]),
@@ -37856,14 +37983,10 @@ var render = function() {
                     }
                     _vm.$set(price, "cost", $event.target.value)
                   },
-                  function($event) {
-                    $event.preventDefault()
-                    return _vm.check_empty()
-                  }
+                  _vm.check_empty
                 ],
                 change: function($event) {
-                  $event.preventDefault()
-                  return _vm.update_price()
+                  return _vm.update(index)
                 }
               }
             })
@@ -37880,7 +38003,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control text-center rounded-0",
-              attrs: { type: "text" },
+              attrs: { type: "text", placeholder: _vm.computed_resell(index) },
               domProps: { value: price.resell },
               on: {
                 input: [
@@ -37890,11 +38013,12 @@ var render = function() {
                     }
                     _vm.$set(price, "resell", $event.target.value)
                   },
-                  function($event) {
-                    $event.preventDefault()
-                    return _vm.check_empty()
-                  }
-                ]
+                  _vm.check_empty
+                ],
+                change: function($event) {
+                  return _vm.update(index)
+                },
+                dblclick: _vm.apply_computed
               }
             })
           ]),
@@ -37910,7 +38034,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control text-center rounded-0",
-              attrs: { type: "text" },
+              attrs: { type: "text", placeholder: _vm.computed_retail(index) },
               domProps: { value: price.retail },
               on: {
                 input: [
@@ -37920,11 +38044,12 @@ var render = function() {
                     }
                     _vm.$set(price, "retail", $event.target.value)
                   },
-                  function($event) {
-                    $event.preventDefault()
-                    return _vm.check_empty()
-                  }
-                ]
+                  _vm.check_empty
+                ],
+                change: function($event) {
+                  return _vm.update(index)
+                },
+                dblclick: _vm.apply_computed
               }
             })
           ]),
@@ -37938,7 +38063,7 @@ var render = function() {
                 on: {
                   click: function($event) {
                     $event.preventDefault()
-                    return _vm.prices.splice(index, 1)
+                    return _vm.delete_price(index)
                   }
                 }
               },
@@ -37948,27 +38073,21 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _vm._m(0)
+      _c("input", {
+        attrs: { type: "hidden", name: "data" },
+        domProps: {
+          value: JSON.stringify(
+            _vm.prices.filter(function(price) {
+              return price.size && price.cost && price.resell && price.retail
+            })
+          )
+        }
+      })
     ],
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-end mt-3" }, [
-      _c("div", { staticClass: "col-auto" }, [
-        _c("button", { staticClass: "mr-2 btn btn-info" }, [_vm._v("Update")]),
-        _vm._v(" "),
-        _c("button", { staticClass: "mr-2 btn btn-danger" }, [_vm._v("Clear")]),
-        _vm._v(" "),
-        _c("button", { staticClass: " btn btn-danger" }, [_vm._v("Reset")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -50434,8 +50553,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

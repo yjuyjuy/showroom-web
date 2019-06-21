@@ -26,8 +26,8 @@ Route::resource('products', 'ProductsController')->middleware(['auth','admin'])-
 Route::middleware(['auth','vendor'])->group(function () {
 	Route::get('/products/{product}/prices/create', 'PricesController@create')->name('prices.create');
 	Route::patch('/products/{product}/prices', 'PricesController@store')->name('prices.store');
-	Route::resource('price', 'PricesController')->except(['create','store','index']);
 	Route::get('/vendors/prices', 'PricesController@index')->name('prices.index');
+	Route::resource('prices', 'PricesController')->except(['create','store','index']);
 });
 
 

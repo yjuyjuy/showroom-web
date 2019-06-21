@@ -78,9 +78,10 @@ class PricesController extends Controller
 	 */
 	public function update(Request $request, Price $price)
 	{
-		$data = $this->validateRequest()['data'];
+		$data = json_decode($this->validateRequest()['data']);
 		$price->data = $data;
-		return ['success' => $price->save(), 'redirect' => route('vendors.products.show', ['product' => $price->product])];
+		$price->save();
+		return redirect(route('products.show', ['product' => $price->product]));
 	}
 
 	/**
@@ -93,18 +94,16 @@ class PricesController extends Controller
 	{
 		$this->authorize('delete', $price);
 		$price->delete();
-		return redirect(route(((auth()->user()->isSuperAdmin())?'admin.products.show':'vendors.products.show'), ['product' => $price->product]));
+		return redirect(route('products.show', ['product' => $price->product]));
 	}
 	public function validateRequest()
 	{
 		return request()->validate([
-			'data' => 'required|array',
+			'data' => ['required','json'],
 			'data.*.size' => ['required','regex:/^([0-9]+)|([X]*[SML]+)$/'],
 			'data.*.cost' => ['required','integer'],
 			'data.*.resell' => ['required','integer'],
 			'data.*.retail' => ['required','integer'],
-			'vendor_id' => 'sometimes|exists:vendors,id',
-			'product_id' => 'sometimes|exists:products,id',
 		]);
 	}
 }
