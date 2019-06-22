@@ -20,6 +20,6 @@
 @endforeach
 <div class="row text-center no-gutters justify-content-end">
 	<a href="{{route('prices.edit',['price'=>$price])}}" class="col-3 text-primary">修改</a>
-	<a href="#" class="col-3 text-danger" @click="deletePrice({{$price->id}})" >删除</a>
+	<a href="#" class="col-3 text-danger" @click.prevent="deletePrice({{$price->id}})" >删除</a>
 </div>
 @endforeach

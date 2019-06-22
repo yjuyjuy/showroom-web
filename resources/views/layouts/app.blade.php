@@ -22,15 +22,15 @@
 </head>
 
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-dark shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}" style="color:var(--purple);">
-                    {{ config('app.name','Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+	<div id="app">
+		<nav class="navbar navbar-expand-md navbar-light bg-dark shadow-sm">
+			<div class="container">
+				<a class="navbar-brand" href="{{ url('/') }}" style="color:var(--purple);">
+					{{ config('app.name','Laravel') }}
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<!-- Left Side Of Navbar -->
@@ -56,9 +56,6 @@
 							</a>
 
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{ route('users.edit',['user' => auth()->user()]) }}" style="color:var(--orange);">
-									My Profile
-								</a>
 								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();" style="color:var(--orange);">
 									{{ __('Logout') }}

@@ -21,7 +21,7 @@ class ProductsController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$products = Cache::remember(url()->full(), 10, function () use ($request) {
+		$products = Cache::remember(url()->full(), 60, function () use ($request) {
 			$query = Product::with(['images' => function ($query) {
 				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
 			},'brand','prices']);

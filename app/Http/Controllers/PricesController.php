@@ -15,7 +15,13 @@ class PricesController extends Controller
 	 */
 	public function index()
 	{
-		//
+		$vendor = auth()->user()->vendor;
+		$vendor->load(['products','products.prices'=>function ($query) use ($vendor) {
+			$query->where('vendor_id', $vendor->id);
+		},'products.images' => function ($query) {
+			$query->orderBy('website_id', 'asc')->orderBy('type_id', 'asc');
+		}]);
+		return view('prices.index', compact('vendor'));
 	}
 
 	/**
@@ -42,7 +48,7 @@ class PricesController extends Controller
 	public function store(Request $request, Product $product)
 	{
 		if (auth()->user()->isSuperAdmin()) {
-			$vendor = \App\Vendor::find($request->input('venodr'));
+			$vendor = \App\Vendor::find($request->input('vendor'));
 		} else {
 			$vendor = auth()->user()->vendor;
 		}
