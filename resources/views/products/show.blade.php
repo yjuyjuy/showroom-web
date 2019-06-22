@@ -15,10 +15,12 @@
 					@include('products.show.size_price')
 				</div>
 
-				@if($product->prices->isNotEmpty() && ($user = auth()->user()) && ($vendor = $user->vendor))
+				@if(($user = auth()->user()) && ($vendor = $user->vendor))
+						@if($product->prices->isNotEmpty())
 						<div class="p-4 border my-2 my-md-4">
 							@include('products.show.size_resell')
 						</div>
+						@endif
 
 						@if($user->isSuperAdmin())
 						<div class="p-4 border my-2 my-md-4">
