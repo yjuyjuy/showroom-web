@@ -18,6 +18,6 @@ class PricePolicy
 	 */
 	public function delete(User $user, Price $price)
 	{
-		return $user->isSuperAdmin() || $user->id === $price->vendor->user_id;
+		return $user->isSuperAdmin() || ($user->id == $price->vendor->user_id);
 	}
 }

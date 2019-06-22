@@ -31,4 +31,11 @@ Vue.component('prices-editor', require('./components/PricesEditorComponent.vue')
 
 const app = new Vue({
 	el: '#app',
+	methods: {
+		deletePrice: function(id) {
+			axios.delete('/prices/' + id)
+				.then(response => window.location.replace(response.data.redirect))
+				.catch(error => console.log(error));
+		}
+	},
 });

@@ -22,3 +22,9 @@
 	<div class="col-12">Currently not available</div>
 </div>
 @endforelse
+<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expended="false">添加报价</a>
+<div class="dropdown-menu dropdown-menu-right">
+	@foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)
+		<a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor->id])}}" class="dropdown-item">{{$vendor->name}}</a>
+	@endforeach
+</div>

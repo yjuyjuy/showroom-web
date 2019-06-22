@@ -25,7 +25,12 @@ class PricesController extends Controller
 	 */
 	public function create(Product $product)
 	{
-		return view('prices.create', compact('product'));
+		if ($vendor = request()->input('vendor')) {
+			$vendor = \App\Vendor::find($vendor);
+		} else {
+			$vendor = auth()->user()->vendor;
+		}
+		return view('prices.create', compact('product', 'vendor'));
 	}
 
 	/**
@@ -34,16 +39,19 @@ class PricesController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(Request $request, Product $product)
 	{
-		$validated = $this->validateRequest();
-		if (Price::where($validated)) {
-			$price = new Price;
+		if (auth()->user()->isSuperAdmin()) {
+			$vendor = \App\Vendor::find($request->input('venodr'));
+		} else {
+			$vendor = auth()->user()->vendor;
 		}
-		$price->data = $validated['data'];
-		$price->vendor_id = $validated['vendor_id'];
-		$price->product_id = $validated['product_id'];
-		return ['success' => $price->save(), 'redirect' => route('prices.edit', ['price' => $price])];
+		$data = json_decode($this->validateRequest()['data']);
+		$price = $product->prices()->firstOrNew(['vendor_id' => '']);
+		$price->data = $data;
+		$price->vendor_id = $vendor->id;
+		$price->save();
+		return redirect(route('products.show', ['product' => $price->product]));
 	}
 
 	/**
@@ -94,8 +102,9 @@ class PricesController extends Controller
 	{
 		$this->authorize('delete', $price);
 		$price->delete();
-		return redirect(route('products.show', ['product' => $price->product]));
+		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
+
 	public function validateRequest()
 	{
 		return request()->validate([

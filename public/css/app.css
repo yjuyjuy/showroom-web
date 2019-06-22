@@ -10737,9 +10737,12 @@ a.text-dark:focus {
 .dropdown-menu,
 .dropdown-item {
   background-color: #282c34;
+  color: #abb2bf;
 }
 
+.dropdown-item:focus,
 .dropdown-item:hover {
-  background-color: #333842;
+  color: #282c34;
+  background-color: #abb2bf;
 }
 

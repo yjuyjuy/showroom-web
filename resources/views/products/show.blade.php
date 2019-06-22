@@ -24,7 +24,6 @@
 						<div class="p-4 border my-2 my-md-4">
 							@include('products.show.admin')
 						</div>
-						<a href="{{route('prices.create',['product'=>$product])}}" class="btn btn-primary">添加报价</a>
 
 						@else
 							@if($product->prices->firstWhere('vendor_id',$vendor->id))
@@ -36,6 +35,9 @@
 							@endif
 						@endif
 				@endif
+				<div class="my-2 my-md-4 d-flex justify-content-end">
+					<a href="{{route('products.index')}}" class="btn btn-primary">Back</a>
+				</div>
 			</div>
 		</div>
 	</div>

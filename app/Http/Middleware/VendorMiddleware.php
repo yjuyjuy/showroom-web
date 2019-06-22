@@ -15,9 +15,6 @@ class VendorMiddleware
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (!auth()->user()) {
-			return route('login');
-		}
 		if (auth()->user()->vendor) {
 			return $next($request);
 		} else {
