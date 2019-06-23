@@ -8,7 +8,7 @@
 @import '~bootstrap/scss/bootstrap';
 
 
-.form-control,.form-control:focus{
+.form-control, .form-control:focus{
 	background-color: $body-bg;
 	border-color: $red-light;
 	color:$body-color;
@@ -17,7 +17,12 @@
 	background-color: $body-bg;
 	color: $body-color;
 }
-.dropdown-item:focus,.dropdown-item:hover{
+.dropdown-item:focus, .dropdown-item:hover{
 	color: $body-bg;
 	background-color: $body-color;
+}
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .show > .nav-link{
+	color:$body-color;
 }

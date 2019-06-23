@@ -170,13 +170,49 @@ class ProductsController extends Controller
 		if (request()->input('sort')) {
 			$sort = request()->validate([
 				'sort' => 'sometimes|exists:sortmethods,name',
-			]);
+			])['sort'];
 		} else {
 			$sort = 'default';
 		}
-		$products = $products->sortBy(function ($item) {
-			return $item->category_id.(999-$item->season_id).$item->id;
-		});
+		switch ($sort) {
+			case 'default':
+				$products = $products->sortBy(function ($item) {
+					return $item->category_id.(999-$item->season_id).$item->id;
+				});
+				break;
+
+			case 'price high to low':
+				$products = $products->sortByDesc(function ($item) {
+					return $item->getMinPrice('retail', 0);
+				});
+				break;
+
+			case 'price low to high':
+				$products = $products->sortBy(function ($item) {
+					return $item->getMinPrice('retail', INF);
+				});
+				break;
+
+			case 'newest':
+				$products = $products->sortBy(function ($item) {
+					return $item->created_at;
+				});
+				break;
+
+			case 'oldest':
+				$products = $products->sortByDesc(function ($item) {
+					return $item->created_at;
+				});
+				break;
+
+			case 'best selling':
+			case 'hottest':
+			default:
+				$products = $products->sortBy(function ($item) {
+					return $item->category_id.(999-$item->season_id).$item->id;
+				});
+				break;
+		}
 		return $products;
 	}
 	// public function season_asc()

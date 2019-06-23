@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Price;
+use App\Vendor;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,13 @@ class PricesController extends Controller
 	 */
 	public function index()
 	{
-		$vendor = auth()->user()->vendor;
+		$user = auth()->user();
+		if ($user->isSuperAdmin()) {
+			$vendor = Vendor::find(request()->input('vendor')??$user->vendor->id);
+			request()->flash();
+		} else {
+			$vendor = $user->vendor;
+		}
 		$vendor->load(['products','products.prices'=>function ($query) use ($vendor) {
 			$query->where('vendor_id', $vendor->id);
 		},'products.images' => function ($query) {

@@ -10746,3 +10746,9 @@ a.text-dark:focus {
   background-color: #abb2bf;
 }
 
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .show > .nav-link {
+  color: #abb2bf;
+}
+

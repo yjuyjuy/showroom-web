@@ -42,25 +42,25 @@
 						<!-- Authentication Links -->
 						@guest
 						<li class="nav-item">
-							<a class="nav-link" href="{{ route('login') }}" style="color:var(--orange);">{{ __('Login') }}</a>
+							<a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
 						</li>
 						@if (Route::has('register'))
 						<li class="nav-item">
-							<a class="nav-link" href="{{ route('register') }}" style="color:var(--orange);">{{ __('Register') }}</a>
+							<a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
 						</li>
 						@endif
 						@else
 						<li class="nav-item dropdown">
-							<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:var(--orange);" v-pre>
+							<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 								{{ Auth::user()->username }} <span class="caret"></span>
 							</a>
 
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{route('prices.index')}}">价格表</a>
 								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();" style="color:var(--orange);">
+                                                     document.getElementById('logout-form').submit();">
 									{{ __('Logout') }}
 								</a>
-
 								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 									@csrf
 								</form>
