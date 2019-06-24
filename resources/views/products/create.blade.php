@@ -3,15 +3,15 @@
 @section('title','创建新商品 - TheShowroom')
 
 @section('content')
-<div class="container">
-	<div class="row justify-content-center">
+<div class="">
+	<div class="">
 
-		<div class="col-md-6">
+		<div class="">
 			<form action="{{route('products.store')}}" method="post">
 				@csrf
 				@include('products.edit.form')
-				<div class="form-group row mb-0 justify-content-end">
-					<div class="col-auto">
+				<div class="form-group  ">
+					<div class="">
 						<button type="submit" class="btn btn-primary">
 							创建
 						</button>

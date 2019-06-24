@@ -2,13 +2,13 @@
 	<input class="form-check-input" type="checkbox" name="show_available_only" value="show_available_only" id="show_available_only" onchange="submit()" {{ old("show_available_only")? 'checked':'' }}>
 	<label class="form-check-label" for="show_available_only">只显示有货</label>
 </div>
-<div class="w-100"></div>
+<div class=""></div>
 @if(($user = auth()->user()) && $user->vendor)
 <div class="form-check">
 	<input class="form-check-input" type="checkbox" name="show_vendor_only" value="{{$user->vendor->id}}" id="show_vendor_only" onchange="submit()" {{ old("show_vendor_only")? 'checked':'' }}>
 	<label class="form-check-label" for="show_vendor_only">我的库存</label>
 </div>
-<div class="w-100"></div>
+<div class=""></div>
 
 	@if($user->isSuperAdmin())
 	<a class="" data-toggle="collapse" href="#vendor-group" style="color:var(--blue);">货源</a>
@@ -20,7 +20,7 @@
 		</div>
 		@endforeach
 	</div>
-	<div class="w-100"></div>
+	<div class=""></div>
 	@endif
 @endif
 
@@ -34,5 +34,5 @@
 </div>
 @endforeach
 </div>
-<div class="w-100"></div>
+<div class=""></div>
 @endforeach

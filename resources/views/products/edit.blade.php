@@ -3,21 +3,21 @@
 @section('title','修改商品-'.$product->displayName().'-TheShowroom')
 
 @section('content')
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-6 order-2 order-md-1">
+<div class="">
+	<div class=" ">
+		<div class="  ">
 			@include('products.show.images')
 		</div>
-		<div class="col-md-5 order-1 order-md-2 mb-3">
-			<form class="my-md-4" action="/products/{{ $product->id }}" method="post" id="update-form">
+		<div class="   ">
+			<form class="" action="/products/{{ $product->id }}" method="post" id="update-form">
 				@csrf
 				@method('PATCH')
 				@include('products.edit.form')
 			</form>
-			<div class="form-group row mb-0 justify-content-end">
-				<div class="col-auto">
-					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-primary mr-2">返回</a>
-					<button type="submit" class="btn btn-primary mr-2" form="update-form">
+			<div class="form-group   ">
+				<div class="">
+					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-primary ">返回</a>
+					<button type="submit" class="btn btn-primary " form="update-form">
 						更新
 					</button>
 					<form action="{{route('products.destroy',['product' => $product])}}" class="d-inline" method="post" id="delete-form">

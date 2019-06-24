@@ -1,4 +1,4 @@
-<div class="d-flex flex-column text-center">
+<div class="  ">
 	<div class="">
 		<a href="{{ route('products.index') }}?brand[]={{$product->brand->id}}">{{ $product->brand->full_name }}</a>
 	</div>
@@ -8,7 +8,7 @@
 	<div class="">
 		<span>{{ $product->id }}</span>
 		@can('update',$product)
-			<a href="{{route('products.edit', ['product' => $product])}}" class="ml-2">Edit</a>
+			<a href="{{route('products.edit', ['product' => $product])}}" class="">Edit</a>
 		@endcan
 	</div>
 </div>
