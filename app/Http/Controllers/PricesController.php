@@ -17,8 +17,8 @@ class PricesController extends Controller
 	public function index()
 	{
 		$user = auth()->user();
-		if ($user->isSuperAdmin()) {
-			$vendor = Vendor::find(request()->input('vendor')??$user->vendor->id);
+		if ($user->isSuperAdmin() && ($vendor = request()->input('vendor'))) {
+			$vendor = Vendor::find($vendor);
 			request()->flash();
 		} else {
 			$vendor = $user->vendor;
@@ -38,7 +38,7 @@ class PricesController extends Controller
 	 */
 	public function create(Product $product)
 	{
-		if ($vendor = request()->input('vendor')) {
+		if (auth()->user()->isSuperAdmin() && ($vendor = request()->input('vendor'))) {
 			$vendor = \App\Vendor::find($vendor);
 		} else {
 			$vendor = auth()->user()->vendor;

@@ -21,15 +21,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UsersController');
 
+Route::resource('products', 'ProductsController')->middleware(['auth','admin'])->except(['index','show']);
 Route::get('/products', 'ProductsController@index')->name('products.index');
 Route::get('/products/{product}', 'ProductsController@show')->name('products.show');
-Route::resource('products', 'ProductsController')->middleware(['auth','admin'])->except(['index','show']);
 
 Route::middleware(['auth','vendor'])->group(function () {
+	Route::resource('prices', 'PricesController')->except(['create','store','index','show']);
 	Route::get('/vendors/prices', 'PricesController@index')->name('prices.index');
 	Route::get('/products/{product}/prices/create', 'PricesController@create')->name('prices.create');
 	Route::post('/products/{product}/prices', 'PricesController@store')->name('prices.store');
-	Route::resource('prices', 'PricesController')->except(['create','store','index','show']);
 });
 
 
