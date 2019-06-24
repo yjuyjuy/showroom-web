@@ -1,5 +1,5 @@
 <div class="">
-	<div class="">
+	<div class="font-weight-bold">
 		调货价
 	</div>
 </div>

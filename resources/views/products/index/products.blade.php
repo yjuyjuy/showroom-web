@@ -1,9 +1,9 @@
-<div class="">
+<div class="row">
 	@forelse($products as $product)
-	<div class="product    align-items-center">
+	<div class="product col-4  align-items-center mb-2">
 		<div class="image">
 			<a href="{{ route('products.show',['product' => $product->id ]) }}">
-				<img class="" src="/storage/images/{{ $product->images->first()->filename ?? '1101182005_1_6.jpg' }}">
+				<img class="w-100" src="/storage/images/{{ $product->images->first()->filename ?? '1101182005_1_6.jpg' }}">
 			</a>
 		</div>
 		<div class="text mt-n4">
@@ -15,16 +15,22 @@
 					<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none">{{ $product->name_cn }}</a>
 				</div>
 				<div class="price">
-					<a href="{{ route('products.show',['product' => $product ]) }}">
-						{{ ($product->price)?"\u{00a5}".$product->price:'-' }}
+					@if($product->price)
+					<a href="{{ route('products.show',['product' => $product ]) }}" class="">
+						{{ "\u{00a5}".$product->price }}
 					</a>
+					@else
+					<a href="{{ route('products.show',['product' => $product ]) }}" class="text-primary">
+						缺货
+					</a>
+					@endif
 				</div>
 			</div>
 		</div>
 	</div>
 	@empty
 	<div class="">
-			no result
+		no result
 	</div>
 	@endforelse
 </div>
