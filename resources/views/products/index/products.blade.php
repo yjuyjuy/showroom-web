@@ -7,7 +7,7 @@
 			</a>
 		</div>
 		<div class="text mt-n4">
-			<div class=" ">
+			<div class="">
 				<div class="brand text-left ">
 					<a href="{{ route('products.show',['product' => $product->id ]) }}" class="text-decoration-none">{{ $product->brand->name }}</a>
 				</div>
@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	@empty
-	<div class="  ">
+	<div class="">
 			no result
 	</div>
 	@endforelse

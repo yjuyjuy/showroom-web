@@ -1,6 +1,6 @@
 <div class="">
 @foreach($product->images as $image)
-<div class=" ">
+<div class="">
 	<img class="" src="/storage/images/{{ $image->filename }}">
 </div>
 @endforeach

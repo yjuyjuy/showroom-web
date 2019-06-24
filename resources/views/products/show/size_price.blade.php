@@ -1,5 +1,5 @@
 @forelse($product->size_price as $size => $price)
-<div class="   ">
+<div class="">
 	<span class="">{{ $size }}</span>
 	<span class="">-</span>
 	<span class="">&yen;{{$price}}</span>

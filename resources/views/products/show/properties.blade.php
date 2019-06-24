@@ -1,4 +1,4 @@
-<div class="  ">
+<div class="">
 	<div class="">
 		<a href="{{ route('products.index') }}?brand[]={{$product->brand->id}}">{{ $product->brand->full_name }}</a>
 	</div>

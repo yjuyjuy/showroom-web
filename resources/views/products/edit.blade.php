@@ -4,11 +4,11 @@
 
 @section('content')
 <div class="">
-	<div class=" ">
-		<div class="  ">
+	<div class="">
+		<div class="">
 			@include('products.show.images')
 		</div>
-		<div class="   ">
+		<div class="">
 			<form class="" action="/products/{{ $product->id }}" method="post" id="update-form">
 				@csrf
 				@method('PATCH')

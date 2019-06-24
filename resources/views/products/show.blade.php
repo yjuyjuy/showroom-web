@@ -4,12 +4,12 @@
 
 @section('content')
 <div class="">
-	<div class=" ">
-		<div class="  ">
+	<div class="">
+		<div class="">
 			@include('products.show.images')
 		</div>
-		<div class="     ">
-			<div class=" " style="min-width:83.3%;">
+		<div class="">
+			<div class="" style="min-width:83.3%;">
 				<div class=" border  ">
 					@include('products.show.properties')
 					@include('products.show.size_price')
@@ -37,7 +37,7 @@
 				@endif
 				@endif
 				@endif
-				<div class="   ">
+				<div class="">
 					<a href="{{route('products.index')}}" class="btn btn-primary">Back</a>
 				</div>
 			</div>
