@@ -1,20 +1,20 @@
 <template>
 <div class="container-fluid">
-	<div v-for="(price,index) in prices" class="row mx-0">
-		<div class="col p-0">
-			<input @input="check_empty" @change="update(index)" class="form-control text-center rounded-0" type="text" v-model="price.size">
+	<div v-for="(price,index) in prices" class="row no-gutters my-4">
+		<div class="col">
+			<input @input="check_empty" @change="update(index)" class="form-control" type="text" v-model="price.size">
 		</div>
-		<div class="col p-0">
-			<input @input="check_empty" @change="update(index)" class="form-control text-center rounded-0" type="text" v-model="price.cost">
+		<div class="col">
+			<input @input="check_empty" @change="update(index)" class="form-control" type="text" v-model="price.cost">
 		</div>
-		<div class="col p-0">
-			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control text-center rounded-0" type="text" v-model="price.resell" :placeholder="computed_resell(index)">
+		<div class="col">
+			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control" type="text" v-model="price.resell" :placeholder="computed_resell(index)">
 		</div>
-		<div class="col p-0">
-			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control text-center rounded-0" type="text" v-model="price.retail" :placeholder="computed_retail(index)">
+		<div class="col">
+			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control" type="text" v-model="price.retail" :placeholder="computed_retail(index)">
 		</div>
-		<div class="col-auto p-0 d-flex align-items-center">
-			<button @click.prevent="delete_price(index)" type="button" class="btn btn-danger rounded-0 w-100 h-100">Delete</button>
+		<div class="col">
+			<button @click.prevent="delete_price(index)" type="button" class="btn btn-link text-danger">删除</button>
 		</div>
 	</div>
 	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.cost&&price.resell&&price.retail)))">

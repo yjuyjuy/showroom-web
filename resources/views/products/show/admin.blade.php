@@ -1,34 +1,34 @@
 @forelse($product->prices->loadMissing('vendor') as $price)
-<div class="">
-	<div class=" border-bottom  ">
+<div class="row">
+	<div class="font-weight-bold border-bottom col-12">
 		<a href="{{route('prices.edit',['price'=>$price])}}">
 			{{$price->vendor->name.' - '.$price->vendor->city}}
 		</a>
 	</div>
-	<div class="">
+	<div class="col-12">
 		@foreach($price->data as $row)
-		<div class="">
-			<span class="">{{ $row['size'] }}</span>
-			<span class="">&yen;{{$row['cost']}}</span>
-			<span class="">&yen;{{$row['resell']}}</span>
-			<span class="">&yen;{{$row['retail']}}</span>
+		<div class="row">
+			<span class="col">{{ $row['size'] }}</span>
+			<span class="col">&yen;{{$row['cost']}}</span>
+			<span class="col">&yen;{{$row['resell']}}</span>
+			<span class="col">&yen;{{$row['retail']}}</span>
 		</div>
 		@endforeach
-		<div class="">
-			<a href="{{route('prices.edit',['price'=>$price])}}" class=" text-primary">修改</a>
-			<a href="#" class=" text-danger" @click.prevent="deletePrice({{$price->id}})" >删除</a>
+		<div class="row justify-content-md-end">
+			<a href="{{route('prices.edit',['price'=>$price])}}" class="col-auto text-primary text-right pr-0">修改</a>
+			<a href="#" class="col-auto text-danger" @click.prevent="deletePrice({{$price->id}})" >删除</a>
 		</div>
 
 	</div>
 </div>
 
 @empty
-<div class="">
-	<div class="">Not available</div>
+<div class="row">
+	<div class="font-weight-bold col">Not available</div>
 </div>
 @endforelse
-<div class="">
-	<div class="">
+<div class="row justify-content-end mb-n5 mt-2">
+	<div class="col-auto">
 		<a href="#" class="btn btn-primary dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expended="false">添加报价</a>
 		<div class="dropdown-menu dropdown-menu-right">
 			@foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)

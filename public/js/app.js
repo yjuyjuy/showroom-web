@@ -37931,8 +37931,8 @@ var render = function() {
     { staticClass: "container-fluid" },
     [
       _vm._l(_vm.prices, function(price, index) {
-        return _c("div", { staticClass: "row mx-0" }, [
-          _c("div", { staticClass: "col p-0" }, [
+        return _c("div", { staticClass: "row no-gutters my-4" }, [
+          _c("div", { staticClass: "col" }, [
             _c("input", {
               directives: [
                 {
@@ -37942,7 +37942,7 @@ var render = function() {
                   expression: "price.size"
                 }
               ],
-              staticClass: "form-control text-center rounded-0",
+              staticClass: "form-control",
               attrs: { type: "text" },
               domProps: { value: price.size },
               on: {
@@ -37962,7 +37962,7 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col p-0" }, [
+          _c("div", { staticClass: "col" }, [
             _c("input", {
               directives: [
                 {
@@ -37972,7 +37972,7 @@ var render = function() {
                   expression: "price.cost"
                 }
               ],
-              staticClass: "form-control text-center rounded-0",
+              staticClass: "form-control",
               attrs: { type: "text" },
               domProps: { value: price.cost },
               on: {
@@ -37992,7 +37992,7 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col p-0" }, [
+          _c("div", { staticClass: "col" }, [
             _c("input", {
               directives: [
                 {
@@ -38002,7 +38002,7 @@ var render = function() {
                   expression: "price.resell"
                 }
               ],
-              staticClass: "form-control text-center rounded-0",
+              staticClass: "form-control",
               attrs: { type: "text", placeholder: _vm.computed_resell(index) },
               domProps: { value: price.resell },
               on: {
@@ -38023,7 +38023,7 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col p-0" }, [
+          _c("div", { staticClass: "col" }, [
             _c("input", {
               directives: [
                 {
@@ -38033,7 +38033,7 @@ var render = function() {
                   expression: "price.retail"
                 }
               ],
-              staticClass: "form-control text-center rounded-0",
+              staticClass: "form-control",
               attrs: { type: "text", placeholder: _vm.computed_retail(index) },
               domProps: { value: price.retail },
               on: {
@@ -38054,11 +38054,11 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-auto p-0 d-flex align-items-center" }, [
+          _c("div", { staticClass: "col" }, [
             _c(
               "button",
               {
-                staticClass: "btn btn-danger rounded-0 w-100 h-100",
+                staticClass: "btn btn-link text-danger",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
@@ -38067,7 +38067,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("Delete")]
+              [_vm._v("删除")]
             )
           ])
         ])
