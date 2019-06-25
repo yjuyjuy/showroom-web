@@ -38054,7 +38054,7 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col" }, [
+          _c("div", { staticClass: "col-auto col-md" }, [
             _c(
               "button",
               {

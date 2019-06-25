@@ -7,8 +7,14 @@
 	<div class="row">
 		<div class="col-md-6">
 			@include('products.show.images')
+			<div class="row">
+				<div class="col text-center">
+					<a href="#" class="h1">+</a>
+				</div>
+			</div>
+
 		</div>
-		<div class="col-md-auto">
+		<div class="col-lg-auto col-md-6">
 			<div class="" style="min-width:83.3%;">
 
 				<div class="my-4 pl-4">

@@ -13,7 +13,7 @@
 		<div class="col">
 			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control" type="text" v-model="price.retail" :placeholder="computed_retail(index)">
 		</div>
-		<div class="col">
+		<div class="col-auto col-md">
 			<button @click.prevent="delete_price(index)" type="button" class="btn btn-link text-danger">删除</button>
 		</div>
 	</div>
