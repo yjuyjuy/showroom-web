@@ -6,7 +6,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-6">
-			@include('products.show.images')
+			<images-slider :images='@json($product->images->pluck('filename')->toArray())'></images-slider>
 		</div>
 
 		<div class="col-lg-auto col-md-6">

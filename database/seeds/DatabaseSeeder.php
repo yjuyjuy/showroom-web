@@ -884,8 +884,12 @@ class DatabaseSeeder extends Seeder
 				'city' => $vendor[2],
 			]);
 		}
-		$user = \App\Vendor::first();
-		$user->user_id = 1;
+		$vendor = \App\Vendor::find(1);
+		$vendor->user_id = 1;
+		$vendor->save();
+
+		$user = \App\Vendor::find(4)->user;
+		$user->email = 'vendor@test.com';
 		$user->save();
 
 		$websites=[
