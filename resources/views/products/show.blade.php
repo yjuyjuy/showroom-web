@@ -7,24 +7,16 @@
 	<div class="row">
 		<div class="col-md-6">
 			@include('products.show.images')
-			<div class="row">
-				<div class="col text-center">
-					<a href="#" class="h1">+</a>
-				</div>
-			</div>
-
 		</div>
+
 		<div class="col-lg-auto col-md-6">
 			<div class="" style="min-width:83.3%;">
-
 				<div class="my-4 pl-4">
 					@include('products.show.properties')
 				</div>
-
 				<div class="my-4 pl-4">
 					@include('products.show.size_price')
 				</div>
-
 				@if(($user = auth()->user()) && ($vendor = $user->vendor))
 				@if($product->prices->isNotEmpty())
 				<div class="my-4 pl-4">
@@ -43,7 +35,11 @@
 					@include('products.show.vendor')
 				</div>
 				@else
-				<a href="{{route('prices.create',['product'=>$product])}}" class="btn btn-primary">添加报价</a>
+				<div class="row justify-content-end mb-n5 mt-2">
+					<div class="col-auto">
+						<a href="{{route('prices.create',['product' => $product])}}" class="btn btn-primary">添加报价</a>
+					</div>
+				</div>
 				@endif
 				@endif
 				@endif

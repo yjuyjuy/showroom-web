@@ -91,6 +91,9 @@ class ProductsController extends Controller
 	 */
 	public function show(Product $product)
 	{
+		$product->load(['images' => function ($query) {
+			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+		}]);
 		return view('products.show', compact('product'));
 	}
 

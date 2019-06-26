@@ -10752,3 +10752,21 @@ a.text-dark:focus {
   color: #abb2bf;
 }
 
+#images-slider > div.carousel-indicators {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+#images-slider > div.carousel-indicators > a {
+  opacity: 0.5;
+}
+
+#images-slider > div.carousel-indicators > a:nth-child(1n+7) {
+  display: none;
+}
+
+#images-slider > div.carousel-indicators > a.active {
+  opacity: 1;
+}
+

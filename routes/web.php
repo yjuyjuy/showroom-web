@@ -32,6 +32,9 @@ Route::middleware(['auth','vendor'])->group(function () {
 	Route::post('/products/{product}/prices', 'PricesController@store')->name('prices.store');
 });
 
+Route::middleware(['auth','admin'])->group(function () {
+	Route::get('/products/{product}/images', 'Images@index')->name('products.images.index');
+});
 
 
 // deprecate

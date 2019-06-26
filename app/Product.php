@@ -62,10 +62,6 @@ class Product extends Model
 	{
 		return $this->hasMany(Price::class);
 	}
-	public function getImageAttribute()
-	{
-		return $this->images->sortBy('website_id')->sortBy('type_id')->first();
-	}
 	public function images()
 	{
 		return $this->hasMany(Image::class);
