@@ -1912,8 +1912,14 @@ __webpack_require__.r(__webpack_exports__);
     return {
       total: this.images.length,
       active: 0,
-      show_range: [0, 1, 2, 3, 4, 5]
+      show_range: [],
+      max: 5
     };
+  },
+  beforeMount: function beforeMount() {
+    for (var i = 0; i < this.max; i++) {
+      this.show_range.push(i);
+    }
   },
   mounted: function mounted() {
     $('.carousel-item')[0].classList.add('active');
@@ -1942,14 +1948,12 @@ __webpack_require__.r(__webpack_exports__);
         this.show_range.pop();
         this.show_range.unshift(first - 1);
       } else {
-        if (this.total > 6) {
+        if (this.total > this.max) {
           this.show_range = [];
 
-          for (var i = 6; i > 0; i--) {
+          for (var i = this.max; i > 0; i--) {
             this.show_range.push(this.total - i);
           }
-        } else {
-          this.show_range = [0, 1, 2, 3, 4, 5];
         }
       }
     },
@@ -1960,7 +1964,11 @@ __webpack_require__.r(__webpack_exports__);
         this.show_range.shift();
         this.show_range.push(last + 1);
       } else {
-        this.show_range = [0, 1, 2, 3, 4, 5];
+        this.show_range = [];
+
+        for (var i = 0; i < this.max; i++) {
+          this.show_range.push(i);
+        }
       }
     }
   }
@@ -38208,7 +38216,7 @@ var render = function() {
         _vm._l(_vm.images, function(image, index) {
           return _c("div", { staticClass: "carousel-item" }, [
             _c("img", {
-              staticClass: "w-100",
+              staticClass: "d-block w-100",
               attrs: { src: "/storage/images/" + image }
             })
           ])
@@ -38225,7 +38233,7 @@ var render = function() {
         [
           _vm._m(0),
           _vm._v(" "),
-          _vm.total > 6
+          _vm.total > _vm.max
             ? _c(
                 "a",
                 {
@@ -38249,7 +38257,7 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.total > 6
+          _vm.total > _vm.max
             ? _c(
                 "a",
                 {
@@ -38292,7 +38300,7 @@ var staticRenderFns = [
         "a",
         {
           staticClass: "col-2 px-2 thumbnail-item",
-          class: { show: index >= 0 && index < 6 },
+          class: { show: index >= 0 && index < _vm.max },
           attrs: {
             href: "#",
             "data-target": "#images-slider",
@@ -38301,7 +38309,7 @@ var staticRenderFns = [
         },
         [
           _c("img", {
-            staticClass: "w-100",
+            staticClass: "d-block w-100",
             attrs: { src: "/storage/images/" + image }
           })
         ]

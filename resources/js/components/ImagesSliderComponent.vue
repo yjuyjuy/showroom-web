@@ -2,19 +2,19 @@
 <div id="images-slider" class="carousel slide" data-touch="true" data-ride="false">
 	<div class="carousel-inner">
 		<div v-for="(image,index) in images" class="carousel-item">
-			<img :src="'/storage/images/' + image" class="w-100">
+			<img :src="'/storage/images/' + image" class="d-block w-100">
 		</div>
 	</div>
 	<div class="row px-2 mb-2 justify-content-center carousel-indicators">
 
-		<a v-for="(image,index) in images" href="#" data-target="#images-slider" :data-slide-to="index" class="col-2 px-2 thumbnail-item" :class="{show:index >=0 && index < 6}" v-once>
-			<img :src="'/storage/images/' + image" class="w-100">
+		<a v-for="(image,index) in images" href="#" data-target="#images-slider" :data-slide-to="index" class="col-2 px-2 thumbnail-item" :class="{show:index >=0 && index < max}" v-once>
+			<img :src="'/storage/images/' + image" class="d-block w-100">
 		</a>
-		<a v-if="total>6" href="#" @click.prevent="thumbnail_prev()" class="thumbnails-control-prev">
+		<a v-if="total>max" href="#" @click.prevent="thumbnail_prev()" class="thumbnails-control-prev">
 			<span class="thumbnails-control-prev-icon" aria-hidden="true"></span>
 			<span class="sr-only">Previous</span>
 		</a>
-		<a v-if="total>6" href="#" @click.prevent="thumbnail_next()" class="thumbnails-control-next">
+		<a v-if="total>max" href="#" @click.prevent="thumbnail_next()" class="thumbnails-control-next">
 			<span class="thumbnails-control-next-icon" aria-hidden="true"></span>
 			<span class="sr-only">Next</span>
 		</a>
@@ -40,8 +40,14 @@ export default {
 		return {
 			total: this.images.length,
 			active: 0,
-			show_range: [0, 1, 2, 3, 4, 5],
+			show_range: [],
+			max: 5,
 		};
+	},
+	beforeMount: function() {
+		for (let i = 0; i < this.max; i++) {
+			this.show_range.push(i);
+		}
 	},
 	mounted: function() {
 		$('.carousel-item')[0].classList.add('active');
@@ -68,13 +74,11 @@ export default {
 				this.show_range.pop();
 				this.show_range.unshift(first - 1);
 			} else {
-				if (this.total > 6) {
+				if (this.total > this.max) {
 					this.show_range = [];
-					for (let i = 6; i > 0; i--) {
+					for (let i = this.max; i > 0; i--) {
 						this.show_range.push(this.total - i);
 					}
-				} else {
-					this.show_range = [0, 1, 2, 3, 4, 5];
 				}
 			}
 		},
@@ -84,7 +88,10 @@ export default {
 				this.show_range.shift();
 				this.show_range.push(last + 1);
 			} else {
-				this.show_range = [0, 1, 2, 3, 4, 5];
+				this.show_range = [];
+				for (let i = 0; i < this.max; i++) {
+					this.show_range.push(i);
+				}
 			}
 		},
 	}
