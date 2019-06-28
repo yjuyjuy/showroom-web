@@ -33,7 +33,8 @@ Route::middleware(['auth','vendor'])->group(function () {
 });
 
 Route::middleware(['auth','admin'])->group(function () {
-	Route::get('/products/{product}/images', 'Images@index')->name('products.images.index');
+	Route::get('/product/{product}/images', 'ImagesController@edit')->name('images.edit');
+	Route::patch('/product/{product}/images', 'ImagesController@update')->name('images.update');
 });
 
 

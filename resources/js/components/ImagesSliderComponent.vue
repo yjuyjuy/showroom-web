@@ -10,12 +10,12 @@
 		<a v-for="(image,index) in images" href="#" data-target="#images-slider" :data-slide-to="index" class="col-2 px-2 thumbnail-item" :class="{show:index >=0 && index < max}" v-once>
 			<img :src="'/storage/images/' + image" class="d-block w-100">
 		</a>
-		<a v-if="total>max" href="#" @click.prevent="thumbnail_prev()" class="thumbnails-control-prev">
-			<span class="thumbnails-control-prev-icon" aria-hidden="true"></span>
+		<a v-if="total>max" href="#" @click.prevent="thumbnail_prev()" class="thumbnail-control-prev">
+			<span class="thumbnail-control-prev-icon" aria-hidden="true"></span>
 			<span class="sr-only">Previous</span>
 		</a>
-		<a v-if="total>max" href="#" @click.prevent="thumbnail_next()" class="thumbnails-control-next">
-			<span class="thumbnails-control-next-icon" aria-hidden="true"></span>
+		<a v-if="total>max" href="#" @click.prevent="thumbnail_next()" class="thumbnail-control-next">
+			<span class="thumbnail-control-next-icon" aria-hidden="true"></span>
 			<span class="sr-only">Next</span>
 		</a>
 
@@ -113,13 +113,6 @@ export default {
 .thumbnail-item {
 	display: none;
 	opacity: 0.5;
-	position: relative;
-	float: left;
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
-	transition: -webkit-transform 0.6s ease-in-out;
-	transition: transform 0.6s ease-in-out;
-	transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
 }
 
 .thumbnail-item.show {
@@ -130,8 +123,9 @@ export default {
 	opacity: 1;
 }
 
-.thumbnails-control-prev,
-.thumbnails-control-next {
+.thumbnail-control-prev,
+.thumbnail-control-next {
+	width: 13%;
 	position: absolute;
 	bottom: 0;
 	height: 100%;
@@ -142,28 +136,35 @@ export default {
 	opacity: 0.5;
 }
 
-.thumbnails-control-prev {
+.thumbnail-control-prev:hover,
+.thumbnail-control-next:hover,
+.thumbnail-control-prev:focus,
+.thumbnail-control-next:focus {
+	opacity: 0.9;
+}
+
+.thumbnail-control-prev {
 	left: 0;
 }
 
-.thumbnails-control-next {
+.thumbnail-control-next {
 	right: 0;
 }
 
-.thumbnails-control-prev-icon,
-.thumbnails-control-next-icon {
+.thumbnail-control-prev-icon,
+.thumbnail-control-next-icon {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
 	background: no-repeat 50%/100% 100%;
 }
 
-.thumbnails-control-prev-icon {
+.thumbnail-control-prev-icon {
 
 	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e");
 }
 
-.thumbnails-control-next-icon {
+.thumbnail-control-next-icon {
 	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e");
 }
 </style>
