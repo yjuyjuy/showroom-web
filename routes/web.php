@@ -34,7 +34,7 @@ Route::middleware(['auth','vendor'])->group(function () {
 
 Route::middleware(['auth','admin'])->group(function () {
 	Route::get('/product/{product}/images', 'ImagesController@edit')->name('images.edit');
-	Route::patch('/product/{product}/images', 'ImagesController@update')->name('images.update');
+	Route::resource('images', 'ImagesController')->only(['store','update','destroy']);
 });
 
 

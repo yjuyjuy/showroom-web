@@ -3,10 +3,10 @@
 @section('title','创建新商品 - TheShowroom')
 
 @section('content')
-<div class="">
-	<div class="">
+<div class="container">
+	<div class="row">
 
-		<div class="">
+		<div class="col-md-6 mx-auto">
 			<form action="{{route('products.store')}}" method="post">
 				@csrf
 				@include('products.edit.form')

@@ -17,8 +17,8 @@ class ImagesController extends Controller
 	 */
 	public function edit(Product $product)
 	{
-		dd($product->images);
-		//
+		$images = $product->images()->orderBy('website_id', 'asc')->orderBy('type_id', 'asc')->get();
+		return view('images.edit', compact('product', 'images'));
 	}
 
 	/**
@@ -31,5 +31,16 @@ class ImagesController extends Controller
 	public function update(Request $request, Product $product)
 	{
 		//
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  \App\Product  $product
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy(Image $image)
+	{
+		$image->delete();
 	}
 }

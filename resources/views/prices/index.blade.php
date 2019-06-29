@@ -3,10 +3,10 @@
 @section('title','价格表 - '.$vendor->name.' - TheShowroom')
 
 @section('content')
-<div class="">
+<div class="container">
 	@if(auth()->user()->isSuperAdmin())
-	<div class="">
-		<form method="get" target="_self" class="">
+	<div class="row mb-4">
+		<form method="get" target="_self" class="col-auto mx-auto">
 			<select onchange="submit()" class="form-control" name="vendor">
 				<option value=""></option>
 				@foreach(\App\Vendor::all() as $v)
@@ -17,46 +17,46 @@
 	</div>
 	@endif
 	@foreach($vendor->products as $product)
-	<div class="">
-		<div class="">
-			<div class="">
-				<div class="">
-					<img class="" src="/storage/images/{{ $product->images[0]->filename??'' }}">
+	<div class="row mb-md-4">
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-6">
+					<img class="w-100" src="/storage/images/{{ $product->images[0]->filename??'' }}">
 				</div>
-				<div class="">
-					<img class="" src="/storage/images/{{ $product->images[1]->filename??'' }}">
+				<div class="col-6">
+					<img class="w-100" src="/storage/images/{{ $product->images[1]->filename??'' }}">
 				</div>
 			</div>
 		</div>
-		<div class="">
-			<div class="  align-self-center" style="min-width:83.3%;">
-				<div class=" border  ">
-					<div class="">
-						<div class="">
+		<div class="col-md-6 d-flex justify-content-center align-items-center">
+			<div class="" style="min-width:83.3%;">
+				<div class="d-flex flex-column p-4">
+					<div class="row pb-2 mb-2 border-bottom">
+						<div class="col-12">
 							<span>{{ $product->brand->full_name }}</span>
 						</div>
-						<div class="">
-							<span>{{ $product->name_cn }}</span>
+						<div class="col-12">
+							<span class="font-weight-bold">{{ $product->name_cn }}</span>
 						</div>
 					</div>
-					<div class="">
-						<span class="">尺码</span>
-						<span class="">成本</span>
-						<span class="">调货</span>
-						<span class="">零售</span>
+					<div class="row">
+						<span class="col">尺码</span>
+						<span class="col">成本</span>
+						<span class="col">调货</span>
+						<span class="col">零售</span>
 					</div>
 					@foreach($product->prices as $price)
 					@foreach($price->data as $row)
-					<div class="">
-						<span class="">{{ $row['size'] }}</span>
-						<span class="">&yen;{{$row['cost']}}</span>
-						<span class="">&yen;{{$row['resell']}}</span>
-						<span class="">&yen;{{$row['retail']}}</span>
+					<div class="row">
+						<span class="col">{{ $row['size'] }}</span>
+						<span class="col">&yen;{{$row['cost']}}</span>
+						<span class="col">&yen;{{$row['resell']}}</span>
+						<span class="col">&yen;{{$row['retail']}}</span>
 					</div>
 					@endforeach
-					<div class="">
-						<a href="{{route('prices.edit',['price'=>$price])}}" class=" text-primary">修改</a>
-						<a href="#" class=" text-danger" @click.prevent="deletePrice({{$price->id}})">删除</a>
+					<div class="row justify-content-end">
+						<a href="{{route('prices.edit',['price'=>$price])}}" class="col-auto text-primary text-right pr-0">修改</a>
+						<a href="#" class="col-auto col-md-2 text-danger" @click.prevent="deletePrice({{$price->id}})">删除</a>
 					</div>
 					@endforeach
 				</div>
