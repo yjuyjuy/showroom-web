@@ -26,3 +26,9 @@
 .navbar-light .navbar-nav .show > .nav-link{
 	color:$body-color;
 }
+.website-empty{
+	display:none;
+}
+.website-empty.show{
+	display:flex;
+}

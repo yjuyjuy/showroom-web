@@ -23,6 +23,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('prices-editor', require('./components/PricesEditorComponent.vue').default);
 Vue.component('images-slider', require('./components/ImagesSliderComponent.vue').default);
 Vue.component('image-item', require('./components/ImageItemComponent.vue').default);
+Vue.component('empty-image', require('./components/EmptyImageComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

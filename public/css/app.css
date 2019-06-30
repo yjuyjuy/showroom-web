@@ -34,7 +34,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Nunito", sans-serif;
+  --font-family-sans-serif: "Segoe Print", sans-serif;
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -66,7 +66,7 @@ section {
 
 body {
   margin: 0;
-  font-family: "Nunito", sans-serif;
+  font-family: "Segoe Print", sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.6;
@@ -6212,7 +6212,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Nunito", sans-serif;
+  font-family: "Segoe Print", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -6337,7 +6337,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Nunito", sans-serif;
+  font-family: "Segoe Print", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -10750,5 +10750,13 @@ a.text-dark:focus {
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .show > .nav-link {
   color: #abb2bf;
+}
+
+.website-empty {
+  display: none;
+}
+
+.website-empty.show {
+  display: flex;
 }
 

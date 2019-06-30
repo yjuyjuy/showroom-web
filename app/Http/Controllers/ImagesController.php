@@ -18,7 +18,12 @@ class ImagesController extends Controller
 	public function edit(Product $product)
 	{
 		$images = $product->images()->orderBy('website_id', 'asc')->orderBy('type_id', 'asc')->get();
-		return view('images.edit', compact('product', 'images'));
+		$images = $images->mapToGroups(function ($item, $key) {
+			return [$item->website_id => $item];
+		});
+		$types = \App\Type::all();
+		$websites = \App\Website::all();
+		return view('images.edit', compact('product', 'images', 'types', 'websites'));
 	}
 
 	/**
