@@ -1846,7 +1846,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['productId', 'websiteId', 'typeId'],
+  methods: {
+    dropped: function dropped(evt) {
+      if (evt.dataTransfer.files[0]) {
+        this.store_image(evt.dataTransfer.files[0]);
+      } else {
+        if (event.dataTransfer.getData('img_id')) {
+          this.move_image(event.dataTransfer.getData('img_id'));
+        }
+      }
+    },
+    store_image: function store_image(image) {
+      var formData = new FormData();
+      formData.append('image', image);
+      formData.append('product_id', this.productId);
+      formData.append('website_id', this.websiteId);
+      formData.append('type_id', this.typeId);
+      axios.post('/images', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        return window.location.reload();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    move_image: function move_image(id) {
+      axios.patch('/images/' + id + '/move', {
+        website_id: this.websiteId,
+        type_id: this.typeId
+      }).then(function (response) {
+        return window.location.reload();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -1902,10 +1943,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['filename', 'id'],
   methods: {
+    dragged: function dragged(event) {
+      event.dataTransfer.setData('img_id', this.id);
+    },
+    dropped: function dropped(evt) {
+      if (evt.dataTransfer.files[0]) {
+        this.replace_image(evt.dataTransfer.files[0]);
+      } else {
+        if (event.dataTransfer.getData('img_id')) {
+          this.swap_image(event.dataTransfer.getData('img_id'));
+        }
+      }
+    },
+    replace_image: function replace_image(image) {
+      var formData = new FormData();
+      formData.append('image', image);
+      formData.append('_method', 'patch');
+      console.log(formData);
+      axios.post('/images/' + this.id, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        return window.location.reload();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
     delete_image: function delete_image() {
       axios["delete"]('/images/' + this.id).then(function (response) {
         return window.location.reload();
       })["catch"]();
+    },
+    swap_image: function swap_image(id) {
+      if (id == this.id) {
+        return;
+      }
+
+      axios.patch('/images/swap', {
+        image_id1: this.id,
+        image_id2: id
+      }).then(function (response) {
+        return window.location.reload();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     }
   }
 });
@@ -6729,7 +6811,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#delete-link[data-v-d53c388c] {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\twidth: 40px;\r\n\tline-height: 40px;\r\n\theight: 40px;\r\n\tfont-size: 40px;\r\n\ttext-align: center;\r\n\tcolor: black;\n}\n#delete-link[data-v-d53c388c]:hover {\r\n\ttext-decoration: none;\n}\r\n", ""]);
+exports.push([module.i, "\n#delete-link[data-v-d53c388c] {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\twidth: 40px;\r\n\tline-height: 40px;\r\n\theight: 40px;\r\n\tfont-size: 40px;\r\n\ttext-align: center;\r\n\tcolor: black;\n}\n#delete-link[data-v-d53c388c]:hover {\r\n\ttext-decoration: none;\n}\n", ""]);
 
 // exports
 
@@ -6748,7 +6830,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.carousel-indicators[data-v-5c38f7ae] {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\tbottom: 0;\r\n\tmargin-right: 0;\r\n\tmargin-left: 0;\r\n\tz-index: 2;\r\n\twidth: 100%;\r\n\toverflow: hidden;\n}\n.thumbnail-item[data-v-5c38f7ae] {\r\n\tdisplay: none;\r\n\topacity: 0.5;\n}\n.thumbnail-item.show[data-v-5c38f7ae] {\r\n\tdisplay: block;\n}\n.thumbnail-item.active[data-v-5c38f7ae] {\r\n\topacity: 1;\n}\n.thumbnail-control-prev[data-v-5c38f7ae],\r\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\twidth: 13%;\r\n\tposition: absolute;\r\n\tbottom: 0;\r\n\theight: 100%;\r\n\talign-items: center;\r\n\tjustify-content: center;\r\n\tdisplay: flex;\r\n\tz-index: 3;\r\n\topacity: 0.5;\n}\n.thumbnail-control-prev[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-next[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-prev[data-v-5c38f7ae]:focus,\r\n.thumbnail-control-next[data-v-5c38f7ae]:focus {\r\n\topacity: 0.9;\n}\n.thumbnail-control-prev[data-v-5c38f7ae] {\r\n\tleft: 0;\n}\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\tright: 0;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae],\r\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tdisplay: inline-block;\r\n\twidth: 20px;\r\n\theight: 20px;\r\n\tbackground: no-repeat 50%/100% 100%;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae] {\r\n\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e\");\n}\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e\");\n}\n", ""]);
+exports.push([module.i, "\n.carousel-indicators[data-v-5c38f7ae] {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\tbottom: 0;\r\n\tmargin-right: 0;\r\n\tmargin-left: 0;\r\n\tz-index: 2;\r\n\twidth: 100%;\r\n\toverflow: hidden;\n}\n.thumbnail-item[data-v-5c38f7ae] {\r\n\tdisplay: none;\r\n\topacity: 0.5;\n}\n.thumbnail-item.show[data-v-5c38f7ae] {\r\n\tdisplay: block;\n}\n.thumbnail-item.active[data-v-5c38f7ae] {\r\n\topacity: 1;\n}\n.thumbnail-control-prev[data-v-5c38f7ae],\r\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\twidth: 13%;\r\n\tposition: absolute;\r\n\tbottom: 0;\r\n\theight: 100%;\r\n\talign-items: center;\r\n\tjustify-content: center;\r\n\tdisplay: flex;\r\n\tz-index: 3;\r\n\topacity: 0.5;\n}\n.thumbnail-control-prev[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-next[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-prev[data-v-5c38f7ae]:focus,\r\n.thumbnail-control-next[data-v-5c38f7ae]:focus {\r\n\topacity: 0.9;\n}\n.thumbnail-control-prev[data-v-5c38f7ae] {\r\n\tleft: 0;\n}\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\tright: 0;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae],\r\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tdisplay: inline-block;\r\n\twidth: 20px;\r\n\theight: 20px;\r\n\tbackground: no-repeat 50%/100% 100%;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae] {\r\n\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e\");\n}\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e\");\n}\r\n", ""]);
 
 // exports
 
@@ -38255,41 +38337,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("svg", { attrs: { viewBox: "0 0 1000 1413" } }, [
-    _c("rect", {
-      attrs: {
-        x: "0",
-        y: "0",
-        width: "1000",
-        height: "1413",
-        stroke: "#abb2bf",
-        fill: "transparent",
-        "stroke-width": "10"
+  return _c(
+    "div",
+    {
+      on: {
+        drop: function($event) {
+          $event.preventDefault()
+          return _vm.dropped($event)
+        },
+        dragover: function($event) {
+          $event.preventDefault()
+        }
       }
-    }),
-    _vm._v(" "),
-    _c("line", {
-      attrs: {
-        x1: "450",
-        x2: "550",
-        y1: "706",
-        y2: "706",
-        stroke: "#abb2bf",
-        "stroke-width": "10"
-      }
-    }),
-    _vm._v(" "),
-    _c("line", {
-      attrs: {
-        x1: "500",
-        x2: "500",
-        y1: "756",
-        y2: "656",
-        stroke: "#abb2bf",
-        "stroke-width": "10"
-      }
-    })
-  ])
+    },
+    [
+      _c("svg", { attrs: { viewBox: "0 0 1000 1413" } }, [
+        _c("rect", {
+          attrs: {
+            x: "0",
+            y: "0",
+            width: "1000",
+            height: "1413",
+            stroke: "#abb2bf",
+            fill: "transparent",
+            "stroke-width": "10"
+          }
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "450",
+            x2: "550",
+            y1: "706",
+            y2: "706",
+            stroke: "#abb2bf",
+            "stroke-width": "10"
+          }
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "500",
+            x2: "500",
+            y1: "756",
+            y2: "656",
+            stroke: "#abb2bf",
+            "stroke-width": "10"
+          }
+        })
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38360,26 +38458,42 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticStyle: { position: "relative" } }, [
-    _c("img", {
-      staticClass: "d-block w-100",
-      attrs: { src: "/storage/images/" + _vm.filename }
-    }),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        attrs: { href: "#", id: "delete-link" },
-        on: {
-          click: function($event) {
-            $event.preventDefault()
-            return _vm.delete_image($event)
-          }
+  return _c(
+    "div",
+    {
+      staticStyle: { position: "relative" },
+      on: {
+        dragstart: _vm.dragged,
+        dragover: function($event) {
+          $event.preventDefault()
+        },
+        drop: function($event) {
+          $event.preventDefault()
+          return _vm.dropped($event)
         }
-      },
-      [_vm._v("×")]
-    )
-  ])
+      }
+    },
+    [
+      _c("img", {
+        staticClass: "d-block w-100",
+        attrs: { draggable: "true", src: "/storage/images/" + _vm.filename }
+      }),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          attrs: { href: "#", id: "delete-link" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.delete_image($event)
+            }
+          }
+        },
+        [_vm._v("×")]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51390,8 +51504,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
