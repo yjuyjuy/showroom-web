@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container" style="position:relative;">
-	<div class="px-2" style="position:absolute; top:0; left:5%; z-index:1;background-color:#282c34;">
+	<div class="" style="position:absolute; top:0; left:15px; z-index:1;">
 		<a href="#website-list" data-toggle="collapse">more websites</a>
-		<div id="website-list" class="collapse pb-2">
+		<div id="website-list" class="collapse pb-2" style="background-color:#282c34;">
 			@foreach($websites->whereNotIn('id',$images->keys()) as $website)
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" value="{{$website->id}}" onchange="

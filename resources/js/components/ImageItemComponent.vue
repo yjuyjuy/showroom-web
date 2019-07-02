@@ -1,7 +1,8 @@
 <template>
-<div @dragstart="dragged" @dragover.prevent @drop.prevent="dropped($event)" style="position:relative;">
+<div @dblclick="$refs.fileInput.click()" @dragstart="dragged" @dragover.prevent @drop.prevent="dropped($event)" style="position:relative;">
 	<img draggable="true" class="d-block w-100" :src="'/storage/images/' + filename">
 	<a href="#" @click.prevent="delete_image" id="delete-link">×</a>
+	<input @change="replace_image($event.target.files[0])" type="file" ref="fileInput" style="display:none;">
 </div>
 </template>
 
@@ -59,11 +60,12 @@ export default {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 40px;
-	line-height: 40px;
-	height: 40px;
+	width: 30px;
+	line-height: 30px;
+	height: 30px;
 	font-size: 40px;
-	text-align: center;
+	text-align: left;
+	vertical-align: baseline;
 	color: black;
 }
 
