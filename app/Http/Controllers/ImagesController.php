@@ -55,6 +55,7 @@ class ImagesController extends Controller
 			'website_id' => $image->website_id,
 			'type_id' => $image->type_id,
 		]);
+		$image->delete();
 		return ['success'];
 	}
 

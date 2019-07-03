@@ -26,7 +26,6 @@ export default {
 			var formData = new FormData();
 			formData.append('image', image);
 			formData.append('_method', 'patch');
-			console.log(formData);
 			axios.post('/images/' + this.id, formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data',
