@@ -21,7 +21,7 @@ class ImagesController extends Controller
 		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 		\App\Image::create([
 			'path' => $path,
-			'source' => request('images')->getClientOriginalName(),
+			'source' => request('image')->getClientOriginalName(),
 			'product_id' => request('product_id'),
 			'website_id' => request('website_id'),
 			'type_id' => request('type_id'),
@@ -50,10 +50,10 @@ class ImagesController extends Controller
 		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 		\App\Image::create([
 			'path' => $path,
-			'source' => request('images')->getClientOriginalName(),
-			'product_id' => request('product_id'),
-			'website_id' => request('website_id'),
-			'type_id' => request('type_id'),
+			'source' => request('image')->getClientOriginalName(),
+			'product_id' => $image->product_id,
+			'website_id' => $image->website_id,
+			'type_id' => $image->type_id,
 		]);
 		return ['success'];
 	}
