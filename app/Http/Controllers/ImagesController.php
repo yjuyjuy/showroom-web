@@ -17,11 +17,11 @@ class ImagesController extends Controller
 			'type_id' => ['required','exists:types,id'],
 			'image' => ['required','image'],
 		]);
-		$filename = sprintf("%s_%02d_%02d.%s", request('product_id'), request('website_id'), request('type_id'), request('image')->extension());
-		$imagePath = request('image')->storeAs('images', $filename, 'public');
-		\Intervention\Image\Facades\Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1413)->save();
+		$path = request('image')->store('images/1101191001', 'public');
+		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 		\App\Image::create([
-			'filename' => $filename,
+			'path' => $path,
+			'source' => request('images')->getClientOriginalName(),
 			'product_id' => request('product_id'),
 			'website_id' => request('website_id'),
 			'type_id' => request('type_id'),
@@ -45,11 +45,16 @@ class ImagesController extends Controller
 		request()->validate([
 			'image' => ['required','image'],
 		]);
-		$filename = $image->filename;
-		Storage::delete('/public/images/'.$filename);
-		$imagePath = request('image')->storeAs('images', $filename, 'public');
-		\Intervention\Image\Facades\Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1413)->save();
-		$image->save();
+		Storage::delete(public_path("storage/{$image->path}"));
+		$path = request('image')->store("images/{$image->product->id}", 'public');
+		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
+		\App\Image::create([
+			'path' => $path,
+			'source' => request('images')->getClientOriginalName(),
+			'product_id' => request('product_id'),
+			'website_id' => request('website_id'),
+			'type_id' => request('type_id'),
+		]);
 		return ['success'];
 	}
 
@@ -59,14 +64,9 @@ class ImagesController extends Controller
 			'website_id' => ['required','exists:websites,id'],
 			'type_id' => ['required','exists:types,id'],
 		]);
-		$ext = substr($image->filename, strrpos($image->filename, '.')+1);
-		$newFilename = sprintf("%s_%02d_%02d.%s", $image->product_id, request('website_id'), request('type_id'), $ext);
-		Storage::delete('/public/images/'.$newFilename);
-		Storage::move('/public/images/'.$image->filename, '/public/images/'.$newFilename);
 		$image->update([
 			'website_id' => request('website_id'),
 			'type_id' => request('type_id'),
-			'filename' => $newFilename,
 		]);
 		return ['success'];
 	}
@@ -79,31 +79,21 @@ class ImagesController extends Controller
 		]);
 		$image1 = Image::find(request('image_id1'));
 		$image2 = Image::find(request('image_id2'));
-		$ext1 = substr($image1->filename, strrpos($image1->filename, '.')+1);
-		$ext2 = substr($image2->filename, strrpos($image2->filename, '.')+1);
 
-		$filename2 = sprintf("%s_%02d_%02d.%s", $image2->product_id, $image2->website_id, $image2->type_id, $ext1);
-		$filename1 = sprintf("%s_%02d_%02d.%s", $image1->product_id, $image1->website_id, $image1->type_id, $ext2);
+		$website_id = $image1->website_id;
+		$type_id = $image1->type_id;
+		$image1->website_id = $image2->website_id;
+		$image1->type_id = $image2->type_id;
+		$image2->website_id = $website_id;
+		$image2->type_id = $type_id;
 
-		Storage::delete('/public/images/'.$filename2.'.new');
-		Storage::move('/public/images/'.$image1->filename, '/public/images/'.$filename2.'.new');
-		Storage::delete('/public/images/'.$filename1.'.new');
-		Storage::move('/public/images/'.$image2->filename, '/public/images/'.$filename1.'.new');
-
-		Storage::delete('/public/images/'.$filename1);
-		Storage::move('/public/images/'.$filename1.'.new', '/public/images/'.$filename1);
-		Storage::delete('/public/images/'.$filename2);
-		Storage::move('/public/images/'.$filename2.'.new', '/public/images/'.$filename2);
-
-		$image1->filename = $filename1;
 		$image1->save();
-		$image2->filename = $filename2;
 		$image2->save();
 	}
 
 	public function destroy(Image $image)
 	{
-		Storage::delete('/public/images/'.$image->filename);
+		Storage::delete(public_path("storage/{$image->path}"));
 		$image->delete();
 	}
 }

@@ -2,13 +2,13 @@
 <div id="images-slider" class="carousel slide" data-touch="true" data-ride="false">
 	<div class="carousel-inner">
 		<div v-for="(image,index) in images" class="carousel-item">
-			<img :src="'/storage/images/' + image" class="d-block w-100">
+			<img :src="'/storage/' + image" class="d-block w-100">
 		</div>
 	</div>
 	<div class="row px-2 mb-2 justify-content-center carousel-indicators">
 
 		<a v-for="(image,index) in images" href="#" data-target="#images-slider" :data-slide-to="index" class="col-2 px-2 thumbnail-item" :class="{show:index >=0 && index < max}" v-once>
-			<img :src="'/storage/images/' + image" class="d-block w-100">
+			<img :src="'/storage/' + image" class="d-block w-100">
 		</a>
 		<a v-if="total>max" href="#" @click.prevent="thumbnail_prev()" class="thumbnail-control-prev">
 			<span class="thumbnail-control-prev-icon" aria-hidden="true"></span>

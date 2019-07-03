@@ -2502,7 +2502,7 @@ class DatabaseSeeder extends Seeder
 				'product_id' => $image[1],
 				'website_id' => $image[4],
 				'type_id' => $image[5],
-				'filename' => $image[3],
+				'path' => 'images/'.$image[3],
 			]);
 		}
 	}
