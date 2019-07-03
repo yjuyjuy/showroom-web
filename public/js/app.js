@@ -1943,7 +1943,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['path', 'id'],
+  props: ['src', 'id'],
   methods: {
     dragged: function dragged(event) {
       event.dataTransfer.setData('img_id', this.id);
@@ -38502,7 +38502,7 @@ var render = function() {
     [
       _c("img", {
         staticClass: "d-block w-100",
-        attrs: { draggable: "true", src: "/storage/" + _vm.path }
+        attrs: { draggable: "true", src: _vm.src }
       }),
       _vm._v(" "),
       _c(
@@ -38566,10 +38566,7 @@ var render = function() {
         { staticClass: "carousel-inner" },
         _vm._l(_vm.images, function(image, index) {
           return _c("div", { staticClass: "carousel-item" }, [
-            _c("img", {
-              staticClass: "d-block w-100",
-              attrs: { src: "/storage/" + image }
-            })
+            _c("img", { staticClass: "d-block w-100", attrs: { src: image } })
           ])
         }),
         0
@@ -38658,12 +38655,7 @@ var staticRenderFns = [
             "data-slide-to": index
           }
         },
-        [
-          _c("img", {
-            staticClass: "d-block w-100",
-            attrs: { src: "/storage/" + image }
-          })
-        ]
+        [_c("img", { staticClass: "d-block w-100", attrs: { src: image } })]
       )
     })
   },

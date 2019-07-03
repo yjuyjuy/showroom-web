@@ -21,10 +21,10 @@
 		<div class="col-md-6">
 			<div class="row">
 				<div class="col-6">
-					<img class="w-100" src="/storage/images/{{ $product->images[0]->filename??'' }}">
+					<img class="w-100" src="{{$product->images[0]->url ?? ''}}">
 				</div>
 				<div class="col-6">
-					<img class="w-100" src="/storage/images/{{ $product->images[1]->filename??'' }}">
+					<img class="w-100" src="{{$product->images[1]->url ?? ''}}">
 				</div>
 			</div>
 		</div>

@@ -22,7 +22,7 @@
 		@foreach($types as $type)
 		<div class="col-6 col-md-3 pb-3">
 			@if($image = $website_images->firstWhere('type_id',$type->id))
-			<image-item path="{{$image->path}}" id="{{$image->id}}"></image-item>
+			<image-item src="{{$image->url}}" id="{{$image->id}}"></image-item>
 			@else
 			<empty-image product-id="{{$product->id}}" website-id="{{$website_id}}" type-id="{{$type->id}}"></empty-image>
 			@endif

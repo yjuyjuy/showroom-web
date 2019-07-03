@@ -1,6 +1,6 @@
 <template>
 <div @dblclick="$refs.fileInput.click()" @dragstart="dragged" @dragover.prevent @drop.prevent="dropped($event)" style="position:relative;">
-	<img draggable="true" class="d-block w-100" :src="'/storage/' + path">
+	<img draggable="true" class="d-block w-100" :src="src">
 	<a href="#" @click.prevent="delete_image" id="delete-link">×</a>
 	<input @change="replace_image($event.target.files[0])" type="file" ref="fileInput" style="display:none;">
 </div>
@@ -8,7 +8,7 @@
 
 <script>
 export default {
-	props: ['path', 'id'],
+	props: ['src', 'id'],
 	methods: {
 		dragged: function(event) {
 			event.dataTransfer.setData('img_id', this.id);
