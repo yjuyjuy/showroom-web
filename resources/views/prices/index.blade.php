@@ -36,7 +36,7 @@
 							<span>{{ $product->brand->full_name }}</span>
 						</div>
 						<div class="col-12">
-							<span class="font-weight-bold">{{ $product->name_cn }}</span>
+							<a href="{{route('products.show',['product' => $product])}}" class="font-weight-bold">{{ $product->name_cn }}</a>
 						</div>
 					</div>
 					<div class="row">
