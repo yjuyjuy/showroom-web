@@ -17,7 +17,7 @@ class ImagesController extends Controller
 			'type_id' => ['required','exists:types,id'],
 			'image' => ['required','file','image','max:10000'],
 		]);
-		$path = request('image')->store('images/1101191001', 'public');
+		$path = request('image')->store('images/'.request('product_id'), 'public');
 		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 		\App\Image::create([
 			'path' => $path,
@@ -45,8 +45,10 @@ class ImagesController extends Controller
 		request()->validate([
 			'image' => ['required','file','image','max:10000'],
 		]);
-		Storage::delete('public/'.$image->path);
-		$path = request('image')->store("images/{$image->product->id}", 'public');
+		if (Storage::exists('public/'.$image->path)) {
+			Storage::delete('public/'.$image->path);
+		}
+		$path = request('image')->store("images/{$image->product_id}", 'public');
 		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 		\App\Image::create([
 			'path' => $path,
@@ -94,7 +96,9 @@ class ImagesController extends Controller
 
 	public function destroy(Image $image)
 	{
-		Storage::delete('public/'.$image->path);
+		if (Storage::exists('public/'.$image->path)) {
+			Storage::delete('public/'.$image->path);
+		}
 		$image->delete();
 	}
 }
