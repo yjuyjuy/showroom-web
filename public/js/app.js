@@ -1845,10 +1845,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['productId', 'websiteId', 'typeId'],
   methods: {
@@ -38352,52 +38348,14 @@ var render = function() {
       }
     },
     [
-      _c(
-        "svg",
-        {
-          attrs: { viewBox: "0 0 1000 1413" },
-          on: {
-            click: function($event) {
-              return _vm.$refs.fileInput.click()
-            }
+      _c("img", {
+        attrs: { src: "/storage/icons/AddImage.svg" },
+        on: {
+          click: function($event) {
+            return _vm.$refs.fileInput.click()
           }
-        },
-        [
-          _c("rect", {
-            attrs: {
-              x: "0",
-              y: "0",
-              width: "1000",
-              height: "1413",
-              stroke: "#abb2bf",
-              fill: "transparent",
-              "stroke-width": "10"
-            }
-          }),
-          _vm._v(" "),
-          _c("line", {
-            attrs: {
-              x1: "450",
-              x2: "550",
-              y1: "706",
-              y2: "706",
-              stroke: "#abb2bf",
-              "stroke-width": "10"
-            }
-          }),
-          _vm._v(" "),
-          _c("line", {
-            attrs: {
-              x1: "500",
-              x2: "500",
-              y1: "756",
-              y2: "656",
-              stroke: "#abb2bf",
-              "stroke-width": "10"
-            }
-          })
-        ]
-      ),
+        }
+      }),
       _vm._v(" "),
       _c("input", {
         ref: "fileInput",

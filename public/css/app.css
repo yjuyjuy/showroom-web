@@ -10760,3 +10760,74 @@ a.text-dark:focus {
   display: flex;
 }
 
+.close-overlay {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .open-overlay {
+    position: fixed;
+    bottom: 0;
+    padding: 5px 15px;
+    margin: 0 0 5px 0;
+    background-color: #1d2026;
+    border-radius: 0.25rem;
+    z-index: 1;
+    opacity: 0.8;
+  }
+
+  .close-overlay {
+    display: block;
+  }
+
+  #open-filter {
+    right: 65px;
+  }
+
+  #open-sort {
+    right: 0;
+  }
+
+  .overlay {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */
+    height: 100%;
+    width: 0;
+    position: fixed;
+    /* Stay in place */
+    z-index: 2;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    padding: 80px 0;
+    background-color: black;
+    /* Black fallback color */
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Black w/opacity */
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    transition: 0.5s ease-out;
+    /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+  }
+
+  /* Position the content inside the overlay */
+
+  .overlay * {
+    position: relative;
+    flex-wrap: nowrap;
+  }
+
+  .overlay > *:not(.close-overlay) {
+    margin: 0 50px;
+  }
+
+  /* Position the close button (top right corner) */
+
+  .close-overlay {
+    position: absolute;
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+    z-index: 3;
+  }
+}
+
