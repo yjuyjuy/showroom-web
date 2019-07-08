@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Rubik:400,700&display=swap');
 
 // Variables
 @import 'variables';
@@ -7,6 +7,11 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-brand:focus,
+.navbar-light .navbar-brand{
+	color:$purple;
+}
 
 .form-control, .form-control:focus{
 	background-color: $body-bg;
@@ -42,6 +47,8 @@
 .close-overlay {
 	display:none;
 }
+
+
 @include media-breakpoint-down(md) {
 	.open-overlay{
 		position:fixed;
@@ -62,7 +69,6 @@
 	#open-sort{
 		right:0;
 	}
-
 	.overlay {
 	  /* Height & width depends on how you want to reveal the overlay (see JS below) */
 	  height: 100%;
@@ -74,14 +80,21 @@
 		padding:80px 0;
 	  background-color: rgb(0,0,0); /* Black fallback color */
 	  background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+		background: linear-gradient(to right, rgba(0,0,0,.9),rgba(0,0,0,.8), rgba(0,0,0,.2));
 	  overflow-x: hidden; /* Disable horizontal scroll */
-	  transition: 0.5s ease-out; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+	  transition: 0.3s ease-in-out; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+	}
+	.overlay:not(.open) {
+		width:0;
+	}
+	.overlay.open {
+		width:100%;
 	}
 
 	/* Position the content inside the overlay */
 	.overlay * {
 		position: relative;
-		flex-wrap: nowrap;
+		white-space: nowrap;
 	}
 	.overlay>*:not(.close-overlay) {
 		margin:0 50px;

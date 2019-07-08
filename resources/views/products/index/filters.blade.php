@@ -1,6 +1,6 @@
-<a id="open-filter" class="text-primary open-overlay" href="#" @click="$refs.filter.style.width='100%';">Filter</a>
+<a id="open-filter" class="text-primary open-overlay" href="#" @click="$refs.filter.classList.toggle('open');">Filter</a>
 <div id="filter" ref="filter" class="overlay">
-	<a class="close-overlay" href="#" @click="$refs.filter.style.width='';">&times;</a>
+	<a class="close-overlay" href="#" @click="$refs.filter.classList.remove('open');">&times;</a>
 	<div class="form-check">
 		<input class="form-check-input" type="checkbox" name="show_available_only" value="show_available_only" id="show_available_only" onchange="submit()" {{ old("show_available_only")? 'checked':'' }}>
 		<label class="form-check-label" for="show_available_only">只显示有货</label>
