@@ -15,7 +15,6 @@
 
 	<!-- Fonts -->
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
 	<!-- Styles -->
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -25,7 +24,7 @@
 	<div id="app">
 		<nav class="navbar navbar-expand-md navbar-light bg-dark shadow-sm">
 			<div class="container">
-				<a class="navbar-brand" href="{{ url('/') }}" style="color:var(--purple);">
+				<a class="navbar-brand" href="{{ url('/') }}">
 					{{ config('app.name','Laravel') }}
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -57,7 +56,7 @@
 							</a>
 
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{route('prices.index')}}">价格表</a>
+								@if(auth()->user()->vendor)<a class="dropdown-item" href="{{route('prices.index')}}">价格表</a>@endif
 								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
 									{{ __('Logout') }}
