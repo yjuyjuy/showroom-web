@@ -3,7 +3,7 @@
 	<div class="product col-6 col-md-4 col-xl-3 align-items-center mb-2">
 		<div class="image">
 			<a href="{{ route('products.show',['product' => $product->id ]) }}">
-				<img class="w-100" src="{{$product->images->first()->url ?? asset('storage/icons/EmptyImage.svg')}}">
+				<img class="w-100" src="{{$product->images->first()->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 			</a>
 		</div>
 		<div class="text mt-n4">
