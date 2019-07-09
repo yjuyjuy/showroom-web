@@ -7,10 +7,10 @@ use App\Color;
 use App\Product;
 use App\Season;
 use App\Brand;
-use App\Sortmethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
 
 class ProductsController extends Controller
 {
@@ -72,7 +72,7 @@ class ProductsController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$this->authorize('create', $product);
+		$this->authorize('create', Product::class);
 		$product = new Product($this->validateProduct());
 		$lastProduct = Product::where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
 		if ($lastProduct) {
@@ -81,7 +81,7 @@ class ProductsController extends Controller
 			$product->id = $product->category_id.$product->season_id.'001';
 		}
 		$product->save();
-		return redirect(route('products.show', ['product' => $product]));
+		return redirect(route('images.edit', ['product' => $product]));
 	}
 
 	/**
@@ -184,7 +184,7 @@ class ProductsController extends Controller
 	{
 		if (request()->input('sort')) {
 			$sort = request()->validate([
-				'sort' => ['sometimes',Rule::in($this->sortMetods())],
+				'sort' => ['sometimes',Rule::in(Arr::pluck($this->sortMethods(), 'name'))],
 			])['sort'];
 		} else {
 			$sort = 'default';

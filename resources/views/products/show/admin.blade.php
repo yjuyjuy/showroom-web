@@ -1,6 +1,6 @@
 @forelse($product->prices->loadMissing('vendor') as $price)
 <div class="row">
-	<div class="font-weight-bold border-bottom col-12">
+	<div class="font-weight-bold border-bottom col-12 pb-1 mb-1">
 		<a href="{{route('prices.edit',['price'=>$price])}}">
 			{{$price->vendor->name.' - '.$price->vendor->city}}
 		</a>
@@ -18,10 +18,8 @@
 			<a href="{{route('prices.edit',['price'=>$price])}}" class="col-auto text-primary text-right pr-0">修改</a>
 			<a href="#" class="col-auto text-danger" @click.prevent="deletePrice({{$price->id}})" >删除</a>
 		</div>
-
 	</div>
 </div>
-
 @empty
 <div class="row">
 	<div class="font-weight-bold col">Not available</div>
