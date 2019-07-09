@@ -47,8 +47,9 @@ class ProductsController extends Controller
 			}
 			return $products;
 		});
+		$sortMethods = $this->sortMethods();
 		$request->flash();
-		return view('products.index', compact('products'));
+		return view('products.index', compact('products', 'sortMethods'));
 	}
 
 	/**
@@ -167,12 +168,23 @@ class ProductsController extends Controller
 		}
 		return $query;
 	}
-
+	public function sortMethods()
+	{
+		return [
+			['name' => 'default','name_cn' => '默认排序',],
+			['name' => 'price high to low','name_cn' => '价格最高',],
+			['name' => 'price low to high','name_cn' => '价格最低',],
+			['name' => 'hottest','name_cn' => '人气最高',],
+			['name' => 'best selling','name_cn' => '销量最高',],
+			['name' => 'newest','name_cn' => '最新到货',],
+			['name' => 'oldest','name_cn' => '发布最早',],
+		];
+	}
 	public function sort($products)
 	{
 		if (request()->input('sort')) {
 			$sort = request()->validate([
-				'sort' => 'sometimes|exists:sortmethods,name',
+				'sort' => ['sometimes',Rule::in($this->sortMetods())],
 			])['sort'];
 		} else {
 			$sort = 'default';
@@ -218,15 +230,4 @@ class ProductsController extends Controller
 		}
 		return $products;
 	}
-	// public function season_asc()
-	// {
-	// 	return function ($a, $b) {
-	// 		return
-	// 		($a->season_id == $b->season_id)?
-	// 			($a->category_id == $b->category_id)?
-	// 				$a->id - $b->id :
-	// 			$a->category_id - $b->category_id :
-	// 		$a->season_id - $b->season_id;
-	// 	}
-	// }
 }
