@@ -5,7 +5,6 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 
 /**
@@ -40,4 +39,15 @@ const app = new Vue({
 				.catch(error => console.log(error));
 		}
 	},
+});
+
+window.addEventListener('load', function() {
+	const topAppBarElement = document.getElementById('top-app-bar');
+	const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
+
+	const drawer = mdc.drawer.MDCDrawer.attachTo(document.getElementById('drawer'));
+	topAppBar.setScrollTarget(document.getElementById('drawer'));
+	topAppBar.listen('MDCTopAppBar:nav', () => {
+		drawer.open = !drawer.open;
+	});
 });

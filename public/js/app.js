@@ -51031,6 +51031,15 @@ var app = new Vue({
     }
   }
 });
+window.addEventListener('load', function () {
+  var topAppBarElement = document.getElementById('top-app-bar');
+  var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
+  var drawer = mdc.drawer.MDCDrawer.attachTo(document.getElementById('drawer'));
+  topAppBar.setScrollTarget(document.getElementById('drawer'));
+  topAppBar.listen('MDCTopAppBar:nav', function () {
+    drawer.open = !drawer.open;
+  });
+});
 
 /***/ }),
 
