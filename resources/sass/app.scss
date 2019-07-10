@@ -6,115 +6,52 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-@import url('https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css');
 
 .form-control, .form-control:focus{
 	background-color: $body-bg;
 	border-color: $red;
 	color:$body-color;
 }
-#top-app-bar{
-	.mdc-top-app-bar__row{
+
+@import "@material/button/mdc-button";
+@import '@material/image-list/mdc-image-list';
+@import "@material/drawer/mdc-drawer";
+@import "@material/list/mdc-list";
+@import "@material/top-app-bar/mdc-top-app-bar";
+
+#top-app-bar {
+	.mdc-top-app-bar__row {
 		padding: 16px;
-		.mdc-top-app-bar__section--align-start{
-			.mdc-top-app-bar__navigation-icon{
-				width:24px;
-				height:24px;
+
+		.mdc-top-app-bar__section--align-start {
+			.mdc-top-app-bar__navigation-icon {
+				width: 24px;
+				height: 24px;
 			}
-			.mdc-top-app-bar__title{
-				padding-left:32px;
+
+			.mdc-top-app-bar__title {
+				padding-left: 32px;
 			}
 		}
-		.mdc-top-app-bar__section--align-end{
-			.mdc-top-app-bar__action-item{
+
+		.mdc-top-app-bar__section--align-end {
+			.mdc-top-app-bar__action-item {
 				padding-left: 24px;
 			}
 		}
 	}
 }
-.mdc-drawer{
-	.mdc-drawer__header{
-		.mdc-drawer__title{
+
+.mdc-drawer {
+	.mdc-drawer__header {
+		.mdc-drawer__title {
 			text-transform: capitalize;
 		}
 	}
-	.mdc-drawer__content{
 
-	}
+	.mdc-drawer__content {}
 }
 
 .my-image-list {
+	@include mdc-image-list-standard-columns(4);
 }
-// // overlay
-// .website-empty{
-// 	display:none;
-// }
-// .website-empty.show{
-// 	display:flex;
-// }
-// .close-overlay {
-// 	display:none;
-// }
-//
-//
-// @include media-breakpoint-down(md) {
-// 	.open-overlay{
-// 		position:fixed;
-// 		bottom:0;
-// 		padding:5px 15px;
-// 		margin:0 0 5px 0;
-// 		background-color: darken($body-bg,5%);
-// 		border-radius: 0.25rem;
-// 		z-index:1;
-// 		opacity:0.8;
-// 	}
-// 	.close-overlay {
-// 		display:block;
-// 	}
-// 	#open-filter{
-// 		right:65px
-// 	}
-// 	#open-sort{
-// 		right:0;
-// 	}
-// 	.overlay {
-// 	  /* Height & width depends on how you want to reveal the overlay (see JS below) */
-// 	  height: 100%;
-// 	  width: 0;
-// 	  position: fixed; /* Stay in place */
-// 	  z-index: 2; /* Sit on top */
-// 	  left: 0;
-// 	  top: 0;
-// 		padding:80px 0;
-// 	  background-color: rgb(0,0,0); /* Black fallback color */
-// 	  background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
-// 		background: linear-gradient(to right, rgba(0,0,0,.9),rgba(0,0,0,.8), rgba(0,0,0,.2));
-// 	  overflow-x: hidden; /* Disable horizontal scroll */
-// 	  transition: 0.3s ease-in-out; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
-// 	}
-// 	.overlay:not(.open) {
-// 		width:0;
-// 	}
-// 	.overlay.open {
-// 		width:100%;
-// 	}
-//
-// 	/* Position the content inside the overlay */
-// 	.overlay * {
-// 		position: relative;
-// 		white-space: nowrap;
-// 	}
-// 	.overlay>*:not(.close-overlay) {
-// 		margin:0 50px;
-// 	}
-//
-// 	/* Position the close button (top right corner) */
-// 	.close-overlay {
-// 	  position: absolute;
-// 		font-size: 40px;
-//     top: 15px;
-//     right: 35px;
-// 		z-index:3;
-// 	}
-//
-// }

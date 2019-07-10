@@ -14,7 +14,6 @@
 		<title>@yield('title','TheShowroom')</title>
 
 		<!-- Scripts -->
-		<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 		<script src="{{ asset('js/app.js') }}" defer></script>
 
 		<!-- Fonts -->
