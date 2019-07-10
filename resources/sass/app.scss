@@ -51,7 +51,6 @@
 
 	.mdc-drawer__content {}
 }
-
 .my-image-list {
-	@include mdc-image-list-standard-columns(4);
+	@include mdc-image-list-standard-columns(4,15px);
 }

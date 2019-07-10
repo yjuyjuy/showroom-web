@@ -55037,26 +55037,15 @@ var app = new Vue({
 
 
 
-window.addEventListener('load', function () {
-  // 	const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el){
-  // 		return mdc.ripple.MDCRipple.attachTo(el);
-  // 	});
-  // 	const topAppBarElement = document.getElementById('top-app-bar');
-  // 	const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
-  //
-  // 	const drawer = mdc.drawer.MDCDrawer.attachTo(document.getElementById('drawer'));
-  // 	topAppBar.listen('MDCTopAppBar:nav', () => {
-  // 		drawer.open = !drawer.open;
-  // 	});
-  var buttons = [].map.call(document.querySelectorAll('.mdc-button'), function (el) {
-    return new _material_ripple__WEBPACK_IMPORTED_MODULE_0__["MDCRipple"](el);
-  });
-  var topAppBarElement = document.getElementById('top-app-bar');
-  var topAppBar = new _material_top_app_bar__WEBPACK_IMPORTED_MODULE_1__["MDCTopAppBar"](topAppBarElement);
-  var drawer = _material_drawer__WEBPACK_IMPORTED_MODULE_2__["MDCDrawer"].attachTo(document.getElementById('drawer'));
-  topAppBar.listen('MDCTopAppBar:nav', function () {
-    drawer.open = !drawer.open;
-  });
+var buttons = [].map.call(document.querySelectorAll('.mdc-button'), function (el) {
+  return new _material_ripple__WEBPACK_IMPORTED_MODULE_0__["MDCRipple"](el);
+});
+var topAppBarElement = document.getElementById('top-app-bar');
+var topAppBar = new _material_top_app_bar__WEBPACK_IMPORTED_MODULE_1__["MDCTopAppBar"](topAppBarElement);
+var drawer = _material_drawer__WEBPACK_IMPORTED_MODULE_2__["MDCDrawer"].attachTo(document.getElementById('drawer'));
+topAppBar.setScrollTarget(window);
+topAppBar.listen('MDCTopAppBar:nav', function () {
+  drawer.open = !drawer.open;
 });
 
 /***/ }),

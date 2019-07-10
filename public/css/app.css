@@ -12564,7 +12564,7 @@ a.mdc-list-item {
 }
 
 .my-image-list .mdc-image-list__item {
-  width: calc(100% / 4 - 4.25px);
-  margin: 2px;
+  width: calc(100% / 4 - 15.25px);
+  margin: 7.5px;
 }
 

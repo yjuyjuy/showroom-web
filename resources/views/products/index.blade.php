@@ -6,7 +6,8 @@
 
 		<div class="col order-md-2">
 			<ul class="mdc-image-list my-image-list">
-				@forelse($products as $product)
+				@foreach([0,1,2,3,4,5] as $value)
+				@foreach($products as $product)
 				<li class="mdc-image-list__item">
 					<div class="">
 						<img class="mdc-image-list__image" src="{{$product->images->first()->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
@@ -25,6 +26,7 @@
 						@endif
 					</div>
 				</li>
+				@endforeach
 				@endforeach
 			</ul>
 			<!-- <div class="row">

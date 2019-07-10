@@ -45,16 +45,13 @@ import {MDCRipple} from '@material/ripple';
 import {MDCTopAppBar} from '@material/top-app-bar';
 import {MDCDrawer} from "@material/drawer";
 
-
-window.addEventListener('load', function() {
-	const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el){
-		return new MDCRipple(el);
-	});
-	const topAppBarElement = document.getElementById('top-app-bar');
-	const topAppBar = new MDCTopAppBar(topAppBarElement);
-
-	const drawer = MDCDrawer.attachTo(document.getElementById('drawer'));
-	topAppBar.listen('MDCTopAppBar:nav', () => {
-		drawer.open = !drawer.open;
-	});
+const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el){
+	return new MDCRipple(el);
+});
+const topAppBarElement = document.getElementById('top-app-bar');
+const topAppBar = new MDCTopAppBar(topAppBarElement);
+const drawer = MDCDrawer.attachTo(document.getElementById('drawer'));
+topAppBar.setScrollTarget(window);
+topAppBar.listen('MDCTopAppBar:nav', () => {
+	drawer.open = !drawer.open;
 });

@@ -73,7 +73,7 @@
 
 		<div class="mdc-drawer-scrim"></div>
 		<div id="app">
-			<header id="top-app-bar" class="mdc-top-app-bar">
+			<header id="top-app-bar" class="mdc-top-app-bar mdc-top-app-bar--short">
 				<div class="mdc-top-app-bar__row">
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
 						<a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
@@ -85,7 +85,7 @@
 				</div>
 			</header>
 			<main class="mdc-top-app-bar--short-fixed-adjust">
-				<div class="pt-4">
+				<div id="main-content" class="pt-4">
 					@yield('content')
 				</div>
 			</main>
