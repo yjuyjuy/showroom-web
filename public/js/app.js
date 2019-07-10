@@ -38811,7 +38811,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-link text-danger",
+                staticClass: "mdc-button",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
@@ -51032,10 +51032,12 @@ var app = new Vue({
   }
 });
 window.addEventListener('load', function () {
+  var buttons = [].map.call(document.querySelectorAll('.mdc-button'), function (el) {
+    return mdc.ripple.MDCRipple.attachTo(el);
+  });
   var topAppBarElement = document.getElementById('top-app-bar');
   var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
   var drawer = mdc.drawer.MDCDrawer.attachTo(document.getElementById('drawer'));
-  topAppBar.setScrollTarget(document.getElementById('drawer'));
   topAppBar.listen('MDCTopAppBar:nav', function () {
     drawer.open = !drawer.open;
   });

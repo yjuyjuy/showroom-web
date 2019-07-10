@@ -14,7 +14,7 @@
 			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control" type="text" v-model="price.retail" :placeholder="computed_retail(index)">
 		</div>
 		<div class="col-auto col-md">
-			<button @click.prevent="delete_price(index)" type="button" class="btn btn-link text-danger">删除</button>
+			<button @click.prevent="delete_price(index)" type="button" class="mdc-button">删除</button>
 		</div>
 	</div>
 	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.cost&&price.resell&&price.retail)))">

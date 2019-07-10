@@ -24,7 +24,7 @@
 			<div class="container-fluid">
 				<div class="row no-gutters">
 					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-outline-secondary">Back</a>
-					<button type="submit" class="btn btn-outline-primary ml-2" form="create-form">Submit</button>
+					<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="create-form">Submit</button>
 				</div>
 			</div>
 		</div>

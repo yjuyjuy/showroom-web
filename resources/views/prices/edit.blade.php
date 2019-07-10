@@ -24,8 +24,8 @@
 			<div class="container-fluid">
 				<div class="row no-gutters">
 					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-outline-secondary">返回</a>
-					<button type="submit" class="btn btn-outline-primary ml-2" form="update-form">提交</button>
-					<button type="button" class="btn btn-outline-danger ml-2" @click="deletePrice({{$price->id}})">全部删除</button>
+					<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="update-form">提交</button>
+					<button type="button" class="mdc-button mdc-button--outlined ml-2" @click="deletePrice({{$price->id}})">全部删除</button>
 				</div>
 			</div>
 		</div>

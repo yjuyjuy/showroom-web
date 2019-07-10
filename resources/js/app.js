@@ -42,11 +42,13 @@ const app = new Vue({
 });
 
 window.addEventListener('load', function() {
+	const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el){
+		return mdc.ripple.MDCRipple.attachTo(el);
+	});
 	const topAppBarElement = document.getElementById('top-app-bar');
 	const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
 
 	const drawer = mdc.drawer.MDCDrawer.attachTo(document.getElementById('drawer'));
-	topAppBar.setScrollTarget(document.getElementById('drawer'));
 	topAppBar.listen('MDCTopAppBar:nav', () => {
 		drawer.open = !drawer.open;
 	});

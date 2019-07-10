@@ -5,7 +5,29 @@
 	<form action="{{ url()->current() }}" class="row">
 
 		<div class="col order-md-2">
-			<div class="row">
+			<ul class="mdc-image-list my-image-list">
+				@forelse($products as $product)
+				<li class="mdc-image-list__item">
+					<div class="">
+						<img class="mdc-image-list__image" src="{{$product->images->first()->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
+					</div>
+					<div class="mdc-image-list__supporting">
+						<span class="mdc-image-list__label">{{ $product->brand->name }}</span>
+						<span class="mdc-image-list__label">{{ $product->name_cn }}</span>
+						@if($product->price)
+						<span class="mdc-image-list__label">
+							{{ "\u{00a5}".$product->price }}
+						</span>
+						@else
+						<span class="mdc-image-list__label">
+							缺货
+						</span>
+						@endif
+					</div>
+				</li>
+				@endforeach
+			</ul>
+			<!-- <div class="row">
 				@forelse($products as $product)
 				<div class="product col-6 col-md-4 col-xl-3 align-items-center mb-2">
 					<div class="image">
@@ -40,7 +62,7 @@
 					no result
 				</div>
 				@endforelse
-			</div>
+			</div> -->
 
 		</div>
 
@@ -64,26 +86,26 @@
 					<label class="form-check-label" for="show_available_only">只显示有货</label>
 				</div>
 				<div class="w-100"></div>
-					@if(($user = auth()->user()) && $user->vendor)
-					<div class="form-check">
-						<input class="form-check-input" type="checkbox" name="show_vendor_only" value="{{$user->vendor->id}}" id="show_vendor_only" onchange="submit()" {{ old("show_vendor_only")? 'checked':'' }}>
-						<label class="form-check-label" for="show_vendor_only">我的库存</label>
-					</div>
-					<div class="w-100"></div>
+				@if(($user = auth()->user()) && $user->vendor)
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="show_vendor_only" value="{{$user->vendor->id}}" id="show_vendor_only" onchange="submit()" {{ old("show_vendor_only")? 'checked':'' }}>
+					<label class="form-check-label" for="show_vendor_only">我的库存</label>
+				</div>
+				<div class="w-100"></div>
 
-						@if($user->isSuperAdmin())
-						<a class="" data-toggle="collapse" href="#vendor-group">货源</a>
-						<div class="collapse" id="vendor-group">
-							@foreach(\App\Vendor::all() as $vendor)
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" name="vendor[]" value="{{$vendor->id}}" id="vendor-{{$vendor->id}}" onchange="submit()" {{ (old('vendor') && in_array($vendor->id, old('vendor')))?' checked':'' }}>
-								<label class="form-check-label" for="vendor-{{$vendor->id}}">{{$vendor->name}}</label>
-							</div>
-							@endforeach
-						</div>
-						<div class=""></div>
-						@endif
-					@endif
+				@if($user->isSuperAdmin())
+				<a class="" data-toggle="collapse" href="#vendor-group">货源</a>
+				<div class="collapse" id="vendor-group">
+					@foreach(\App\Vendor::all() as $vendor)
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" name="vendor[]" value="{{$vendor->id}}" id="vendor-{{$vendor->id}}" onchange="submit()" {{ (old('vendor') && in_array($vendor->id, old('vendor')))?' checked':'' }}>
+						<label class="form-check-label" for="vendor-{{$vendor->id}}">{{$vendor->name}}</label>
+					</div>
+					@endforeach
+				</div>
+				<div class=""></div>
+				@endif
+				@endif
 
 				@foreach(["category" => App\Category::all(),"color" => App\Color::all(),"season" => App\Season::all(),"brand" => App\Brand::all()] as $key => $values)
 				<a class="" data-toggle="collapse" href="#{{$key}}-group">{{$key}}</a>

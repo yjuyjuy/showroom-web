@@ -81,9 +81,7 @@
 						<span class="mdc-top-app-bar__title">{{config('app.name','app.name')}}</span>
 					</section>
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-			      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download">file_download</a>
-			      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page">print</a>
-			      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page">bookmark</a>
+			      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Sort">sort</a>
 			    </section>
 				</div>
 			</header>

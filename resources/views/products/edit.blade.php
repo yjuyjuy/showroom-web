@@ -17,13 +17,13 @@
 			<div class="form-group   ">
 				<div class="">
 					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-outline-primary ">返回</a>
-					<button type="submit" class="btn btn-outline-primary " form="update-form">
+					<button type="submit" class="mdc-button mdc-button--outlined" form="update-form">
 						更新
 					</button>
 					<form action="{{route('products.destroy',['product' => $product])}}" class="d-inline" method="post" id="delete-form">
 						@csrf
 						@method('DELETE')
-						<button type="submit" class="btn btn-outline-danger" form="delete-form">
+						<button type="submit" class="mdc-button mdc-button--outlined" form="delete-form">
 							删除
 						</button>
 					</form>

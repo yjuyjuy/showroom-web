@@ -12,7 +12,7 @@
 				@include('products.edit.form')
 				<div class="form-group  ">
 					<div class="">
-						<button type="submit" class="btn btn-primary">
+						<button type="submit" class="mdc-button mdc-button--outlined">
 							创建
 						</button>
 					</div>
