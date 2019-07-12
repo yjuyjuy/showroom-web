@@ -25,7 +25,7 @@
 	</head>
 
 	<body>
-		<aside id="drawer" class="mdc-drawer mdc-drawer--modal">
+		<aside id="my-drawer" class="mdc-drawer mdc-drawer--modal">
 			<div class="mdc-drawer__header">
 				@guest
 				<h3 class="mdc-drawer__title">Welcome</h3>
@@ -59,7 +59,7 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
 						<span class="mdc-list-item__text">My collection</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('logout') }}"  onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
 						<span class="mdc-list-item__text">Logout</span>
 					</a>
@@ -70,24 +70,22 @@
 				</nav>
 			</div>
 		</aside>
-
 		<div class="mdc-drawer-scrim"></div>
+
 		<div id="app">
-			<header id="top-app-bar" class="mdc-top-app-bar mdc-top-app-bar--short">
+			<header id="my-top-app-bar" class="mdc-top-app-bar">
 				<div class="mdc-top-app-bar__row">
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
 						<a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
 						<span class="mdc-top-app-bar__title">{{config('app.name','app.name')}}</span>
 					</section>
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-			      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Sort">sort</a>
-			    </section>
+						<a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="error">error</a>
+					</section>
 				</div>
 			</header>
-			<main class="mdc-top-app-bar--short-fixed-adjust">
-				<div id="main-content" class="pt-4">
-					@yield('content')
-				</div>
+			<main id="main-content" class="main-content mdc-top-app-bar--fixed-adjust">
+				@yield('content')
 			</main>
 		</div>
 	</body>

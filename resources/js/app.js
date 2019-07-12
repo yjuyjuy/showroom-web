@@ -41,17 +41,100 @@ const app = new Vue({
 	},
 });
 
-import {MDCRipple} from '@material/ripple';
-import {MDCTopAppBar} from '@material/top-app-bar';
-import {MDCDrawer} from "@material/drawer";
+import {
+	MDCRipple
+} from '@material/ripple';
+import {
+	MDCTopAppBar
+} from '@material/top-app-bar';
+import {
+	MDCDrawer
+} from "@material/drawer";
+import {
+	MDCFormField
+} from '@material/form-field';
+import {
+	MDCCheckbox
+} from '@material/checkbox';
+import {
+	MDCSwitch
+} from '@material/switch';
+import {
+	MDCMenu
+} from '@material/menu';
+import {
+	MDCList
+} from '@material/list';
+import {
+	MDCDialog
+} from '@material/dialog';
+import {
+	MDCRadio
+} from '@material/radio';
 
-const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el){
-	return new MDCRipple(el);
-});
-const topAppBarElement = document.getElementById('top-app-bar');
-const topAppBar = new MDCTopAppBar(topAppBarElement);
-const drawer = MDCDrawer.attachTo(document.getElementById('drawer'));
+const drawer = MDCDrawer.attachTo(document.getElementById('my-drawer'));
+const topAppBarElement = document.getElementById('my-top-app-bar');
+const topAppBar = MDCTopAppBar.attachTo(topAppBarElement);
 topAppBar.setScrollTarget(window);
 topAppBar.listen('MDCTopAppBar:nav', () => {
 	drawer.open = !drawer.open;
+});
+if (document.querySelector('#display-options-dialog')) {
+	const dialogElement = document.getElementById('display-options-dialog');
+	const dialog = new MDCDialog(dialogElement);
+	const filterListElements = dialogElement.querySelectorAll('.mdc-list');
+	const filterLists = [].map.call(filterListElements, function(el) {
+		el.open = function() {
+			this.classList.add('show');
+			this.style.height = this.childElementCount * 48 + 'px';
+		};
+		el.close = function() {
+			this.classList.remove('show');
+			this.style.height = '0';
+		};
+		return new MDCList(el);
+	});
+
+	// const filterGroupSubheaders = dialogElement.querySelectorAll('.mdc-list-group__subheader');
+	const subHeaders = dialogElement.querySelectorAll('.mdc-list-group__subheader');
+
+	subHeaders.forEach(function(subHeader) {
+		subHeader.addEventListener('click', function() {
+
+			event.preventDefault();
+			let list = document.querySelector(this.getAttribute('href'));
+
+			if (list.classList.contains('show')) {
+				list.close();
+			} else {
+				filterListElements.forEach((filterListElement) => filterListElement.close());
+				list.open();
+			}
+		});
+	});
+	const sortList = document.getElementById('sort-list');
+	sortList.classList.add('show');
+	sortList.style.height = sortList.childElementCount * 48 + 'px';
+
+	document.getElementById('open-options-fab').onclick = function(event) {
+		event.preventDefault();
+		console.log('toggle menu');
+		dialog.open();
+	}
+}
+
+const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
+	return new MDCRipple(el);
+});
+const fabs = [].map.call(document.querySelectorAll('.mdc-fab'), function(el) {
+	return new MDCRipple(el);
+});
+const radios = [].map.call(document.querySelectorAll('.mdc-radio'), function(el) {
+	return new MDCRadio(el);
+});
+const checkboxes = [].map.call(document.querySelectorAll('.mdc-checkbox'), function(el) {
+	return new MDCCheckbox(el);
+});
+const formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), function(el) {
+	return new MDCFormField(el);
 });

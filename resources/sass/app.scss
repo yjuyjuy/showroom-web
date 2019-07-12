@@ -1,25 +1,41 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Rubik:400,700&display=swap');
-
-// Variables
-@import 'variables';
-
-// Bootstrap
+@import url('https://fonts.googleapis.com/css?family=Rubik:400,700&display=swap'); // Variables
+@import 'variables'; // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-.form-control, .form-control:focus{
-	background-color: $body-bg;
-	border-color: $red;
-	color:$body-color;
+label {
+	margin-bottom: 0;
 }
-
 @import "@material/button/mdc-button";
 @import '@material/image-list/mdc-image-list';
 @import "@material/drawer/mdc-drawer";
 @import "@material/list/mdc-list";
 @import "@material/top-app-bar/mdc-top-app-bar";
+@import "@material/form-field/mdc-form-field";
+@import "@material/checkbox/mdc-checkbox";
+@import "@material/switch/mdc-switch";
+@import "@material/list/mdc-list";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
+@import "@material/fab/mdc-fab";
+@import "@material/dialog/mdc-dialog";
+@import "@material/radio/mdc-radio";
 
-#top-app-bar {
+.mdc-drawer {
+	.mdc-drawer__header {
+		.mdc-drawer__title {
+			text-transform: capitalize;
+		}
+	}
+
+	.mdc-drawer__content {}
+}
+
+#my-top-app-bar {
+	@include mdc-top-app-bar-ink-color(on-primary);
+	@include mdc-top-app-bar-icon-ink-color(on-primary);
+	@include mdc-top-app-bar-fill-color(primary);
+
 	.mdc-top-app-bar__row {
 		padding: 16px;
 
@@ -42,15 +58,56 @@
 	}
 }
 
-.mdc-drawer {
-	.mdc-drawer__header {
-		.mdc-drawer__title {
-			text-transform: capitalize;
+.my-image-list {
+	@include mdc-image-list-standard-columns(2,15px);
+
+	.mdc-image-list__supporting {
+		padding-top: 0;
+		flex-direction: column;
+		align-items: stretch;
+
+		.mdc-image-list__label {
+			padding-left: 2px;
+		}
+
+		.mdc-image-list__label.brand {
+			margin-top: -1.6rem;
+			background: rgba(0,0,0,.6);
 		}
 	}
-
-	.mdc-drawer__content {}
 }
-.my-image-list {
-	@include mdc-image-list-standard-columns(4,15px);
+
+.mdc-fab {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+}
+
+#display-options-dialog {
+	.mdc-dialog__title {
+		text-transform: capitalize;
+	}
+
+	.mdc-list-group {
+		.mdc-list-group__subheader {
+			text-transform: uppercase;
+			font-weight: bold;
+			color: $mdc-theme-primary;
+		}
+
+		.mdc-list {
+			transition: height 0.3s ease-out;
+			height: 0;
+			overflow: hidden;
+
+			.mdc-list-item {
+				.mdc-list-item__text {
+					text-transform: capitalize;
+				}
+			}
+		}
+	}
+	#mdc-dialog__cancel-button {
+		@include mdc-button-ink-color(error);
+	}
 }

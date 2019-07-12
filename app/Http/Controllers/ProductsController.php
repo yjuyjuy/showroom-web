@@ -47,9 +47,15 @@ class ProductsController extends Controller
 			}
 			return $products;
 		});
-		$sortMethods = $this->sortMethods();
+		$sortOptions = $this->sortOptions();
+		$filters = [
+			"category" => \App\Category::all(),
+			"color" => \App\Color::all(),
+			"season" => \App\Season::all(),
+			"brand" => \App\Brand::all()
+			];
 		$request->flash();
-		return view('products.index', compact('products', 'sortMethods'));
+		return view('products.index', compact('products', 'sortOptions', 'filters'));
 	}
 
 	/**
@@ -168,23 +174,15 @@ class ProductsController extends Controller
 		}
 		return $query;
 	}
-	public function sortMethods()
+	public function sortOptions()
 	{
-		return [
-			['name' => 'default','name_cn' => '默认排序',],
-			['name' => 'price high to low','name_cn' => '价格最高',],
-			['name' => 'price low to high','name_cn' => '价格最低',],
-			['name' => 'hottest','name_cn' => '人气最高',],
-			['name' => 'best selling','name_cn' => '销量最高',],
-			['name' => 'newest','name_cn' => '最新到货',],
-			['name' => 'oldest','name_cn' => '发布最早',],
-		];
+		return ['default','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
 	}
 	public function sort($products)
 	{
 		if (request()->input('sort')) {
 			$sort = request()->validate([
-				'sort' => ['sometimes',Rule::in(Arr::pluck($this->sortMethods(), 'name'))],
+				'sort' => ['sometimes',Rule::in($this->sortOptions())],
 			])['sort'];
 		} else {
 			$sort = 'default';
