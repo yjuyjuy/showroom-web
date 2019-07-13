@@ -51,7 +51,12 @@ import {MDCMenu} from '@material/menu';
 import {MDCList} from '@material/list';
 import {MDCDialog} from '@material/dialog';
 import {MDCRadio} from '@material/radio';
+import {MDCSelect} from '@material/select';
+import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
+import {MDCTextField} from '@material/textfield';
+import {MDCSelectHelperText} from '@material/select/helper-text';
 
+// permanent components
 const drawer = MDCDrawer.attachTo(document.getElementById('my-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
 const topAppBar = MDCTopAppBar.attachTo(topAppBarElement);
@@ -59,6 +64,44 @@ topAppBar.setScrollTarget(window);
 topAppBar.listen('MDCTopAppBar:nav', () => {
 	drawer.open = !drawer.open;
 });
+
+// standard components
+const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
+	return new MDCRipple(el);
+});
+const fabs = [].map.call(document.querySelectorAll('.mdc-fab'), function(el) {
+	return new MDCRipple(el);
+});
+const radios = [].map.call(document.querySelectorAll('.mdc-radio'), function(el) {
+	return new MDCRadio(el);
+});
+const checkboxes = [].map.call(document.querySelectorAll('.mdc-checkbox'), function(el) {
+	return new MDCCheckbox(el);
+});
+const formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), function(el) {
+	return new MDCFormField(el);
+});
+const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(el) {
+	let select = new MDCSelect(el);
+	select.required = true;
+	return select;
+});
+window.selects = selects;
+const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
+	let textField = new MDCTextField(el);
+	if(!el.classList.contains('optional-form-field')) {
+		textField.required = true;
+	}
+	return textField;
+});
+const textFieldHelperTexts = [].map.call(document.querySelectorAll('.mdc-text-field-helper-text'),function(el) {
+	return new MDCTextFieldHelperText(el);
+});
+const selectHelperTexts = [].map.call(document.querySelectorAll('.mdc-select-helper-text'), function(el) {
+	return new MDCSelectHelperText(el);
+});
+
+// display options dialog component
 if (document.querySelector('#display-options-dialog')) {
 	const dialogElement = document.getElementById('display-options-dialog');
 	const dialog = new MDCDialog(dialogElement);
@@ -80,15 +123,13 @@ if (document.querySelector('#display-options-dialog')) {
 
 	subHeaders.forEach(function(subHeader) {
 		subHeader.addEventListener('click', function() {
-
 			event.preventDefault();
-			let list = document.querySelector(this.getAttribute('href'));
-
-			if (list.classList.contains('show')) {
-				list.close();
+			let targetListElement = document.querySelector(this.getAttribute('href'));
+			if (targetListElement.classList.contains('show')) {
+				targetListElement.close();
 			} else {
 				filterListElements.forEach((filterListElement) => filterListElement.close());
-				list.open();
+				targetListElement.open();
 			}
 		});
 	});
@@ -102,19 +143,3 @@ if (document.querySelector('#display-options-dialog')) {
 		dialog.open();
 	}
 }
-
-const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
-	return new MDCRipple(el);
-});
-const fabs = [].map.call(document.querySelectorAll('.mdc-fab'), function(el) {
-	return new MDCRipple(el);
-});
-const radios = [].map.call(document.querySelectorAll('.mdc-radio'), function(el) {
-	return new MDCRadio(el);
-});
-const checkboxes = [].map.call(document.querySelectorAll('.mdc-checkbox'), function(el) {
-	return new MDCCheckbox(el);
-});
-const formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), function(el) {
-	return new MDCFormField(el);
-});

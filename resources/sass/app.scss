@@ -22,6 +22,10 @@ label {
 @import "@material/fab/mdc-fab";
 @import "@material/dialog/mdc-dialog";
 @import "@material/radio/mdc-radio";
+@import "@material/select/mdc-select";
+@import "@material/textfield/mdc-text-field";
+@import "@material/textfield/helper-text/mdc-text-field-helper-text";
+@import "@material/select/helper-text/mdc-select-helper-text";
 
 .mdc-drawer {
 	.mdc-drawer__header {
@@ -112,4 +116,29 @@ label {
 	#mdc-dialog__cancel-button {
 		@include mdc-button-ink-color(error);
 	}
+}
+.mdc-select,
+.mdc-select__menu,
+.mdc-text-field{
+	width: 100%;
+}
+.mdc-select,
+.mdc-text-field{
+	margin-top: 1em;
+	.mdc-floating-label{
+		text-transform: capitalize;
+	}
+}
+
+.mdc-select{
+
+}
+.mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text{
+	color: $mdc-theme-error;
+}
+.mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text{
+	color: $mdc-theme-error;
+}
+@media (max-width: 599px){
+
 }

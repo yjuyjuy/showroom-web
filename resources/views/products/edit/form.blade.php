@@ -1,95 +1,139 @@
-<div class="form-group ">
-	<label for="brand" class=" col-form-label text-md-right">品牌</label>
-	<div class="">
-		<select id="brand" class="form-control @error('brand') is-invalid @enderror" name="brand" value="" autofocus>
-			<option value="" hidden></option>
+<div class="mdc-select">
+	<input type="hidden" name="brand">
+	<i class="mdc-select__dropdown-icon"></i>
+	<div class="mdc-select__selected-text"></div>
+	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
+		<ul class="mdc-list">
 			@foreach(\App\Brand::all() as $brand)
-			<option value="{{ $brand->id }}" {{ (old('brand') ?? ($product->brand->id ?? null)) == $brand->id ? 'selected':'' }}>{{ $brand->name }}</option>
+			<?php $selected = (old('brand') ?? ($product->brand->id ?? null)) === $brand->id; ?>
+			@if($selected)
+			<li data-value="{{ $brand->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+				@else
+			<li data-value="{{ $brand->id }}" class="mdc-list-item">
+				@endif
+				{{ $brand->name }}
+			</li>
 			@endforeach
-		</select>
-		@error('brand')
-		<span class="invalid-feedback" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
+		</ul>
 	</div>
+	<span class="mdc-floating-label">{{ __('brand') }}</span>
+	<div class="mdc-line-ripple"></div>
 </div>
-<div class="form-group ">
-	<label for="season" class=" col-form-label text-md-right">季度</label>
-	<div class="">
-		<select id="season" class="form-control @error('season') is-invalid @enderror" name="season" value="">
-			<option value="" hidden></option>
+@error('brand')
+<p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
+@enderror
+
+
+<div class="mdc-select">
+	<input type="hidden" name="season">
+	<i class="mdc-select__dropdown-icon"></i>
+	<div class="mdc-select__selected-text"></div>
+	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
+		<ul class="mdc-list">
 			@foreach(\App\Season::all() as $season)
-			<option value="{{ $season->id }}" {{ (old('season') ?? ($product->season->id ?? null)) == $season->id ? 'selected':'' }}>{{ $season->name }}</option>
+			<?php $selected = (old('season') ?? ($product->season->id ?? null)) === $season->id; ?>
+			@if($selected)
+			<li data-value="{{ $season->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+				@else
+			<li data-value="{{ $season->id }}" class="mdc-list-item">
+				@endif
+				{{ $season->name }}
+			</li>
 			@endforeach
-		</select>
-		@error('season')
-		<span class="invalid-feedback" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
+		</ul>
 	</div>
+	<span class="mdc-floating-label">{{ __('season') }}</span>
+	<div class="mdc-line-ripple"></div>
 </div>
-<div class="form-group ">
-	<label for="name_cn" class=" col-form-label text-md-right">款式名称</label>
-	<div class="">
-		<input id="name_cn" type="text" class="form-control @error('name_cn') is-invalid @enderror" name="name_cn" value="{{ old('name_cn') ?? $product->name_cn }}"> @error('name_cn')
-		<span class="invalid-feedback" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
-	</div>
+@error('season')
+<p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
+@enderror
+
+<div class="mdc-text-field">
+	<input type="text" class="mdc-text-field__input" name="name_cn" autocomplete="off" value="{{ old('name_cn') ?? ( $product->name_cn ?? '' ) }}">
+	<label class="mdc-floating-label" for="my-text-field">{{ __('product name_cn') }}</label>
+	<div class="mdc-line-ripple"></div>
 </div>
-<div class="form-group ">
-	<label for="name" class=" col-form-label text-md-right">英文名</label>
-	<div class="">
-		<input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $product->name }}"> @error('name')
-		<span class="invalid-feedback" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
-	</div>
+
+@error('name_cn')
+<div class="mdc-text-field-helper-line">
+	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
 </div>
-<div class="form-group ">
-	<label for="category" class=" col-form-label text-md-right">类别</label>
-	<div class="">
-		<select id="category" class="form-control @error('category') is-invalid @enderror" name="category" value="{{ old('category') }}">
-			<option value="" hidden></option>
+@enderror
+
+<div class="mdc-text-field">
+	<input type="text" class="mdc-text-field__input" name="name" autocomplete="off" value="{{ old('name') ?? ( $product->name ?? '' ) }}">
+	<label class="mdc-floating-label" for="my-text-field">{{ __('product name') }}</label>
+	<div class="mdc-line-ripple"></div>
+</div>
+@error('name')
+<div class="mdc-text-field-helper-line">
+	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+</div>
+@enderror
+
+<div class="mdc-select">
+	<input type="hidden" name="category">
+	<i class="mdc-select__dropdown-icon"></i>
+	<div class="mdc-select__selected-text"></div>
+	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
+		<ul class="mdc-list">
 			@foreach(\App\Category::all() as $category)
-			<option value="{{ $category->id }}" {{ (old('category') ?? ($product->category->id ?? null)) == $category->id ? 'selected':'' }}>{{ $category->name_cn }}</option>
+			<?php $selected = (old('category') ?? ($product->category->id ?? null)) === $category->id; ?>
+			@if($selected)
+			<li data-value="{{ $category->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+				@else
+			<li data-value="{{ $category->id }}" class="mdc-list-item">
+				@endif
+				{{ $category->name }}
+			</li>
 			@endforeach
-		</select>
-		@error('category')
-		<span class="invalid-feedback" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
+		</ul>
 	</div>
+	<span class="mdc-floating-label">{{ __('category') }}</span>
+	<div class="mdc-line-ripple"></div>
 </div>
-<div class="form-group ">
-	<label for="color" class=" col-form-label text-md-right">颜色</label>
-	<div class="">
-		<select id="color" class="form-control @error('color') is-invalid @enderror" name="color" value="{{ old('color') }}">
-			<option value="" hidden></option>
+@error('category')
+<p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
+@enderror
+
+<div class="mdc-select">
+	<input type="hidden" name="color">
+	<i class="mdc-select__dropdown-icon"></i>
+	<div class="mdc-select__selected-text"></div>
+	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
+		<ul class="mdc-list">
 			@foreach(\App\Color::all() as $color)
-			<option value="{{ $color->id }}" {{ (old('color') ?? ($product->color->id ?? null)) == $color->id ? 'selected':'' }}>{{ $color->name_cn }}</option>
+			<?php $selected = (old('color') ?? ($product->color->id ?? null)) === $color->id; ?>
+			@if($selected)
+			<li data-value="{{ $color->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+				@else
+			<li data-value="{{ $color->id }}" class="mdc-list-item">
+				@endif
+				{{ $color->name }}
+			</li>
 			@endforeach
-		</select>
-		@error('color')
-		<span class="invalid-feedback" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
+		</ul>
+	</div>
+	<span class="mdc-floating-label">{{ __('color') }}</span>
+	<div class="mdc-line-ripple"></div>
+</div>
+@error('color')
+<p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
+@enderror
+
+<div class="mdc-text-field mdc-text-field--textarea optional-form-field">
+	<textarea class="mdc-text-field__input" name="comment" rows="2">{{ old('comment') ?? ( $product->comment ?? '' ) }}</textarea>
+	<div class="mdc-notched-outline">
+		<div class="mdc-notched-outline__leading"></div>
+		<div class="mdc-notched-outline__notch">
+			<label for="textarea" class="mdc-floating-label">{{ __('comment') }}</label>
+		</div>
+		<div class="mdc-notched-outline__trailing"></div>
 	</div>
 </div>
-<div class="form-group ">
-	<label for="comment" class=" col-form-label text-md-right">备注</label>
-	<div class="">
-		<textarea id="comment" class="form-control @error('comment') is-invalid @enderror" name="comment">{{ old('comment') ?? $product->comment }}</textarea>
-		@error('comment')
-		<span class="invalid-feedback" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
-	</div>
+@error('comment')
+<div class="mdc-text-field-helper-line">
+	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
 </div>
+@enderror
