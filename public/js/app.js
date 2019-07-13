@@ -13681,7 +13681,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "\n#delete-link[data-v-d53c388c] {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\twidth: 30px;\r\n\tline-height: 30px;\r\n\theight: 30px;\r\n\tfont-size: 40px;\r\n\ttext-align: left;\r\n\tvertical-align: baseline;\r\n\tcolor: black;\n}\n#delete-link[data-v-d53c388c]:hover {\r\n\ttext-decoration: none;\n}\n", ""]);
+exports.push([module.i, "\n#delete-link[data-v-d53c388c] {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\twidth: 30px;\r\n\tline-height: 30px;\r\n\theight: 30px;\r\n\tfont-size: 40px;\r\n\ttext-align: left;\r\n\tvertical-align: baseline;\r\n\tcolor: black;\n}\n#delete-link[data-v-d53c388c]:hover {\r\n\ttext-decoration: none;\n}\r\n", ""]);
 
 
 /***/ }),
@@ -13695,7 +13695,7 @@ exports.push([module.i, "\n#delete-link[data-v-d53c388c] {\r\n\tposition: absolu
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "\n.carousel-indicators[data-v-5c38f7ae] {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\tbottom: 0;\r\n\tmargin-right: 0;\r\n\tmargin-left: 0;\r\n\tz-index: 2;\r\n\twidth: 100%;\r\n\toverflow: hidden;\n}\n.thumbnail-item[data-v-5c38f7ae] {\r\n\tdisplay: none;\r\n\topacity: 0.5;\n}\n.thumbnail-item.show[data-v-5c38f7ae] {\r\n\tdisplay: block;\n}\n.thumbnail-item.active[data-v-5c38f7ae] {\r\n\topacity: 1;\n}\n.thumbnail-control-prev[data-v-5c38f7ae],\r\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\twidth: 13%;\r\n\tposition: absolute;\r\n\tbottom: 0;\r\n\theight: 100%;\r\n\talign-items: center;\r\n\tjustify-content: center;\r\n\tdisplay: flex;\r\n\tz-index: 3;\r\n\topacity: 0.5;\n}\n.thumbnail-control-prev[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-next[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-prev[data-v-5c38f7ae]:focus,\r\n.thumbnail-control-next[data-v-5c38f7ae]:focus {\r\n\topacity: 0.9;\n}\n.thumbnail-control-prev[data-v-5c38f7ae] {\r\n\tleft: 0;\n}\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\tright: 0;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae],\r\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tdisplay: inline-block;\r\n\twidth: 20px;\r\n\theight: 20px;\r\n\tbackground: no-repeat 50%/100% 100%;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae] {\r\n\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e\");\n}\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e\");\n}\n", ""]);
+exports.push([module.i, "\n.carousel-indicators[data-v-5c38f7ae] {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\tbottom: 0;\r\n\tmargin-right: 0;\r\n\tmargin-left: 0;\r\n\tz-index: 2;\r\n\twidth: 100%;\r\n\toverflow: hidden;\n}\n.thumbnail-item[data-v-5c38f7ae] {\r\n\tdisplay: none;\r\n\topacity: 0.5;\n}\n.thumbnail-item.show[data-v-5c38f7ae] {\r\n\tdisplay: block;\n}\n.thumbnail-item.active[data-v-5c38f7ae] {\r\n\topacity: 1;\n}\n.thumbnail-control-prev[data-v-5c38f7ae],\r\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\twidth: 13%;\r\n\tposition: absolute;\r\n\tbottom: 0;\r\n\theight: 100%;\r\n\talign-items: center;\r\n\tjustify-content: center;\r\n\tdisplay: flex;\r\n\tz-index: 3;\r\n\topacity: 0.5;\n}\n.thumbnail-control-prev[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-next[data-v-5c38f7ae]:hover,\r\n.thumbnail-control-prev[data-v-5c38f7ae]:focus,\r\n.thumbnail-control-next[data-v-5c38f7ae]:focus {\r\n\topacity: 0.9;\n}\n.thumbnail-control-prev[data-v-5c38f7ae] {\r\n\tleft: 0;\n}\n.thumbnail-control-next[data-v-5c38f7ae] {\r\n\tright: 0;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae],\r\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tdisplay: inline-block;\r\n\twidth: 20px;\r\n\theight: 20px;\r\n\tbackground: no-repeat 50%/100% 100%;\n}\n.thumbnail-control-prev-icon[data-v-5c38f7ae] {\r\n\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e\");\n}\n.thumbnail-control-next-icon[data-v-5c38f7ae] {\r\n\tbackground-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e\");\n}\r\n", ""]);
 
 
 /***/ }),
@@ -59208,8 +59208,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\ATX2018\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Surface laptop 2\Projects\laravel_beta\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

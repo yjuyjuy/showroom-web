@@ -41,36 +41,16 @@ const app = new Vue({
 	},
 });
 
-import {
-	MDCRipple
-} from '@material/ripple';
-import {
-	MDCTopAppBar
-} from '@material/top-app-bar';
-import {
-	MDCDrawer
-} from "@material/drawer";
-import {
-	MDCFormField
-} from '@material/form-field';
-import {
-	MDCCheckbox
-} from '@material/checkbox';
-import {
-	MDCSwitch
-} from '@material/switch';
-import {
-	MDCMenu
-} from '@material/menu';
-import {
-	MDCList
-} from '@material/list';
-import {
-	MDCDialog
-} from '@material/dialog';
-import {
-	MDCRadio
-} from '@material/radio';
+import {MDCRipple} from '@material/ripple';
+import {MDCTopAppBar} from '@material/top-app-bar';
+import {MDCDrawer} from "@material/drawer";
+import {MDCFormField} from '@material/form-field';
+import {MDCCheckbox} from '@material/checkbox';
+import {MDCSwitch} from '@material/switch';
+import {MDCMenu} from '@material/menu';
+import {MDCList} from '@material/list';
+import {MDCDialog} from '@material/dialog';
+import {MDCRadio} from '@material/radio';
 
 const drawer = MDCDrawer.attachTo(document.getElementById('my-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
