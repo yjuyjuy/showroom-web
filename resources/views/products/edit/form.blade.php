@@ -5,7 +5,7 @@
 	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
 		<ul class="mdc-list">
 			@foreach(\App\Brand::all() as $brand)
-			<?php $selected = (old('brand') ?? ($product->brand->id ?? null)) === $brand->id; ?>
+			<?php $selected = old('brand', optional($product)->brand->id) === $brand->id; ?>
 			@if($selected)
 			<li data-value="{{ $brand->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
 				@else
@@ -31,7 +31,7 @@
 	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
 		<ul class="mdc-list">
 			@foreach(\App\Season::all() as $season)
-			<?php $selected = (old('season') ?? ($product->season->id ?? null)) === $season->id; ?>
+			<?php $selected = old('season', optional($product)->season->id) === $season->id; ?>
 			@if($selected)
 			<li data-value="{{ $season->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
 				@else
@@ -79,7 +79,7 @@
 	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
 		<ul class="mdc-list">
 			@foreach(\App\Category::all() as $category)
-			<?php $selected = (old('category') ?? ($product->category->id ?? null)) === $category->id; ?>
+			<?php $selected = old('category', optional($product)->category->id) === $category->id; ?>
 			@if($selected)
 			<li data-value="{{ $category->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
 				@else
@@ -104,7 +104,7 @@
 	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
 		<ul class="mdc-list">
 			@foreach(\App\Color::all() as $color)
-			<?php $selected = (old('color') ?? ($product->color->id ?? null)) === $color->id; ?>
+			<?php $selected = old('color', optional($product)->color->id) === $color->id; ?>
 			@if($selected)
 			<li data-value="{{ $color->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
 				@else
