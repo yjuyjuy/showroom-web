@@ -25,11 +25,11 @@
 	</head>
 
 	<body>
-		<aside id="my-drawer" class="mdc-drawer mdc-drawer--modal">
+		<aside id="nav-drawer" class="mdc-drawer mdc-drawer--modal">
 			<div class="mdc-drawer__header">
 				@guest
 				<h3 class="mdc-drawer__title">Welcome</h3>
-				<h6 class="mdc-drawer__subtitle">user1234567</h6>
+				<h6 class="mdc-drawer__subtitle">guest</h6>
 				@else
 				<h3 class="mdc-drawer__title">{{ auth()->user()->username }}</h3>
 				<h6 class="mdc-drawer__subtitle">{{ auth()->user()->email }}</h6>
@@ -73,11 +73,11 @@
 		<div class="mdc-drawer-scrim"></div>
 
 		<div id="app">
-			<header id="my-top-app-bar" class="mdc-top-app-bar">
+			<header id="my-top-app-bar" class="mdc-top-app-bar mdc-top-app-bar--fixed">
 				<div class="mdc-top-app-bar__row">
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
 						<a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-						<span class="mdc-top-app-bar__title">{{config('app.name','app.name')}}</span>
+						<a href="/" class="mdc-top-app-bar__title">{{config('app.name','app.name')}}</a>
 					</section>
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
 						<a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="error">error</a>
@@ -85,7 +85,9 @@
 				</div>
 			</header>
 			<main id="main-content" class="main-content mdc-top-app-bar--fixed-adjust">
+				<div class="py-2"></div>
 				@yield('content')
+				<div class="py-2"></div>
 			</main>
 		</div>
 	</body>
