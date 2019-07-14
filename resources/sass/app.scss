@@ -125,7 +125,8 @@ input:-webkit-autofill {
 			}
 			.mdc-top-app-bar__title {
 				color: $mdc-theme-on-primary;
-				padding-left: 32px;
+				margin-left: 32px;
+				padding-left: 0;
 			}
 		}
 
