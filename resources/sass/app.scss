@@ -28,6 +28,7 @@ label {
 @import "@material/select/helper-text/mdc-select-helper-text";
 @import "@material/elevation/mdc-elevation";
 @import "@material/card/mdc-card";
+@import "@material/snackbar/mdc-snackbar";
 
 // global reset rules
 /* Change Autocomplete styles in Chrome */
@@ -63,7 +64,20 @@ input:-webkit-autofill {
 .mdc-floating-label{
 	text-transform: capitalize;
 }
-
+.mdc-snackbar{
+	@include mdc-snackbar-elevation(5);
+	@include mdc-snackbar-z-index(5);
+	@include mdc-snackbar-fill-color(surface);
+	@include mdc-snackbar-label-ink-color(primary);
+	bottom: 2rem;
+	.mdc-snackbar__label{
+		text-align: center;
+	}
+	.mdc-button{
+			@include mdc-button-outline-color(primary);
+			@include mdc-button-ink-color(primary);
+	}
+}
 // general layout
 .mdc-top-app-bar__row, .main-content {
 	width: 100%;
@@ -150,24 +164,22 @@ input:-webkit-autofill {
 }
 
 // auth
-#login-card,
-#register-card{
+.auth .mdc-card{
 	padding: 1.5rem;
 	margin: 3rem 1rem 0;
 	width:100%;
 	max-width: 500px;
-	#login-form,
-	#register-form{
-		.mdc-text-field,
-		.mdc-form-field{
-			margin-top: 1rem;
-		}
-		.mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text{
-			color: $mdc-theme-error;
-		}
-		.mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text{
-			color: $mdc-theme-error;
-		}
+
+	.mdc-text-field,
+	.mdc-form-field,
+	.mdc-card__actions{
+		margin-top: 1rem;
+	}
+	.mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text{
+		color: $mdc-theme-error;
+	}
+	.mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text{
+		color: $mdc-theme-error;
 	}
 	.mdc-card__action--button{
 		margin:0 0 8px 8px;

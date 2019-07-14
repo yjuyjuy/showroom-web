@@ -54,7 +54,7 @@ import {MDCSelect} from '@material/select';
 import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
 import {MDCTextField} from '@material/textfield';
 import {MDCSelectHelperText} from '@material/select/helper-text';
-
+import {MDCSnackbar} from '@material/snackbar';
 // permanent components
 const drawer = MDCDrawer.attachTo(document.getElementById('nav-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
@@ -86,6 +86,12 @@ const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(e
 	select.menu_.quickOpen = true;
 	return select;
 });
+let el = document.querySelector('.mdc-snackbar');
+if(el){
+	const snackbar = new MDCSnackbar(el);
+	snackbar.open();
+	window.snackbar = snackbar;
+}
 window.selects = selects;
 const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
 	let textField = new MDCTextField(el);

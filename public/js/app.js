@@ -8214,6 +8214,617 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/@material/snackbar/component.js":
+/*!******************************************************!*\
+  !*** ./node_modules/@material/snackbar/component.js ***!
+  \******************************************************/
+/*! exports provided: MDCSnackbar */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCSnackbar", function() { return MDCSnackbar; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
+/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/snackbar/constants.js");
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/snackbar/foundation.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./node_modules/@material/snackbar/util.js");
+/**
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+
+
+
+
+var SURFACE_SELECTOR = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].SURFACE_SELECTOR, LABEL_SELECTOR = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].LABEL_SELECTOR, ACTION_SELECTOR = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].ACTION_SELECTOR, DISMISS_SELECTOR = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].DISMISS_SELECTOR, OPENING_EVENT = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].OPENING_EVENT, OPENED_EVENT = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].OPENED_EVENT, CLOSING_EVENT = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].CLOSING_EVENT, CLOSED_EVENT = _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].CLOSED_EVENT;
+var MDCSnackbar = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCSnackbar, _super);
+    function MDCSnackbar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MDCSnackbar.attachTo = function (root) {
+        return new MDCSnackbar(root);
+    };
+    MDCSnackbar.prototype.initialize = function (announcerFactory) {
+        if (announcerFactory === void 0) { announcerFactory = function () { return _util__WEBPACK_IMPORTED_MODULE_5__["announce"]; }; }
+        this.announce_ = announcerFactory();
+    };
+    MDCSnackbar.prototype.initialSyncWithDOM = function () {
+        var _this = this;
+        this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR);
+        this.labelEl_ = this.root_.querySelector(LABEL_SELECTOR);
+        this.actionEl_ = this.root_.querySelector(ACTION_SELECTOR);
+        this.handleKeyDown_ = function (evt) { return _this.foundation_.handleKeyDown(evt); };
+        this.handleSurfaceClick_ = function (evt) {
+            var target = evt.target;
+            if (_this.isActionButton_(target)) {
+                _this.foundation_.handleActionButtonClick(evt);
+            }
+            else if (_this.isActionIcon_(target)) {
+                _this.foundation_.handleActionIconClick(evt);
+            }
+        };
+        this.registerKeyDownHandler_(this.handleKeyDown_);
+        this.registerSurfaceClickHandler_(this.handleSurfaceClick_);
+    };
+    MDCSnackbar.prototype.destroy = function () {
+        _super.prototype.destroy.call(this);
+        this.deregisterKeyDownHandler_(this.handleKeyDown_);
+        this.deregisterSurfaceClickHandler_(this.handleSurfaceClick_);
+    };
+    MDCSnackbar.prototype.open = function () {
+        this.foundation_.open();
+    };
+    /**
+     * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
+     *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
+     *     client-specific values may also be used if desired.
+     */
+    MDCSnackbar.prototype.close = function (reason) {
+        if (reason === void 0) { reason = ''; }
+        this.foundation_.close(reason);
+    };
+    MDCSnackbar.prototype.getDefaultFoundation = function () {
+        var _this = this;
+        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+        var adapter = {
+            addClass: function (className) { return _this.root_.classList.add(className); },
+            announce: function () { return _this.announce_(_this.labelEl_); },
+            notifyClosed: function (reason) { return _this.emit(CLOSED_EVENT, reason ? { reason: reason } : {}); },
+            notifyClosing: function (reason) { return _this.emit(CLOSING_EVENT, reason ? { reason: reason } : {}); },
+            notifyOpened: function () { return _this.emit(OPENED_EVENT, {}); },
+            notifyOpening: function () { return _this.emit(OPENING_EVENT, {}); },
+            removeClass: function (className) { return _this.root_.classList.remove(className); },
+        };
+        return new _foundation__WEBPACK_IMPORTED_MODULE_4__["MDCSnackbarFoundation"](adapter);
+    };
+    Object.defineProperty(MDCSnackbar.prototype, "timeoutMs", {
+        get: function () {
+            return this.foundation_.getTimeoutMs();
+        },
+        set: function (timeoutMs) {
+            this.foundation_.setTimeoutMs(timeoutMs);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCSnackbar.prototype, "closeOnEscape", {
+        get: function () {
+            return this.foundation_.getCloseOnEscape();
+        },
+        set: function (closeOnEscape) {
+            this.foundation_.setCloseOnEscape(closeOnEscape);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCSnackbar.prototype, "isOpen", {
+        get: function () {
+            return this.foundation_.isOpen();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCSnackbar.prototype, "labelText", {
+        get: function () {
+            // This property only returns null if the node is a document, DOCTYPE, or notation.
+            // On Element nodes, it always returns a string.
+            return this.labelEl_.textContent;
+        },
+        set: function (labelText) {
+            this.labelEl_.textContent = labelText;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCSnackbar.prototype, "actionButtonText", {
+        get: function () {
+            return this.actionEl_.textContent;
+        },
+        set: function (actionButtonText) {
+            this.actionEl_.textContent = actionButtonText;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCSnackbar.prototype.registerKeyDownHandler_ = function (handler) {
+        this.listen('keydown', handler);
+    };
+    MDCSnackbar.prototype.deregisterKeyDownHandler_ = function (handler) {
+        this.unlisten('keydown', handler);
+    };
+    MDCSnackbar.prototype.registerSurfaceClickHandler_ = function (handler) {
+        this.surfaceEl_.addEventListener('click', handler);
+    };
+    MDCSnackbar.prototype.deregisterSurfaceClickHandler_ = function (handler) {
+        this.surfaceEl_.removeEventListener('click', handler);
+    };
+    MDCSnackbar.prototype.isActionButton_ = function (target) {
+        return Boolean(Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["closest"])(target, ACTION_SELECTOR));
+    };
+    MDCSnackbar.prototype.isActionIcon_ = function (target) {
+        return Boolean(Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["closest"])(target, DISMISS_SELECTOR));
+    };
+    return MDCSnackbar;
+}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
+
+//# sourceMappingURL=component.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/snackbar/constants.js":
+/*!******************************************************!*\
+  !*** ./node_modules/@material/snackbar/constants.js ***!
+  \******************************************************/
+/*! exports provided: cssClasses, strings, numbers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
+/**
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var cssClasses = {
+    CLOSING: 'mdc-snackbar--closing',
+    OPEN: 'mdc-snackbar--open',
+    OPENING: 'mdc-snackbar--opening',
+};
+var strings = {
+    ACTION_SELECTOR: '.mdc-snackbar__action',
+    ARIA_LIVE_LABEL_TEXT_ATTR: 'data-mdc-snackbar-label-text',
+    CLOSED_EVENT: 'MDCSnackbar:closed',
+    CLOSING_EVENT: 'MDCSnackbar:closing',
+    DISMISS_SELECTOR: '.mdc-snackbar__dismiss',
+    LABEL_SELECTOR: '.mdc-snackbar__label',
+    OPENED_EVENT: 'MDCSnackbar:opened',
+    OPENING_EVENT: 'MDCSnackbar:opening',
+    REASON_ACTION: 'action',
+    REASON_DISMISS: 'dismiss',
+    SURFACE_SELECTOR: '.mdc-snackbar__surface',
+};
+var numbers = {
+    DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
+    MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
+    MIN_AUTO_DISMISS_TIMEOUT_MS: 4000,
+    // These variables need to be kept in sync with the values in _variables.scss.
+    SNACKBAR_ANIMATION_CLOSE_TIME_MS: 75,
+    SNACKBAR_ANIMATION_OPEN_TIME_MS: 150,
+    /**
+     * Number of milliseconds to wait between temporarily clearing the label text
+     * in the DOM and subsequently restoring it. This is necessary to force IE 11
+     * to pick up the `aria-live` content change and announce it to the user.
+     */
+    ARIA_LIVE_DELAY_MS: 1000,
+};
+
+//# sourceMappingURL=constants.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/snackbar/foundation.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@material/snackbar/foundation.js ***!
+  \*******************************************************/
+/*! exports provided: MDCSnackbarFoundation, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCSnackbarFoundation", function() { return MDCSnackbarFoundation; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/snackbar/constants.js");
+/**
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+
+var OPENING = _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].OPENING, OPEN = _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].OPEN, CLOSING = _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].CLOSING;
+var REASON_ACTION = _constants__WEBPACK_IMPORTED_MODULE_2__["strings"].REASON_ACTION, REASON_DISMISS = _constants__WEBPACK_IMPORTED_MODULE_2__["strings"].REASON_DISMISS;
+var MDCSnackbarFoundation = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCSnackbarFoundation, _super);
+    function MDCSnackbarFoundation(adapter) {
+        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCSnackbarFoundation.defaultAdapter, adapter)) || this;
+        _this.isOpen_ = false;
+        _this.animationFrame_ = 0;
+        _this.animationTimer_ = 0;
+        _this.autoDismissTimer_ = 0;
+        _this.autoDismissTimeoutMs_ = _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
+        _this.closeOnEscape_ = true;
+        return _this;
+    }
+    Object.defineProperty(MDCSnackbarFoundation, "cssClasses", {
+        get: function () {
+            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCSnackbarFoundation, "strings", {
+        get: function () {
+            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCSnackbarFoundation, "numbers", {
+        get: function () {
+            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCSnackbarFoundation, "defaultAdapter", {
+        get: function () {
+            return {
+                addClass: function () { return undefined; },
+                announce: function () { return undefined; },
+                notifyClosed: function () { return undefined; },
+                notifyClosing: function () { return undefined; },
+                notifyOpened: function () { return undefined; },
+                notifyOpening: function () { return undefined; },
+                removeClass: function () { return undefined; },
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCSnackbarFoundation.prototype.destroy = function () {
+        this.clearAutoDismissTimer_();
+        cancelAnimationFrame(this.animationFrame_);
+        this.animationFrame_ = 0;
+        clearTimeout(this.animationTimer_);
+        this.animationTimer_ = 0;
+        this.adapter_.removeClass(OPENING);
+        this.adapter_.removeClass(OPEN);
+        this.adapter_.removeClass(CLOSING);
+    };
+    MDCSnackbarFoundation.prototype.open = function () {
+        var _this = this;
+        this.clearAutoDismissTimer_();
+        this.isOpen_ = true;
+        this.adapter_.notifyOpening();
+        this.adapter_.removeClass(CLOSING);
+        this.adapter_.addClass(OPENING);
+        this.adapter_.announce();
+        // Wait a frame once display is no longer "none", to establish basis for animation
+        this.runNextAnimationFrame_(function () {
+            _this.adapter_.addClass(OPEN);
+            _this.animationTimer_ = setTimeout(function () {
+                _this.handleAnimationTimerEnd_();
+                _this.adapter_.notifyOpened();
+                _this.autoDismissTimer_ = setTimeout(function () {
+                    _this.close(REASON_DISMISS);
+                }, _this.getTimeoutMs());
+            }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].SNACKBAR_ANIMATION_OPEN_TIME_MS);
+        });
+    };
+    /**
+     * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
+     *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
+     *     client-specific values may also be used if desired.
+     */
+    MDCSnackbarFoundation.prototype.close = function (reason) {
+        var _this = this;
+        if (reason === void 0) { reason = ''; }
+        if (!this.isOpen_) {
+            // Avoid redundant close calls (and events), e.g. repeated interactions as the snackbar is animating closed
+            return;
+        }
+        cancelAnimationFrame(this.animationFrame_);
+        this.animationFrame_ = 0;
+        this.clearAutoDismissTimer_();
+        this.isOpen_ = false;
+        this.adapter_.notifyClosing(reason);
+        this.adapter_.addClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].CLOSING);
+        this.adapter_.removeClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].OPEN);
+        this.adapter_.removeClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].OPENING);
+        clearTimeout(this.animationTimer_);
+        this.animationTimer_ = setTimeout(function () {
+            _this.handleAnimationTimerEnd_();
+            _this.adapter_.notifyClosed(reason);
+        }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].SNACKBAR_ANIMATION_CLOSE_TIME_MS);
+    };
+    MDCSnackbarFoundation.prototype.isOpen = function () {
+        return this.isOpen_;
+    };
+    MDCSnackbarFoundation.prototype.getTimeoutMs = function () {
+        return this.autoDismissTimeoutMs_;
+    };
+    MDCSnackbarFoundation.prototype.setTimeoutMs = function (timeoutMs) {
+        // Use shorter variable names to make the code more readable
+        var minValue = _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].MIN_AUTO_DISMISS_TIMEOUT_MS;
+        var maxValue = _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].MAX_AUTO_DISMISS_TIMEOUT_MS;
+        if (timeoutMs <= maxValue && timeoutMs >= minValue) {
+            this.autoDismissTimeoutMs_ = timeoutMs;
+        }
+        else {
+            throw new Error("timeoutMs must be an integer in the range " + minValue + "\u2013" + maxValue + ", but got '" + timeoutMs + "'");
+        }
+    };
+    MDCSnackbarFoundation.prototype.getCloseOnEscape = function () {
+        return this.closeOnEscape_;
+    };
+    MDCSnackbarFoundation.prototype.setCloseOnEscape = function (closeOnEscape) {
+        this.closeOnEscape_ = closeOnEscape;
+    };
+    MDCSnackbarFoundation.prototype.handleKeyDown = function (evt) {
+        var isEscapeKey = evt.key === 'Escape' || evt.keyCode === 27;
+        if (isEscapeKey && this.getCloseOnEscape()) {
+            this.close(REASON_DISMISS);
+        }
+    };
+    MDCSnackbarFoundation.prototype.handleActionButtonClick = function (_evt) {
+        this.close(REASON_ACTION);
+    };
+    MDCSnackbarFoundation.prototype.handleActionIconClick = function (_evt) {
+        this.close(REASON_DISMISS);
+    };
+    MDCSnackbarFoundation.prototype.clearAutoDismissTimer_ = function () {
+        clearTimeout(this.autoDismissTimer_);
+        this.autoDismissTimer_ = 0;
+    };
+    MDCSnackbarFoundation.prototype.handleAnimationTimerEnd_ = function () {
+        this.animationTimer_ = 0;
+        this.adapter_.removeClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].OPENING);
+        this.adapter_.removeClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].CLOSING);
+    };
+    /**
+     * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+     */
+    MDCSnackbarFoundation.prototype.runNextAnimationFrame_ = function (callback) {
+        var _this = this;
+        cancelAnimationFrame(this.animationFrame_);
+        this.animationFrame_ = requestAnimationFrame(function () {
+            _this.animationFrame_ = 0;
+            clearTimeout(_this.animationTimer_);
+            _this.animationTimer_ = setTimeout(callback, 0);
+        });
+    };
+    return MDCSnackbarFoundation;
+}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
+
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
+/* harmony default export */ __webpack_exports__["default"] = (MDCSnackbarFoundation);
+//# sourceMappingURL=foundation.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/snackbar/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/@material/snackbar/index.js ***!
+  \**************************************************/
+/*! exports provided: util, MDCSnackbar, cssClasses, strings, numbers, MDCSnackbarFoundation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./node_modules/@material/snackbar/util.js");
+/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "util", function() { return _util__WEBPACK_IMPORTED_MODULE_0__; });
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component */ "./node_modules/@material/snackbar/component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCSnackbar", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["MDCSnackbar"]; });
+
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/snackbar/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"]; });
+
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/snackbar/foundation.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCSnackbarFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCSnackbarFoundation"]; });
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/snackbar/util.js":
+/*!*************************************************!*\
+  !*** ./node_modules/@material/snackbar/util.js ***!
+  \*************************************************/
+/*! exports provided: announce */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "announce", function() { return announce; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/snackbar/constants.js");
+/**
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+var ARIA_LIVE_DELAY_MS = _constants__WEBPACK_IMPORTED_MODULE_0__["numbers"].ARIA_LIVE_DELAY_MS;
+var ARIA_LIVE_LABEL_TEXT_ATTR = _constants__WEBPACK_IMPORTED_MODULE_0__["strings"].ARIA_LIVE_LABEL_TEXT_ATTR;
+function announce(ariaEl, labelEl) {
+    if (labelEl === void 0) { labelEl = ariaEl; }
+    var priority = ariaEl.getAttribute('aria-live');
+    // Trim text to ignore `&nbsp;` (see below).
+    // textContent is only null if the node is a document, DOCTYPE, or notation.
+    var labelText = labelEl.textContent.trim();
+    if (!labelText || !priority) {
+        return;
+    }
+    // Temporarily disable `aria-live` to prevent JAWS+Firefox from announcing the message twice.
+    ariaEl.setAttribute('aria-live', 'off');
+    // Temporarily clear `textContent` to force a DOM mutation event that will be detected by screen readers.
+    // `aria-live` elements are only announced when the element's `textContent` *changes*, so snackbars
+    // sent to the browser in the initial HTML response won't be read unless we clear the element's `textContent` first.
+    // Similarly, displaying the same snackbar message twice in a row doesn't trigger a DOM mutation event,
+    // so screen readers won't announce the second message unless we first clear `textContent`.
+    //
+    // We have to clear the label text two different ways to make it work in all browsers and screen readers:
+    //
+    //   1. `textContent = ''` is required for IE11 + JAWS
+    //   2. `innerHTML = '&nbsp;'` is required for Chrome + JAWS and NVDA
+    //
+    // All other browser/screen reader combinations support both methods.
+    //
+    // The wrapper `<span>` visually hides the space character so that it doesn't cause jank when added/removed.
+    // N.B.: Setting `position: absolute`, `opacity: 0`, or `height: 0` prevents Chrome from detecting the DOM change.
+    //
+    // This technique has been tested in:
+    //
+    //   * JAWS 2019:
+    //       - Chrome 70
+    //       - Firefox 60 (ESR)
+    //       - IE 11
+    //   * NVDA 2018:
+    //       - Chrome 70
+    //       - Firefox 60 (ESR)
+    //       - IE 11
+    //   * ChromeVox 53
+    labelEl.textContent = '';
+    labelEl.innerHTML = '<span style="display: inline-block; width: 0; height: 1px;">&nbsp;</span>';
+    // Prevent visual jank by temporarily displaying the label text in the ::before pseudo-element.
+    // CSS generated content is normally announced by screen readers
+    // (except in IE 11; see https://tink.uk/accessibility-support-for-css-generated-content/);
+    // however, `aria-live` is turned off, so this DOM update will be ignored by screen readers.
+    labelEl.setAttribute(ARIA_LIVE_LABEL_TEXT_ATTR, labelText);
+    setTimeout(function () {
+        // Allow screen readers to announce changes to the DOM again.
+        ariaEl.setAttribute('aria-live', priority);
+        // Remove the message from the ::before pseudo-element.
+        labelEl.removeAttribute(ARIA_LIVE_LABEL_TEXT_ATTR);
+        // Restore the original label text, which will be announced by screen readers.
+        labelEl.textContent = labelText;
+    }, ARIA_LIVE_DELAY_MS);
+}
+
+//# sourceMappingURL=util.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@material/switch/component.js":
 /*!****************************************************!*\
   !*** ./node_modules/@material/switch/component.js ***!
@@ -62879,6 +63490,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_textfield_helper_text__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material/textfield/helper-text */ "./node_modules/@material/textfield/helper-text/index.js");
 /* harmony import */ var _material_textfield__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material/textfield */ "./node_modules/@material/textfield/index.js");
 /* harmony import */ var _material_select_helper_text__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material/select/helper-text */ "./node_modules/@material/select/helper-text/index.js");
+/* harmony import */ var _material_snackbar__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material/snackbar */ "./node_modules/@material/snackbar/index.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -62932,6 +63544,7 @@ var app = new Vue({
 
 
 
+
  // permanent components
 
 var drawer = _material_drawer__WEBPACK_IMPORTED_MODULE_2__["MDCDrawer"].attachTo(document.getElementById('nav-drawer'));
@@ -62963,6 +63576,14 @@ var selects = [].map.call(document.querySelectorAll('.mdc-select'), function (el
   select.menu_.quickOpen = true;
   return select;
 });
+var el = document.querySelector('.mdc-snackbar');
+
+if (el) {
+  var snackbar = new _material_snackbar__WEBPACK_IMPORTED_MODULE_14__["MDCSnackbar"](el);
+  snackbar.open();
+  window.snackbar = snackbar;
+}
+
 window.selects = selects;
 var textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function (el) {
   var textField = new _material_textfield__WEBPACK_IMPORTED_MODULE_12__["MDCTextField"](el);

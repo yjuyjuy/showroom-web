@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="register" class="d-flex justify-content-center">
+<div id="register" class="d-flex justify-content-center auth">
 	<div id="register-card" class="mdc-card mdc-card--outlined">
-		<form id="register-form" method="POST" action="{{ route('register') }}" class="mdc-card__content d-flex flex-column">
+		<form id="register-form" method="POST" action="{{ route('register') }}" class="mdc-card__content d-flex flex-column auth-form">
 			@csrf
 			<div class="mdc-card__content-header">
 				<h3>{{ __('Register') }}</h3>
@@ -52,7 +52,7 @@
 		</form>
 		<div class="mdc-card__actions justify-content-end">
 			<div class="mdc-card__action-buttons flex-wrap justify-content-end">
-				<button id="register-button" type="submit" class="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button" form="register-form">
+				<button type="submit" class="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button" form="register-form">
 					<span class="mdc-button__label">{{ __('Register') }}</span>
 				</button>
 			</div>

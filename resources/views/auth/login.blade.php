@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="login" class="d-flex justify-content-center">
+<div id="login" class="d-flex justify-content-center auth">
 	<div id="login-card" class="mdc-card mdc-card--outlined">
-		<form id="login-form" method="POST" action="{{ route('login') }}" class="mdc-card__content d-flex flex-column">
+		<form id="login-form" method="POST" action="{{ route('login') }}" class="mdc-card__content d-flex flex-column auth-form">
 			@csrf
 			<div class="mdc-card__content-header">
 				<h3>{{ __('Login') }}</h3>
