@@ -23,10 +23,9 @@ class DatabaseSeeder extends Seeder
 		]);
 		$user = new \App\User([
 					'id' => 1,
-					'name' => 'JIAYOU YUAN',
 					'email' => 'yjuyjuy@gmail.com',
 					'password' => Hash::make('123456789'),
-					'username' => 'admin',
+					'username' => 'Dope',
 		]);
 		$user->save();
 		$vendor = \App\Vendor::firstOrNew(

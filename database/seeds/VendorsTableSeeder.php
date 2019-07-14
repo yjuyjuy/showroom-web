@@ -40,7 +40,6 @@ class VendorsTableSeeder extends Seeder
 		];
 		foreach ($data as $row) {
 			$user = \App\User::create([
-				'name' =>$row['name'],
 				'username' => $row['name'],
 				'email' => 'vendor'.$row['id'].'@test.com',
 				'password' => Hash::make('123456789'),
