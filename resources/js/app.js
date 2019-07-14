@@ -18,7 +18,6 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('prices-editor', require('./components/PricesEditorComponent.vue').default);
 Vue.component('images-slider', require('./components/ImagesSliderComponent.vue').default);
 Vue.component('image-item', require('./components/ImageItemComponent.vue').default);
@@ -57,7 +56,7 @@ import {MDCTextField} from '@material/textfield';
 import {MDCSelectHelperText} from '@material/select/helper-text';
 
 // permanent components
-const drawer = MDCDrawer.attachTo(document.getElementById('my-drawer'));
+const drawer = MDCDrawer.attachTo(document.getElementById('nav-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
 const topAppBar = MDCTopAppBar.attachTo(topAppBarElement);
 topAppBar.setScrollTarget(window);
@@ -137,7 +136,7 @@ if (document.querySelector('#display-options-dialog')) {
 	sortList.classList.add('show');
 	sortList.style.height = sortList.childElementCount * 48 + 'px';
 
-	document.getElementById('open-options-fab').onclick = function(event) {
+	document.getElementById('display-options-fab').onclick = function(event) {
 		event.preventDefault();
 		console.log('toggle menu');
 		dialog.open();

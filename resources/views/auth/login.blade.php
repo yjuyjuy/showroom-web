@@ -1,73 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+<div id="login" class="d-flex justify-content-center">
+	<div id="login-card" class="mdc-card mdc-card--outlined">
+		<form id="login-form" method="POST" action="{{ route('login') }}" class="mdc-card__content d-flex flex-column">
+			@csrf
+			<div class="mdc-card__content-header">
+				<h3>{{ __('Login') }}</h3>
+			</div>
+			<label class="mdc-text-field mdc-card__action">
+				<input type="email" class="mdc-text-field__input" name="email" autocomplete="email" autofocus>
+				<span class="mdc-floating-label">{{ __('E-Mail Address') }}</span>
+				<div class="mdc-line-ripple"></div>
+			</label>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+			@error('email')
+			<div class="mdc-text-field-helper-line">
+				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+			</div>
+			@enderror
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+			<label class="mdc-text-field mdc-card__action">
+				<input type="password" class="mdc-text-field__input" name="password" autocomplete="current-password">
+				<span class="mdc-floating-label">{{ __('Password') }}</span>
+				<div class="mdc-line-ripple"></div>
+			</label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+			@error('password')
+			<div class="mdc-text-field-helper-line">
+				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+			</div>
+			@enderror
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="mdc-button mdc-button--onlined">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="mdc-form-field mdc-card__action">
+				<div class="mdc-checkbox">
+					<input class="mdc-checkbox__native-control" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+					<div class="mdc-checkbox__background">
+						<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+							<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+						</svg>
+						<div class="mdc-checkbox__mixedmark"></div>
+					</div>
+				</div>
+				<label for="remember">{{ __('Remember Me') }}</label>
+			</div>
+		</form>
+		<div class="mdc-card__actions justify-content-end">
+			<div class="mdc-card__action-buttons flex-wrap justify-content-end">
+				@if (Route::has('password.request'))
+				<a id="forgot-password-button" class="mdc-button mdc-card__action mdc-card__action--button" href="{{ route('password.request') }}">
+					<span class="mdc-button__label">{{ __('Forgot Your Password?') }}</span>
+				</a>
+				@endif
+				<button type="submit" class="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button" form="login-form">
+					<span class="mdc-button__label">{{ __('Login') }}</span>
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection

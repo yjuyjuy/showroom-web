@@ -26,15 +26,86 @@ label {
 @import "@material/textfield/mdc-text-field";
 @import "@material/textfield/helper-text/mdc-text-field-helper-text";
 @import "@material/select/helper-text/mdc-select-helper-text";
+@import "@material/elevation/mdc-elevation";
+@import "@material/card/mdc-card";
 
-.mdc-drawer {
-	.mdc-drawer__header {
-		.mdc-drawer__title {
-			text-transform: capitalize;
+// global reset rules
+/* Change Autocomplete styles in Chrome */
+@-webkit-keyframes autofill {
+    to {
+        color: #666;
+        background: transparent;
+    }
+}
+input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+		-webkit-text-fill-color: $mdc-theme-on-background !important;
+}
+
+.mdc-button{
+	&:hover{
+		text-decoration: none;
+	}
+	&__label{
+		text-transform: uppercase;
+	}
+	&--error{
+		@include mdc-button-ink-color(error);
+		&.mdc-button--outlined{
+			@include mdc-button-outline-color(error);
 		}
 	}
+}
+.mdc-drawer__title,
+.mdc-dialog__title,
+.mdc-list-group__subheader,
+.mdc-floating-label{
+	text-transform: capitalize;
+}
 
-	.mdc-drawer__content {}
+// general layout
+.mdc-top-app-bar__row, .main-content {
+	width: 100%;
+	margin: 0 auto;
+}
+.main-image-list {
+	@include mdc-image-list-standard-columns(2,16px);
+}
+
+@media (min-width:600px){
+	.mdc-top-app-bar__row, .main-content {
+		width: 90%;
+		margin: 0 auto;
+	}
+	.main-image-list {
+		@include mdc-image-list-standard-columns(3,16px);
+	}
+	.mdc-dialog__surface{
+		width: 50vw;
+	}
+}
+
+@media (min-width:1024px){
+	.mdc-top-app-bar__row, .main-content {
+	    width:80%;
+	}
+		.main-image-list {
+			@include mdc-image-list-standard-columns(4,16px);
+		}
+}
+
+@media (min-width:1600px){
+	.mdc-top-app-bar__row, .main-content {
+	    max-width: 1280px;
+	}
+}
+
+// permanent component
+#nav-drawer{
+	.material-icons{
+		color: $mdc-theme-primary;
+	}
 }
 
 #my-top-app-bar {
@@ -43,15 +114,17 @@ label {
 	@include mdc-top-app-bar-fill-color(primary);
 
 	.mdc-top-app-bar__row {
-		padding: 16px;
-
+		padding: 1rem;
 		.mdc-top-app-bar__section--align-start {
 			.mdc-top-app-bar__navigation-icon {
-				width: 24px;
-				height: 24px;
+				width: 1.5rem;
+				height: 1.5rem;
 			}
-
+			.mdc-top-app-bar__title:hover{
+				text-decoration: none;
+			}
 			.mdc-top-app-bar__title {
+				color: $mdc-theme-on-primary;
 				padding-left: 32px;
 			}
 		}
@@ -62,83 +135,134 @@ label {
 			}
 		}
 	}
-}
-
-.my-image-list {
-	@include mdc-image-list-standard-columns(2,15px);
-
-	.mdc-image-list__supporting {
-		padding-top: 0;
-		flex-direction: column;
-		align-items: stretch;
-
-		.mdc-image-list__label {
-			padding-left: 2px;
-		}
-
-		.mdc-image-list__label.brand {
-			margin-top: -1.6rem;
-			background: rgba(0,0,0,.6);
+	@media (min-width:600px){
+		.mdc-top-app-bar__row {
+			padding:0;
+			.mdc-top-app-bar__section--align-start{
+				padding: 8px;
+			}
+			.mdc-top-app-bar__section--align-end {
+				padding: 8px;
+			}
 		}
 	}
 }
 
-.mdc-fab {
-	position: fixed;
-	right: 1rem;
-	bottom: 1rem;
-}
-
-#display-options-dialog {
-	.mdc-dialog__title {
-		text-transform: capitalize;
-	}
-
-	.mdc-list-group {
-		.mdc-list-group__subheader {
-			text-transform: uppercase;
-			font-weight: bold;
-			color: $mdc-theme-primary;
+// auth
+#login-card{
+	padding: 1.5rem;
+	margin: 3rem 1rem 0;
+	width:100%;
+	max-width: 500px;
+	#login-form{
+		.mdc-text-field,
+		.mdc-form-field{
+			margin-top: 1rem;
 		}
+		.mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text{
+			color: $mdc-theme-error;
+		}
+		.mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text{
+			color: $mdc-theme-error;
+		}
+	}
+	.mdc-card__action--button{
+		margin:0 0 8px 8px;
+	}
+	.mdc-card__action--button:first-child{
+		margin-left:0;
+	}
+}
+// products.index
+#products-index{
+	.main-image-list {
 
-		.mdc-list {
-			transition: height 0.3s ease-out;
-			height: 0;
-			overflow: hidden;
+		.mdc-image-list__item:hover{
+			outline: 2px solid $mdc-theme-primary;
+		}
+		.mdc-image-list__item{
+			a:hover{
+				text-decoration: none;
+			}
+			.mdc-image-list__supporting {
+				padding: 0;
+				flex-direction: column;
+				align-items: stretch;
 
-			.mdc-list-item {
-				.mdc-list-item__text {
-					text-transform: capitalize;
+				.mdc-image-list__label {
+					padding-left: 2px;
+				}
+
+				.mdc-image-list__label.brand {
+					margin-top: -1.75rem; // line-height set on .mdc-image-list__label
+					background: rgba(0,0,0,.6);
 				}
 			}
 		}
 	}
-	#mdc-dialog__cancel-button {
-		@include mdc-button-ink-color(error);
+	#display-options-fab {
+		position: fixed;
+		right: 1rem;
+		bottom: 1rem;
+	}
+	#display-options-dialog {
+
+		.mdc-list-group {
+			.mdc-list-group__subheader:hover{
+				cursor: pointer;
+			}
+			.mdc-list-group__subheader {
+				text-transform: uppercase;
+				font-weight: bold;
+				color: $mdc-theme-primary;
+			}
+
+			.mdc-list {
+				transition: height 0.3s ease-out;
+				height: 0;
+				overflow: hidden;
+
+				.mdc-list-item {
+					.mdc-list-item__text {
+						text-transform: capitalize;
+					}
+				}
+			}
+		}
 	}
 }
-.mdc-select,
-.mdc-select__menu,
-.mdc-text-field{
-	width: 100%;
-}
-.mdc-select,
-.mdc-text-field{
-	margin-top: 1em;
-	.mdc-floating-label{
-		text-transform: capitalize;
+
+// products.show
+#images-slider{
+	.thumbnail-control-next,
+	.thumbnail-control-prev{
+		color: $mdc-theme-on-primary;
+	}
+	.thumbnail-item{
+		transition: all 0.2s ease-in-out;
+	}
+	.thumbnail-item.active{
+		@include mdc-elevation(3, #000000);
 	}
 }
 
-.mdc-select{
+// products.create / products.edit
+.product-form{
+	.mdc-select,
+	.mdc-select__menu,
+	.mdc-text-field{
+		width: 100%;
+	}
 
-}
-.mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text{
-	color: $mdc-theme-error;
-}
-.mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text{
-	color: $mdc-theme-error;
-}
-@media (max-width: 599px){
+	.mdc-select,
+	.mdc-text-field{
+		margin-top: 1rem;
+	}
 
+	.mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text{
+		color: $mdc-theme-error;
+	}
+	.mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text{
+		color: $mdc-theme-error;
+	}
 }
