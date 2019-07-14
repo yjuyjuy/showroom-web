@@ -149,12 +149,14 @@ input:-webkit-autofill {
 }
 
 // auth
-#login-card{
+#login-card,
+#register-card{
 	padding: 1.5rem;
 	margin: 3rem 1rem 0;
 	width:100%;
 	max-width: 500px;
-	#login-form{
+	#login-form,
+	#register-form{
 		.mdc-text-field,
 		.mdc-form-field{
 			margin-top: 1rem;

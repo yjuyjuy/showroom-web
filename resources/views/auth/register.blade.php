@@ -1,91 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+<div id="register" class="d-flex justify-content-center">
+	<div id="register-card" class="mdc-card mdc-card--outlined">
+		<form id="register-form" method="POST" action="{{ route('register') }}" class="mdc-card__content d-flex flex-column">
+			@csrf
+			<div class="mdc-card__content-header">
+				<h3>{{ __('Register') }}</h3>
+			</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+			<label class="mdc-text-field mdc-card__action">
+				<input type="text" class="mdc-text-field__input" name="username" autocomplete="username" required>
+				<span class="mdc-floating-label">{{ __('Username') }}</span>
+				<div class="mdc-line-ripple"></div>
+			</label>
+			@error('username')
+			<div class="mdc-text-field-helper-line">
+				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+			</div>
+			@enderror
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+			<label class="mdc-text-field mdc-card__action">
+				<input type="email" class="mdc-text-field__input" name="email" autocomplete="email" required>
+				<span class="mdc-floating-label">{{ __('E-Mail Address') }}</span>
+				<div class="mdc-line-ripple"></div>
+			</label>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+			@error('email')
+			<div class="mdc-text-field-helper-line">
+				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+			</div>
+			@enderror
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+			<label class="mdc-text-field mdc-card__action">
+				<input type="password" class="mdc-text-field__input" name="password" autocomplete="new-password" required>
+				<span class="mdc-floating-label">{{ __('Password') }}</span>
+				<div class="mdc-line-ripple"></div>
+			</label>
 
-												<div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+			@error('password')
+			<div class="mdc-text-field-helper-line">
+				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+			</div>
+			@enderror
 
-                            <div class="col-md-6">
-                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username">
-
-                                @error('username')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-												<div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="mdc-button mdc-button--outlined">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+			<label class="mdc-text-field mdc-card__action">
+				<input type="password" class="mdc-text-field__input" name="password_confirmation" autocomplete="new-password" required>
+				<span class="mdc-floating-label">{{ __('Confirm Password') }}</span>
+				<div class="mdc-line-ripple"></div>
+			</label>
+		</form>
+		<div class="mdc-card__actions justify-content-end">
+			<div class="mdc-card__action-buttons flex-wrap justify-content-end">
+				<button id="register-button" type="submit" class="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button" form="register-form">
+					<span class="mdc-button__label">{{ __('Register') }}</span>
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
