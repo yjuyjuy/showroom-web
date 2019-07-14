@@ -18944,7 +18944,8 @@ input:-webkit-autofill {
   }
 }
 
-#login-card {
+#login-card,
+#register-card {
   padding: 1.5rem;
   margin: 3rem 1rem 0;
   width: 100%;
@@ -18952,23 +18953,37 @@ input:-webkit-autofill {
 }
 
 #login-card #login-form .mdc-text-field,
-#login-card #login-form .mdc-form-field {
+#login-card #login-form .mdc-form-field,
+#login-card #register-form .mdc-text-field,
+#login-card #register-form .mdc-form-field,
+#register-card #login-form .mdc-text-field,
+#register-card #login-form .mdc-form-field,
+#register-card #register-form .mdc-text-field,
+#register-card #register-form .mdc-form-field {
   margin-top: 1rem;
 }
 
-#login-card #login-form .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text {
+#login-card #login-form .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text,
+#login-card #register-form .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text,
+#register-card #login-form .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text,
+#register-card #register-form .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text {
   color: #CF6679;
 }
 
-#login-card #login-form .mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text {
+#login-card #login-form .mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text,
+#login-card #register-form .mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text,
+#register-card #login-form .mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text,
+#register-card #register-form .mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text {
   color: #CF6679;
 }
 
-#login-card .mdc-card__action--button {
+#login-card .mdc-card__action--button,
+#register-card .mdc-card__action--button {
   margin: 0 0 8px 8px;
 }
 
-#login-card .mdc-card__action--button:first-child {
+#login-card .mdc-card__action--button:first-child,
+#register-card .mdc-card__action--button:first-child {
   margin-left: 0;
 }
 

@@ -1,4 +1,4 @@
-<div class="mdc-select">
+<div class="mdc-select mt-md-0 mdc-menu-surface--anchor">
 	<input type="hidden" name="brand">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>
@@ -24,7 +24,7 @@
 @enderror
 
 
-<div class="mdc-select">
+<div class="mdc-select mdc-menu-surface--anchor">
 	<input type="hidden" name="season">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>
@@ -72,7 +72,7 @@
 </div>
 @enderror
 
-<div class="mdc-select">
+<div class="mdc-select mdc-menu-surface--anchor">
 	<input type="hidden" name="category">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>
@@ -97,7 +97,7 @@
 <p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
 @enderror
 
-<div class="mdc-select">
+<div class="mdc-select mdc-menu-surface--anchor">
 	<input type="hidden" name="color">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>

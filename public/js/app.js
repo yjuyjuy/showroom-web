@@ -62960,6 +62960,7 @@ var formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), funct
 var selects = [].map.call(document.querySelectorAll('.mdc-select'), function (el) {
   var select = new _material_select__WEBPACK_IMPORTED_MODULE_10__["MDCSelect"](el);
   select.required = true;
+  select.menu_.quickOpen = true;
   return select;
 });
 window.selects = selects;

@@ -9,25 +9,25 @@
 			@include('products.show.images')
 		</div>
 		<div class="col-md-6">
-			<form class="" action="/products/{{ $product->id }}" method="post" id="update-form">
+			<form id="edit-product-form" class="product-form" action="/products/{{ $product->id }}" method="post" id="update-form">
 				@csrf
 				@method('PATCH')
 				@include('products.edit.form')
 			</form>
-			<div class="form-group   ">
-				<div class="">
-					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-outline-primary ">返回</a>
-					<button type="submit" class="mdc-button mdc-button--outlined" form="update-form">
-						更新
-					</button>
-					<form action="{{route('products.destroy',['product' => $product])}}" class="d-inline" method="post" id="delete-form">
-						@csrf
-						@method('DELETE')
-						<button type="submit" class="mdc-button mdc-button--outlined" form="delete-form">
-							删除
-						</button>
-					</form>
-				</div>
+			<div class="mt-3 d-flex justify-content-end">
+				<a href="{{route('products.show',['product' => $product])}}" class="mdc-button mdc-button--outlined">
+				  <span class="mdc-button__label">{{ __('back') }}</span>
+				</a>
+				<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="update-form">
+					<span class="mdc-button__label">{{ __('update') }}</span>
+				</button>
+				<button type="submit" class="mdc-button mdc-button--outlined mdc-button--error ml-2" form="delete-product-form">
+					<span class="mdc-button__label">{{ __('delete') }}</span>
+				</button>
+				<form action="{{route('products.destroy',['product' => $product])}}" class="d-none" method="post" id="delete-product-form">
+					@csrf
+					@method('DELETE')
+				</form>
 			</div>
 		</div>
 	</div>

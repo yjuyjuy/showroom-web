@@ -83,6 +83,7 @@ const formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), fun
 const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(el) {
 	let select = new MDCSelect(el);
 	select.required = true;
+	select.menu_.quickOpen = true;
 	return select;
 });
 window.selects = selects;
