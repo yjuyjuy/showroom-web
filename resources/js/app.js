@@ -55,6 +55,7 @@ import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
 import {MDCTextField} from '@material/textfield';
 import {MDCSelectHelperText} from '@material/select/helper-text';
 import {MDCSnackbar} from '@material/snackbar';
+
 // permanent components
 const drawer = MDCDrawer.attachTo(document.getElementById('nav-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
@@ -65,8 +66,13 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 });
 
 // standard components
-const buttons = [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
+const buttonRipples = [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
 	return new MDCRipple(el);
+});
+const iconButtonRipples = [].map.call(document.querySelectorAll('.mdc-icon-button'), function(el){
+	let iconButtonRipple = new MDCRipple(el);
+	iconButtonRipple.unbounded = true;
+	return iconButtonRipple;
 });
 const fabs = [].map.call(document.querySelectorAll('.mdc-fab'), function(el) {
 	return new MDCRipple(el);

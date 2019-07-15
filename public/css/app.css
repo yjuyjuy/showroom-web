@@ -10660,8 +10660,166 @@ a.text-dark:focus {
   }
 }
 
-label {
-  margin-bottom: 0;
+.mdc-typography {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mdc-typography--headline1 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 6rem;
+  line-height: 6rem;
+  font-weight: 300;
+  letter-spacing: -0.015625em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--headline2 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 3.75rem;
+  line-height: 3.75rem;
+  font-weight: 300;
+  letter-spacing: -0.00833333em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--headline3 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 3rem;
+  line-height: 3.125rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--headline4 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 0.00735294em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--headline5 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--headline6 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.0125em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--subtitle1 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+  letter-spacing: 0.009375em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--subtitle2 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  font-weight: 500;
+  letter-spacing: 0.00714286em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--body1 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.03125em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--body2 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.01785714em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--caption {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.03333333em;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.mdc-typography--button {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 2.25rem;
+  font-weight: 500;
+  letter-spacing: 0.08928571em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.mdc-typography--overline {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.75rem;
+  line-height: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.16666667em;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
 .mdc-button {
@@ -18976,6 +19134,165 @@ a.mdc-list-item {
   margin-right: 8px;
 }
 
+.mdc-icon-button {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  font-size: 24px;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  fill: currentColor;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.mdc-icon-button svg,
+.mdc-icon-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.mdc-icon-button:disabled {
+  color: rgba(0, 0, 0, 0.38);
+  /* @alternate */
+  color: var(--mdc-theme-text-disabled-on-light, rgba(0, 0, 0, 0.38));
+  cursor: default;
+  pointer-events: none;
+}
+
+.mdc-icon-button__icon {
+  display: inline-block;
+}
+
+.mdc-icon-button__icon.mdc-icon-button__icon--on {
+  display: none;
+}
+
+.mdc-icon-button--on .mdc-icon-button__icon {
+  display: none;
+}
+
+.mdc-icon-button--on .mdc-icon-button__icon.mdc-icon-button__icon--on {
+  display: inline-block;
+}
+
+.mdc-icon-button {
+  --mdc-ripple-fg-size: 0;
+  --mdc-ripple-left: 0;
+  --mdc-ripple-top: 0;
+  --mdc-ripple-fg-scale: 1;
+  --mdc-ripple-fg-translate-end: 0;
+  --mdc-ripple-fg-translate-start: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.mdc-icon-button::before,
+.mdc-icon-button::after {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  content: "";
+}
+
+.mdc-icon-button::before {
+  transition: opacity 15ms linear, background-color 15ms linear;
+  z-index: 1;
+}
+
+.mdc-icon-button.mdc-ripple-upgraded::before {
+  -webkit-transform: scale(var(--mdc-ripple-fg-scale, 1));
+          transform: scale(var(--mdc-ripple-fg-scale, 1));
+}
+
+.mdc-icon-button.mdc-ripple-upgraded::after {
+  top: 0;
+  /* @noflip */
+  left: 0;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+}
+
+.mdc-icon-button.mdc-ripple-upgraded--unbounded::after {
+  top: var(--mdc-ripple-top, 0);
+  /* @noflip */
+  left: var(--mdc-ripple-left, 0);
+}
+
+.mdc-icon-button.mdc-ripple-upgraded--foreground-activation::after {
+  -webkit-animation: mdc-ripple-fg-radius-in 225ms forwards, mdc-ripple-fg-opacity-in 75ms forwards;
+          animation: mdc-ripple-fg-radius-in 225ms forwards, mdc-ripple-fg-opacity-in 75ms forwards;
+}
+
+.mdc-icon-button.mdc-ripple-upgraded--foreground-deactivation::after {
+  -webkit-animation: mdc-ripple-fg-opacity-out 150ms;
+          animation: mdc-ripple-fg-opacity-out 150ms;
+  -webkit-transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+          transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+}
+
+.mdc-icon-button::before,
+.mdc-icon-button::after {
+  top: calc(50% - 50%);
+  /* @noflip */
+  left: calc(50% - 50%);
+  width: 100%;
+  height: 100%;
+}
+
+.mdc-icon-button.mdc-ripple-upgraded::before,
+.mdc-icon-button.mdc-ripple-upgraded::after {
+  top: var(--mdc-ripple-top, calc(50% - 50%));
+  /* @noflip */
+  left: var(--mdc-ripple-left, calc(50% - 50%));
+  width: var(--mdc-ripple-fg-size, 100%);
+  height: var(--mdc-ripple-fg-size, 100%);
+}
+
+.mdc-icon-button.mdc-ripple-upgraded::after {
+  width: var(--mdc-ripple-fg-size, 100%);
+  height: var(--mdc-ripple-fg-size, 100%);
+}
+
+.mdc-icon-button::before,
+.mdc-icon-button::after {
+  background-color: #ffffff;
+}
+
+.mdc-icon-button:hover::before {
+  opacity: 0.08;
+}
+
+.mdc-icon-button:not(.mdc-ripple-upgraded):focus::before,
+.mdc-icon-button.mdc-ripple-upgraded--background-focused::before {
+  transition-duration: 75ms;
+  opacity: 0.24;
+}
+
+.mdc-icon-button:not(.mdc-ripple-upgraded)::after {
+  transition: opacity 150ms linear;
+}
+
+.mdc-icon-button:not(.mdc-ripple-upgraded):active::after {
+  transition-duration: 75ms;
+  opacity: 0.24;
+}
+
+.mdc-icon-button.mdc-ripple-upgraded {
+  --mdc-ripple-fg-opacity: 0.24;
+}
+
 /* Change Autocomplete styles in Chrome */
 
 @-webkit-keyframes autofill {
@@ -18989,6 +19306,10 @@ input:-webkit-autofill {
   -webkit-animation-name: autofill;
   -webkit-animation-fill-mode: both;
   -webkit-text-fill-color: #ffffff !important;
+}
+
+label {
+  margin-bottom: 0;
 }
 
 .mdc-button:hover {
@@ -19028,15 +19349,15 @@ input:-webkit-autofill {
 }
 
 .mdc-snackbar .mdc-snackbar__surface {
-  background-color: #121212;
+  background-color: #ef9a9a;
   /* @alternate */
-  background-color: var(--mdc-theme-surface, #121212);
+  background-color: var(--mdc-theme-secondary, #ef9a9a);
 }
 
 .mdc-snackbar .mdc-snackbar__label {
-  color: #90caf9;
+  color: #000000;
   /* @alternate */
-  color: var(--mdc-theme-primary, #90caf9);
+  color: var(--mdc-theme-on-secondary, #000000);
 }
 
 .mdc-snackbar .mdc-snackbar__label {
@@ -19044,15 +19365,15 @@ input:-webkit-autofill {
 }
 
 .mdc-snackbar .mdc-button:not(:disabled) {
-  border-color: #90caf9;
+  border-color: #121212;
   /* @alternate */
-  border-color: var(--mdc-theme-primary, #90caf9);
+  border-color: var(--mdc-theme-surface, #121212);
 }
 
 .mdc-snackbar .mdc-button:not(:disabled) {
-  color: #90caf9;
+  color: #121212;
   /* @alternate */
-  color: var(--mdc-theme-primary, #90caf9);
+  color: var(--mdc-theme-surface, #121212);
 }
 
 .mdc-top-app-bar__row,
@@ -19064,6 +19385,11 @@ input:-webkit-autofill {
 .main-image-list .mdc-image-list__item {
   width: calc(100% / 2 - 16.5px);
   margin: 8px;
+}
+
+img {
+  display: block;
+  width: 100%;
 }
 
 @media (min-width: 600px) {
@@ -19283,19 +19609,6 @@ input:-webkit-autofill {
   text-transform: capitalize;
 }
 
-#images-slider .thumbnail-control-next,
-#images-slider .thumbnail-control-prev {
-  color: #000000;
-}
-
-#images-slider .thumbnail-item {
-  transition: all 0.2s ease-in-out;
-}
-
-#images-slider .thumbnail-item.active {
-  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-}
-
 .product-form .mdc-select,
 .product-form .mdc-select__menu,
 .product-form .mdc-text-field {
@@ -19313,5 +19626,213 @@ input:-webkit-autofill {
 
 .product-form .mdc-select:not(.mdc-select--disabled) + .mdc-select-helper-text {
   color: #CF6679;
+}
+
+.my-carousel {
+  position: relative;
+}
+
+.my-carousel .my-carousel__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0.5;
+  transition: opacity 0.3s ease-out 0s;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails:hover {
+  opacity: 1;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.3s ease-out 0s, opacity 0.3s ease-out 0s;
+  width: calc( ( 100% - 40px ) / 5 - 8px);
+  margin: 4px 4px;
+  opacity: 0.5;
+  display: none;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail:hover {
+  opacity: 0.9;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail.show {
+  display: block;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail.active {
+  box-shadow: 0px 6px 6px -3px rgba(0, 0, 0, 0.2), 0px 10px 14px 1px rgba(0, 0, 0, 0.14), 0px 4px 18px 3px rgba(0, 0, 0, 0.12);
+  opacity: 1;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next {
+  color: #121212;
+  /* @alternate */
+  color: var(--mdc-theme-surface, #121212);
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  font-size: 24px;
+  position: absolute;
+  top: calc(50% - 24px);
+  width: 48px;
+  height: 48px;
+  opacity: 1;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev::before,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev::after,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next::before,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next::after {
+  background-color: #121212;
+}
+
+@supports not (-ms-ime-align: auto) {
+  .my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev::before,
+  .my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev::after,
+  .my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next::before,
+  .my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next::after {
+    /* @alternate */
+    background-color: var(--mdc-theme-surface, #121212);
+  }
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev:hover::before,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next:hover::before {
+  opacity: 0.04;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev:not(.mdc-ripple-upgraded):focus::before,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev.mdc-ripple-upgraded--background-focused::before,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next:not(.mdc-ripple-upgraded):focus::before,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next.mdc-ripple-upgraded--background-focused::before {
+  transition-duration: 75ms;
+  opacity: 0.12;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev:not(.mdc-ripple-upgraded)::after,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next:not(.mdc-ripple-upgraded)::after {
+  transition: opacity 150ms linear;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev:not(.mdc-ripple-upgraded):active::after,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next:not(.mdc-ripple-upgraded):active::after {
+  transition-duration: 75ms;
+  opacity: 0.12;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev.mdc-ripple-upgraded,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next.mdc-ripple-upgraded {
+  --mdc-ripple-fg-opacity: 0.12;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev svg,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev img,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next svg,
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next img {
+  width: 24px;
+  height: 24px;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-prev {
+  left: -12px;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__thumbnails .my-carousel__thumbnail-control-next {
+  right: -12px;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next {
+  color: #121212;
+  /* @alternate */
+  color: var(--mdc-theme-surface, #121212);
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  font-size: 24px;
+  position: absolute;
+  top: calc(50% - 24px);
+  width: 48px;
+  height: 48px;
+  opacity: 1;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev::before,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev::after,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next::before,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next::after {
+  background-color: #121212;
+}
+
+@supports not (-ms-ime-align: auto) {
+  .my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev::before,
+  .my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev::after,
+  .my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next::before,
+  .my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next::after {
+    /* @alternate */
+    background-color: var(--mdc-theme-surface, #121212);
+  }
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev:hover::before,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next:hover::before {
+  opacity: 0.04;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev:not(.mdc-ripple-upgraded):focus::before,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev.mdc-ripple-upgraded--background-focused::before,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next:not(.mdc-ripple-upgraded):focus::before,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next.mdc-ripple-upgraded--background-focused::before {
+  transition-duration: 75ms;
+  opacity: 0.12;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev:not(.mdc-ripple-upgraded)::after,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next:not(.mdc-ripple-upgraded)::after {
+  transition: opacity 150ms linear;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev:not(.mdc-ripple-upgraded):active::after,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next:not(.mdc-ripple-upgraded):active::after {
+  transition-duration: 75ms;
+  opacity: 0.12;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev.mdc-ripple-upgraded,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next.mdc-ripple-upgraded {
+  --mdc-ripple-fg-opacity: 0.12;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev svg,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev img,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next svg,
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next img {
+  width: 24px;
+  height: 24px;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-prev {
+  left: 0;
+}
+
+.my-carousel .my-carousel__overlay .my-carousel__controls .my-carousel__control-next {
+  right: 0;
 }
 

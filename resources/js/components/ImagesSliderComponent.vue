@@ -1,33 +1,25 @@
 <template>
-<div id="images-slider" class="carousel slide" data-touch="true" data-ride="false">
-	<div class="carousel-inner">
-		<div v-for="(image,index) in images" class="carousel-item">
-			<img :src="image" class="d-block w-100">
+<div id="my-carousel" class="my-carousel">
+	<div ref="carousel" class="carousel slide" data-touch="true" data-ride="false">
+		<div class="carousel-inner">
+			<div v-for="(image,index) in images" class="carousel-item">
+				<img :src="image" class="d-block w-100">
+			</div>
 		</div>
 	</div>
-	<div class="row px-2 mb-2 justify-content-center carousel-indicators">
-
-		<a v-for="(image,index) in images" href="#" data-target="#images-slider" :data-slide-to="index" class="col-2 px-2 thumbnail-item" :class="{show:index >=0 && index < max}" v-once>
-			<img :src="image" class="d-block w-100">
-		</a>
-		<a v-if="total>max" href="#" @click.prevent="thumbnail_prev()" class="thumbnail-control-prev">
-			<span class="thumbnail-control-prev-icon" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a v-if="total>max" href="#" @click.prevent="thumbnail_next()" class="thumbnail-control-next">
-			<span class="thumbnail-control-next-icon" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-
+	<div class="my-carousel__overlay">
+		<div class="my-carousel__thumbnails">
+			<a href="#" v-for="(image,index) in images" @click.prevent="carousel(index)" class="my-carousel__thumbnail">
+				<img :src="image">
+			</a>
+			<button v-if="total>max" type="button" class="mdc-icon-button material-icons my-carousel__thumbnail-control-prev" @click.prevent="thumbnail_prev()">navigate_before</button>
+			<button v-if="total>max" type="button" class="mdc-icon-button material-icons my-carousel__thumbnail-control-next" @click.prevent="thumbnail_next()">navigate_next</button>
+		</div>
+		<div class="my-carousel__controls">
+			<button type="button" class="mdc-icon-button material-icons my-carousel__control-prev" @click.prevent="carousel('prev')">navigate_before</button>
+			<button type="button" class="mdc-icon-button material-icons my-carousel__control-next" @click.prevent="carousel('next')">navigate_next</button>
+		</div>
 	</div>
-	<a class="carousel-control-prev" href="#images-slider" role="button" data-slide="prev">
-		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="carousel-control-next" href="#images-slider" role="button" data-slide="next">
-		<span class="carousel-control-next-icon" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
 </div>
 </template>
 
@@ -51,11 +43,18 @@ export default {
 	},
 	mounted: function() {
 		$('.carousel-item')[0].classList.add('active');
-		$('.thumbnail-item')[0].classList.add('active');
+		$('.my-carousel__thumbnail')[0].classList.add('active');
+		$('#my-carousel').on('slide.bs.carousel', function(event) {
+			$('.my-carousel__thumbnail.active')[0].classList.remove('active');
+			$('.my-carousel__thumbnail')[event.to].classList.add('active');
+		});
+		$('#my-carousel').on('slid.bs.carousel', function(event) {
+			$('.carousel').carousel('pause');
+		});
 	},
 	watch: {
 		show_range: function() {
-			let items = $('.thumbnail-item');
+			let items = $('.my-carousel__thumbnail');
 			let first = this.show_range[0];
 			let last = this.show_range[this.show_range.length - 1];
 			for (let i = 0; i < this.total; i++) {
@@ -94,77 +93,9 @@ export default {
 				}
 			}
 		},
+		carousel: function(param) {
+			window.$('.carousel').carousel(param);
+		},
 	}
 }
 </script>
-
-<style scoped>
-.carousel-indicators {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	margin-right: 0;
-	margin-left: 0;
-	z-index: 2;
-	width: 100%;
-	overflow: hidden;
-}
-
-.thumbnail-item {
-	display: none;
-	opacity: 0.5;
-}
-
-.thumbnail-item.show {
-	display: block;
-}
-
-.thumbnail-item.active {
-	opacity: 1;
-}
-
-.thumbnail-control-prev,
-.thumbnail-control-next {
-	width: 13%;
-	position: absolute;
-	bottom: 0;
-	height: 100%;
-	align-items: center;
-	justify-content: center;
-	display: flex;
-	z-index: 3;
-	opacity: 0.5;
-}
-
-.thumbnail-control-prev:hover,
-.thumbnail-control-next:hover,
-.thumbnail-control-prev:focus,
-.thumbnail-control-next:focus {
-	opacity: 0.9;
-}
-
-.thumbnail-control-prev {
-	left: 0;
-}
-
-.thumbnail-control-next {
-	right: 0;
-}
-
-.thumbnail-control-prev-icon,
-.thumbnail-control-next-icon {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	background: no-repeat 50%/100% 100%;
-}
-
-.thumbnail-control-prev-icon {
-
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e");
-}
-
-.thumbnail-control-next-icon {
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e");
-}
-</style>
