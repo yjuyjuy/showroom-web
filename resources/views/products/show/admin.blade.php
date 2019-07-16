@@ -41,12 +41,7 @@
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 			    @foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)
 					<li class="mdc-list-item" role="menuitem">
-			      <a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor->id])}}" class="mdc-list-item__text">{{$vendor->name}}</a>
-			    </li>
-					@endforeach
-					@foreach(['dewin','adam','阿斐','Dade','CT','淡点','Dido'] as $name)
-					<li class="mdc-list-item" role="menuitem">
-			      <a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor->id])}}" class="mdc-list-item__text w-100 text-left">{{ $name }}</a>
+			      <a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor->id])}}" class="mdc-list-item__text w-100 text-left">{{$vendor->name}}</a>
 			    </li>
 					@endforeach
 			  </ul>
