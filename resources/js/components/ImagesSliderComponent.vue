@@ -33,7 +33,7 @@ export default {
 			total: this.images.length,
 			active: 0,
 			show_range: [],
-			max: 5,
+			max: 6,
 		};
 	},
 	beforeMount: function() {

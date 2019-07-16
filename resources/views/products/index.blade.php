@@ -26,8 +26,8 @@
 		</li>
 		@endforeach
 	</ul>
-	<button id="display-options-fab" class="mdc-fab" aria-label="Favorite">
-	  <span class="mdc-fab__icon material-icons">favorite</span>
+	<button id="display-options-fab" class="mdc-fab" aria-label="display options">
+	  <span class="mdc-fab__icon material-icons">build</span>
 	</button>
 	<div id="display-options-dialog"
 		 class="mdc-dialog"

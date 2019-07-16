@@ -9,7 +9,7 @@
 			@include('products.show.images')
 		</div>
 		<div class="col-md-6">
-			<form id="edit-product-form" class="product-form" action="/products/{{ $product->id }}" method="post" id="update-form">
+			<form id="update-form" class="product-form" action="{{ route('products.update',['product' => $product]) }}" method="post">
 				@csrf
 				@method('PATCH')
 				@include('products.edit.form')
