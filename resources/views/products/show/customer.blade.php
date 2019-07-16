@@ -1,9 +1,7 @@
-@forelse($product->size_price as $size => $price)
-<div class="">
-	<span class="">{{ $size }}</span>
-	<span class="">-</span>
-	<span class="">&yen;{{$price}}</span>
+<div class="d-flex flex-column products-show__info--customer">
+	@forelse($product->size_price as $size => $price)
+	<span class="size-price">{{ $size }} - &yen;{{$price}}</span>
+	@empty
+	<span class="not-available">not available</span>
+	@endforelse
 </div>
-@empty
-<div class="  text-muted ">not available</div>
-@endforelse

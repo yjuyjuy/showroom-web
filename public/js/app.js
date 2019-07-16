@@ -13804,7 +13804,7 @@ __webpack_require__.r(__webpack_exports__);
       total: this.images.length,
       active: 0,
       show_range: [],
-      max: 5
+      max: 6
     };
   },
   beforeMount: function beforeMount() {
@@ -63506,7 +63506,11 @@ var formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), funct
 });
 var selects = [].map.call(document.querySelectorAll('.mdc-select'), function (el) {
   var select = new _material_select__WEBPACK_IMPORTED_MODULE_10__["MDCSelect"](el);
-  select.required = true;
+
+  if (!el.classList.contains('optional-form-field')) {
+    select.required = true;
+  }
+
   select.menu_.quickOpen = true;
   return select;
 });
@@ -63518,7 +63522,6 @@ if (el) {
   window.snackbar = snackbar;
 }
 
-window.selects = selects;
 var textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function (el) {
   var textField = new _material_textfield__WEBPACK_IMPORTED_MODULE_12__["MDCTextField"](el);
 
@@ -63535,8 +63538,9 @@ var selectHelperTexts = [].map.call(document.querySelectorAll('.mdc-select-helpe
   return new _material_select_helper_text__WEBPACK_IMPORTED_MODULE_13__["MDCSelectHelperText"](el);
 }); // display options dialog component
 
-if (document.querySelector('#display-options-dialog')) {
-  var dialogElement = document.getElementById('display-options-dialog');
+var dialogElement = document.getElementById('display-options-dialog');
+
+if (dialogElement) {
   var dialog = new _material_dialog__WEBPACK_IMPORTED_MODULE_8__["MDCDialog"](dialogElement);
   var filterListElements = dialogElement.querySelectorAll('.mdc-list');
   var filterLists = [].map.call(filterListElements, function (el) {
@@ -63575,8 +63579,21 @@ if (document.querySelector('#display-options-dialog')) {
 
   document.getElementById('display-options-fab').onclick = function (event) {
     event.preventDefault();
-    console.log('toggle menu');
     dialog.open();
+  };
+}
+
+var menuElement = document.querySelector('.mdc-menu--with-button');
+
+if (menuElement) {
+  var menu = new _material_menu__WEBPACK_IMPORTED_MODULE_6__["MDCMenu"](menuElement);
+  window.menu = menu;
+  menu.setAnchorCorner(3);
+  var button = document.querySelector('.open-menu-button');
+
+  button.onclick = function (event) {
+    event.preventDefault();
+    menu.open = !menu.open;
   };
 }
 

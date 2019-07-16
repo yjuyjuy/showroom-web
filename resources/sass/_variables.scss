@@ -1,14 +1,16 @@
 // Theme
+// $mdc-theme-primary: #e59bbe;
 $mdc-theme-primary: #90caf9;
 $mdc-theme-secondary: #ef9a9a;
-$mdc-theme-surface: #121212;
+// $mdc-theme-surface: #121212;
+$mdc-theme-surface: rgba(mix(#121212,rgba($mdc-theme-primary,0.08)),1);
 $mdc-theme-background: #121212;
 $mdc-theme-error: #CF6679;
 $mdc-theme-on-primary: #000000;
 $mdc-theme-on-secondary: #000000;
 $mdc-theme-on-surface: #ffffff;
 $mdc-theme-on-background: #ffffff;
-$mdc-theme-on-error: #ffffff;
+$mdc-theme-on-error: #000000;
 
 // Body
 $body-bg: $mdc-theme-background;

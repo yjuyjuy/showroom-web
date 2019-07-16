@@ -88,7 +88,9 @@ const formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), fun
 });
 const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(el) {
 	let select = new MDCSelect(el);
-	select.required = true;
+	if(!el.classList.contains('optional-form-field')) {
+		select.required = true;
+	}
 	select.menu_.quickOpen = true;
 	return select;
 });
@@ -98,7 +100,6 @@ if(el){
 	snackbar.open();
 	window.snackbar = snackbar;
 }
-window.selects = selects;
 const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
 	let textField = new MDCTextField(el);
 	if(!el.classList.contains('optional-form-field')) {
@@ -114,8 +115,8 @@ const selectHelperTexts = [].map.call(document.querySelectorAll('.mdc-select-hel
 });
 
 // display options dialog component
-if (document.querySelector('#display-options-dialog')) {
-	const dialogElement = document.getElementById('display-options-dialog');
+const dialogElement = document.getElementById('display-options-dialog');
+if (dialogElement) {
 	const dialog = new MDCDialog(dialogElement);
 	const filterListElements = dialogElement.querySelectorAll('.mdc-list');
 	const filterLists = [].map.call(filterListElements, function(el) {
@@ -151,7 +152,18 @@ if (document.querySelector('#display-options-dialog')) {
 
 	document.getElementById('display-options-fab').onclick = function(event) {
 		event.preventDefault();
-		console.log('toggle menu');
 		dialog.open();
+	}
+}
+
+const menuElement = document.querySelector('.mdc-menu--with-button');
+if(menuElement){
+	const menu = new MDCMenu(menuElement);
+	window.menu = menu;
+	menu.setAnchorCorner(3);
+	const button = document.querySelector('.open-menu-button');
+	button.onclick = function(event) {
+		event.preventDefault();
+		menu.open = !menu.open;
 	}
 }

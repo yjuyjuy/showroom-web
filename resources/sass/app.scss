@@ -27,6 +27,7 @@
 @import "@material/card/mdc-card";
 @import "@material/snackbar/mdc-snackbar";
 @import "@material/icon-button/mdc-icon-button";
+
 // global reset rules
 /* Change Autocomplete styles in Chrome */
 @-webkit-keyframes autofill {
@@ -42,6 +43,10 @@ input:-webkit-autofill {
 }
 label {
 	margin-bottom: 0;
+}
+img{
+	display: block;
+	width:100%;
 }
 .mdc-button{
 	&:hover{
@@ -78,16 +83,13 @@ label {
 	}
 }
 // general layout
-.mdc-top-app-bar__row, .main-content {
+.mdc-top-app-bar__row,
+.main-content {
 	width: 100%;
-	margin: 0 auto;
+	margin: 0;
 }
 .main-image-list {
 	@include mdc-image-list-standard-columns(2,16px);
-}
-img{
-	display: block;
-	width:100%;
 }
 @media (min-width:600px){
 	.mdc-top-app-bar__row, .main-content {
@@ -273,6 +275,8 @@ img{
 // images-slider
 .my-carousel{
 	position: relative;
+	top:0;
+	left:0;
 	.my-carousel__overlay{
 		position: absolute;
 		top:0;
@@ -291,20 +295,25 @@ img{
 			margin:0;
 			overflow: hidden;
 			opacity: 0.5;
-			transition: opacity 0.3s ease-out 0s;
-			&:hover{
-				opacity: 1;
+			transition: opacity 0.2s ease-out 0s,
+									background 0.2s ease-out 0s;
+			&:hover,
+			&:focus{
+				background: rgba(0,0,0,0.5);
+				opacity:1;
 			}
 			.my-carousel__thumbnail{
-				@include mdc-elevation(5);
-				transition: box-shadow 0.3s ease-out 0s,
-										opacity 0.3s ease-out 0s;
-				width: calc( ( 100% - 40px ) / 5 - 8px );
-				margin: 4px 4px;
+				@include mdc-elevation(1);
+				transition: box-shadow 0.2s ease-out 0s,
+										opacity 0.2s ease-out 0s;
+				width: calc( ( 100% - 40px ) / 6 - 8px );
+				margin: 0 4px;
 				opacity: 0.5;
 				display: none;
-				&:hover{
-					opacity:0.9;
+				&:hover,
+				&:focus{
+					@include mdc-elevation(5);
+					opacity:0.8;
 				}
 				&.show{
 					display: block;
@@ -350,5 +359,64 @@ img{
 				right: 0;
 			}
 		}
+	}
+}
+// price-grid
+.price-grid{
+	display:flex;
+	flex-direction: column;
+	width: 100%;
+	.price-grid__header,
+	.price-grid__footer{
+		width: 100%;
+	}
+	.price-grid__header{
+		border-bottom: 1px solid $mdc-theme-primary;
+		padding-bottom: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+	.price-grid__row{
+		margin: 0 -1rem;
+		display: flex;
+		.price-grid__col{
+			flex-basis: 0;
+		  flex-grow: 1;
+			padding: 0 1rem;
+		}
+	}
+}
+
+.images-content-container{
+	display: flex;
+	flex-wrap: wrap;
+	@media (min-width:768px){
+		flex-wrap: nowrap;
+	}
+
+	&>*{
+		width:100%;
+		padding: 0 16px 8px 16px;
+		@media (min-width:768px){
+			width:50%;
+			padding: 0 8px 8px 8px;
+		}
+	}
+
+	.content-container{
+		text-align: left;
+		@media (min-width:768px){
+			max-width: 450px;
+			margin-right: auto;
+			margin-left: auto;
+			text-align: right;
+		}
+		&>*{
+			margin-top: 1rem;
+		}
+	}
+
+	.products-show__info--vendor>*,
+	.products-show__info--admin>*{
+		margin-bottom: 1rem;
 	}
 }
