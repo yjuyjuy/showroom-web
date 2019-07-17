@@ -39,7 +39,9 @@ Route::middleware(['auth','admin'])->group(function () {
 	Route::resource('images', 'ImagesController')->only(['store','update','destroy']);
 });
 
-
+Route::get('/language', function () {
+	return App::getLocale();
+});
 // deprecate
 // Route::prefix('vendors')->name('vendors.')->middleware(['auth','vendor'])->group(function () {
 // 	Route::resource('products', 'VendorsProductsController');
