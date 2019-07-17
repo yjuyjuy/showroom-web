@@ -13886,6 +13886,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _material_textfield__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @material/textfield */ "./node_modules/@material/textfield/index.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -13917,6 +13918,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     input: Array
@@ -13924,7 +13944,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   data: function data() {
     return {
       prices: this.input,
-      json_prices: ''
+      json_prices: '',
+      mdcTextField: undefined
     };
   },
   mounted: function mounted() {
@@ -14118,6 +14139,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       this.json_prices = JSON.stringify(this.prices);
     }
+  },
+  updated: function updated() {
+    this.$nextTick(function () {
+      this.$el.querySelectorAll('.mdc-text-field').forEach(function (el) {
+        if (el.dataset.attached !== true) {
+          var textField = new _material_textfield__WEBPACK_IMPORTED_MODULE_0__["MDCTextField"](el);
+          el.dataset.attached = true;
+        }
+      });
+    });
   }
 });
 
@@ -51064,138 +51095,187 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid" },
+    { staticClass: "price-editor" },
     [
       _vm._l(_vm.prices, function(price, index) {
-        return _c("div", { staticClass: "row no-gutters my-4" }, [
-          _c("div", { staticClass: "col" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: price.size,
-                  expression: "price.size"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text" },
-              domProps: { value: price.size },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(price, "size", $event.target.value)
-                  },
-                  _vm.check_empty
+        return _c("div", { staticClass: "d-flex price-editor__row" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "mdc-text-field mdc-text-field--outlined mdc-text-field--no-label"
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: price.size,
+                    expression: "price.size"
+                  }
                 ],
-                change: function($event) {
-                  return _vm.update(index)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: price.cost,
-                  expression: "price.cost"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text" },
-              domProps: { value: price.cost },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(price, "cost", $event.target.value)
-                  },
-                  _vm.check_empty
-                ],
-                change: function($event) {
-                  return _vm.update(index)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: price.resell,
-                  expression: "price.resell"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: _vm.computed_resell(index) },
-              domProps: { value: price.resell },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(price, "resell", $event.target.value)
-                  },
-                  _vm.check_empty
-                ],
-                change: function($event) {
-                  return _vm.update(index)
+                staticClass: "mdc-text-field__input",
+                attrs: {
+                  type: "text",
+                  "aria-label": "Label",
+                  autofocus: index == 0,
+                  spellcheck: "false"
                 },
-                dblclick: _vm.apply_computed
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: price.retail,
-                  expression: "price.retail"
+                domProps: { value: price.size },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(price, "size", $event.target.value)
+                    },
+                    _vm.check_empty
+                  ],
+                  change: function($event) {
+                    return _vm.update(index)
+                  }
                 }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: _vm.computed_retail(index) },
-              domProps: { value: price.retail },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(price, "retail", $event.target.value)
-                  },
-                  _vm.check_empty
-                ],
-                change: function($event) {
-                  return _vm.update(index)
-                },
-                dblclick: _vm.apply_computed
-              }
-            })
-          ]),
+              }),
+              _vm._v(" "),
+              _vm._m(0, true)
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-auto col-md" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "mdc-text-field mdc-text-field--outlined mdc-text-field--no-label"
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: price.cost,
+                    expression: "price.cost"
+                  }
+                ],
+                staticClass: "mdc-text-field__input",
+                attrs: { type: "text", "aria-label": "Label" },
+                domProps: { value: price.cost },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(price, "cost", $event.target.value)
+                    },
+                    _vm.check_empty
+                  ],
+                  change: function($event) {
+                    return _vm.update(index)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(1, true)
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "mdc-text-field mdc-text-field--outlined mdc-text-field--no-label"
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: price.resell,
+                    expression: "price.resell"
+                  }
+                ],
+                staticClass: "mdc-text-field__input",
+                attrs: {
+                  type: "text",
+                  "aria-label": "Label",
+                  placeholder: _vm.computed_resell(index)
+                },
+                domProps: { value: price.resell },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(price, "resell", $event.target.value)
+                    },
+                    _vm.check_empty
+                  ],
+                  change: function($event) {
+                    return _vm.update(index)
+                  },
+                  dblclick: _vm.apply_computed
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(2, true)
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "mdc-text-field mdc-text-field--outlined mdc-text-field--no-label"
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: price.retail,
+                    expression: "price.retail"
+                  }
+                ],
+                staticClass: "mdc-text-field__input",
+                attrs: {
+                  type: "text",
+                  "aria-label": "Label",
+                  placeholder: _vm.computed_retail(index)
+                },
+                domProps: { value: price.retail },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(price, "retail", $event.target.value)
+                    },
+                    _vm.check_empty
+                  ],
+                  change: function($event) {
+                    return _vm.update(index)
+                  },
+                  dblclick: _vm.apply_computed
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(3, true)
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex-shrink-1" }, [
             _c(
               "button",
               {
-                staticClass: "mdc-button",
-                attrs: { type: "button" },
+                staticClass: "mdc-button mdc-button--error",
+                attrs: { type: "button", tabindex: "-1" },
                 on: {
                   click: function($event) {
                     $event.preventDefault()
@@ -51203,7 +51283,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("删除")]
+              [
+                _c("span", { staticClass: "mdc-button__label" }, [
+                  _vm._v("删除")
+                ])
+              ]
             )
           ])
         ])
@@ -51223,7 +51307,48 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mdc-notched-outline" }, [
+      _c("div", { staticClass: "mdc-notched-outline__leading" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "mdc-notched-outline__trailing" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mdc-notched-outline" }, [
+      _c("div", { staticClass: "mdc-notched-outline__leading" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "mdc-notched-outline__trailing" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mdc-notched-outline" }, [
+      _c("div", { staticClass: "mdc-notched-outline__leading" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "mdc-notched-outline__trailing" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mdc-notched-outline" }, [
+      _c("div", { staticClass: "mdc-notched-outline__leading" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "mdc-notched-outline__trailing" })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -63522,7 +63647,12 @@ if (el) {
   window.snackbar = snackbar;
 }
 
+var priceEditorElement = document.querySelector('.price-editor');
 var textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function (el) {
+  if (priceEditorElement.contains(el)) {
+    return;
+  }
+
   var textField = new _material_textfield__WEBPACK_IMPORTED_MODULE_12__["MDCTextField"](el);
 
   if (!el.classList.contains('optional-form-field')) {

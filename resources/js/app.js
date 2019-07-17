@@ -100,7 +100,9 @@ if(el){
 	snackbar.open();
 	window.snackbar = snackbar;
 }
+const priceEditorElement = document.querySelector('.price-editor');
 const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
+	if(priceEditorElement.contains(el)){ return; }
 	let textField = new MDCTextField(el);
 	if(!el.classList.contains('optional-form-field')) {
 		textField.required = true;

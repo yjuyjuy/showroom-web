@@ -19870,6 +19870,28 @@ img {
   padding: 0 1rem;
 }
 
+.price-editor .mdc-text-field {
+  height: 36px;
+}
+
+.price-editor .mdc-text-field .mdc-text-field__input {
+  padding: 3px 0 5px;
+}
+
+.price-editor .mdc-text-field:not(.mdc-text-field--focused) .mdc-notched-outline > * {
+  border: none;
+}
+
+.price-editor .mdc-text-field--focused {
+  position: relative;
+  left: -8px;
+}
+
+.price-editor .mdc-text-field--focused .mdc-text-field__input {
+  padding: 3px 8px 5px;
+  margin: 0 -16px 0 0;
+}
+
 .images-content-container {
   display: flex;
   flex-wrap: wrap;

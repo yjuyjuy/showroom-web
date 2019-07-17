@@ -1,20 +1,38 @@
 <template>
-<div class="container-fluid">
-	<div v-for="(price,index) in prices" class="row no-gutters my-4">
-		<div class="col">
-			<input @input="check_empty" @change="update(index)" class="form-control" type="text" v-model="price.size">
+<div class="price-editor">
+	<div v-for="(price,index) in prices" class="d-flex price-editor__row">
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.size" :autofocus="index == 0" spellcheck="false">
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
 		</div>
-		<div class="col">
-			<input @input="check_empty" @change="update(index)" class="form-control" type="text" v-model="price.cost">
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.cost">
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
 		</div>
-		<div class="col">
-			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control" type="text" v-model="price.resell" :placeholder="computed_resell(index)">
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" @dblclick="apply_computed" v-model="price.resell" :placeholder="computed_resell(index)">
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
 		</div>
-		<div class="col">
-			<input @input="check_empty" @change="update(index)" @dblclick="apply_computed" class="form-control" type="text" v-model="price.retail" :placeholder="computed_retail(index)">
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" @dblclick="apply_computed" v-model="price.retail" :placeholder="computed_retail(index)">
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
 		</div>
-		<div class="col-auto col-md">
-			<button @click.prevent="delete_price(index)" type="button" class="mdc-button">删除</button>
+		<div class="flex-shrink-1">
+			<button @click.prevent="delete_price(index)" type="button" class="mdc-button mdc-button--error" tabindex="-1">
+				<span class="mdc-button__label">删除</span>
+			</button>
 		</div>
 	</div>
 	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.cost&&price.resell&&price.retail)))">
@@ -22,6 +40,10 @@
 </template>
 
 <script>
+import {
+	MDCTextField
+} from '@material/textfield';
+
 export default {
 	props: {
 		input: Array,
@@ -30,6 +52,7 @@ export default {
 		return {
 			prices: this.input,
 			json_prices: '',
+			mdcTextField: undefined,
 		};
 	},
 	mounted() {
@@ -159,7 +182,18 @@ export default {
 				}
 			}
 			this.json_prices = JSON.stringify(this.prices);
-		}
+		},
+	},
+	updated: function() {
+		this.$nextTick(function() {
+			this.$el.querySelectorAll('.mdc-text-field').forEach(function(el) {
+				if (el.dataset.attached !== true) {
+					const textField = new MDCTextField(el);
+					el.dataset.attached = true
+				}
+			});
+		});
 	}
+
 }
 </script>
