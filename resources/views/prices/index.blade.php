@@ -5,8 +5,8 @@
 @section('content')
 <div class="d-flex flex-column align-items-center">
 	@if(auth()->user()->isSuperAdmin())
-		<div class="mdc-select mb-4 optional-form-field">
-		  <input type="hidden" name="vendor" onchange="document.getElementById('change-vendor-form').submit()" form="change-vendor-form">
+		<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="change-vendor-form">
+		  <input type="hidden" name="vendor" form="change-vendor-form">
 		  <i class="mdc-select__dropdown-icon"></i>
 		  <div class="mdc-select__selected-text"></div>
 		  <div class="mdc-select__menu mdc-menu mdc-menu-surface">

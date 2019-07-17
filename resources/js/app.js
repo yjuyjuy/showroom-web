@@ -91,6 +91,11 @@ const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(e
 	if(!el.classList.contains('optional-form-field')) {
 		select.required = true;
 	}
+	if(el.classList.contains('mdc-select--autosubmit')){
+		select.listen('MDCSelect:change', function() {
+			document.getElementById(el.dataset.form).submit();
+		});
+	}
 	select.menu_.quickOpen = true;
 	return select;
 });
