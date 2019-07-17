@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','价格表 - '.$vendor->name.' - TheShowroom')
+@section('title',__('Price sheet').' - '.$vendor->name.' - TheShowroom')
 
 @section('content')
 <div class="d-flex flex-column align-items-center">
@@ -38,13 +38,13 @@
 			<div class="price-grid p-4">
 				<div class="price-grid__header d-flex flex-column">
 					<span>{{ $product->brand->full_name }}</span>
-					<a href="{{route('products.show',['product' => $product])}}" class="font-weight-bold">{{ $product->name_cn }}</a>
+					<a href="{{route('products.show',['product' => $product])}}" class="font-weight-bold">{{ $product->localeName }}</a>
 				</div>
 				<div class="price-grid__row">
-					<span class="price-grid__col">尺码</span>
-					<span class="price-grid__col">成本</span>
-					<span class="price-grid__col">调货</span>
-					<span class="price-grid__col">零售</span>
+					<span class="price-grid__col">{{ __('size') }}</span>
+					<span class="price-grid__col">{{ __('cost') }}</span>
+					<span class="price-grid__col">{{ __('resell') }}</span>
+					<span class="price-grid__col">{{ __('retail') }}</span>
 				</div>
 				@foreach($product->prices as $price)
 					@foreach($price->data as $row)
@@ -56,8 +56,8 @@
 						</div>
 					@endforeach
 					<div class="price-grid__footer d-flex justify-content-end">
-						<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">修改</a>
-						<a href="#" class="mdc-button mdc-button--error" @click.prevent="deletePrice({{$price->id}})">删除</a>
+						<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('edit') }}</a>
+						<a href="#" class="mdc-button mdc-button--error" @click.prevent="deletePrice({{$price->id}})">{{ __('delete') }}</a>
 					</div>
 				@endforeach
 			</div>

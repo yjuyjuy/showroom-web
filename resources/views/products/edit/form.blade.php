@@ -63,7 +63,7 @@
 
 <div class="mdc-text-field">
 	<input type="text" class="mdc-text-field__input" name="name" autocomplete="off" value="{{ old('name') ?? $product->name ?? '' }}">
-	<label class="mdc-floating-label" for="my-text-field">{{ __('product name') }}</label>
+	<label class="mdc-floating-label" for="my-text-field">{{ __('product name_en') }}</label>
 	<div class="mdc-line-ripple"></div>
 </div>
 @error('name')
@@ -127,7 +127,7 @@
 	<div class="mdc-notched-outline">
 		<div class="mdc-notched-outline__leading"></div>
 		<div class="mdc-notched-outline__notch">
-			<span class="mdc-floating-label">{{ __('comment') }}</span>
+			<span class="mdc-floating-label">{{ __('remark') }}</span>
 		</div>
 		<div class="mdc-notched-outline__trailing"></div>
 	</div>

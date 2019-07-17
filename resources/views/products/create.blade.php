@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','创建新商品 - TheShowroom')
+@section('title',__('Create product').' - TheShowroom')
 
 @section('content')
 <div class="images-content-container">

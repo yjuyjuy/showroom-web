@@ -2,6 +2,6 @@
 	@forelse($product->size_price as $size => $price)
 	<span class="size-price">{{ $size }} - &yen;{{$price}}</span>
 	@empty
-	<span class="not-available">not available</span>
+	<span class="not-available">{{ __('not available') }}</span>
 	@endforelse
 </div>

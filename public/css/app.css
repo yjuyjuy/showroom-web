@@ -19381,6 +19381,10 @@ img {
   color: var(--mdc-theme-surface, #17191b);
 }
 
+.mdc-theme--primary {
+  color: #90caf9;
+}
+
 .mdc-top-app-bar__row,
 .main-content {
   width: 100%;
@@ -19935,5 +19939,13 @@ img {
 .images-content-container .products-show__info--vendor > *,
 .images-content-container .products-show__info--admin > * {
   margin-bottom: 1rem;
+}
+
+.website-empty {
+  display: none;
+}
+
+.website-empty.show {
+  display: flex;
 }
 

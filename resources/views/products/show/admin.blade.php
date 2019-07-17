@@ -1,7 +1,7 @@
 <div class="d-flex flex-column products-show__info--admin">
 	@if($product->prices->isNotEmpty())
 	<div class="d-flex flex-column">
-		<span class="">调货价</span>
+		<span class="">{{ __('Order price') }}</span>
 		@foreach($product->getSizePrice('resell') as $size => $price)
 			<span class="">{{ $size }} - &yen;{{$price}}</span>
 		@endforeach
@@ -13,7 +13,7 @@
 	<div class="price-grid">
 		<div class="font-weight-bold price-grid__header">
 			<a href="{{route('prices.edit',['price'=>$price])}}" class="price-grid__title">
-				{{$price->vendor->name.' - '.$price->vendor->city}}
+				{{$price->vendor->name.' - '.__($price->vendor->city)}}
 			</a>
 		</div>
 		@foreach($price->data as $row)
@@ -25,8 +25,8 @@
 		</div>
 		@endforeach
 		<div class="price-grid__footer text-right">
-				<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('Edit') }}</a>
-				<a href="#" class="mdc-button mdc-button--error" @click.prevent="deletePrice({{$price->id}})">{{ __('Delete') }}</a>
+				<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('edit') }}</a>
+				<a href="#" class="mdc-button mdc-button--error" @click.prevent="deletePrice({{$price->id}})">{{ __('delete') }}</a>
 		</div>
 	</div>
 	@endforeach
@@ -34,7 +34,7 @@
 	<div class="d-flex justify-content-end">
 		<div class="mdc-menu-surface--anchor">
 			<button type="button" class="mdc-button mdc-button--unelevated open-menu-button">
-				<span class="mdc-button__label">{{ __('Add Price') }}</span>
+				<span class="mdc-button__label">{{ __('add price') }}</span>
 				<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">

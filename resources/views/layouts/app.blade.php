@@ -28,8 +28,8 @@
 		<aside id="nav-drawer" class="mdc-drawer mdc-drawer--modal">
 			<div class="mdc-drawer__header">
 				@guest
-				<h3 class="mdc-drawer__title">Welcome</h3>
-				<h6 class="mdc-drawer__subtitle">guest</h6>
+				<h3 class="mdc-drawer__title">{{ __('Welcome') }}</h3>
+				<h6 class="mdc-drawer__subtitle">{{ __('guest') }}</h6>
 				@else
 				<h3 class="mdc-drawer__title">{{ auth()->user()->username }}</h3>
 				<h6 class="mdc-drawer__subtitle">{{ auth()->user()->email }}</h6>
@@ -47,21 +47,33 @@
 						<span class="mdc-list-item__text">{{ __('Register') }}</span>
 					</a>
 					@else
-					<a class="mdc-list-item mdc-list-item--activated" href="{{route('home')}}" aria-current="page">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">shop</i>
-						<span class="mdc-list-item__text">Home</span>
+					<a class="mdc-list-item mdc-list-item--activated" href="{{route('home')}}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
+						<span class="mdc-list-item__text">{{ __('Home') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('home')}}" aria-current="page">
+					<a class="mdc-list-item" href="{{route('home')}}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">view_list</i>
-						<span class="mdc-list-item__text">Wish List</span>
+						<span class="mdc-list-item__text">{{ __('Wish list') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('home')}}" aria-current="page">
+					<a class="mdc-list-item" href="{{route('home')}}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
-						<span class="mdc-list-item__text">My collection</span>
+						<span class="mdc-list-item__text">{{ __('My collection') }}</span>
 					</a>
+					@if(auth()->user()->vendor)
+					<a class="mdc-list-item" href="{{ route('prices.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
+						<span class="mdc-list-item__text">{{ __('Price sheet') }}</span>
+					</a>
+					@endif
+					@if(auth()->user()->isSuperAdmin())
+					<a class="mdc-list-item" href="{{ route('products.create') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
+						<span class="mdc-list-item__text">{{ __('Create product') }}</span>
+					</a>
+					@endif
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
-						<span class="mdc-list-item__text">Logout</span>
+						<span class="mdc-list-item__text">{{ __('Logout') }}</span>
 					</a>
 					<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 						@csrf

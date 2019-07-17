@@ -17,8 +17,8 @@
 						{{ "\u{00a5}".$product->price }}
 					</span>
 					@else
-					<span class="mdc-image-list__label">
-						缺货
+					<span class="mdc-image-list__label mdc-theme--primary">
+						{{ __('not available') }}
 					</span>
 					@endif
 				</div>
@@ -53,10 +53,10 @@
 
 	      <footer class="mdc-dialog__actions">
 	        <button type="button" class="mdc-button mdc-button--error mdc-dialog__button" data-mdc-dialog-action="close">
-	          <span class="mdc-button__label">Cancel</span>
+	          <span class="mdc-button__label">{{ __('cancel') }}</span>
 	        </button>
 	        <button type="submit" class="mdc-button mdc-button--unelevated mdc-dialog__button" data-mdc-dialog-action="accept" form="display-option-form">
-	          <span class="mdc-button__label">OK</span>
+	          <span class="mdc-button__label">{{ __('apply') }}</span>
 	        </button>
 	      </footer>
 	    </div>

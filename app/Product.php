@@ -141,21 +141,17 @@ class Product extends Model
 	}
 
 
-	public function displayName($level = 1)
+	public function displayName()
 	{
-		switch ($level) {
-			case 1:
-				return $this->season->name.' '.$this->name_cn;
-				break;
+		return $this->brand->name.' '.$this->season->name.' '.$this->localeName;
+	}
 
-			case 2:
-				// code...
-				return $this->brand->name.' '.$this->season->name.' '.$this->name_cn;
-				break;
-
-			default:
-				return $this->season->name.' '.$this->name_cn;
-				break;
+	public function getLocaleNameAttribute()
+	{
+		if (\App::isLocale('zh')) {
+			return $this->name_cn;
+		} else {
+			return $this->name;
 		}
 	}
 }
