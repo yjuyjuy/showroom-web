@@ -1,16 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="position:relative;">
+<div class="px-3" style="position:relative;">
 	<div class="" style="position:absolute; top:0; left:15px; z-index:1;">
 		<a href="#website-list" data-toggle="collapse">more websites</a>
 		<div id="website-list" class="collapse pb-2" style="background-color:#282c34;">
 			@foreach($websites->whereNotIn('id',$images->keys()) as $website)
 			<div class="form-check">
-				<input type="checkbox" class="form-check-input" value="{{$website['id']}}" onchange="
-					let x = document.querySelector('#website' + this.value);
-					(this.checked)? x.classList.add('show'): x.classList.remove('show');
-					" id="website-list-{{$website['id']}}">
+				<input type="checkbox" class="form-check-input"
+							 value="{{$website['id']}}" id="website-list-{{$website['id']}}"
+							 onchange="document.querySelector('#website' + this.value).classList.toggle('show');">
 				<label class="form-check-label" for="website-list-{{$website['id']}}">{{$website['name']}}</label>
 			</div>
 			@endforeach
