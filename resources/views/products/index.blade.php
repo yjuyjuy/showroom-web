@@ -27,7 +27,7 @@
 		@endforeach
 	</ul>
 	<button id="display-options-fab" class="mdc-fab" aria-label="display options">
-	  <span class="mdc-fab__icon material-icons">build</span>
+	  <span class="mdc-fab__icon material-icons">filter_list</span>
 	</button>
 	<div id="display-options-dialog"
 		 class="mdc-dialog"
