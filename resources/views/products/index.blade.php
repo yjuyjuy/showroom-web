@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','所有商品 - TheShowroom')
+@section('title', __('All products').' - TheShowroom')
 @section('content')
 <div id="products-index" class="">
 	<ul class="mdc-image-list main-image-list">
@@ -42,17 +42,20 @@
 	     -->display options<!--
 	   --></h2>
 	      <div class="mdc-dialog__content" id="my-dialog-content">
-					<div id="list-group" class="mdc-list-group">
-						@include('products.index.sortList')
-						@include('products.index.filterList')
-					</div>
+					<form target="_self" id="display-option-form">
+						<div id="list-group" class="mdc-list-group">
+							@include('products.index.sortList')
+							@include('products.index.filterList')
+						</div>
+					</form>
+
 	      </div>
 
 	      <footer class="mdc-dialog__actions">
 	        <button type="button" class="mdc-button mdc-button--error mdc-dialog__button" data-mdc-dialog-action="close">
 	          <span class="mdc-button__label">Cancel</span>
 	        </button>
-	        <button type="button" class="mdc-button mdc-button--unelevated mdc-dialog__button" data-mdc-dialog-action="accept">
+	        <button type="submit" class="mdc-button mdc-button--unelevated mdc-dialog__button" data-mdc-dialog-action="accept" form="display-option-form">
 	          <span class="mdc-button__label">OK</span>
 	        </button>
 	      </footer>

@@ -4,16 +4,17 @@
 		href="#filter-{{$key}}-list">
 		{{ __($key) }}
 </h3>
-<ul id="filter-{{$key}}-list" class="mdc-list filter-list" role="group" aria-label="List with checkbox items" tabindex="0">
+<ul id="filter-{{$key}}-list" class="mdc-list filter-list" role="group" aria-label="List with checkbox items">
 	@foreach($values as $value)
-	<li class="mdc-list-item" tabindex="-1">
+	<?php $checked = in_array($value->id, (old($key) ?? [])); ?>
+	<li class="mdc-list-item" aria-checked="{{ $checked ? 'true' : 'false' }}" tabindex="0">
 		<span class="mdc-list-item__graphic">
 			<div class="mdc-checkbox">
 		    <input type="checkbox"
 		           class="mdc-checkbox__native-control"
-							 value="{{$value->name}}"
-							 name="filter-{{$key}}"
-		           id="filter-{{$key}}-{{$value->name}}-checkbox" />
+							 value="{{$value->id}}"
+							 name="{{ $key }}[]"
+		           id="filter-{{$key}}-{{$value->name}}-checkbox" aria-checked="{{ $checked ? 'checked' : '' }}">
 		    <div class="mdc-checkbox__background">
 		      <svg class="mdc-checkbox__checkmark"
 		           viewBox="0 0 24 24">

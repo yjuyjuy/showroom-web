@@ -7,7 +7,7 @@
 <ul id="sort-list" class="mdc-list" role="radiogroup">
 	@foreach($sortOptions as $option)
 	<?php $checked = (old('sort') === $option || (!old('sort') && $option == 'default')); ?>
-	<li class="mdc-list-item" role="radio" aria-checked="{{ $checked ? 'true' : 'false' }}">
+	<li class="mdc-list-item" role="radio" aria-checked="{{ $checked ? 'true' : 'false' }}" tabindex="0">
 		<span class="mdc-list-item__graphic">
 			<div class="mdc-radio">
 		    <input class="mdc-radio__native-control"
