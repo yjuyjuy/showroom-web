@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="px-3" style="position:relative;">
+<div class="px-2" style="position:relative;">
 	<div class="mdc-menu-surface--anchor" style="position:absolute; top:0; left:15px; z-index:1;">
 		<button type="button" class="mdc-button open-menu-button">
 			<span class="mdc-button__label">more websites</span>
@@ -31,7 +31,9 @@
 		  </ul>
 		</div>
 	</div>
-
+	<div class="d-flex justify-content-end text-right">
+		@include('products.show.properties')
+	</div>
 	@foreach($images as $website_id => $website_images)
 	<div id="website{{$website_id}}" class="row">
 		<div class="col-12 h3 text-center">{{$websites->firstWhere('id',$website_id)->name}}</div>
