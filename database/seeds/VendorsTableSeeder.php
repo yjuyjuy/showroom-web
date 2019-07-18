@@ -39,17 +39,19 @@ class VendorsTableSeeder extends Seeder
 			['id' => 44,'name' => '任坦','city' => '长沙'],
 		];
 		foreach ($data as $row) {
-			$user = \App\User::create([
+			$user = new \App\User([
 				'username' => $row['name'],
 				'email' => 'vendor'.$row['id'].'@test.com',
 				'password' => Hash::make('123456789'),
 			]);
 			$vendor = new \App\Vendor([
 				'id' => $row['id'],
-				'user_id' => $user->id,
 				'name' => $row['name'],
 				'city' => $row['city'],
 			]);
+			$user->save();
+			$vendor->save();
+			$user->vendor()->associate($vendor);
 		}
 	}
 }

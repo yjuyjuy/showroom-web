@@ -11,16 +11,6 @@ class DatabaseSeeder extends Seeder
 	 */
 	public function run()
 	{
-		$this->call([
-			BrandsTableSeeder::class,
-			CategoriesTableSeeder::class,
-			ColorsTableSeeder::class,
-			// PricesTableSeeder::class,
-			// ProductsTableSeeder::class,
-			SeasonsTableSeeder::class,
-			// VendorsTableSeeder::class,
-			WebsitesTableSeeder::class,
-		]);
 		$user = new \App\User([
 					'id' => 1,
 					'email' => 'yjuyjuy@gmail.com',
@@ -28,9 +18,18 @@ class DatabaseSeeder extends Seeder
 					'username' => 'Dope',
 		]);
 		$user->save();
-		$vendor = \App\Vendor::firstOrNew(
-			[ 'id' => 1, 'name' => '家', 'city' => '中山', ]
-		);
-		$user->vendor()->save($vendor);
+		$this->call([
+			BrandsTableSeeder::class,
+			CategoriesTableSeeder::class,
+			ColorsTableSeeder::class,
+			SeasonsTableSeeder::class,
+			VendorsTableSeeder::class,
+			WebsitesTableSeeder::class,
+			TypesTableSeeder::class,
+			ProductsTableSeeder::class,
+			PricesTableSeeder::class,
+		]);
+		$vendor = \App\Vendor::find(1);
+		$user->vendor()->associate($vendor)->save();
 	}
 }
