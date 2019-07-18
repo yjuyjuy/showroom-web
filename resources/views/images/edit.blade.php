@@ -8,36 +8,36 @@
 			@foreach($websites->whereNotIn('id',$images->keys()) as $website)
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input"
-							 value="{{$website['id']}}" id="website-list-{{$website['id']}}"
+							 value="{{$website->id}}" id="website-list-{{$website->id}}"
 							 onchange="document.querySelector('#website' + this.value).classList.toggle('show');">
-				<label class="form-check-label" for="website-list-{{$website['id']}}">{{$website['name']}}</label>
+				<label class="form-check-label" for="website-list-{{$website->id}}">{{$website->name}}</label>
 			</div>
 			@endforeach
 		</div>
 	</div>
 	@foreach($images as $website_id => $website_images)
 	<div id="website{{$website_id}}" class="row">
-		<div class="col-12 h3 text-center">{{$websites->firstWhere('id',$website_id)['name']}}</div>
+		<div class="col-12 h3 text-center">{{$websites->firstWhere('id',$website_id)->name}}</div>
 		@foreach($types as $type)
 		<div class="col-6 col-md-3 pb-3">
-			@if($image = $website_images->firstWhere('type_id',$type['id']))
+			@if($image = $website_images->firstWhere('type_id',$type->id))
 			<image-item src="{{$image->url}}" id="{{$image->id}}"></image-item>
 			@else
-			<empty-image product-id="{{$product->id}}" website-id="{{$website_id}}" type-id="{{$type['id']}}"></empty-image>
+			<empty-image product-id="{{$product->id}}" website-id="{{$website_id}}" type-id="{{$type->id}}"></empty-image>
 			@endif
-			<span>{{$type['name']}}</span>
+			<span>{{$type->name}}</span>
 		</div>
 		@endforeach
 	</div>
 	@endforeach
 
 	@foreach($websites->whereNotIn('id',$images->keys()) as $website)
-	<div id="website{{$website['id']}}" class="row website-empty">
-		<div class="col-12 h3 text-center">{{$website['name']}}</div>
+	<div id="website{{$website->id}}" class="row website-empty">
+		<div class="col-12 h3 text-center">{{$website->name}}</div>
 		@foreach($types as $type)
 		<div class="col-6 col-md-3 pb-3">
-			<empty-image product-id="{{$product->id}}" website-id="{{$website['id']}}" type-id="{{$type['id']}}"></empty-image>
-			<span>{{$type['name']}}</span>
+			<empty-image product-id="{{$product->id}}" website-id="{{$website->id}}" type-id="{{$type->id}}"></empty-image>
+			<span>{{$type->name}}</span>
 		</div>
 		@endforeach
 	</div>

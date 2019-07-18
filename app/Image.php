@@ -20,6 +20,14 @@ class Image extends Model
 	{
 		return $this->belongsTo(Product::class);
 	}
+	public function website()
+	{
+		return $this->belongsTo(Website::class);
+	}
+	public function type()
+	{
+		return $this->belongsTo(Type::class);
+	}
 	public function getUrlAttribute()
 	{
 		return asset('storage/'.$this->path);

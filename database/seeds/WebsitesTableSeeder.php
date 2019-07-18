@@ -12,25 +12,21 @@ class WebsitesTableSeeder extends Seeder
 	public function run()
 	{
 		$data = [
-			['id' => 1,'name' => 'off---white'],
-			['id' => 2,'name' => 'farfetch'],
-			['id' => 3,'name' => 'antonioli'],
-			['id' => 4,'name' => 'Dopebxtch'],
-			['id' => 5,'name' => 'ssense'],
-			['id' => 6,'name' => 'endclothing'],
-			['id' => 7,'name' => 'selfridges'],
-			['id' => 8,'name' => 'matchesfashion'],
-			['id' => 9,'name' => 'luisaviaroma'],
-			['id' => 10,'name' => 'vrient'],
-			['id' => 11,'name' => 'lindelepalais'],
-			['id' => 12,'name' => 'revolve'],
+			['id' => 1, 'name' => 'off---white', 'url' => 'www.off---white.com'],
+			['id' => 2, 'name' => 'farfetch', 'url' => 'www.farfetch.com'],
+			['id' => 3, 'name' => 'antonioli', 'url' => 'www.antonioli.eu'],
+			['id' => 4, 'name' => 'Dopebxtch', 'url' => 'www.Dopebxtch.com'],
+			['id' => 5, 'name' => 'ssense', 'url' => 'www.ssense.com'],
+			['id' => 6, 'name' => 'endclothing', 'url' => 'www.endclothing.com'],
+			['id' => 7, 'name' => 'selfridges', 'url' => 'www.selfridges.com'],
+			['id' => 8, 'name' => 'matchesfashion', 'url' => 'www.matchesfashion.com'],
+			['id' => 9, 'name' => 'luisaviaroma', 'url' => 'www.luisaviaroma.com'],
+			['id' => 10,'name' => 'vrient', 'url' => 'www.vrient.com'],
+			['id' => 11,'name' => 'lindelepalais', 'url' => 'www.lindelepalais.com'],
+			['id' => 12,'name' => 'revolve', 'url' => 'www.revolve.com'],
 		];
 		foreach ($data as $row) {
-			$website = new \App\Website([
-				'id' => $row['id'],
-				'name' => $row['name'],
-				'url' => 'www.'.$row['name'].'.com',
-			]);
+			$website = new \App\Website($row);
 			$website->save();
 		}
 	}

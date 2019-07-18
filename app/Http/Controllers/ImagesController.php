@@ -15,8 +15,8 @@ class ImagesController extends Controller
 	{
 		request()->validate([
 			'product_id' => ['required','exists:products,id'],
-			'website_id' => ['required',Rule::in(Arr::pluck($this->websites(), 'id'))],
-			'type_id' => ['required',Rule::in(Arr::pluck($this->types(), 'id'))],
+			'website_id' => ['required','exists:websites,id'],
+			'type_id' => ['required','exists:types,id'],
 			'image' => ['required','file','image','max:10000'],
 		]);
 		$path = request('image')->store('images/'.request('product_id'), 'public');
@@ -37,8 +37,8 @@ class ImagesController extends Controller
 		$images = $images->mapToGroups(function ($item, $key) {
 			return [$item->website_id => $item];
 		});
-		$types = $this->types();
-		$websites = collect($this->websites());
+		$types = \App\Type::all();
+		$websites = \App\Website::all();
 		return view('images.edit', compact('product', 'images', 'types', 'websites'));
 	}
 
@@ -66,8 +66,8 @@ class ImagesController extends Controller
 	public function move(Image $image)
 	{
 		request()->validate([
-			'website_id' => ['required',Rule::in(Arr::pluck($this->websites(), 'id'))],
-			'type_id' => ['required',Rule::in(Arr::pluck($this->types(), 'id'))],
+			'website_id' => ['required','exists:websites,id'],
+			'type_id' => ['required','exists:types,id'],
 		]);
 		$image->update([
 			'website_id' => request('website_id'),
