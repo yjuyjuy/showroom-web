@@ -22,11 +22,11 @@ class ProductsController extends Controller
 	public function index(Request $request)
 	{
 		$products = Cache::remember(url()->full(), 60, function () use ($request) {
-			$query = Product::with(['images' => function ($query) {
+			$products = $this->filter(Product::query())->get();
+			$products = $this->sort($products);
+			$products->load(['images' => function ($query) {
 				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
 			},'brand','prices']);
-			$products = $this->filter($query)->get();
-			$products = $this->sort($products);
 			if ($request->input('show_available_only')) {
 				$products = $products->filter(function ($item) {
 					return $item->prices->isNotEmpty();
