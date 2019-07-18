@@ -2,19 +2,36 @@
 
 @section('content')
 <div class="px-3" style="position:relative;">
-	<div class="" style="position:absolute; top:0; left:15px; z-index:1;">
-		<a href="#website-list" data-toggle="collapse">more websites</a>
-		<div id="website-list" class="collapse pb-2" style="background-color:#282c34;">
-			@foreach($websites->whereNotIn('id',$images->keys()) as $website)
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input"
-							 value="{{$website->id}}" id="website-list-{{$website->id}}"
-							 onchange="document.querySelector('#website' + this.value).classList.toggle('show');">
-				<label class="form-check-label" for="website-list-{{$website->id}}">{{$website->name}}</label>
-			</div>
-			@endforeach
+	<div class="mdc-menu-surface--anchor" style="position:absolute; top:0; left:15px; z-index:1;">
+		<button type="button" class="mdc-button open-menu-button">
+			<span class="mdc-button__label">more websites</span>
+		</button>
+		<div class="mdc-menu mdc-menu--with-button mdc-menu-surface" style="z-index:1;">
+		  <ul class="mdc-list" role="group" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+				@foreach($websites->whereNotIn('id',$images->keys()) as $website)
+		    <li class="mdc-list-item" role="checkbox" aria-checked="false">
+					<span class="mdc-list-item__graphic">
+			      <div class="mdc-checkbox">
+			        <input type="checkbox" value="{{$website->id}}" class="mdc-checkbox__native-control" id="website{{$website->id}}-checkbox"
+										 onchange="document.querySelector('#website' + this.value).classList.toggle('show',this.checked);"/>
+			        <div class="mdc-checkbox__background">
+			          <svg class="mdc-checkbox__checkmark"
+			                viewBox="0 0 24 24">
+			            <path class="mdc-checkbox__checkmark-path"
+			                  fill="none"
+			                  d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+			          </svg>
+			          <div class="mdc-checkbox__mixedmark"></div>
+			        </div>
+			      </div>
+			    </span>
+			    <label class="mdc-list-item__text" for="website{{$website->id}}-checkbox">{{ $website->name }}</label>
+		    </li>
+				@endforeach
+		  </ul>
 		</div>
 	</div>
+
 	@foreach($images as $website_id => $website_images)
 	<div id="website{{$website_id}}" class="row">
 		<div class="col-12 h3 text-center">{{$websites->firstWhere('id',$website_id)->name}}</div>
