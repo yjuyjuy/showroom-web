@@ -8,6 +8,9 @@
 		<span id="product-name">
 			{{ $product->localeName }}
 		</span>
+		<span id="product-color">
+			{{ __($product->color->name) }}
+		</span>
 	</div>
 	@can('update',$product)
 	<div class="">
