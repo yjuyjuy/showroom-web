@@ -223,7 +223,7 @@ img{
 		bottom: 1rem;
 	}
 	#display-options-dialog {
-
+		@include mdc-dialog-scrim-color($mdc-theme-background, 0.5);
 		.mdc-list-group {
 			.mdc-list-group__subheader:hover{
 				cursor: pointer;
@@ -235,7 +235,7 @@ img{
 			}
 
 			.mdc-list {
-				transition: height 0.3s ease-out;
+				transition: height 0.4s ease-in-out;
 				height: 0;
 				overflow: hidden;
 
