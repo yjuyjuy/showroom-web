@@ -13653,28 +13653,48 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     dropped: function dropped(evt) {
       if (evt.dataTransfer.files[0]) {
-        this.store_image(evt.dataTransfer.files[0]);
+        this.store_image(evt.dataTransfer.files);
       } else {
         if (event.dataTransfer.getData('img_id')) {
           this.move_image(event.dataTransfer.getData('img_id'));
         }
       }
     },
-    store_image: function store_image(image) {
-      var formData = new FormData();
-      formData.append('image', image);
-      formData.append('product_id', this.productId);
-      formData.append('website_id', this.websiteId);
-      formData.append('type_id', this.typeId);
-      axios.post('/images', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+    store_image: function store_image(files) {
+      if (files.length == 1) {
+        var formData = new FormData();
+        formData.append('image', files[0]);
+        formData.append('product_id', this.productId);
+        formData.append('website_id', this.websiteId);
+        formData.append('type_id', this.typeId);
+        axios.post('/images', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          return window.location.reload();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      } else {
+        var formData = new FormData();
+
+        for (var i = 0; i < files.length; i++) {
+          formData.append('images[]', files[i]);
         }
-      }).then(function (response) {
-        return window.location.reload();
-      })["catch"](function (error) {
-        return console.log(error);
-      });
+
+        formData.append('product_id', this.productId);
+        formData.append('website_id', this.websiteId);
+        axios.post('/images', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          return window.location.reload();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
     },
     move_image: function move_image(id) {
       axios.patch('/images/' + id + '/move', {

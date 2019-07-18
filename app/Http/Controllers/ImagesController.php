@@ -16,18 +16,38 @@ class ImagesController extends Controller
 		request()->validate([
 			'product_id' => ['required','exists:products,id'],
 			'website_id' => ['required','exists:websites,id'],
-			'type_id' => ['required','exists:types,id'],
-			'image' => ['required','file','image','max:10000'],
+			'image' => ['required_without:images','file','image','max:10000'],
+			'images.*' => ['required_without:image','file','image','max:10000'],
+			'type_id' => ['required_with:image','exists:types,id'],
 		]);
-		$path = request('image')->store('images/'.request('product_id'), 'public');
-		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
-		\App\Image::create([
-			'path' => $path,
-			'source' => request('image')->getClientOriginalName(),
-			'product_id' => request('product_id'),
-			'website_id' => request('website_id'),
-			'type_id' => request('type_id'),
-		]);
+		if (request('images')) {
+			$existed = \App\Product::find(request('product_id'))->images->where('website_id', request('website_id'))->pluck('type_id');
+			$type_ids = \App\Type::all()->whereNotIn('id', $existed)->pluck('id')->toArray();
+			foreach (request('images') as $uploadedFile) {
+				if (count($type_ids) <= 0) {
+					break;
+				}
+				$path = $uploadedFile->store('images/'.request('product_id'), 'public');
+				\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
+				\App\Image::create([
+					'path' => $path,
+					'source' => $uploadedFile->getClientOriginalName(),
+					'product_id' => request('product_id'),
+					'website_id' => request('website_id'),
+					'type_id' => array_shift($type_ids),
+				]);
+			}
+		} else {
+			$path = request('image')->store('images/'.request('product_id'), 'public');
+			\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
+			\App\Image::create([
+				'path' => $path,
+				'source' => request('image')->getClientOriginalName(),
+				'product_id' => request('product_id'),
+				'website_id' => request('website_id'),
+				'type_id' => request('type_id'),
+			]);
+		}
 		return ['success'];
 	}
 
