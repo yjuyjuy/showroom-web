@@ -19593,6 +19593,10 @@ img {
   bottom: 1rem;
 }
 
+#products-index #display-options-dialog .mdc-dialog__scrim {
+  background-color: rgba(18, 18, 18, 0.5);
+}
+
 #products-index #display-options-dialog .mdc-list-group .mdc-list-group__subheader:hover {
   cursor: pointer;
 }
@@ -19604,7 +19608,7 @@ img {
 }
 
 #products-index #display-options-dialog .mdc-list-group .mdc-list {
-  transition: height 0.3s ease-out;
+  transition: height 0.4s ease-in-out;
   height: 0;
   overflow: hidden;
 }

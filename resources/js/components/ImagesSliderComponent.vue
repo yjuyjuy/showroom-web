@@ -42,8 +42,10 @@ export default {
 		}
 	},
 	mounted: function() {
-		$('.carousel-item')[0].classList.add('active');
-		$('.my-carousel__thumbnail')[0].classList.add('active');
+		if (this.images.length > 0) {
+			$('.carousel-item')[0].classList.add('active');
+			$('.my-carousel__thumbnail')[0].classList.add('active');
+		}
 		$('#my-carousel').on('slide.bs.carousel', function(event) {
 			$('.my-carousel__thumbnail.active')[0].classList.remove('active');
 			$('.my-carousel__thumbnail')[event.to].classList.add('active');
