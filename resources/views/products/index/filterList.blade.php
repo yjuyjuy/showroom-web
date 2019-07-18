@@ -2,7 +2,7 @@
 		href="#filter-other-list">
 		{{ __('other') }}
 </h3>
-<ul id="filter-other-list" class="mdc-list filter-list" role="group" aria-label="List with checkbox items" style="height:auto;">
+<ul id="filter-other-list" class="mdc-list filter-list" role="group" aria-label="List with checkbox items">
 	<?php $checked = old('show_available_only'); ?>
 	<li class="mdc-list-item" aria-checked="{{ $checked ? 'true' : 'false' }}" tabindex="0">
 		<span class="mdc-list-item__graphic">
