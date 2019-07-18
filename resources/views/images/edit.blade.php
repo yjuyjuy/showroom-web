@@ -4,7 +4,7 @@
 <div class="px-2" style="position:relative;">
 	<div class="mdc-menu-surface--anchor" style="position:absolute; top:0; left:15px; z-index:1;">
 		<button type="button" class="mdc-button open-menu-button">
-			<span class="mdc-button__label">more websites</span>
+			<span class="mdc-button__label">{{ __('more websites') }}</span>
 		</button>
 		<div class="mdc-menu mdc-menu--with-button mdc-menu-surface" style="z-index:1;">
 		  <ul class="mdc-list" role="group" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
@@ -44,7 +44,7 @@
 			@else
 			<empty-image product-id="{{$product->id}}" website-id="{{$website_id}}" type-id="{{$type->id}}"></empty-image>
 			@endif
-			<span>{{$type->name}}</span>
+			<span>{{ __($type->name) }}</span>
 		</div>
 		@endforeach
 	</div>
@@ -56,7 +56,7 @@
 		@foreach($types as $type)
 		<div class="col-6 col-md-3 pb-3">
 			<empty-image product-id="{{$product->id}}" website-id="{{$website->id}}" type-id="{{$type->id}}"></empty-image>
-			<span>{{$type->name}}</span>
+			<span>{{ __($type->name) }}</span>
 		</div>
 		@endforeach
 	</div>
