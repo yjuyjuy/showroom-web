@@ -47,6 +47,9 @@ class ProductsController extends Controller
 			}
 			return $products;
 		});
+		if ($request->input('sort') === 'random') {
+			$products = $products->shuffle();
+		}
 		$sortOptions = $this->sortOptions();
 		$filters = [
 			"category" => \App\Category::all(),
@@ -179,7 +182,7 @@ class ProductsController extends Controller
 	}
 	public function sortOptions()
 	{
-		return ['default','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
+		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
 	}
 	public function sort($products)
 	{
@@ -190,6 +193,7 @@ class ProductsController extends Controller
 		} else {
 			$sort = 'default';
 		}
+		$products = $products->shuffle();
 		switch ($sort) {
 			case 'default':
 				$products = $products->sortBy(function ($item) {
@@ -197,27 +201,31 @@ class ProductsController extends Controller
 				});
 				break;
 
-			case 'price high to low':
+			case 'random':
+				$products = $products->shuffle();
+				break;
+
+			case 'price-high-to-low':
 				$products = $products->sortByDesc(function ($item) {
 					return $item->getMinPrice('retail', 0);
 				});
 				break;
 
-			case 'price low to high':
+			case 'price-low-to-high':
 				$products = $products->sortBy(function ($item) {
 					return $item->getMinPrice('retail', INF);
 				});
 				break;
 
 			case 'newest':
-				$products = $products->sortBy(function ($item) {
-					return $item->created_at;
+				$products = $products->sortByDesc(function ($item) {
+					return $item->season_id;
 				});
 				break;
 
 			case 'oldest':
-				$products = $products->sortByDesc(function ($item) {
-					return $item->created_at;
+				$products = $products->sortBy(function ($item) {
+					return $item->season_id;
 				});
 				break;
 
