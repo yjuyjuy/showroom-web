@@ -12,20 +12,20 @@ class CategoriesTableSeeder extends Seeder
 	public function run()
 	{
 		$data = [
-			['id' => '1101','name' => 't-shirt','name_cn' => '短袖T恤',],
-			['id' => '1102','name' => 'long sleeve','name_cn' => '长袖T恤',],
-			['id' => '1103','name' => 'crewneck','name_cn' => '圆领卫衣',],
-			['id' => '1104','name' => 'sweater','name_cn' => '毛衣',],
-			['id' => '1105','name' => 'hoodie','name_cn' => '套头帽衫',],
-			['id' => '1106','name' => 'zipped hoodie','name_cn' => '拉链帽衫',],
-			['id' => '1107','name' => 'jacket','name_cn' => '外套夹克',],
-			['id' => '1108','name' => 'shirt','name_cn' => '衬衫',],
-			['id' => '1201','name' => 'shorts','name_cn' => '短裤',],
-			['id' => '1202','name' => 'pants','name_cn' => '长裤',],
-			['id' => '1203','name' => 'jeans','name_cn' => '牛仔裤',],
-			['id' => '2101','name' => 'backpack','name_cn' => '双肩包',],
-			['id' => '2102','name' => 'other bag','name_cn' => '其他包类',],
-			['id' => '2201','name' => 'accessories','name_cn' => '配件',],
+			['id' => '1101','name' => 't-shirt'],
+			['id' => '1102','name' => 'long sleeve',],
+			['id' => '1103','name' => 'crewneck',],
+			['id' => '1104','name' => 'sweater',],
+			['id' => '1105','name' => 'hoodie',],
+			['id' => '1106','name' => 'zipped hoodie',],
+			['id' => '1107','name' => 'jacket',],
+			['id' => '1108','name' => 'shirt',],
+			['id' => '1201','name' => 'shorts',],
+			['id' => '1202','name' => 'pants',],
+			['id' => '1203','name' => 'jeans',],
+			['id' => '2101','name' => 'backpack',],
+			['id' => '2102','name' => 'other bag',],
+			['id' => '2201','name' => 'accessories',],
 		];
 		foreach ($data as $row) {
 			$category = new \App\Category($row);
