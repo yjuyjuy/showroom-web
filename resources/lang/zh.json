@@ -1,6 +1,7 @@
 {
 	"accessories": "配件",
 	"add price": "添加报价",
+	"Add price": "添加报价",
 	"A fresh verification link has been sent to your email address.": "新的验证链接已发送到您的 E-mail。",
 	"All rights reserved.": "版本所有。",
 	"All products": "所有商品",
@@ -38,6 +39,7 @@
 	"Error": "错误",
 	"edit": "修改",
 	"Edit product": "修改商品",
+	"Edit price": "修改价格",
 	"front": "正面",
 	"front-angled": "正侧面",
 	"Forbidden": "访问被拒绝",
