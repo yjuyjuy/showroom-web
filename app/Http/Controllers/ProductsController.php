@@ -36,6 +36,10 @@ class ProductsController extends Controller
 				$products = $products->filter(function ($item) {
 					return $item->images->isEmpty();
 				});
+			} elseif ($request->input('show_not_empty_only')) {
+				$products = $products->filter(function ($item) {
+					return $item->images->isNotEmpty();
+				});
 			}
 
 			if (($user = auth()->user()) && ($vendor = $user->vendor)) {
