@@ -32,28 +32,34 @@ class ProductsController extends Controller
 					return $item->prices->isNotEmpty();
 				});
 			}
-			if ($request->input('show_empty_only')) {
-				$products = $products->filter(function ($item) {
-					return $item->images->isEmpty();
-				});
-			} elseif ($request->input('show_not_empty_only')) {
+			if (($user = auth()->user()) && ($user->isSuperAdmin())) {
+				if ($request->input('show_empty_only')) {
+					$products = $products->filter(function ($item) {
+						return $item->images->isEmpty();
+					});
+				} elseif ($request->input('show_not_empty_only')) {
+					$products = $products->filter(function ($item) {
+						return $item->images->isNotEmpty();
+					});
+				}
+			} else {
 				$products = $products->filter(function ($item) {
 					return $item->images->isNotEmpty();
 				});
 			}
 
-			if (($user = auth()->user()) && ($vendor = $user->vendor)) {
-				if ($request->input('show_vendor_only')) {
-					$products = $products->filter(function ($item) use ($vendor) {
-						return $item->prices->firstWhere('vendor_id', $vendor->id);
-					});
-				}
-				if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
-					$products = $products->filter(function ($item) use ($vendors) {
-						return $item->prices->whereIn('vendor_id', $vendors)->first();
-					});
-				}
-			}
+			// if (($user = auth()->user()) && ($vendor = $user->vendor)) {
+			// 	if ($request->input('show_vendor_only')) {
+			// 		$products = $products->filter(function ($item) use ($vendor) {
+			// 			return $item->prices->firstWhere('vendor_id', $vendor->id);
+			// 		});
+			// 	}
+			// 	if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
+			// 		$products = $products->filter(function ($item) use ($vendors) {
+			// 			return $item->prices->whereIn('vendor_id', $vendors)->first();
+			// 		});
+			// 	}
+			// }
 			return $products;
 		});
 		if ($request->input('sort') === 'random') {
