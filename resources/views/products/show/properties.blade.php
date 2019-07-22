@@ -6,10 +6,15 @@
 	<div>
 		<a id="product-season" href="{{ route('products.index',['season' => [$product->season->id]]) }}">{{ __($product->season->name) }}</a>
 		<span id="product-name">
-			{{ $product->localeName }}
+			{{ $product->name_cn }}
 		</span>
 		<span id="product-color">
 			{{ __($product->color->name) }}
+		</span>
+	</div>
+	<div>
+		<span id="product-name">
+			{{ $product->name }}
 		</span>
 	</div>
 	@can('update',$product)
