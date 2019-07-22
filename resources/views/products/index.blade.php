@@ -5,7 +5,7 @@
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products as $product)
 		<li class="mdc-image-list__item">
-			<a href="{{ route('products.show',['product' => $product ]) }}" target="_blank">
+			<a href="{{ route('products.show',['product' => $product ]) }}">
 				<div class="">
 					<img class="mdc-image-list__image" src="{{$product->images->first()->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
