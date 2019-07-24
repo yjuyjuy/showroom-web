@@ -23,14 +23,14 @@
 	@endif
 
 	@foreach($vendor->products as $product)
-	<div class="images-content-container mb-4">
+	<div class="images-content-container mb-4 w-100">
 		<div class="images-container">
 			<div class="d-flex">
-				<div class="mx-2">
-					<img src="{{$product->images[0]->url ?? ''}}">
+				<div class="mx-2 w-50">
+					<img src="{{$product->images[0]->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
-				<div class="mx-2">
-					<img src="{{$product->images[1]->url ?? ''}}">
+				<div class="mx-2 w-50">
+					<img src="{{$product->images[1]->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
 			</div>
 		</div>
