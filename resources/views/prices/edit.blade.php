@@ -23,14 +23,14 @@
 		</form>
 
 		<div class="d-flex justify-content-end">
-			<a href="{{ route('products.show',['product' => $product]) }}" class="mdc-button mdc-button--outlined">
-				<span class="mdc-button__label">返回</span>
-			</a>
+			<button type="button" class="mdc-button mdc-button--outlined" onclick="window.history.back()">
+				<span class="mdc-button__label">{{ __('Back') }}</span>
+			</button>
 			<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="update-form">
-				<span class="mdc-button__label">提交</span>
+				<span class="mdc-button__label">{{ __('submit') }}</span>
 			</button>
 			<button type="button" class="mdc-button mdc-button--outlined mdc-button--error ml-2" @click="deletePrice({{$price->id}})">
-				<span class="mdc-button__label">全部删除</span>
+				<span class="mdc-button__label">{{ __('delete all') }}</span>
 			</button>
 		</div>
 	</div>
