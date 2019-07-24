@@ -2,9 +2,11 @@
 	@if($product->prices->isNotEmpty())
 	<div class="d-flex flex-column">
 		<span class="">{{ __('Order price') }}</span>
+		<?php $all_prices = $product->getAllPrices(); ?>
 		@foreach($product->getSizePrice('resell') as $size => $price)
-			<span class="">{{ $size }} - &yen;{{$price}}</span>
-		@endforeach
+		<?php $vendor = \App\Vendor::find($all_prices->where('size',$size)->where('resell',$price)->first()['vendor']) ?>
+ 			<span class="">{{$size}} - &yen;{{$price}} - {{$vendor->name}} - {{$vendor->city}}</span>
+ 		@endforeach
 	</div>
 	@endif
 
