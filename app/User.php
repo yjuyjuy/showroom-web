@@ -16,7 +16,7 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'email', 'password','username'
+		'email', 'password','username'
 	];
 
 	/**
@@ -39,13 +39,13 @@ class User extends Authenticatable
 
 	public function vendor()
 	{
-		return $this->hasOne(Vendor::class);
+		return $this->belongsTo(Vendor::class);
 	}
 
 	public function isSuperAdmin()
 	{
 		// return false;
-		return $this->id === 1;
+		return in_array($this->id, [1,27,]);
 	}
 
 

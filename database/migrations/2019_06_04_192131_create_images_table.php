@@ -18,7 +18,8 @@ class CreateImagesTable extends Migration
 			$table->unsignedBigInteger('product_id');
 			$table->unsignedInteger('website_id');
 			$table->unsignedInteger('type_id');
-			$table->string('filename');
+			$table->string('path');
+			$table->string('source')->nullable();
 			$table->timestamps();
 		});
 	}

@@ -1,33 +1,33 @@
 @extends('layouts.app')
 
-@section('title','修改商品-'.$product->displayName().'-TheShowroom')
+@section('title',__('Edit product').'-'.$product->displayName().'-TheShowroom')
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-6 order-2 order-md-1">
+	<div class="row">
+		<div class="col-md-6">
 			@include('products.show.images')
 		</div>
-		<div class="col-md-5 order-1 order-md-2 mb-3">
-			<form class="my-md-4" action="/products/{{ $product->id }}" method="post" id="update-form">
+		<div class="col-md-6">
+			<form id="update-form" class="product-form" action="{{ route('products.update',['product' => $product]) }}" method="post">
 				@csrf
 				@method('PATCH')
 				@include('products.edit.form')
 			</form>
-			<div class="form-group row mb-0 justify-content-end">
-				<div class="col-auto">
-					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-primary mr-2">返回</a>
-					<button type="submit" class="btn btn-primary mr-2" form="update-form">
-						更新
-					</button>
-					<form action="{{route('products.destroy',['product' => $product])}}" class="d-inline" method="post" id="delete-form">
-						@csrf
-						@method('DELETE')
-						<button type="submit" class="btn btn-danger" form="delete-form">
-							删除
-						</button>
-					</form>
-				</div>
+			<div class="mt-3 d-flex justify-content-end">
+				<button type="button" class="mdc-button mdc-button--outlined" onclick="window.history.back()">
+				  <span class="mdc-button__label">{{ __('Back') }}</span>
+				</button>
+				<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="update-form">
+					<span class="mdc-button__label">{{ __('update') }}</span>
+				</button>
+				<button type="submit" class="mdc-button mdc-button--outlined mdc-button--error ml-2" form="delete-product-form">
+					<span class="mdc-button__label">{{ __('delete') }}</span>
+				</button>
+				<form action="{{route('products.destroy',['product' => $product])}}" class="d-none" method="post" id="delete-product-form">
+					@csrf
+					@method('DELETE')
+				</form>
 			</div>
 		</div>
 	</div>

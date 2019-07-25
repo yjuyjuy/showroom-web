@@ -1,14 +1,25 @@
-<div class="d-flex flex-column text-center">
+<div class="d-flex flex-column products-show__info--properties">
 	<div class="">
-		<a href="{{ route('products.index') }}?brand[]={{$product->brand->id}}">{{ $product->brand->full_name }}</a>
+		<a id="product-brand" href="{{ route('products.index',['brand' => [$product->brand->id]]) }}">
+			{{ __($product->brand->full_name) }}</a>
 	</div>
+	<div>
+		<a id="product-season" href="{{ route('products.index',['season' => [$product->season->id]]) }}">{{ __($product->season->name) }}</a>
+		<span id="product-name">
+			{{ $product->name_cn }}
+		</span>
+		<span id="product-color">
+			{{ __($product->color->name) }}
+		</span>
+	</div>
+	<div>
+		<span id="product-name">
+			{{ $product->name }}
+		</span>
+	</div>
+	@can('update',$product)
 	<div class="">
-		<span><a href="{{ route('products.index') }}?season[]={{$product->season->id}}">{{ $product->season->name }}</a> {{ $product->name_cn }}</span>
+		<a href="{{ route('products.edit',['product' => $product ]) }}">{{ __('edit') }}</a>
 	</div>
-	<div class="">
-		<span>{{ $product->id }}</span>
-		@can('update',$product)
-			<a href="{{route('products.edit', ['product' => $product])}}" class="ml-2">Edit</a>
-		@endcan
-	</div>
+	@endcan
 </div>

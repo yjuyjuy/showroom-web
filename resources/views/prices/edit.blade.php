@@ -1,29 +1,37 @@
 @extends('layouts.app')
 
-@section('title','修改报价-'.$product->displayName().'-TheShowroom')
+@section('title',__('Edit price').'-'.$product->displayName().'-TheShowroom')
 
 @section('content')
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-6 order-2 order-md-1">
-			@include('products.show.images')
-		</div>
-		<div class="col-md-6 col-lg-5 order-1 order-md-2">
-			<form action="{{route('prices.update',['price' => $price])}}" method="post" class="row mb-3" id="update-form">
-				@csrf
-				@method('PATCH')
-				@if(auth()->user()->isSuperAdmin())
-				<div class="col-12 text-center h3">{{$price->vendor->name.' - '.$price->vendor->city}}</div>
-				@endif
-				<prices-editor v-bind:input='@json(array_values($price->data))'></prices-editor>
-			</form>
-			<div class="row justify-content-end mb-3">
-				<div class="col-auto">
-					<a href="{{route('products.show',['product' => $product])}}" class="btn btn-primary mr-2">Back</a>
-					<button type="submit" class="btn btn-primary mr-2" form="update-form">Submit</button>
-					<button type="button" class="btn btn-danger" @click="deletePrice({{$price->id}})">Delete All</button>
-				</div>
+<div class="images-content-container">
+	<div class="images-container">
+		@include('products.show.images')
+	</div>
+	<div class="content-container">
+		@if(auth()->user()->isSuperAdmin())
+		<div class="w-100">
+			<div class="font-weight-bold text-left">
+				{{$price->vendor->name.' - '.$price->vendor->city}}
 			</div>
+		</div>
+		@endif
+
+		<form action="{{route('prices.update',['price' => $price])}}" method="post" id="update-form">
+			@csrf
+			@method('PATCH')
+			<prices-editor v-bind:input='@json(array_values($price->data))'></prices-editor>
+		</form>
+
+		<div class="d-flex justify-content-end">
+			<button type="button" class="mdc-button mdc-button--outlined" onclick="window.history.back()">
+				<span class="mdc-button__label">{{ __('Back') }}</span>
+			</button>
+			<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="update-form">
+				<span class="mdc-button__label">{{ __('submit') }}</span>
+			</button>
+			<button type="button" class="mdc-button mdc-button--outlined mdc-button--error ml-2" @click="deletePrice({{$price->id}})">
+				<span class="mdc-button__label">{{ __('delete all') }}</span>
+			</button>
 		</div>
 	</div>
 </div>

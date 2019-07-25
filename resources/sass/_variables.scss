@@ -1,24 +1,27 @@
+// Theme
+// $mdc-theme-primary: #e59bbe;
+$mdc-theme-primary: #90caf9;
+$mdc-theme-secondary: #ef9a9a;
+// $mdc-theme-surface: #121212;
+$mdc-theme-surface: rgba(mix(#121212,rgba($mdc-theme-primary,0.08)),1);
+$mdc-theme-background: #121212;
+$mdc-theme-error: #CF6679;
+$mdc-theme-on-primary: #000000;
+$mdc-theme-on-secondary: #000000;
+$mdc-theme-on-surface: #ffffff;
+$mdc-theme-on-background: #ffffff;
+$mdc-theme-on-error: #000000;
+
 // Body
-$body-bg: #282c34;
-$body-color: #abb2bf;
+$body-bg: $mdc-theme-background;
+$body-color: $mdc-theme-on-background;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-sans-serif: 'Roboto', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
-$link-color: #abb2bf;
-$enable-responsive-font-sizes: true;
+$link-color: $body-color;
 
 // Colors
-$blue: hsl(207, 82%, 66%);
-$indigo: #6574cd;
-$purple: hsl(286, 60%, 67%);
-$pink: #f66d9b;
-$red: hsl(355, 65%, 65%);
-$red-light: hsl(5, 48%, 51%);
-$orange: 	hsl(29, 54%, 61%);
-$orange-light: hsl(39, 67%, 69%);
-$yellow: #ffed4a;
-$green: hsl(95, 38%, 62%);
-$teal: #4dc0b5;
-$cyan: hsl(187, 47%, 55%);
+$primary: $mdc-theme-primary;
+$secondary: $mdc-theme-secondary;

@@ -15,13 +15,10 @@ class CreateVendorsTable extends Migration
 	{
 		Schema::create('vendors', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->unsignedBigInteger('user_id');
 			$table->string('name');
 			$table->string('wechat_id')->nullable();
 			$table->string('city');
 			$table->timestamps();
-
-			$table->index('user_id');
 		});
 	}
 

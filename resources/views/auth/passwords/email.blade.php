@@ -1,47 +1,53 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+<div class="d-flex justify-content-center auth">
+	<div class="mdc-card mdc-card--outlined">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+		<form id="password-email-form" method="POST" action="{{ route('password.email') }}" class="mdc-card__content d-flex flex-column auth-form">
+			@csrf
+			<div class="mdc-card__content-header">
+				<h3>{{ __('Reset Password') }}</h3>
+			</div>
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
+			<label class="mdc-text-field mdc-card__action">
+				<input type="email" class="mdc-text-field__input" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
+				<span class="mdc-floating-label">{{ __('E-Mail Address') }}</span>
+				<div class="mdc-line-ripple"></div>
+			</label>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+			@error('email')
+			<div class="mdc-text-field-helper-line">
+				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+			</div>
+			@enderror
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+		</form>
+		<div class="mdc-card__actions justify-content-end">
+			<div class="mdc-card__action-buttons flex-wrap justify-content-end">
+				<button type="submit" class="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button" form="password-email-form">
+					<span class="mdc-button__label">{{ __('Send Password Reset Link') }}</span>
+				</button>
+			</div>
+		</div>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+		@if (session('status'))
+		<div class="mdc-snackbar">
+			<div class="mdc-snackbar__surface">
+				<div class="mdc-snackbar__label"
+						 role="status"
+						 aria-live="polite">
+					{{ session('status') }}
+				</div>
+				<div class="mdc-snackbar__actions">
+					<button type="button" class="mdc-button mdc-button--outlined mdc-snackbar__action"
+									onclick="window.snackbar.close();">
+						<span class="mdc-button__label">OK</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		@endif
+	</div>
 </div>
 @endsection

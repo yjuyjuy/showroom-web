@@ -7,10 +7,10 @@ use App\Color;
 use App\Product;
 use App\Season;
 use App\Brand;
-use App\Sortmethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
 
 class ProductsController extends Controller
 {
@@ -22,33 +22,58 @@ class ProductsController extends Controller
 	public function index(Request $request)
 	{
 		$products = Cache::remember(url()->full(), 60, function () use ($request) {
-			$query = Product::with(['images' => function ($query) {
+			$products = $this->filter(Product::query())->get();
+			$products = $this->sort($products);
+			$products->load(['images' => function ($query) {
 				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
 			},'brand','prices']);
-			$products = $this->filter($query)->get();
-			$products = $this->sort($products);
 			if ($request->input('show_available_only')) {
 				$products = $products->filter(function ($item) {
 					return $item->prices->isNotEmpty();
 				});
 			}
-
-			if (($user = auth()->user()) && ($vendor = $user->vendor)) {
-				if ($request->input('show_vendor_only')) {
-					$products = $products->filter(function ($item) use ($vendor) {
-						return $item->prices->firstWhere('vendor_id', $vendor->id);
+			if (($user = auth()->user()) && ($user->isSuperAdmin())) {
+				if ($request->input('show_empty_only')) {
+					$products = $products->filter(function ($item) {
+						return $item->images->isEmpty();
+					});
+				} elseif ($request->input('show_not_empty_only')) {
+					$products = $products->filter(function ($item) {
+						return $item->images->isNotEmpty();
 					});
 				}
-				if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
-					$products = $products->filter(function ($item) use ($vendors) {
-						return $item->prices->whereIn('vendor_id', $vendors)->first();
-					});
-				}
+			} else {
+				$products = $products->filter(function ($item) {
+					return $item->images->isNotEmpty();
+				});
 			}
+
+			// if (($user = auth()->user()) && ($vendor = $user->vendor)) {
+			// 	if ($request->input('show_vendor_only')) {
+			// 		$products = $products->filter(function ($item) use ($vendor) {
+			// 			return $item->prices->firstWhere('vendor_id', $vendor->id);
+			// 		});
+			// 	}
+			// 	if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
+			// 		$products = $products->filter(function ($item) use ($vendors) {
+			// 			return $item->prices->whereIn('vendor_id', $vendors)->first();
+			// 		});
+			// 	}
+			// }
 			return $products;
 		});
+		if ($request->input('sort') === 'random') {
+			$products = $products->shuffle();
+		}
+		$sortOptions = $this->sortOptions();
+		$filters = [
+			"category" => \App\Category::all(),
+			"color" => \App\Color::all(),
+			"season" => \App\Season::all(),
+			"brand" => \App\Brand::all()
+			];
 		$request->flash();
-		return view('products.index', compact('products'));
+		return view('products.index', compact('products', 'sortOptions', 'filters'));
 	}
 
 	/**
@@ -71,7 +96,7 @@ class ProductsController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$this->authorize('create', $product);
+		$this->authorize('create', Product::class);
 		$product = new Product($this->validateProduct());
 		$lastProduct = Product::where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
 		if ($lastProduct) {
@@ -80,7 +105,7 @@ class ProductsController extends Controller
 			$product->id = $product->category_id.$product->season_id.'001';
 		}
 		$product->save();
-		return redirect(route('products.show', ['product' => $product]));
+		return redirect(route('images.edit', ['product' => $product]));
 	}
 
 	/**
@@ -91,6 +116,9 @@ class ProductsController extends Controller
 	 */
 	public function show(Product $product)
 	{
+		$product->load(['images' => function ($query) {
+			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+		}]);
 		return view('products.show', compact('product'));
 	}
 
@@ -103,6 +131,9 @@ class ProductsController extends Controller
 	public function edit(Product $product)
 	{
 		$this->authorize('update', $product);
+		$product->load(['images' => function ($query) {
+			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+		}]);
 		return view('products.edit', compact('product'));
 	}
 
@@ -164,16 +195,20 @@ class ProductsController extends Controller
 		}
 		return $query;
 	}
-
+	public function sortOptions()
+	{
+		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
+	}
 	public function sort($products)
 	{
 		if (request()->input('sort')) {
 			$sort = request()->validate([
-				'sort' => 'sometimes|exists:sortmethods,name',
+				'sort' => ['sometimes',Rule::in($this->sortOptions())],
 			])['sort'];
 		} else {
 			$sort = 'default';
 		}
+		$products = $products->shuffle();
 		switch ($sort) {
 			case 'default':
 				$products = $products->sortBy(function ($item) {
@@ -181,27 +216,31 @@ class ProductsController extends Controller
 				});
 				break;
 
-			case 'price high to low':
+			case 'random':
+				$products = $products->shuffle();
+				break;
+
+			case 'price-high-to-low':
 				$products = $products->sortByDesc(function ($item) {
 					return $item->getMinPrice('retail', 0);
 				});
 				break;
 
-			case 'price low to high':
+			case 'price-low-to-high':
 				$products = $products->sortBy(function ($item) {
 					return $item->getMinPrice('retail', INF);
 				});
 				break;
 
 			case 'newest':
-				$products = $products->sortBy(function ($item) {
-					return $item->created_at;
+				$products = $products->sortByDesc(function ($item) {
+					return $item->season_id;
 				});
 				break;
 
 			case 'oldest':
-				$products = $products->sortByDesc(function ($item) {
-					return $item->created_at;
+				$products = $products->sortBy(function ($item) {
+					return $item->season_id;
 				});
 				break;
 
@@ -215,15 +254,4 @@ class ProductsController extends Controller
 		}
 		return $products;
 	}
-	// public function season_asc()
-	// {
-	// 	return function ($a, $b) {
-	// 		return
-	// 		($a->season_id == $b->season_id)?
-	// 			($a->category_id == $b->category_id)?
-	// 				$a->id - $b->id :
-	// 			$a->category_id - $b->category_id :
-	// 		$a->season_id - $b->season_id;
-	// 	}
-	// }
 }

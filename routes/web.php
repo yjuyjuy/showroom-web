@@ -32,8 +32,16 @@ Route::middleware(['auth','vendor'])->group(function () {
 	Route::post('/products/{product}/prices', 'PricesController@store')->name('prices.store');
 });
 
-
-
+Route::middleware(['auth','admin'])->group(function () {
+	Route::get('/products/{product}/images', 'ImagesController@edit')->name('images.edit');
+	Route::patch('/images/swap', 'ImagesController@swap')->name('images.swap');
+	Route::patch('/images/{image}/move', 'ImagesController@move')->name('images.move');
+	Route::resource('images', 'ImagesController')->only(['store','update','destroy']);
+});
+Route::get('/logs','LogsController@index')->middleware(['auth','admin'])->name('logs');
+Route::get('/language', function () {
+	return App::getLocale();
+});
 // deprecate
 // Route::prefix('vendors')->name('vendors.')->middleware(['auth','vendor'])->group(function () {
 // 	Route::resource('products', 'VendorsProductsController');

@@ -1,39 +1,56 @@
-@forelse($product->prices->loadMissing('vendor') as $price)
-<div class="row text-center no-gutters my-3">
-	<div class="col-12 border-bottom pb-2 mb-2">
-		<a href="{{route('prices.edit',['price'=>$price])}}">
-			{{$price->vendor->name.' - '.$price->vendor->city}}
-		</a>
+<div class="d-flex flex-column products-show__info--admin">
+	@if($product->prices->isNotEmpty())
+	<div class="d-flex flex-column">
+		<span class="">{{ __('Order price') }}</span>
+		<?php $all_prices = $product->getAllPrices(); ?>
+		@foreach($product->getSizePrice('resell') as $size => $price)
+		<?php $vendor = \App\Vendor::find($all_prices->where('size',$size)->where('resell',$price)->first()['vendor']) ?>
+ 			<span class="">{{$size}} - &yen;{{$price}} - {{$vendor->name}} - {{$vendor->city}}</span>
+ 		@endforeach
 	</div>
-	<div class="col-12">
+	@endif
+
+	<?php $product->prices->loadMissing('vendor'); ?>
+	@foreach($product->prices as $price)
+	<div class="price-grid">
+		<div class="font-weight-bold price-grid__header">
+			<a href="{{route('prices.edit',['price'=>$price])}}" class="price-grid__title">
+				{{$price->vendor->name.' - '.__($price->vendor->city)}}
+			</a>
+		</div>
 		@foreach($price->data as $row)
-		<div class="row text-center no-gutters">
-			<span class="col-3">{{ $row['size'] }}</span>
-			<span class="col-3">&yen;{{$row['cost']}}</span>
-			<span class="col-3">&yen;{{$row['resell']}}</span>
-			<span class="col-3">&yen;{{$row['retail']}}</span>
+		<div class="price-grid__row">
+			<span class="price-grid__col">{{ $row['size'] }}</span>
+			<span class="price-grid__col">&yen;{{$row['cost']}}</span>
+			<span class="price-grid__col">&yen;{{$row['resell']}}</span>
+			<span class="price-grid__col">&yen;{{$row['retail']}}</span>
 		</div>
 		@endforeach
-		<div class="row text-center no-gutters justify-content-end">
-			<a href="{{route('prices.edit',['price'=>$price])}}" class="col-3 text-primary">修改</a>
-			<a href="#" class="col-3 text-danger" @click.prevent="deletePrice({{$price->id}})" >删除</a>
+		<div class="price-grid__footer text-right">
+				<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('edit') }}</a>
+				<a href="#" class="mdc-button mdc-button--error" @click.prevent="deletePrice({{$price->id}})">{{ __('delete') }}</a>
 		</div>
-
 	</div>
-</div>
+	@endforeach
 
-@empty
-<div class="row text-center no-gutters my-3">
-	<div class="col-12">Not available</div>
-</div>
-@endforelse
-<div class="row">
-	<div class="col-12">
-		<a href="#" class="btn btn-primary dropdown-toggle w-100" data-toggle="dropdown" aria-haspopup="true" aria-expended="false">添加报价</a>
-		<div class="dropdown-menu dropdown-menu-right">
-			@foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)
-			<a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor->id])}}" class="dropdown-item">{{$vendor->name}}</a>
-			@endforeach
+	<div class="d-flex justify-content-end">
+		<div class="mdc-menu-surface--anchor">
+			<button type="button" class="mdc-button" name="button" onclick="window.history.back()">
+				<span class="mdc-button__label">{{__('Back')}}</span>
+			</button>
+			<button type="button" class="mdc-button mdc-button--unelevated open-menu-button">
+				<span class="mdc-button__label">{{ __('add price') }}</span>
+				<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
+			</button>
+			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+			    @foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)
+					<li class="mdc-list-item" role="menuitem">
+			      <a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor->id])}}" class="mdc-list-item__text w-100 text-left">{{$vendor->name}}</a>
+			    </li>
+					@endforeach
+			  </ul>
+			</div>
 		</div>
 	</div>
 </div>

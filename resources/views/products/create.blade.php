@@ -1,25 +1,21 @@
 @extends('layouts.app')
 
-@section('title','创建新商品 - TheShowroom')
+@section('title',__('Create product').' - TheShowroom')
 
 @section('content')
-<div class="container">
-	<div class="row justify-content-center">
-
-		<div class="col-md-6">
-			<form action="{{route('products.store')}}" method="post">
-				@csrf
-				@include('products.edit.form')
-				<div class="form-group row mb-0 justify-content-end">
-					<div class="col-auto">
-						<button type="submit" class="btn btn-primary">
-							创建
-						</button>
-					</div>
+<div class="images-content-container">
+	<div class="content-container">
+		<form id="create-product-form" class="product-form text-left" action="{{route('products.store')}}" method="post">
+			@csrf
+			@include('products.edit.form')
+			<div class="form-group">
+				<div class="d-flex justify-content-end mt-3">
+					<button class="mdc-button mdc-button--outlined">
+					  <span class="mdc-button__label">{{ __('create') }}</span>
+					</button>
 				</div>
-			</form>
-		</div>
-
+			</div>
+		</form>
 	</div>
 </div>
 @endsection

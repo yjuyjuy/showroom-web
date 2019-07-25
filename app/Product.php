@@ -62,10 +62,6 @@ class Product extends Model
 	{
 		return $this->hasMany(Price::class);
 	}
-	public function getImageAttribute()
-	{
-		return $this->images->sortBy('website_id')->sortBy('type_id')->first();
-	}
 	public function images()
 	{
 		return $this->hasMany(Image::class);
@@ -121,45 +117,35 @@ class Product extends Model
 	}
 
 
-	public function getSizeAllPrice()
+	public function getAllPrices()
 	{
-		$prices = [];
-		foreach ($this->prices->pluck('data') as $data) {
-			foreach ($data as $row) {
-				$prices[$row['size']]['cost'][] = $row['cost'];
-				$prices[$row['size']]['resell'][] = $row['resell'];
-				$prices[$row['size']]['retail'][] = $row['retail'];
+		$prices = collect();
+		foreach ($this->prices as $price) {
+			foreach ($price->data as $row) {
+				$prices->push([
+					'vendor' => $price->vendor->id,
+					'size' => $row['size'],
+					'cost' => $row['cost'],
+					'resell' => $row['resell'],
+					'retail' => $row['retail'],
+				]);
 			}
 		}
-		foreach ($prices as $size => $values) {
-			$prices[$size]['cost'] = min($values['cost']);
-			$prices[$size]['resell'] = min($values['resell']);
-			$prices[$size]['retail'] = min($values['retail']);
-		}
-
-		uksort($prices, function ($a, $b) {
-			return ($a === $b)? 0 : ((array_search($a, ['XXS','XS','S','M','L','XL','XXL']) < array_search($b, ['XXS','XS','S','M','L','XL','XXL'])) ? -1 : 1);
-		});
-
 		return $prices;
 	}
 
 
-	public function displayName($level = 1)
+	public function displayName()
 	{
-		switch ($level) {
-			case 1:
-				return $this->season->name.' '.$this->name_cn;
-				break;
+		return $this->brand->name.' '.$this->season->name.' '.$this->localeName;
+	}
 
-			case 2:
-				// code...
-				return $this->brand->name.' '.$this->season->name.' '.$this->name_cn;
-				break;
-
-			default:
-				return $this->season->name.' '.$this->name_cn;
-				break;
+	public function getLocaleNameAttribute()
+	{
+		if (\App::isLocale('zh')) {
+			return $this->name_cn;
+		} else {
+			return $this->name;
 		}
 	}
 }
