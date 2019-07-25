@@ -16,8 +16,8 @@ class ImagesController extends Controller
 		request()->validate([
 			'product_id' => ['required','exists:products,id'],
 			'website_id' => ['required','exists:websites,id'],
-			'image' => ['required_without:images','file','image','max:10000'],
-			'images.*' => ['required_without:image','file','image','max:10000'],
+			'image' => ['required_without:images','file','mimetypes:image/*','max:10000'],
+			'images.*' => ['required_without:image','file','mimetypes:image/*','max:10000'],
 			'type_id' => ['required_with:image','exists:types,id'],
 		]);
 		if (request('images')) {
@@ -65,7 +65,7 @@ class ImagesController extends Controller
 	public function update(Image $image)
 	{
 		request()->validate([
-			'image' => ['required','file','image','max:10000'],
+			'image' => ['required','file','mimetypes:image/*','max:10000'],
 		]);
 		if (Storage::exists('public/'.$image->path)) {
 			Storage::delete('public/'.$image->path);
