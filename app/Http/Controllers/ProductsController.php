@@ -83,7 +83,6 @@ class ProductsController extends Controller
 	 */
 	public function create()
 	{
-		$this->authorize('create', Product::class);
 		$product = new Product();
 		return view('products.create', compact('product'));
 	}
@@ -96,7 +95,6 @@ class ProductsController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$this->authorize('create', Product::class);
 		$product = new Product($this->validateProduct());
 		$lastProduct = Product::where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
 		if ($lastProduct) {
@@ -130,7 +128,6 @@ class ProductsController extends Controller
 	 */
 	public function edit(Product $product)
 	{
-		$this->authorize('update', $product);
 		$product->load(['images' => function ($query) {
 			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
 		}]);
@@ -146,7 +143,6 @@ class ProductsController extends Controller
 	 */
 	public function update(Request $request, Product $product)
 	{
-		$this->authorize('update', $product);
 		$product->update($this->validateProduct());
 		return redirect(route('products.show', ['product' => $product]));
 	}
@@ -159,7 +155,6 @@ class ProductsController extends Controller
 	 */
 	public function destroy(Product $product)
 	{
-		$this->authorize('delete', $product);
 		$product->delete();
 		return redirect(route('products.index'));
 	}
