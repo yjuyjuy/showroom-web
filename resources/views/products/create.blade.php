@@ -5,7 +5,7 @@
 @section('content')
 <div class="images-content-container">
 	<div class="content-container">
-		<form id="create-product-form" class="product-form" action="{{route('products.store')}}" method="post">
+		<form id="create-product-form" class="product-form text-left" action="{{route('products.store')}}" method="post">
 			@csrf
 			@include('products.edit.form')
 			<div class="form-group">
