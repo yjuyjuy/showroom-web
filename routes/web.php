@@ -38,7 +38,7 @@ Route::middleware(['auth','admin'])->group(function () {
 	Route::patch('/images/{image}/move', 'ImagesController@move')->name('images.move');
 	Route::resource('images', 'ImagesController')->only(['store','update','destroy']);
 });
-
+Route::get('/logs','LogsController@index')->middleware(['auth','admin'])->name('logs');
 Route::get('/language', function () {
 	return App::getLocale();
 });
