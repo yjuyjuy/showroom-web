@@ -11,7 +11,7 @@
 				@else
 			<li data-value="{{ $brand->id }}" class="mdc-list-item">
 				@endif
-				{{ $brand->name }}
+				{{ __($brand->name) }}
 			</li>
 			@endforeach
 		</ul>
@@ -37,7 +37,7 @@
 				@else
 			<li data-value="{{ $season->id }}" class="mdc-list-item">
 				@endif
-				{{ $season->name }}
+				{{ __($season->name) }}
 			</li>
 			@endforeach
 		</ul>
@@ -85,7 +85,7 @@
 				@else
 			<li data-value="{{ $category->id }}" class="mdc-list-item">
 				@endif
-				{{ $category->name }}
+				{{ __($category->name) }}
 			</li>
 			@endforeach
 		</ul>
@@ -110,7 +110,7 @@
 				@else
 			<li data-value="{{ $color->id }}" class="mdc-list-item">
 				@endif
-				{{ $color->name }}
+				{{ __($color->name) }}
 			</li>
 			@endforeach
 		</ul>
