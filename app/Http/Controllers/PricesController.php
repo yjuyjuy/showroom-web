@@ -54,17 +54,20 @@ class PricesController extends Controller
 	 */
 	public function store(Request $request, Product $product)
 	{
+		$this->authorize('create', Price::class);
 		if (auth()->user()->isSuperAdmin()) {
 			$vendor = \App\Vendor::find($request->input('vendor'));
 		} else {
 			$vendor = auth()->user()->vendor;
 		}
 		$data = json_decode($this->validateRequest()['data']);
-		$price = $product->prices()->firstOrNew(['vendor_id' => '']);
-		$price->data = $data;
-		$price->vendor_id = $vendor->id;
-		$price->save();
-		return redirect(route('products.show', ['product' => $price->product]));
+		if(!empty($data)){
+			$price = $product->prices()->firstOrNew(['vendor_id' => '']);
+			$price->data = $data;
+			$price->vendor_id = $vendor->id;
+			$price->save();
+		}
+		return redirect(route('products.show', ['product' => $product]));
 	}
 
 	/**
@@ -99,9 +102,14 @@ class PricesController extends Controller
 	 */
 	public function update(Request $request, Price $price)
 	{
+		$this->authorize('update', $price);
 		$data = json_decode($this->validateRequest()['data']);
-		$price->data = $data;
-		$price->save();
+		if(empty($data)){
+			$price->delete();
+		} else {
+			$price->data = $data;
+			$price->save();
+		}
 		return redirect(route('products.show', ['product' => $price->product]));
 	}
 
