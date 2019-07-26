@@ -120,6 +120,13 @@ const textFieldHelperTexts = [].map.call(document.querySelectorAll('.mdc-text-fi
 const selectHelperTexts = [].map.call(document.querySelectorAll('.mdc-select-helper-text'), function(el) {
 	return new MDCSelectHelperText(el);
 });
+const options = {
+	month: 'short',day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+};
+[].map.call(document.querySelectorAll('.timestamp'), function(el) {
+	let t = new Date(parseFloat(el.dataset.timestamp));
+	el.textContent = new Intl.DateTimeFormat('zh', options).format(t);
+});
 
 // display options dialog component
 const dialogElement = document.getElementById('display-options-dialog');
