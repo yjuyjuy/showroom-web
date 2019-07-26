@@ -71,10 +71,10 @@ export default {
 				let cost = this.prices[i].cost;
 				let resell = this.prices[i].resell;
 				let retail = this.prices[i].retail;
-				if(/^[1-9]+[0-9]*%$/.test(resell)){
+				if(/^[0-9]+%$/.test(resell)){
 					resell = this.prices[i].resell = Math.ceil((parseFloat(resell) / 100.0 + 1.0) * cost / 10.0) * 10;
 				}
-				if(/^[1-9]+[0-9]*%$/.test(retail)){
+				if(/^[0-9]+%$/.test(retail)){
 					retail = this.prices[i].retail = Math.ceil((parseFloat(retail) / 100.0 + 1.0) * resell / 10.0) * 10;
 				}
 				if (/^[0-9]+[-][0-9]+$/.test(this.prices[i].size)) {
