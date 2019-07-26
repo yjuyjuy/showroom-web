@@ -70,6 +70,10 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
 						<span class="mdc-list-item__text">{{ __('Create product') }}</span>
 					</a>
+					<a class="mdc-list-item" href="{{ route('logs') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">ballot</i>
+						<span class="mdc-list-item__text">{{ __('Change log') }}</span>
+					</a>
 					@endif
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>

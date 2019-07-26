@@ -39,6 +39,7 @@ Route::middleware(['auth','admin'])->group(function () {
 	Route::resource('images', 'ImagesController')->only(['store','update','destroy']);
 });
 Route::get('/logs','LogsController@index')->middleware(['auth','admin'])->name('logs');
+Route::delete('/logs/{log}','LogsController@destroy')->middleware(['auth','admin'])->name('logs.destroy');
 Route::get('/language', function () {
 	return App::getLocale();
 });

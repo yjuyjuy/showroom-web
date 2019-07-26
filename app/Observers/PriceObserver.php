@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Price;
+use App\Log;
 
 class PriceObserver
 {
@@ -14,7 +15,11 @@ class PriceObserver
      */
     public function created(Price $price)
     {
-        //
+      	$log = new Log;
+				$log->product()->associate($price->product);
+				$log->price()->associate($price);
+				$log->action = 'created';
+				$log->save();
     }
 
     /**
@@ -25,7 +30,11 @@ class PriceObserver
      */
     public function updated(Price $price)
     {
-        //
+      	$log = new Log;
+				$log->product()->associate($price->product);
+				$log->price()->associate($price);
+				$log->action = 'updated';
+				$log->save();
     }
 
     /**
@@ -36,7 +45,11 @@ class PriceObserver
      */
     public function deleted(Price $price)
     {
-        //
+      	$log = new Log;
+				$log->product()->associate($price->product);
+				$log->price()->associate($price);
+				$log->action = 'deleted';
+				$log->save();
     }
 
     /**

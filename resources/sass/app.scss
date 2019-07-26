@@ -443,3 +443,15 @@ img{
 		display:flex;
 	}
 }
+// logs.index view
+#logs-index{
+	transition: height 0.5s ease-in-out;
+	.log-item{
+		display: flex;
+		align-items: center;
+		line-height: 3rem;
+	}
+	.log-delete-button{
+		@include mdc-icon-button-size(1rem, 1rem, 0.5rem);
+	}
+}

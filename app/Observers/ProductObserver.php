@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Product;
+use App\Log;
 
 class ProductObserver
 {
@@ -14,7 +15,10 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-        //
+			$log = new Log;
+			$log->product()->associate($product);
+			$log->action = 'created';
+			$log->save();
     }
 
     /**
@@ -25,7 +29,10 @@ class ProductObserver
      */
     public function updated(Product $product)
     {
-        //
+      	$log = new Log;
+				$log->product()->associate($product);
+				$log->action = 'updated';
+				$log->save();
     }
 
     /**
@@ -36,7 +43,10 @@ class ProductObserver
      */
     public function deleted(Product $product)
     {
-        //
+      	$log = new Log;
+				$log->product()->associate($product);
+				$log->action = 'deleted';
+				$log->save();
     }
 
     /**
