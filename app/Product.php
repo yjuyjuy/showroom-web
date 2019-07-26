@@ -5,9 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+	use SoftDeletes;
+
 	protected $guarded = [];
 	/**
 	 * The model's default values for attributes.
@@ -21,27 +24,14 @@ class Product extends Model
 		return $this->belongsTo(Category::class);
 	}
 
-	public function setCategoryAttribute($value)
-	{
-		$this->category_id = $value;
-	}
-
 	public function season()
 	{
 		return $this->belongsTo(Season::class);
 	}
 
-	public function setSeasonAttribute($value)
-	{
-		$this->season_id = $value;
-	}
 	public function color()
 	{
 		return $this->belongsTo(Color::class);
-	}
-	public function setColorAttribute($value)
-	{
-		$this->color_id = $value;
 	}
 
 	public function brand()
@@ -49,10 +39,7 @@ class Product extends Model
 		return $this->belongsTo(Brand::class);
 	}
 
-	public function setBrandAttribute($value)
-	{
-		$this->brand_id = $value;
-	}
+
 	public function vendors()
 	{
 		return $this->belongsToMany(Product::class, 'prices', 'product_id', 'vendor_id');
@@ -62,9 +49,15 @@ class Product extends Model
 	{
 		return $this->hasMany(Price::class);
 	}
+
 	public function images()
 	{
 		return $this->hasMany(Image::class);
+	}
+
+	public function logs()
+	{
+		return $this->hasMany(\App\Log::class);
 	}
 
 	public function getMinPrice($type = 'retail', $default = false)
