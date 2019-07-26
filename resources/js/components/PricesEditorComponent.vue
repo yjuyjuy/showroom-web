@@ -72,6 +72,12 @@ export default {
 				let cost = this.prices[i].cost;
 				let resell = this.prices[i].resell;
 				let retail = this.prices[i].retail;
+				if(/^[1-9]+[0-9]*%$/.test(resell)){
+					resell = this.prices[i].resell = Math.ceil((parseFloat(resell) / 100.0 + 1.0) * cost / 10.0) * 10;
+				}
+				if(/^[1-9]+[0-9]*%$/.test(retail)){
+					retail = this.prices[i].retail = Math.ceil((parseFloat(retail) / 100.0 + 1.0) * resell / 10.0) * 10;
+				}
 				if (/^[0-9]+[-][0-9]+$/.test(this.prices[i].size)) {
 					let [start, end] = this.prices[i].size.split('-');
 					this.prices.splice(i, 1);
@@ -154,7 +160,7 @@ export default {
 		},
 		computed_retail: function(index) {
 			if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 1.1 * 0.12) * 10;
+				return Math.ceil(this.prices[index].cost * 1.1 * 0.11) * 10;
 			} else {
 				return '';
 			}
