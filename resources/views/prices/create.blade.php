@@ -23,10 +23,13 @@
 		</form>
 
 		<div class="d-flex justify-content-end">
-			<button class="mdc-button mdc-button--outlined" onclick="window.history.back()">
+			<a href="{{ route('products.show', ['product' => $product,]) }}" class="mdc-button mdc-button--outlined" onclick="event.preventDefault(); window.location.replace(this.href);">
 				<span class="mdc-button__label">{{ __('Back') }}</span>
-			</button>
-			<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="create-form">
+			</a>
+			<button type="button" class="mdc-button mdc-button--outlined ml-2" form="create-form"
+							onclick="var data = new FormData(this.form);
+							axios.post('{{route('prices.store',['product' => $product ])}}',data)
+							.then(response=>{ window.location.replace(response.data.redirect) })">
 				<span class="mdc-button__label">{{ __('submit') }}</span>
 			</button>
 		</div>

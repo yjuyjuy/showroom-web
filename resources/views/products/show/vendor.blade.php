@@ -30,14 +30,14 @@
 				</div>
 			@endforeach
 			<div class="price-grid__footer text-right">
-				<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('edit') }}</a>
+				<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button" onclick="event.preventDefault(); window.location.replace(this.href);">{{ __('edit') }}</a>
 				<button type="button" class="mdc-button mdc-button--error" @click.prevent="deletePrice({{$price->id}})">{{ __('delete') }}</button>
 			</div>
 		@endforeach
 	</div>
 	@else
 	<div class="d-flex justify-content-end">
-		<a href="{{route('prices.create',['product' => $product])}}" class="mdc-button mdc-button--unelevated">
+		<a href="{{route('prices.create',['product' => $product])}}" class="mdc-button mdc-button--unelevated" onclick="event.preventDefault(); window.location.replace(this.href);">
 			<span class="mdc-button__label">{{ __('add price') }}</span>
 		</a>
 	</div>

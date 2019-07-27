@@ -67,7 +67,7 @@ class PricesController extends Controller
 			$price->vendor_id = $vendor->id;
 			$price->save();
 		}
-		return redirect(route('products.show', ['product' => $product]));
+		return ['redirect' => route('products.show', ['product' => $product])];
 	}
 
 	/**
@@ -110,7 +110,7 @@ class PricesController extends Controller
 			$price->data = $data;
 			$price->save();
 		}
-		return redirect(route('products.show', ['product' => $price->product]));
+		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
 
 	/**

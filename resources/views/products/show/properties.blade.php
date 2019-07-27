@@ -19,7 +19,7 @@
 	</div>
 	@can('update',$product)
 	<div class="">
-		<a href="{{ route('products.edit',['product' => $product ]) }}">{{ __('edit') }}</a>
+		<a href="{{ route('products.edit',['product' => $product ]) }}" onclick="event.preventDefault(); window.location.replace(this.href);">{{ __('edit') }}</a>
 	</div>
 	@endcan
 </div>
