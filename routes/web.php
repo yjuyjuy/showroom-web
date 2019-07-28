@@ -42,11 +42,3 @@ Route::delete('/logs/{log}','LogsController@destroy')->middleware(['auth','admin
 Route::get('/language', function () {
 	return App::getLocale();
 });
-// deprecate
-// Route::prefix('vendors')->name('vendors.')->middleware(['auth','vendor'])->group(function () {
-// 	Route::resource('products', 'VendorsProductsController');
-// });
-//
-// Route::prefix('admin')->name('admin.')->middleware(['auth','admin'])->group(function () {
-// 	Route::resource('products', 'AdminsProductsController');
-// });
