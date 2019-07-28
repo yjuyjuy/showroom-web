@@ -48,18 +48,18 @@ class ProductController extends Controller
 				});
 			}
 
-			// if (($user = auth()->user()) && ($vendor = $user->vendor)) {
-			// 	if ($request->input('show_vendor_only')) {
-			// 		$products = $products->filter(function ($item) use ($vendor) {
-			// 			return $item->prices->firstWhere('vendor_id', $vendor->id);
-			// 		});
-			// 	}
-			// 	if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
-			// 		$products = $products->filter(function ($item) use ($vendors) {
-			// 			return $item->prices->whereIn('vendor_id', $vendors)->first();
-			// 		});
-			// 	}
-			// }
+			if (($user = auth()->user()) && ($vendor = $user->vendor)) {
+				if ($request->input('show_my_stock_only')) {
+					$products = $products->filter(function ($item) use ($vendor) {
+						return $item->prices->firstWhere('vendor_id', $vendor->id);
+					});
+				}
+				if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
+					$products = $products->filter(function ($item) use ($vendors) {
+						return $item->prices->whereIn('vendor_id', $vendors)->first();
+					});
+				}
+			}
 			return $products;
 		});
 		if ($request->input('sort') === 'random') {
