@@ -22,7 +22,7 @@
 		<form id="change-vendor-form" method="get" target="_self" class="d-none"></form>
 	@endif
 
-	@foreach($vendor->products as $product)
+	@foreach($products as $product)
 	<div class="images-content-container mb-4 w-100">
 		<div class="images-container">
 			<div class="d-flex">

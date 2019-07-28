@@ -23,12 +23,16 @@ class PriceController extends Controller
 		} else {
 			$vendor = $user->vendor;
 		}
-		$vendor->load(['products','products.prices'=>function ($query) use ($vendor) {
-			$query->where('vendor_id', $vendor->id);
-		},'products.images' => function ($query) {
-			$query->orderBy('website_id', 'asc')->orderBy('type_id', 'asc');
-		}]);
-		return view('prices.index', compact('vendor'));
+		$products = $vendor->products;
+		$products->loadMissing([
+			'brand',
+			'prices' => function ($query) use ($vendor) {
+				$query->where('vendor_id', $vendor->id);
+			},
+			'images' => function ($query) {
+				$query->orderBy('website_id', 'asc')->orderBy('type_id', 'asc');
+			}]);
+		return view('prices.index', compact('vendor','products'));
 	}
 
 	/**

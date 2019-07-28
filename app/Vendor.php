@@ -20,6 +20,6 @@ class Vendor extends Model
 
 	public function products()
 	{
-		return $this->belongsToMany(Product::class, 'prices', 'vendor_id', 'product_id');
+		return $this->belongsToMany(Product::class, 'prices', 'vendor_id', 'product_id')->whereNull('prices.deleted_at');
 	}
 }
