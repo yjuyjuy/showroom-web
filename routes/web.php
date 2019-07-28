@@ -23,7 +23,7 @@ Route::resource('users', 'UsersController');
 
 Route::resource('products', 'ProductsController')->middleware(['auth','admin'])->except(['index','show']);
 Route::resource('products', 'ProductsController')->only(['index','show']);
-
+Route::get('/farfetch/products','FarfetchController@index')->middleware(['auth','admin']);
 Route::middleware(['auth','vendor'])->group(function () {
 	Route::resource('prices', 'PricesController')->except(['create','store','index','show']);
 	Route::get('/vendors/prices', 'PricesController@index')->name('prices.index');
