@@ -37,10 +37,6 @@
      aria-describedby="my-dialog-content">
 	  <div class="mdc-dialog__container">
 	    <div class="mdc-dialog__surface">
-	      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-	      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-	     -->display options<!--
-	   --></h2>
 	      <div class="mdc-dialog__content" id="my-dialog-content">
 					<form target="_self" id="display-option-form">
 						<div id="list-group" class="mdc-list-group">
@@ -48,7 +44,6 @@
 							@include('products.index.filterList')
 						</div>
 					</form>
-
 	      </div>
 
 	      <footer class="mdc-dialog__actions">
