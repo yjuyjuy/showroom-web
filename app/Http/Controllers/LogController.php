@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Log;
-class LogsController extends Controller
+class LogController extends Controller
 {
 	public function index(){
 		$logs = \App\Log::orderBy('created_at','desc')->get()->load(['product' => function($query) {

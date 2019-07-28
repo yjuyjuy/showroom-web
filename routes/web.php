@@ -19,26 +19,26 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('users', 'UsersController');
+Route::resource('users', 'UserController');
 
-Route::resource('products', 'ProductsController')->middleware(['auth','admin'])->except(['index','show']);
-Route::resource('products', 'ProductsController')->only(['index','show']);
+Route::resource('products', 'ProductController')->middleware(['auth','admin'])->except(['index','show']);
+Route::resource('products', 'ProductController')->only(['index','show']);
 Route::get('/farfetch/products','FarfetchController@index')->middleware(['auth','admin']);
 Route::middleware(['auth','vendor'])->group(function () {
-	Route::resource('prices', 'PricesController')->except(['create','store','index','show']);
-	Route::get('/vendors/prices', 'PricesController@index')->name('prices.index');
-	Route::get('/products/{product}/prices/create', 'PricesController@create')->name('prices.create');
-	Route::post('/products/{product}/prices', 'PricesController@store')->name('prices.store');
+	Route::resource('prices', 'PriceController')->except(['create','store','index','show']);
+	Route::get('/vendors/prices', 'PriceController@index')->name('prices.index');
+	Route::get('/products/{product}/prices/create', 'PriceController@create')->name('prices.create');
+	Route::post('/products/{product}/prices', 'PriceController@store')->name('prices.store');
 });
 
 Route::middleware(['auth','admin'])->group(function () {
-	Route::get('/products/{product}/images', 'ImagesController@edit')->name('images.edit');
-	Route::patch('/images/swap', 'ImagesController@swap')->name('images.swap');
-	Route::patch('/images/{image}/move', 'ImagesController@move')->name('images.move');
-	Route::resource('images', 'ImagesController')->only(['store','update','destroy']);
+	Route::get('/products/{product}/images', 'ImageController@edit')->name('images.edit');
+	Route::patch('/images/swap', 'ImageController@swap')->name('images.swap');
+	Route::patch('/images/{image}/move', 'ImageController@move')->name('images.move');
+	Route::resource('images', 'ImageController')->only(['store','update','destroy']);
 });
-Route::get('/logs','LogsController@index')->middleware(['auth','admin'])->name('logs');
-Route::delete('/logs/{log}','LogsController@destroy')->middleware(['auth','admin'])->name('logs.destroy');
+Route::get('/logs','LogController@index')->middleware(['auth','admin'])->name('logs');
+Route::delete('/logs/{log}','LogController@destroy')->middleware(['auth','admin'])->name('logs.destroy');
 Route::get('/language', function () {
 	return App::getLocale();
 });

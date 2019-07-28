@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
-class ProductsController extends Controller
+class ProductController extends Controller
 {
 	/**
 	 * Display a listing of the resource.

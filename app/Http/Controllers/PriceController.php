@@ -7,7 +7,7 @@ use App\Vendor;
 use App\Product;
 use Illuminate\Http\Request;
 
-class PricesController extends Controller
+class PriceController extends Controller
 {
 	/**
 	 * Display a listing of the resource.

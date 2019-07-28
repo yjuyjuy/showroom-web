@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
-class ImagesController extends Controller
+class ImageController extends Controller
 {
 	public function store()
 	{
