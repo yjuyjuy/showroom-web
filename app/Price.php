@@ -9,6 +9,7 @@ class Price extends Model
 {
 	use SoftDeletes;
 
+  protected $touches = ['product'];
 	protected $guarded = [];
 	/**
 	 * The attributes that should be cast to native types.
