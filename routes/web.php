@@ -19,8 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('users', 'UserController');
-
 Route::resource('products', 'ProductController')->middleware(['auth','admin'])->except(['index','show']);
 Route::resource('products', 'ProductController')->only(['index','show']);
 Route::get('/farfetch/products','FarfetchController@index')->middleware(['auth','admin']);
