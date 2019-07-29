@@ -86,13 +86,13 @@ class FarfetchController extends Controller
 
 			case 'category-asc':
 				$products = $products->sortBy(function ($item) {
-					return $item->categories->max();
+					return $item->category_id;
 				});
 				break;
 
 			case 'category-desc':
 				$products = $products->sortByDesc(function ($item) {
-					return $item->categories->max();
+					return $item->category_id;
 				});
 				break;
 
