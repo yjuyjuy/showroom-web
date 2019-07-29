@@ -74,6 +74,10 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">ballot</i>
 						<span class="mdc-list-item__text">{{ __('Change log') }}</span>
 					</a>
+					<a class="mdc-list-item" href="{{ route('farfetch.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
+						<span class="mdc-list-item__text">{{ __('Farfetch') }}</span>
+					</a>
 					@endif
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
