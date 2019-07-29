@@ -16,7 +16,7 @@ class FarfetchController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$products = Cache::remember(url()->full(), 60, function () use ($request) {
+		$products = Cache::rememberForever(url()->full(), function () use ($request) {
 			$products = $this->filter(FarfetchProduct::with(['designer','categories']));
 			$products = $this->sort($products);
 			$products->load(['images']);
@@ -46,20 +46,17 @@ class FarfetchController extends Controller
 	{
 		$request = request();
 		$filters = $this->validateFilters();
-		foreach ($filters as $field => $values) {
-			if($field != 'category'){
-				$query->whereIn("{$field}_id", $values);
-			}
+		if($filters['designer'] ?? false){
+				$query->whereIn("designer_id", $filters['designer']);
+		}
+		if($filters['category'] ?? false){
+			$query->where(function ($query) use ($filters){
+				foreach($filters['category'] as $category_id){
+          $query->orWhereJsonContains('category_ids', $category_id);
+				}
+      });
 		}
 		$products = $query->get();
-		if(array_key_exists('category', $filters)){
-			$categories = $filters['category'];
-			if(!empty($categories)){
-				$products = $products->filter(function($item) use($categories) {
-					return $item->categories->pluck('id')->intersect($categories)->count() > 0;
-				});
-			}
-		}
 		return $products;
 	}
 
