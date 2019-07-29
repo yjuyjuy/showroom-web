@@ -21,7 +21,7 @@ class ProductController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$products = Cache::remember(url()->full(), 60, function () use ($request) {
+		$products = Cache::remember(url()->full(), 10, function () use ($request) {
 			$products = $this->filter(Product::query());
 			$products = $this->sort($products);
 			$products->load(['images' => function ($query) {
@@ -174,7 +174,7 @@ class ProductController extends Controller
 					return $item->images->isNotEmpty();
 				});
 			}
-			if ($vendor = $request->input('vendor')) {
+			if ($vendors = $request->input('vendor')) {
 				$products = $products->filter(function ($item) use ($vendors) {
 					return $item->prices->whereIn('vendor_id', $vendors)->first();
 				});
