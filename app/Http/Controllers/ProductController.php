@@ -211,8 +211,8 @@ class ProductController extends Controller
 		$products = $products->shuffle();
 		switch ($sort) {
 			case 'default':
-				$products = $products->sortByDesc(function ($item) {
-					return $item->updated_at;
+				$products = $products->sortBy(function ($item) {
+					return $item->category_id.(999-$item->season_id).$item->id;
 				});
 				break;
 
