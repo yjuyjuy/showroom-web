@@ -22,44 +22,11 @@ class ProductController extends Controller
 	public function index(Request $request)
 	{
 		$products = Cache::remember(url()->full(), 60, function () use ($request) {
-			$products = $this->filter(Product::query())->get();
+			$products = $this->filter(Product::query());
 			$products = $this->sort($products);
 			$products->load(['images' => function ($query) {
 				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
 			},'brand','prices']);
-			if ($request->input('show_available_only')) {
-				$products = $products->filter(function ($item) {
-					return $item->prices->isNotEmpty();
-				});
-			}
-			if (($user = auth()->user()) && ($user->isSuperAdmin())) {
-				if ($request->input('show_empty_only')) {
-					$products = $products->filter(function ($item) {
-						return $item->images->isEmpty();
-					});
-				} elseif ($request->input('show_not_empty_only')) {
-					$products = $products->filter(function ($item) {
-						return $item->images->isNotEmpty();
-					});
-				}
-			} else {
-				$products = $products->filter(function ($item) {
-					return $item->images->isNotEmpty();
-				});
-			}
-
-			if (($user = auth()->user()) && ($vendor = $user->vendor)) {
-				if ($request->input('show_my_stock_only')) {
-					$products = $products->filter(function ($item) use ($vendor) {
-						return $item->prices->firstWhere('vendor_id', $vendor->id);
-					});
-				}
-				if ($user->isSuperAdmin() && ($vendors = $request->input('vendor'))) {
-					$products = $products->filter(function ($item) use ($vendors) {
-						return $item->prices->whereIn('vendor_id', $vendors)->first();
-					});
-				}
-			}
 			return $products;
 		});
 		if ($request->input('sort') === 'random') {
@@ -184,16 +151,54 @@ class ProductController extends Controller
 
 	public function filter($query)
 	{
+		$request = request();
 		$filters = $this->validateFilters();
 		foreach ($filters as $field => $values) {
 			$query->whereIn("{$field}_id", $values);
 		}
-		return $query;
+		$products = $query->get();
+		if ($request->input('show_available_only')) {
+			$products = $products->filter(function ($item) {
+				return $item->prices->isNotEmpty();
+			});
+		}
+
+		# admin filters
+		if (($user = auth()->user()) && ($user->isSuperAdmin())) {
+			if ($request->input('show_empty_only')) {
+				$products = $products->filter(function ($item) {
+					return $item->images->isEmpty();
+				});
+			} elseif ($request->input('show_not_empty_only')) {
+				$products = $products->filter(function ($item) {
+					return $item->images->isNotEmpty();
+				});
+			}
+			if ($vendor = $request->input('vendor')) {
+				$products = $products->filter(function ($item) use ($vendors) {
+					return $item->prices->whereIn('vendor_id', $vendors)->first();
+				});
+			}
+		} else {
+			$products = $products->filter(function ($item) {
+				return $item->images->isNotEmpty();
+			});
+		}
+
+		# vendor filters
+		if ($user && ($vendor = $user->vendor) && $request->input('show_my_stock_only')) {
+			$products = $products->filter(function ($item) use ($vendor) {
+				return $item->prices->firstWhere('vendor_id', $vendor->id);
+			});
+		}
+		return $products;
 	}
+
 	public function sortOptions()
 	{
 		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
 	}
+
 	public function sort($products)
 	{
 		if (request()->input('sort')) {
