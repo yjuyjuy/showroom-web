@@ -17,14 +17,11 @@ class FarfetchController extends Controller
 	public function index(Request $request)
 	{
 		$products = Cache::rememberForever(url()->full(), function () use ($request) {
-			$products = $this->filter(FarfetchProduct::with(['designer','categories']));
-			$products = $this->sort($products);
+			$products = $this->filter(FarfetchProduct::with(['designer','categories']))->get();
+			$this->sort($products);
 			$products->load(['images']);
 			return $products;
 		});
-		if ($request->input('sort') === 'random') {
-			$products = $products->shuffle();
-		}
 		$sortOptions = $this->sortOptions();
 		$filters = [
 			"category" => \App\FarfetchCategory::all(),
@@ -56,8 +53,7 @@ class FarfetchController extends Controller
 				}
       });
 		}
-		$products = $query->get();
-		return $products;
+		return $query;
 	}
 
 	public function sortOptions()
@@ -68,7 +64,7 @@ class FarfetchController extends Controller
 		];
 	}
 
-	public function sort($products)
+	public function sort(&$products)
 	{
 		if (request()->input('sort')) {
 			$sort = request()->validate([
