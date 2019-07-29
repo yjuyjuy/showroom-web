@@ -21,8 +21,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('products', 'ProductController')->middleware(['auth','admin'])->except(['index','show']);
 Route::resource('products', 'ProductController')->only(['index','show']);
-Route::get('/farfetch/products','FarfetchController@index')->middleware(['auth','admin'])->name('farfetch.index');
-Route::get('/farfetch/products/{product}','FarfetchController@show')->middleware(['auth','admin'])->name('farfetch.show');
+Route::middleware(['auth','admin'])->group(function() {
+	Route::get('/farfetch/men/off-white','FarfetchController@index')->middleware(['auth','admin'])->name('farfetch.index');
+	Route::get('/farfetch/men/off-white/{product}','FarfetchController@show')->middleware(['auth','admin'])->name('farfetch.show');
+});
 
 Route::middleware(['auth','vendor'])->group(function () {
 	Route::resource('prices', 'PriceController')->except(['create','store','index','show']);

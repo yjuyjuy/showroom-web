@@ -42,6 +42,10 @@ class FarfetchProduct extends Model
 	{
 		return $this->hasMany(FarfetchImage::class, 'product_id');
 	}
+	public function image()
+	{
+		return $this->hasOne(FarfetchImage::class,'id','image_id');
+	}
 	public function designer()
 	{
 		return $this->belongsTo(FarfetchDesigner::class);
@@ -49,5 +53,9 @@ class FarfetchProduct extends Model
 	public function categories()
 	{
 		return $this->belongsToMany(FarfetchCategory::class,'category_product','product_id','category_id');
+	}
+	public function category()
+	{
+		return $this->hasOne(FarfetchCategory::class,'id','category_id');
 	}
 }

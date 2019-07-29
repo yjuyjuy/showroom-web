@@ -21,12 +21,11 @@ class ProductController extends Controller
 	 */
 	public function index(Request $request)
 	{
+		Cache::forget(url()->full());
 		$products = Cache::remember(url()->full(), 10, function () use ($request) {
 			$products = $this->filter(Product::query());
 			$products = $this->sort($products);
-			$products->load(['images' => function ($query) {
-				$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
-			},'brand','prices']);
+			$products->load(['image','brand','prices']);
 			return $products;
 		});
 		if ($request->input('sort') === 'random') {

@@ -14,18 +14,20 @@ class FarfetchController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(Request $request)
+	public function index(Request $request, $gender='men', $designer='off-white')
 	{
-		$products = Cache::rememberForever(url()->full(), function () use ($request) {
-			$products = $this->filter(FarfetchProduct::with(['designer','categories']))->get();
+		// Cache::forget(url()->full());
+		$products = Cache::rememberForever(url()->full(), function () use ($request, $gender, $designer) {
+			$query = FarfetchProduct::query();
+			$products = $this->filter($query, $gender, $designer)->with(['category'])->get();
 			$this->sort($products);
-			$products->load(['images']);
+			$products->loadMissing(['designer','image']);
 			return $products;
 		});
 		$sortOptions = $this->sortOptions();
 		$filters = [
-			"category" => \App\FarfetchCategory::all(),
-			"designer" => \App\FarfetchDesigner::all()
+			"category" => \App\FarfetchCategory::where('cat', 1)->where('gender',$gender)->get(),
+			"designer" => \App\FarfetchDesigner::all(),
 		];
 		$request->flash();
 		return view('farfetch.index', compact('products', 'sortOptions', 'filters'));
@@ -39,19 +41,16 @@ class FarfetchController extends Controller
 		]);
 	}
 
-	public function filter($query)
+	public function filter($query, $gender, $designer)
 	{
-		$request = request();
+		$designer_id = \App\FarfetchDesigner::where('urlToken', $designer)->first()->id;
+		$query->where('gender',$gender)->where('designer_id', $designer_id);
 		$filters = $this->validateFilters();
-		if($filters['designer'] ?? false){
-				$query->whereIn("designer_id", $filters['designer']);
+		if(empty($filters['category'])){
+			$filters['category'] = \App\FarfetchCategory::where('cat',1)->where('gender','men')->get('id')->toArray();
 		}
-		if($filters['category'] ?? false){
-			$query->where(function ($query) use ($filters){
-				foreach($filters['category'] as $category_id){
-          $query->orWhereJsonContains('category_ids', $category_id);
-				}
-      });
+		foreach($filters as $key => $values){
+			$query->whereIn("{$key}_id",$values);
 		}
 		return $query;
 	}
