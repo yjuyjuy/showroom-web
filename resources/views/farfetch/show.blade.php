@@ -5,7 +5,7 @@
 @section('content')
 <div class="images-content-container">
 	<div class="images-container">
-		@include('products.show.images')
+		@include('farfetch.show.images')
 	</div>
 
 	<div class="content-container d-flex flex-column">
