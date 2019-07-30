@@ -44,7 +44,7 @@ class FarfetchProduct extends Model
 	}
 	public function image()
 	{
-		return $this->hasOne(FarfetchImage::class,'id','image_id');
+		return $this->hasOne(FarfetchImage::class,'product_id');
 	}
 	public function designer()
 	{
