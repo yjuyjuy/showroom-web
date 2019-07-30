@@ -11,7 +11,7 @@
 				</div>
 				<div class="mdc-image-list__supporting">
 					<span class="mdc-image-list__label brand">{{ $product->brand->name }}</span>
-					<span class="mdc-image-list__label">{{ $product->name_cn }}</span>
+					<span class="mdc-image-list__label product-name">{{ $product->name_cn }}</span>
 					@if($product->price)
 					<span class="mdc-image-list__label">
 						{{ "\u{00a5}".$product->price }}

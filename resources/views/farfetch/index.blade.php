@@ -13,7 +13,7 @@
 				</div>
 				<div class="mdc-image-list__supporting">
 					<span class="mdc-image-list__label brand">{{ $product->designer->name }}</span>
-					<span class="mdc-image-list__label">{{ $product->shortDescription }}</span>
+					<span class="mdc-image-list__label product-name">{{ $product->shortDescription }}</span>
 				</div>
 			</a>
 		</li>

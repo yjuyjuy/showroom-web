@@ -386,6 +386,9 @@ img{
 					margin-top: -1.75rem; // line-height set on .mdc-image-list__label
 					background: rgba(0,0,0,.6);
 				}
+				.mdc-image-list__label.product-name::first-letter {
+					text-transform: capitalize;
+				}
 			}
 		}
 	}
