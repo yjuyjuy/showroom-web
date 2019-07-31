@@ -19,6 +19,7 @@
 	</div>
 	@can('update',$product)
 	<div class="">
+		<span class="mr-2">{{ $product->id }}</span>
 		<a href="{{ route('products.edit',['product' => $product ]) }}" onclick="event.preventDefault(); window.location.replace(this.href);">{{ __('edit') }}</a>
 	</div>
 	@endcan
