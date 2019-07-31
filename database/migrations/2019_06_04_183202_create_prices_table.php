@@ -18,6 +18,7 @@ class CreatePricesTable extends Migration
 			$table->unsignedBigInteger('vendor_id');
 			$table->unsignedBigInteger('product_id');
 			$table->json('data');
+			$table->text('url')->nullable();
 			$table->softDeletes();
 			$table->timestamps();
 
