@@ -62,7 +62,7 @@ class ProductController extends Controller
 	public function store(Request $request)
 	{
 		$product = new Product($this->validateProduct());
-		$lastProduct = Product::where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
+		$lastProduct = Product::withTrashed()->where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
 		if ($lastProduct) {
 			$product->id = $lastProduct->id + 1;
 		} else {
