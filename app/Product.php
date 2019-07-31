@@ -24,9 +24,19 @@ class Product extends Model
 		return $this->belongsTo(Category::class);
 	}
 
+	public function setCategoryAttribute($value)
+	{
+		$this->category_id = $value;
+	}
+
 	public function season()
 	{
 		return $this->belongsTo(Season::class);
+	}
+
+	public function setSeasonAttribute($value)
+	{
+		$this->season_id = $value;
 	}
 
 	public function color()
@@ -34,11 +44,20 @@ class Product extends Model
 		return $this->belongsTo(Color::class);
 	}
 
+	public function setColorAttribute($value)
+	{
+		$this->color_id = $value;
+	}
+
 	public function brand()
 	{
 		return $this->belongsTo(Brand::class);
 	}
 
+	public function setBrandAttribute($value)
+	{
+		$this->brand_id = $value;
+	}
 
 	public function vendors()
 	{
