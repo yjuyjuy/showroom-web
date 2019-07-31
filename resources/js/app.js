@@ -99,6 +99,16 @@ const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(e
 	select.menu_.quickOpen = true;
 	return select;
 });
+[].map.call(document.querySelectorAll('.mdc-menu--with-button'),function(menuElement){
+	const menu = new MDCMenu(menuElement);
+	window.menu = menu;
+	menu.setAnchorCorner(3);
+	const button = menuElement.parentElement.querySelector('.open-menu-button');
+	button.onclick = function(event) {
+		event.preventDefault();
+		menu.open = !menu.open;
+	}
+});
 let el = document.querySelector('.mdc-snackbar');
 if(el){
 	const snackbar = new MDCSnackbar(el);
@@ -167,17 +177,5 @@ if (dialogElement) {
 	document.getElementById('display-options-fab').onclick = function(event) {
 		event.preventDefault();
 		dialog.open();
-	}
-}
-
-const menuElement = document.querySelector('.mdc-menu--with-button');
-if(menuElement){
-	const menu = new MDCMenu(menuElement);
-	window.menu = menu;
-	menu.setAnchorCorner(3);
-	const button = document.querySelector('.open-menu-button');
-	button.onclick = function(event) {
-		event.preventDefault();
-		menu.open = !menu.open;
 	}
 }
