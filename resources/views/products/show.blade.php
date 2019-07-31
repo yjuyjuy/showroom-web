@@ -11,6 +11,7 @@
 	<div class="content-container d-flex flex-column">
 		@include('products.show.properties')
 		@include('products.show.customer')
+		@include('products.show.links')
 		@auth
 			@if(Auth::user()->isSuperAdmin())
 				@include('products.show.admin')
