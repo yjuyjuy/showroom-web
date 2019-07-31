@@ -85,6 +85,9 @@ img{
 .mdc-theme--primary{
 	color: $mdc-theme-primary;
 }
+a.mdc-list-item__text:hover{
+	text-decoration: none;
+}
 // general layout
 .mdc-top-app-bar__row,
 .main-content {
