@@ -61,13 +61,14 @@ class ProductController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		// TODO: generate unique product id for new product
 		$product = new Product($this->validateProduct());
-		$lastProduct = Product::withTrashed()->where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
-		if ($lastProduct) {
-			$product->id = $lastProduct->id + 1;
-		} else {
-			$product->id = $product->category_id.$product->season_id.'001';
-		}
+		// $lastProduct = Product::withTrashed()->where('category_id', $product->category_id)->where('season_id', $product->season_id)->orderByDesc('id')->first();
+		// if ($lastProduct) {
+		// 	$product->id = $lastProduct->id + 1;
+		// } else {
+		// 	$product->id = $product->category_id.$product->season_id.'001';
+		// }
 		$product->save();
 		return redirect(route('images.edit', ['product' => $product]));
 	}
