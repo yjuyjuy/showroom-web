@@ -382,12 +382,12 @@ a.mdc-list-item__text:hover{
 				align-items: stretch;
 
 				.mdc-image-list__label {
+          background: rgba(0,0,0,.6);
 					padding-left: 2px;
 				}
 
 				.mdc-image-list__label.brand {
 					margin-top: -1.75rem; // line-height set on .mdc-image-list__label
-					background: rgba(0,0,0,.6);
 				}
 				.mdc-image-list__label.product-name::first-letter {
 					text-transform: capitalize;
