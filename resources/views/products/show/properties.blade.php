@@ -5,9 +5,9 @@
 	</div>
 	<div>
 		<a id="product-season" href="{{ route('products.index',['season' => [$product->season->id]]) }}">{{ __($product->season->name) }}</a>
-		<span id="product-name">
+		<a id="product-name" href="{{ route('products.show',['product' => $product]) }}" onclick="event.preventDefault(); window.location.replace(this.href);">
 			{{ $product->name_cn }}
-		</span>
+		</a>
 		<span id="product-color">
 			{{ __($product->color->name) }}
 		</span>
