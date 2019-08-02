@@ -11,20 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-	return redirect(route('products.index'));
-});
+
 
 Auth::routes();
 
+Route::redirect('/', '/products');
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::resource('products', 'ProductController')->middleware(['auth','admin'])->except(['index','show']);
 Route::resource('products', 'ProductController')->only(['index','show']);
-Route::middleware(['auth','admin'])->group(function() {
-	Route::get('/farfetch/men/off-white','FarfetchController@index')->middleware(['auth','admin'])->name('farfetch.index');
-	Route::get('/farfetch/men/off-white/{product}','FarfetchController@show')->middleware(['auth','admin'])->name('farfetch.show');
-});
 
 Route::middleware(['auth','vendor'])->group(function () {
 	Route::resource('prices', 'PriceController')->except(['create','store','index','show']);
@@ -38,9 +32,8 @@ Route::middleware(['auth','admin'])->group(function () {
 	Route::patch('/images/swap', 'ImageController@swap')->name('images.swap');
 	Route::patch('/images/{image}/move', 'ImageController@move')->name('images.move');
 	Route::resource('images', 'ImageController')->only(['store','update','destroy']);
-});
-Route::get('/logs','LogController@index')->middleware(['auth','admin'])->name('logs');
-Route::delete('/logs/{log}','LogController@destroy')->middleware(['auth','admin'])->name('logs.destroy');
-Route::get('/language', function () {
-	return App::getLocale();
+	Route::get('/farfetch/men/off-white','FarfetchController@index')->name('farfetch.index');
+	Route::get('/farfetch/men/off-white/{product}','FarfetchController@show')->name('farfetch.show');
+	Route::get('/logs','LogController@index')->name('logs');
+	Route::delete('/logs/{log}','LogController@destroy')->name('logs.destroy');
 });
