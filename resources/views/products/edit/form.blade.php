@@ -122,6 +122,17 @@
 <p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
 @enderror
 
+<div class="mdc-text-field">
+	<input type="text" class="mdc-text-field__input" name="designerStyleId" autocomplete="off" value="{{ old('designerStyleId') ?? $product->designerStyleId ?? '' }}">
+	<label class="mdc-floating-label" for="my-text-field">{{ __('designerStyleId') }}</label>
+	<div class="mdc-line-ripple"></div>
+</div>
+@error('designerStyleId')
+<div class="mdc-text-field-helper-line">
+	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+</div>
+@enderror
+
 <label class="mdc-text-field mdc-text-field--textarea optional-form-field">
 	<textarea class="mdc-text-field__input" name="comment" rows="2">{{ old('comment') ?? $product->comment ?? '' }}</textarea>
 	<div class="mdc-notched-outline">
