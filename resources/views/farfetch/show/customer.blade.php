@@ -4,5 +4,7 @@
 	@empty
 	<span class="not-available">{{ __('not available') }}</span>
 	@endforelse
-	<a href="{{ $product->url }}" target="_blank">{{ __('link to farfetch') }}</a>
+</div>
+<div>
+	<a href="{{ $product->url }}" target="_blank" class="mdc-button">{{ __('link') }}</a>
 </div>
