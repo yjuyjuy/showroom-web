@@ -122,7 +122,7 @@
 <p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
 @enderror
 
-<div class="mdc-text-field">
+<div class="mdc-text-field optional-form-field">
 	<input type="text" class="mdc-text-field__input" name="designerStyleId" autocomplete="off" value="{{ old('designerStyleId') ?? $product->designerStyleId ?? '' }}">
 	<label class="mdc-floating-label" for="my-text-field">{{ __('designerStyleId') }}</label>
 	<div class="mdc-line-ripple"></div>
