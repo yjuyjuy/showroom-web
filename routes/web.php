@@ -36,4 +36,5 @@ Route::middleware(['auth','admin'])->group(function () {
 	Route::get('/farfetch/men/off-white/{product}','FarfetchController@show')->name('farfetch.show');
 	Route::get('/logs','LogController@index')->name('logs');
 	Route::delete('/logs/{log}','LogController@destroy')->name('logs.destroy');
+	Route::get('/admin','AdminController@index');
 });
