@@ -27,8 +27,8 @@ class ImageController extends Controller
 				if (count($type_ids) <= 0) {
 					break;
 				}
+				\Intervention\Image\Facades\Image::make($uploadedFile->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 				$path = $uploadedFile->store('images/'.request('product_id'), 'public');
-				\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 				\App\Image::create([
 					'path' => $path,
 					'source' => $uploadedFile->getClientOriginalName(),
@@ -38,8 +38,8 @@ class ImageController extends Controller
 				]);
 			}
 		} else {
+			\Intervention\Image\Facades\Image::make(request('image')->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 			$path = request('image')->store('images/'.request('product_id'), 'public');
-			\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 			\App\Image::create([
 				'path' => $path,
 				'source' => request('image')->getClientOriginalName(),
@@ -70,8 +70,8 @@ class ImageController extends Controller
 		if (Storage::exists('public/'.$image->path)) {
 			Storage::delete('public/'.$image->path);
 		}
+		\Intervention\Image\Facades\Image::make(request('image')->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 		$path = request('image')->store("images/{$image->product_id}", 'public');
-		\Intervention\Image\Facades\Image::make(public_path("storage/{$path}"))->fit(1000, 1413)->save();
 		\App\Image::create([
 			'path' => $path,
 			'source' => request('image')->getClientOriginalName(),
