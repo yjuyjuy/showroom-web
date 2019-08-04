@@ -13,9 +13,13 @@
 		@include('products.show.customer')
 		@include('products.show.links')
 		@auth
-			@if(Auth::user()->isSuperAdmin())
+			<?php $user = Auth::user(); ?>
+			@if($user->isReseller())
+				@include('products.show.reseller')
+			@endif
+			@if($user->isSuperAdmin())
 				@include('products.show.admin')
-			@elseif($vendor = Auth::user()->vendor)
+			@elseif($user->isReseller())
 				@include('products.show.vendor')
 			@endif
 		@endauth

@@ -60,6 +60,10 @@ class Product extends Model
 	{
 		return $this->hasMany(RetailPrice::class);
 	}
+	public function price_data()
+	{
+		return $this->hasMany(VendorPrice::class);
+	}
 	// Mutators
 	public function setCategoryAttribute($value)
 	{
@@ -90,26 +94,33 @@ class Product extends Model
 	}
 	public function getSizePrice($type = 'retail')
 	{
+		$sizes = [];
 		if($type == 'offer'){
-			$sizes = [];
 			foreach ($this->offers as $offer) {
 				foreach ($offer->prices as $size => $price) {
 					$sizes[$size][] = $price;
 				}
 			}
-			foreach ($sizes as $size => $prices) {
-				$sizes[$size] = min($prices);
+		} elseif($type == 'retail'){
+			foreach ($this->retails as $retail) {
+				foreach ($retail->prices as $size => $price) {
+					$sizes[$size][] = $price;
+				}
 			}
-			$sizes = Arr::sort($sizes, function ($value, $key) {
-				return array_search($key, ['XXS','XS','S','M','L','XL','XXL']);
-			});
-			return $sizes;
 		}
+		foreach ($sizes as $size => $prices) {
+			$sizes[$size] = min($prices);
+		}
+		$sizes = Arr::sort($sizes, function ($value, $key) {
+			return array_search($key, ['XXS','XS','S','M','L','XL','XXL']);
+		});
+		return $sizes;
+
 	}
 	public function getAllPrices()
 	{
 		$prices = collect();
-		foreach ($this->prices as $price) {
+		foreach ($this->price_data as $price) {
 			foreach ($price->data as $row) {
 				$prices->push([
 					'vendor' => $price->vendor->id,

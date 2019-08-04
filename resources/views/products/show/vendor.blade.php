@@ -1,14 +1,4 @@
 <div class="d-flex flex-column products-show__info--vendor">
-
-	@if($product->prices->isNotEmpty())
-	<div class="d-flex flex-column">
-		<span class="">{{ __('Order price') }}</span>
-		@foreach($product->getSizePrice('resell') as $size => $price)
-			<span class="">{{$size}} - &yen;{{$price}}</span>
-		@endforeach
-	</div>
-	@endif
-
 	@if($product->prices->firstWhere('vendor_id',$vendor->id))
 	<div class="price-grid">
 		<div class="price-grid__header">

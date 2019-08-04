@@ -1,4 +1,4 @@
-@if($prices_with_url = $product->prices->where('url')->isNotEmpty())
+@if($product->retails->where('link')->isNotEmpty())
 <div class="d-flex flex-column products-show__info--link">
 	<div class="w-100 d-block">
 		<div class="mdc-menu-surface--anchor d-inline-block">
@@ -7,9 +7,9 @@
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-			    @foreach($product->prices->where('url') as $price)
+			    @foreach($product->retails->where('link') as $retail)
 					<li class="mdc-list-item" role="menuitem">
-			      <a href="{{ $price->url }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ __($price->vendor->name) }}</a>
+			      <a href="{{ $retail->link['href'] }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ __($retail->retailer->name) }}</a>
 			    </li>
 					@endforeach
 			  </ul>

@@ -14,7 +14,7 @@ class Retailer extends Model
 		{
 			return $this->belongsToMany(Product::class, 'retail_prices', 'retailer_id', 'product_id')->whereNull('retail_prices.deleted_at');
 		}
-		public function vendors()
+		public function partners()
 		{
 			return $this->belongsToMany(Vendor::class, 'partners');
 		}
