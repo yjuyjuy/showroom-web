@@ -19,56 +19,31 @@ class Product extends Model
 	 */
 	protected $attributes = [];
 
+	// Relationships
 	public function category()
 	{
 		return $this->belongsTo(Category::class);
 	}
-
-	public function setCategoryAttribute($value)
-	{
-		$this->category_id = $value;
-	}
-
 	public function season()
 	{
 		return $this->belongsTo(Season::class);
 	}
-
-	public function setSeasonAttribute($value)
-	{
-		$this->season_id = $value;
-	}
-
 	public function color()
 	{
 		return $this->belongsTo(Color::class);
 	}
-
-	public function setColorAttribute($value)
-	{
-		$this->color_id = $value;
-	}
-
 	public function brand()
 	{
 		return $this->belongsTo(Brand::class);
 	}
-
-	public function setBrandAttribute($value)
-	{
-		$this->brand_id = $value;
-	}
-
 	public function vendors()
 	{
 		return $this->belongsToMany(Product::class, 'prices', 'product_id', 'vendor_id');
 	}
-
 	public function prices()
 	{
 		return $this->hasMany(Price::class);
 	}
-
 	public function images()
 	{
 		return $this->hasMany(Image::class);
@@ -77,44 +52,38 @@ class Product extends Model
 	{
 		return $this->hasOne(Image::class)->orderBy('website_id')->orderBy('type_id');
 	}
-
 	public function logs()
 	{
-		return $this->hasMany(\App\Log::class);
+		return $this->hasMany(Log::class);
 	}
-
-	public function getMinPrice($type = 'retail', $default = false)
+	// Mutators
+	public function setCategoryAttribute($value)
+	{
+		$this->category_id = $value;
+	}
+	public function setSeasonAttribute($value)
+	{
+		$this->season_id = $value;
+	}
+	public function setColorAttribute($value)
+	{
+		$this->color_id = $value;
+	}
+	public function setBrandAttribute($value)
+	{
+		$this->brand_id = $value;
+	}
+	// Helpers
+	public function getMinPrice($default = false)
 	{
 		return ($this->prices->isEmpty())? $default : (int)$this->prices->map(function ($item, $key) use ($type) {
-			return min(Arr::pluck($item->data, $type));
+			return min(Arr::pluck($item->prices, $type));
 		})->min();
 	}
-
 	public function getPriceAttribute($attribute)
 	{
 		return $this->getMinPrice();
 	}
-
-	public function getCostPriceAttribute($attribute)
-	{
-		return $this->getMinPrice('cost');
-	}
-
-	public function getResellPriceAttribute($attribute)
-	{
-		return $this->getMinPrice('resell');
-	}
-
-	public function displayPrice()
-	{
-		return ($this->price) ? "\u{00a5}".$this->price : 'not available';
-	}
-
-	public function getSizePriceAttribute()
-	{
-		return $this->getSizePrice('retail');
-	}
-
 	public function getSizePrice($type = 'retail')
 	{
 		$sizes = [];
@@ -131,8 +100,6 @@ class Product extends Model
 		});
 		return $sizes;
 	}
-
-
 	public function getAllPrices()
 	{
 		$prices = collect();
@@ -149,19 +116,8 @@ class Product extends Model
 		}
 		return $prices;
 	}
-
-
 	public function displayName()
 	{
-		return $this->brand->name.' '.$this->season->name.' '.$this->localeName;
-	}
-
-	public function getLocaleNameAttribute()
-	{
-		if (\App::isLocale('zh')) {
-			return $this->name_cn;
-		} else {
-			return $this->name;
-		}
+		return $this->brand->name.' '.$this->season->name.' '.$this->name_cn;
 	}
 }

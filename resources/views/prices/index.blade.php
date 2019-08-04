@@ -34,11 +34,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="content-container d-flex flex-column justify-content-center align-items-center text-right">
+		<div class="content-container d-flex flex-column justify-content-center align-items-center">
 			<div class="price-grid p-4">
 				<div class="price-grid__header d-flex flex-column">
 					<span>{{ $product->brand->full_name }}</span>
-					<a href="{{route('products.show',['product' => $product])}}" class="font-weight-bold">{{ $product->localeName }}</a>
+					<a href="{{route('products.show',['product' => $product])}}" class="font-weight-bold">{{ $product->name_cn }}</a>
 				</div>
 				<div class="price-grid__row">
 					<span class="price-grid__col">{{ __('size') }}</span>
