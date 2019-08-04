@@ -25,7 +25,7 @@ class ProductController extends Controller
 		$products = Cache::remember(url()->full(), 10, function () use ($request) {
 			$products = $this->filter(Product::query());
 			$products = $this->sort($products);
-			$products->load(['image','brand','prices']);
+			$products->load(['image','brand','retails']);
 			return $products;
 		});
 		if ($request->input('sort') === 'random') {
@@ -154,7 +154,7 @@ class ProductController extends Controller
 		$products = $query->get();
 		if ($request->input('show_available_only')) {
 			$products = $products->filter(function ($item) {
-				return $item->prices->isNotEmpty();
+				return $item->retails->isNotEmpty();
 			});
 		}
 
@@ -171,7 +171,7 @@ class ProductController extends Controller
 			}
 			if ($vendors = $request->input('vendor')) {
 				$products = $products->filter(function ($item) use ($vendors) {
-					return $item->prices->whereIn('vendor_id', $vendors)->first();
+					return $item->offer->whereIn('vendor_id', $vendors)->isNotEmpty();
 				});
 			}
 		} else {
@@ -183,7 +183,7 @@ class ProductController extends Controller
 		# vendor filters
 		if ($user && ($vendor = $user->vendor) && $request->input('show_my_stock_only')) {
 			$products = $products->filter(function ($item) use ($vendor) {
-				return $item->prices->firstWhere('vendor_id', $vendor->id);
+				return $item->offer->where('vendor_id', $vendor->id)->isNotEmpty();
 			});
 		}
 		return $products;

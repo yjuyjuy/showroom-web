@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Price;
+use App\OfferPrice;
 use App\Log;
 
 class PriceObserver
@@ -10,10 +10,10 @@ class PriceObserver
     /**
      * Handle the price "created" event.
      *
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return void
      */
-    public function created(Price $price)
+    public function created(OfferPrice $price)
     {
       	$log = new Log;
 				$log->product()->associate($price->product);
@@ -25,10 +25,10 @@ class PriceObserver
     /**
      * Handle the price "updated" event.
      *
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return void
      */
-    public function updated(Price $price)
+    public function updated(OfferPrice $price)
     {
       	$log = new Log;
 				$log->product()->associate($price->product);
@@ -40,10 +40,10 @@ class PriceObserver
     /**
      * Handle the price "deleted" event.
      *
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return void
      */
-    public function deleted(Price $price)
+    public function deleted(OfferPrice $price)
     {
       	$log = new Log;
 				$log->product()->associate($price->product);
@@ -55,10 +55,10 @@ class PriceObserver
     /**
      * Handle the price "restored" event.
      *
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return void
      */
-    public function restored(Price $price)
+    public function restored(OfferPrice $price)
     {
         //
     }
@@ -66,10 +66,10 @@ class PriceObserver
     /**
      * Handle the price "force deleted" event.
      *
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return void
      */
-    public function forceDeleted(Price $price)
+    public function forceDeleted(OfferPrice $price)
     {
         //
     }

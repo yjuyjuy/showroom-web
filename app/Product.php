@@ -40,9 +40,9 @@ class Product extends Model
 	{
 		return $this->belongsToMany(Product::class, 'prices', 'product_id', 'vendor_id');
 	}
-	public function prices()
+	public function offers()
 	{
-		return $this->hasMany(Price::class);
+		return $this->hasMany(OfferPrice::class);
 	}
 	public function images()
 	{
@@ -55,6 +55,10 @@ class Product extends Model
 	public function logs()
 	{
 		return $this->hasMany(Log::class);
+	}
+	public function retails()
+	{
+		return $this->hasMany(RetailPrice::class);
 	}
 	// Mutators
 	public function setCategoryAttribute($value)
@@ -76,8 +80,8 @@ class Product extends Model
 	// Helpers
 	public function getMinPrice($default = false)
 	{
-		return ($this->prices->isEmpty())? $default : (int)$this->prices->map(function ($item, $key) use ($type) {
-			return min(Arr::pluck($item->prices, $type));
+		return ($this->retails->isEmpty())? $default : (int)$this->retails->map(function ($retail){
+			return min($retail->prices);
 		})->min();
 	}
 	public function getPriceAttribute($attribute)
@@ -86,19 +90,21 @@ class Product extends Model
 	}
 	public function getSizePrice($type = 'retail')
 	{
-		$sizes = [];
-		foreach ($this->prices as $price) {
-			foreach ($price->data as $row) {
-				$sizes[$row['size']][] = $row[$type];
+		if($type == 'offer'){
+			$sizes = [];
+			foreach ($this->offers as $offer) {
+				foreach ($offer->prices as $size => $price) {
+					$sizes[$size][] = $price;
+				}
 			}
+			foreach ($sizes as $size => $prices) {
+				$sizes[$size] = min($prices);
+			}
+			$sizes = Arr::sort($sizes, function ($value, $key) {
+				return array_search($key, ['XXS','XS','S','M','L','XL','XXL']);
+			});
+			return $sizes;
 		}
-		foreach ($sizes as $size => $prices) {
-			$sizes[$size] = min($prices);
-		}
-		$sizes = Arr::sort($sizes, function ($value, $key) {
-			return array_search($key, ['XXS','XS','S','M','L','XL','XXL']);
-		});
-		return $sizes;
 	}
 	public function getAllPrices()
 	{

@@ -18,7 +18,6 @@ class User extends Authenticatable
 	protected $fillable = [
 		'email', 'password','username'
 	];
-
 	/**
 	 * The attributes that should be hidden for arrays.
 	 *
@@ -27,7 +26,6 @@ class User extends Authenticatable
 	protected $hidden = [
 		'password', 'remember_token',
 	];
-
 	/**
 	 * The attributes that should be cast to native types.
 	 *
@@ -36,21 +34,28 @@ class User extends Authenticatable
 	protected $casts = [
 		'email_verified_at' => 'datetime',
 	];
-
+	/**
+	 * The model's default values for attributes.
+	 *
+	 * @var array
+	 */
+	protected $attributes = [
+		'is_reseller' => false,
+	];
 	public function vendor()
 	{
 		return $this->belongsTo(Vendor::class);
 	}
-
+	public function vendors()
+	{
+		return $this->belongsToMany(Vendor::class, 'reseller_vendor');
+	}
+	public function isReseller()
+	{
+		return $this->is_reseller;
+	}
 	public function isSuperAdmin()
 	{
-		// return false;
 		return in_array($this->id, [1,27,]);
-	}
-
-
-	public function isVendor()
-	{
-		return $this->vendor;
 	}
 }

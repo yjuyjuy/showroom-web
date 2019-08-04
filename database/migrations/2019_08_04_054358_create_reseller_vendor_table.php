@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLogsTable extends Migration
+class CreateResellerVendorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('reseller_vendor', function (Blueprint $table) {
             $table->bigIncrements('id');
-						$table->string('action');
-						$table->unsignedBigInteger('product_id');
-						$table->unsignedBigInteger('price_id')->nullable();
-						$table->string('price_type')->nullable();
-						$table->softDeletes();
+						$table->unsignedBigInteger('user_id');
+						$table->unsignedBigInteger('vendor_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('reseller_vendor');
     }
 }

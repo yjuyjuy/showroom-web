@@ -5,11 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Price extends Model
+class OfferPrice extends Model
 {
 	use SoftDeletes;
 
-  protected $touches = ['product'];
+	// protected $touches = ['product'];
 	protected $guarded = [];
 	/**
 	 * The attributes that should be cast to native types.
@@ -17,7 +17,7 @@ class Price extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'data' => 'array',
+		'prices' => 'array',
 	];
 	public function vendor()
 	{
@@ -27,5 +27,9 @@ class Price extends Model
 	public function product()
 	{
 		return $this->belongsTo(Product::class);
+	}
+	public function logs()
+	{
+		 return $this->morphMany(Log::class, 'price');
 	}
 }

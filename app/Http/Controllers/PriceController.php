@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Price;
+use App\OfferPrice;
 use App\Vendor;
 use App\Product;
 use Illuminate\Http\Request;
@@ -77,10 +77,10 @@ class PriceController extends Controller
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  \App\Price  $price
+	 * @param  \App\OfferPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(Price $price)
+	public function show(OfferPrice $price)
 	{
 		//
 	}
@@ -88,10 +88,10 @@ class PriceController extends Controller
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  \App\Price  $price
+	 * @param  \App\OfferPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(Price $price)
+	public function edit(OfferPrice $price)
 	{
 		$product = $price->product;
 		return view('prices.edit', compact('price', 'product'));
@@ -101,10 +101,10 @@ class PriceController extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Price  $price
+	 * @param  \App\OfferPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, Price $price)
+	public function update(Request $request, OfferPrice $price)
 	{
 		$this->authorize('update', $price);
 		$data = json_decode($this->validateRequest()['data']);
@@ -120,10 +120,10 @@ class PriceController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  \App\Price  $price
+	 * @param  \App\OfferPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Price $price)
+	public function destroy(OfferPrice $price)
 	{
 		$this->authorize('delete', $price);
 		$price->delete();

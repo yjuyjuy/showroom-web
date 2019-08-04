@@ -25,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
 	{
 		\App\User::observe(\App\Observers\UserObserver::class);
 		\App\Product::observe(\App\Observers\ProductObserver::class);
-		\App\Price::observe(\App\Observers\PriceObserver::class);
+		\App\OfferPrice::observe(\App\Observers\PriceObserver::class);
 	}
 }

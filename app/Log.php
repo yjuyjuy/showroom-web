@@ -14,7 +14,7 @@ class Log extends Model
 	}
 	public function price()
 	{
-		return $this->belongsTo(Price::class);
+		return $this->morphTo();
 	}
 	public function toString()
 	{

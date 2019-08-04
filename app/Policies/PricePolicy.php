@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\User;
-use App\Price;
+use App\OfferPrice;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PricePolicy
@@ -25,10 +25,10 @@ class PricePolicy
      * Determine whether the user can view the price.
      *
      * @param  \App\User  $user
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return mixed
      */
-    public function view(User $user, Price $price)
+    public function view(User $user, OfferPrice $price)
     {
         //
     }
@@ -48,10 +48,10 @@ class PricePolicy
      * Determine whether the user can update the price.
      *
      * @param  \App\User  $user
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return mixed
      */
-    public function update(User $user, Price $price)
+    public function update(User $user, OfferPrice $price)
     {
 			return $user->isSuperAdmin() || ($user->id == $price->vendor->user_id);
     }
@@ -60,10 +60,10 @@ class PricePolicy
      * Determine whether the user can delete the price.
      *
      * @param  \App\User  $user
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return mixed
      */
-    public function delete(User $user, Price $price)
+    public function delete(User $user, OfferPrice $price)
     {
 			return $user->isSuperAdmin() || ($user->id == $price->vendor->user_id);
     }
@@ -72,10 +72,10 @@ class PricePolicy
      * Determine whether the user can restore the price.
      *
      * @param  \App\User  $user
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return mixed
      */
-    public function restore(User $user, Price $price)
+    public function restore(User $user, OfferPrice $price)
     {
         //
     }
@@ -84,10 +84,10 @@ class PricePolicy
      * Determine whether the user can permanently delete the price.
      *
      * @param  \App\User  $user
-     * @param  \App\Price  $price
+     * @param  \App\OfferPrice  $price
      * @return mixed
      */
-    public function forceDelete(User $user, Price $price)
+    public function forceDelete(User $user, OfferPrice $price)
     {
       return false;
     }
