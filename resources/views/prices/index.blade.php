@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Price sheet').' - '.$vendor->name.' - TheShowroom')
+@section('title',__('Price sheet').' - '.$vendor->name)
 
 @section('content')
 <div class="d-flex flex-column align-items-center">
@@ -43,7 +43,7 @@
 				<div class="price-grid__row">
 					<span class="price-grid__col">{{ __('size') }}</span>
 					<span class="price-grid__col">{{ __('cost') }}</span>
-					<span class="price-grid__col">{{ __('resell') }}</span>
+					<span class="price-grid__col">{{ __('offer') }}</span>
 					<span class="price-grid__col">{{ __('retail') }}</span>
 				</div>
 				@foreach($product->prices as $price)
@@ -51,7 +51,7 @@
 						<div class="price-grid__row">
 							<span class="price-grid__col">{{ $row['size'] }}</span>
 							<span class="price-grid__col">&yen;{{$row['cost']}}</span>
-							<span class="price-grid__col">&yen;{{$row['resell']}}</span>
+							<span class="price-grid__col">&yen;{{$row['offer']}}</span>
 							<span class="price-grid__col">&yen;{{$row['retail']}}</span>
 						</div>
 					@endforeach

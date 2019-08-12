@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" @dblclick="apply_computed" v-model="price.resell" :placeholder="computed_resell(index)">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" @dblclick="apply_computed" v-model="price.offer" :placeholder="computed_offer(index)">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
@@ -35,7 +35,7 @@
 			</button>
 		</div>
 	</div>
-	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.cost&&price.resell&&price.retail)))">
+	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.cost&&price.offer&&price.retail)))">
 </div>
 </template>
 
@@ -64,18 +64,18 @@ export default {
 		update: function(index) {
 			this.clear_empty();
 			for (let i in this.prices) {
-				if (!this.prices[i].size || !this.prices[i].cost || !this.prices[i].resell || !this.prices[i].retail) {
+				if (!this.prices[i].size || !this.prices[i].cost || !this.prices[i].offer || !this.prices[i].retail) {
 					continue;
 				}
 				this.prices[i].size = this.prices[i].size.toUpperCase();
 				let cost = this.prices[i].cost;
-				let resell = this.prices[i].resell;
+				let offer = this.prices[i].offer;
 				let retail = this.prices[i].retail;
-				if(/^[0-9]+%$/.test(resell)){
-					resell = this.prices[i].resell = Math.ceil((parseFloat(resell) / 100.0 + 1.0) * cost / 10.0) * 10;
+				if(/^[0-9]+%$/.test(offer)){
+					offer = this.prices[i].offer = Math.ceil((parseFloat(offer) / 100.0 + 1.0) * cost / 10.0) * 10;
 				}
 				if(/^[0-9]+%$/.test(retail)){
-					retail = this.prices[i].retail = Math.ceil((parseFloat(retail) / 100.0 + 1.0) * resell / 10.0) * 10;
+					retail = this.prices[i].retail = Math.ceil((parseFloat(retail) / 100.0 + 1.0) * offer / 10.0) * 10;
 				}
 				if (/^[0-9]+[-][0-9]+$/.test(this.prices[i].size)) {
 					let [start, end] = this.prices[i].size.split('-');
@@ -89,7 +89,7 @@ export default {
 						this.prices.push({
 							'size': j,
 							'cost': cost,
-							'resell': resell,
+							'offer': offer,
 							'retail': retail,
 						});
 					}
@@ -109,7 +109,7 @@ export default {
 							this.prices.push({
 								'size': sizes[j],
 								'cost': cost,
-								'resell': resell,
+								'offer': offer,
 								'retail': retail,
 							});
 						}
@@ -121,7 +121,7 @@ export default {
 						this.prices.push({
 							'size': size,
 							'cost': cost,
-							'resell': resell,
+							'offer': offer,
 							'retail': retail,
 						});
 					}
@@ -137,7 +137,7 @@ export default {
 		},
 		check_empty: function() {
 			for (let price of this.prices) {
-				if (!price.size && !price.cost && !price.resell && !price.retail) {
+				if (!price.size && !price.cost && !price.offer && !price.retail) {
 					return;
 				}
 			}
@@ -145,21 +145,21 @@ export default {
 		},
 		clear_empty: function() {
 			for (let index in this.prices) {
-				if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].resell && !this.prices[index].retail) {
+				if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].offer && !this.prices[index].retail) {
 					this.prices.splice(index, 1);
 				}
 			}
 		},
-		computed_resell: function(index) {
+		computed_offer: function(index) {
 			if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 0.11) * 10;
+				return Math.ceil(this.prices[index].cost * 1.15 / 10) * 10;
 			} else {
 				return '';
 			}
 		},
 		computed_retail: function(index) {
 			if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 1.1 * 0.11) * 10;
+				return Math.ceil(this.prices[index].cost * 1.15 * 1.1 / 10) * 10;
 			} else {
 				return '';
 			}
@@ -171,13 +171,13 @@ export default {
 			console.log('submit event fired');
 			evt.preventDefault();
 			for (let index in this.prices) {
-				if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].resell && !this.prices[index].retail) {
+				if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].offer && !this.prices[index].retail) {
 					this.prices.splice(index, 1);
-				} else if (this.prices[index].size && this.prices[index].cost && this.prices[index].resell && this.prices[index].retail) {
+				} else if (this.prices[index].size && this.prices[index].cost && this.prices[index].offer && this.prices[index].retail) {
 					continue;
 				} else if (this.prices[index].size && this.prices[index].cost) {
-					if (!this.prices[index].resell) {
-						this.prices[index].resell = computed_resell(index);
+					if (!this.prices[index].offer) {
+						this.prices[index].offer = computed_offer(index);
 					}
 					if (!this.prices[index].retail) {
 						this.prices[index].retail = computed_retail(index);

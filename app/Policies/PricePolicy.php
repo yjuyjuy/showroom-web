@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\User;
-use App\OfferPrice;
+use App\VendorPrice;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PricePolicy
@@ -25,10 +25,10 @@ class PricePolicy
      * Determine whether the user can view the price.
      *
      * @param  \App\User  $user
-     * @param  \App\OfferPrice  $price
+     * @param  \App\VendorPrice  $price
      * @return mixed
      */
-    public function view(User $user, OfferPrice $price)
+    public function view(User $user, VendorPrice $price)
     {
         //
     }
@@ -48,34 +48,34 @@ class PricePolicy
      * Determine whether the user can update the price.
      *
      * @param  \App\User  $user
-     * @param  \App\OfferPrice  $price
+     * @param  \App\VendorPrice  $price
      * @return mixed
      */
-    public function update(User $user, OfferPrice $price)
+    public function update(User $user, VendorPrice $price)
     {
-			return $user->isSuperAdmin() || ($user->id == $price->vendor->user_id);
+			return $user->isSuperAdmin() || in_array($user->id, $price->vendor->users->pluck('id'));
     }
 
     /**
      * Determine whether the user can delete the price.
      *
      * @param  \App\User  $user
-     * @param  \App\OfferPrice  $price
+     * @param  \App\VendorPrice  $price
      * @return mixed
      */
-    public function delete(User $user, OfferPrice $price)
+    public function delete(User $user, VendorPrice $price)
     {
-			return $user->isSuperAdmin() || ($user->id == $price->vendor->user_id);
+			return $user->isSuperAdmin() || in_array($user->id, $price->vendor->users->pluck('id'));
     }
 
     /**
      * Determine whether the user can restore the price.
      *
      * @param  \App\User  $user
-     * @param  \App\OfferPrice  $price
+     * @param  \App\VendorPrice  $price
      * @return mixed
      */
-    public function restore(User $user, OfferPrice $price)
+    public function restore(User $user, VendorPrice $price)
     {
         //
     }
@@ -84,11 +84,11 @@ class PricePolicy
      * Determine whether the user can permanently delete the price.
      *
      * @param  \App\User  $user
-     * @param  \App\OfferPrice  $price
+     * @param  \App\VendorPrice  $price
      * @return mixed
      */
-    public function forceDelete(User $user, OfferPrice $price)
+    public function forceDelete(User $user, VendorPrice $price)
     {
-      return false;
+      	//
     }
 }

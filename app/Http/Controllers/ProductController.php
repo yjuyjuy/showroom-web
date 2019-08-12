@@ -31,6 +31,17 @@ class ProductController extends Controller
 		if ($request->input('sort') === 'random') {
 			$products = $products->shuffle();
 		}
+		$user = auth()->user();
+		if ($user) {
+			$products->each(function ($product, $index) use ($user) {
+				$product->retails = $product->retails->whereIn('retailer_id', $user->following->pluck('id'));
+			});
+		} else {
+			$products->each(function ($product, $index) use ($user) {
+				$product->retails = $product->retails->where('retailer_id', 1);
+			});
+		}
+
 		$sortOptions = $this->sortOptions();
 		$filters = [
 			"category" => \App\Category::all(),
@@ -39,7 +50,7 @@ class ProductController extends Controller
 			"brand" => \App\Brand::all()
 			];
 		$request->flash();
-		return view('products.index', compact('products', 'sortOptions', 'filters'));
+		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
 	}
 
 	/**
@@ -75,10 +86,31 @@ class ProductController extends Controller
 	 */
 	public function show(Product $product)
 	{
-		$product->load(['images' => function ($query) {
-			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
-		}]);
-		return view('products.show', compact('product'));
+		$user = auth()->user();
+		$product->load([
+			'images', 'retails.retailer']);
+		if($user && $user->isSuperAdmin()){
+			$product->load(['retails','offers','retails.retailer','offers.vendor']);
+		} else {
+			if($user){
+				$product->load([
+					'retails' => function ($query) use ($user) {
+						$query->whereIn('retailer_id',$user->following->pluck('id'));
+					}, 'retails.retailer', ]);
+				if($user->is_reseller){
+					$product->load([
+						'offers' => function($query) use ($user) {
+							$query->whereIn('vendor_id', $user->vendors->pluck('id'));
+						}, 'offers.vendor', ]);
+				}
+			} else {
+				$product->load([
+					'retails' => function ($query) use ($user) {
+						$query->where('retailer_id', 1);
+					}, 'retails.retailer']);
+			}
+		}
+		return view('products.show', compact('product', 'user'));
 	}
 
 	/**

@@ -33,6 +33,7 @@ class User extends Authenticatable
 	 */
 	protected $casts = [
 		'email_verified_at' => 'datetime',
+		'is_reseller' => 'boolean',
 	];
 	/**
 	 * The model's default values for attributes.
@@ -49,6 +50,10 @@ class User extends Authenticatable
 	public function vendors()
 	{
 		return $this->belongsToMany(Vendor::class, 'reseller_vendor');
+	}
+	public function following()
+	{
+		return $this->belongsToMany(Retailer::class);
 	}
 	public function isReseller()
 	{

@@ -8,7 +8,7 @@
 			<input class="form-control" @blur="add_price" type="text" v-model="price.cost">
 		</div>
 		<div class="col text-center py-2 px-1 px-lg-3">
-			<input class="form-control" @blur="add_price" type="text" v-model="price.resell">
+			<input class="form-control" @blur="add_price" type="text" v-model="price.offer">
 		</div>
 		<div class="col text-center py-2 px-1 px-lg-3">
 			<input class="form-control" @blur="add_price" type="text" v-model="price.retail">
@@ -48,8 +48,8 @@ export default {
 		validate() {
 			// remove rows with empty fields or invalid types of data
 			this.prices = this.prices.filter(price => {
-				return (price.size && price.cost && price.resell && price.retail) && (
-					(/^[0-9]+$/.test(price.size) || /^[X]*[SML]+$/.test(price.size)) && [price.cost, price.resell, price.retail].every(element => /^[1-9]+[0-9]*$/.test(element))
+				return (price.size && price.cost && price.offer && price.retail) && (
+					(/^[0-9]+$/.test(price.size) || /^[X]*[SML]+$/.test(price.size)) && [price.cost, price.offer, price.retail].every(element => /^[1-9]+[0-9]*$/.test(element))
 				);
 			});
 			let obj = {};
@@ -59,13 +59,13 @@ export default {
 			this.prices = Object.values(obj);
 		},
 		clear_empty() {
-			this.prices = this.prices.filter(price => price.size || price.cost || price.resell || price.retail);
+			this.prices = this.prices.filter(price => price.size || price.cost || price.offer || price.retail);
 		},
 		add_empty() {
 			this.prices.push({
 				'size': '',
 				'cost': '',
-				'resell': '',
+				'offer': '',
 				'retail': '',
 			});
 		},
@@ -81,7 +81,7 @@ export default {
 			for (let i in this.prices) {
 				this.prices[i].size = this.prices[i].size.toUpperCase();
 				let cost = this.prices[i].cost;
-				let resell = this.prices[i].resell;
+				let offer = this.prices[i].offer;
 				let retail = this.prices[i].retail;
 				if (/^[0-9]+[-][0-9]+$/.test(this.prices[i].size)) {
 					let [start, end] = this.prices[i].size.split('-');
@@ -95,7 +95,7 @@ export default {
 						this.prices.push({
 							'size': j,
 							'cost': cost,
-							'resell': resell,
+							'offer': offer,
 							'retail': retail,
 						});
 					}
@@ -115,7 +115,7 @@ export default {
 							this.prices.push({
 								'size': sizes[j],
 								'cost': cost,
-								'resell': resell,
+								'offer': offer,
 								'retail': retail,
 							});
 						}
@@ -127,7 +127,7 @@ export default {
 						this.prices.push({
 							'size': size,
 							'cost': cost,
-							'resell': resell,
+							'offer': offer,
 							'retail': retail,
 						});
 					}

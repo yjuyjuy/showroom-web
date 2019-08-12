@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Edit product').'-'.$product->displayName().'-TheShowroom')
+@section('title',__('Edit product').'-'.$product->displayName())
 
 @section('content')
 <div class="container">

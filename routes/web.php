@@ -27,6 +27,10 @@ Route::middleware(['auth','vendor'])->group(function () {
 	Route::post('/products/{product}/prices', 'PriceController@store')->name('prices.store');
 });
 
+Route::middleware(['auth', 'vendor', 'retailer'])->group(function () {
+	Route::get('/retailer', 'RetailerController@home')->name('retailer.home');
+});
+
 Route::middleware(['auth','admin'])->group(function () {
 	Route::get('/products/{product}/images', 'ImageController@edit')->name('images.edit');
 	Route::patch('/images/swap', 'ImageController@swap')->name('images.swap');

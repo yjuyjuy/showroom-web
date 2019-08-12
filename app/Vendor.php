@@ -26,7 +26,7 @@ class Vendor extends Model
 	{
 		return $this->belongsTo(Retailer::class);
 	}
-	public function partners()
+	public function partner_retailers()
 	{
 		return $this->belongsToMany(Retailer::class, 'partners');
 	}

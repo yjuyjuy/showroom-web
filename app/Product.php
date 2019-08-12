@@ -42,11 +42,11 @@ class Product extends Model
 	}
 	public function offers()
 	{
-		return $this->hasMany(OfferPrice::class);
+		return $this->hasMany(OfferPrice::class)->whereNull('offer_prices.deleted_at');;
 	}
 	public function images()
 	{
-		return $this->hasMany(Image::class);
+		return $this->hasMany(Image::class)->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');;
 	}
 	public function image()
 	{
@@ -58,11 +58,11 @@ class Product extends Model
 	}
 	public function retails()
 	{
-		return $this->hasMany(RetailPrice::class);
+		return $this->hasMany(RetailPrice::class)->whereNull('retail_prices.deleted_at');;
 	}
-	public function price_data()
+	public function prices()
 	{
-		return $this->hasMany(VendorPrice::class);
+		return $this->hasMany(VendorPrice::class)->whereNull('vendor_prices.deleted_at');;
 	}
 	// Mutators
 	public function setCategoryAttribute($value)
@@ -94,39 +94,38 @@ class Product extends Model
 	}
 	public function getSizePrice($type = 'retail')
 	{
-		$sizes = [];
+		$data = [];
 		if($type == 'offer'){
 			foreach ($this->offers as $offer) {
 				foreach ($offer->prices as $size => $price) {
-					$sizes[$size][] = $price;
+					if(!array_key_exists($size, $data) || $price < $data[$size]['price'])
+					$data[$size] = ['price' => $price, 'vendor' => $offer->vendor->name];
 				}
 			}
 		} elseif($type == 'retail'){
 			foreach ($this->retails as $retail) {
 				foreach ($retail->prices as $size => $price) {
-					$sizes[$size][] = $price;
+					if(!array_key_exists($size, $data) || $price < $data[$size]['price'])
+					$data[$size] = ['price' => $price, 'retailer' => $retail->retailer->name];
 				}
 			}
 		}
-		foreach ($sizes as $size => $prices) {
-			$sizes[$size] = min($prices);
-		}
-		$sizes = Arr::sort($sizes, function ($value, $key) {
+		$data = Arr::sort($data, function ($value, $key) {
 			return array_search($key, ['XXS','XS','S','M','L','XL','XXL']);
 		});
-		return $sizes;
-
+		return $data;
 	}
+
 	public function getAllPrices()
 	{
 		$prices = collect();
-		foreach ($this->price_data as $price) {
+		foreach ($this->prices as $price) {
 			foreach ($price->data as $row) {
 				$prices->push([
 					'vendor' => $price->vendor->id,
 					'size' => $row['size'],
 					'cost' => $row['cost'],
-					'resell' => $row['resell'],
+					'offer' => $row['offer'],
 					'retail' => $row['retail'],
 				]);
 			}

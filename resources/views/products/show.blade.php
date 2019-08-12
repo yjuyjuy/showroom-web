@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',$product->displayName().' - TheShowroom')
+@section('title',$product->displayName())
 
 @section('content')
 <div class="images-content-container">
@@ -11,16 +11,16 @@
 	<div class="content-container d-flex flex-column">
 		@include('products.show.properties')
 		@include('products.show.customer')
-		@include('products.show.links')
 		@auth
-			<?php $user = Auth::user(); ?>
 			@if($user->isReseller())
 				@include('products.show.reseller')
 			@endif
 			@if($user->isSuperAdmin())
 				@include('products.show.admin')
-			@elseif($user->isReseller())
-				@include('products.show.vendor')
+			@else
+				@if($vendor = $user->vendor)
+					@include('products.show.vendor')
+				@endif
 			@endif
 		@endauth
 	</div>

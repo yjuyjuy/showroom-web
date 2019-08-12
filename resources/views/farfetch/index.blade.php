@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Farfetch '.__('database').' - TheShowroom')
+@section('title','Farfetch '.__('database'))
 
 @section('content')
 <div id="products-index" class="">

@@ -16,7 +16,7 @@ class CreateRetailPricesTable extends Migration
 		Schema::create('retail_prices', function (Blueprint $table) {
 			$table->bigIncrements('id');
 			$table->unsignedBigInteger('retailer_id');
-			$table->unsignedBigInteger('product_id');
+			$table->unsignedBigInteger('product_id')->nullable();
 			$table->json('prices');
 			$table->json('link')->nullable();
 			$table->softDeletes();

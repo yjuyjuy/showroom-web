@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Retailer extends Model
 {
-    public function retail()
+    public function retails()
 		{
 			return $this->hasMany(RetailPrice::class);
 		}
@@ -14,11 +14,11 @@ class Retailer extends Model
 		{
 			return $this->belongsToMany(Product::class, 'retail_prices', 'retailer_id', 'product_id')->whereNull('retail_prices.deleted_at');
 		}
-		public function partners()
+		public function partner_vendors()
 		{
-			return $this->belongsToMany(Vendor::class, 'partners');
+			return $this->belongsToMany(Vendor::class, 'partners')->withPivot('profit_rate');
 		}
-		public function vendor()
+		public function vendors()
 		{
 			return $this->hasMany(Vendor::class);
 		}

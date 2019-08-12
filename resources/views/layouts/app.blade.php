@@ -11,7 +11,7 @@
 		<!-- CSRF Token -->
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 
-		<title>@yield('title','TheShowroom')</title>
+		<title>@yield('title','') - {{ env('APP_NAME', 'TheShowroom') }}</title>
 
 		<!-- Scripts -->
 		<script src="{{ asset('js/app.js') }}" defer></script>
@@ -47,25 +47,24 @@
 						<span class="mdc-list-item__text">{{ __('Register') }}</span>
 					</a>
 					@else
+					<?php $user = auth()->user(); ?>
 					<a class="mdc-list-item mdc-list-item--activated" href="{{route('home')}}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
 						<span class="mdc-list-item__text">{{ __('Home') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('home')}}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">view_list</i>
-						<span class="mdc-list-item__text">{{ __('Wish list') }}</span>
-					</a>
-					<a class="mdc-list-item" href="{{route('home')}}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
-						<span class="mdc-list-item__text">{{ __('My collection') }}</span>
-					</a>
-					@if(auth()->user()->vendor)
+					@if($user->vendor)
 					<a class="mdc-list-item" href="{{ route('prices.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">{{ __('Price sheet') }}</span>
 					</a>
+					@if($user->vendor->retailer)
+					<a class="mdc-list-item" href="{{ route('retailer.home') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
+						<span class="mdc-list-item__text">{{ $user->vendor->retailer->name }}</span>
+					</a>
 					@endif
-					@if(auth()->user()->isSuperAdmin())
+					@endif
+					@if($user->isSuperAdmin())
 					<a class="mdc-list-item" href="{{ route('products.create') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
 						<span class="mdc-list-item__text">{{ __('Create product') }}</span>

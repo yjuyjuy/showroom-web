@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\OfferPrice;
+use App\VendorPrice;
 use App\Vendor;
 use App\Product;
 use Illuminate\Http\Request;
@@ -58,7 +58,7 @@ class PriceController extends Controller
 	 */
 	public function store(Request $request, Product $product)
 	{
-		$this->authorize('create', Price::class);
+		$this->authorize('create', VendorPrice::class);
 		if (auth()->user()->isSuperAdmin()) {
 			$vendor = \App\Vendor::find($request->input('vendor'));
 		} else {
@@ -77,10 +77,10 @@ class PriceController extends Controller
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  \App\OfferPrice  $price
+	 * @param  \App\VendorPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(OfferPrice $price)
+	public function show(VendorPrice $price)
 	{
 		//
 	}
@@ -88,10 +88,10 @@ class PriceController extends Controller
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  \App\OfferPrice  $price
+	 * @param  \App\VendorPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(OfferPrice $price)
+	public function edit(VendorPrice $price)
 	{
 		$product = $price->product;
 		return view('prices.edit', compact('price', 'product'));
@@ -101,10 +101,10 @@ class PriceController extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\OfferPrice  $price
+	 * @param  \App\VendorPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, OfferPrice $price)
+	public function update(Request $request, VendorPrice $price)
 	{
 		$this->authorize('update', $price);
 		$data = json_decode($this->validateRequest()['data']);
@@ -120,10 +120,10 @@ class PriceController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  \App\OfferPrice  $price
+	 * @param  \App\VendorPrice  $price
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(OfferPrice $price)
+	public function destroy(VendorPrice $price)
 	{
 		$this->authorize('delete', $price);
 		$price->delete();
@@ -136,7 +136,7 @@ class PriceController extends Controller
 			'data' => ['required','json'],
 			'data.*.size' => ['required','regex:/^([0-9]+)|([X]*[SML]+)$/'],
 			'data.*.cost' => ['required','integer'],
-			'data.*.resell' => ['required','integer'],
+			'data.*.offer' => ['required','integer'],
 			'data.*.retail' => ['required','integer'],
 		]);
 	}

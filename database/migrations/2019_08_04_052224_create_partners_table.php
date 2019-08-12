@@ -17,7 +17,7 @@ class CreatePartnersTable extends Migration
 			$table->bigIncrements('id');
 			$table->unsignedBigInteger('vendor_id');
 			$table->unsignedBigInteger('retailer_id');
-			$table->float('profit_rate');
+			$table->float('profit_rate')->default(15.0);
 			$table->timestamps();
 
 			$table->index('vendor_id');

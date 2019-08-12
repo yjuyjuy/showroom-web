@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('All products').' - TheShowroom')
+@section('title', __('All products'))
 @section('content')
 <div id="products-index" class="">
 	<ul class="mdc-image-list main-image-list">
