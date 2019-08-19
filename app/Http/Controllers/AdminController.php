@@ -12,7 +12,7 @@ class AdminController extends Controller
 		$this->updatePrices();
 		// $this->convertWebpToJpg();
 		$this->updateDesignerStyleId();
-		$this->migrateFarfetchPrices();
+		$this->updateFarfetchPrices();
 	}
 
 	public function updateDesignerStyleId()
@@ -91,7 +91,7 @@ class AdminController extends Controller
 		}
 	}
 
-	public function migrateFarfetchPrices()
+	public function updateFarfetchPrices()
 	{
 		$retailer_id = \App\Retailer::where('name', 'Farfetch')->first()->id;
 		foreach(\App\Product::whereNotNull('designerStyleId')->get() as $product){
