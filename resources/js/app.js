@@ -69,7 +69,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 const buttonRipples = [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
 	return new MDCRipple(el);
 });
-const iconButtonRipples = [].map.call(document.querySelectorAll('.mdc-icon-button'), function(el){
+const iconButtonRipples = [].map.call(document.querySelectorAll('.mdc-icon-button'), function(el) {
 	let iconButtonRipple = new MDCRipple(el);
 	iconButtonRipple.unbounded = true;
 	return iconButtonRipple;
@@ -88,10 +88,10 @@ const formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), fun
 });
 const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(el) {
 	let select = new MDCSelect(el);
-	if(!el.classList.contains('optional-form-field')) {
+	if (!el.classList.contains('optional-form-field')) {
 		select.required = true;
 	}
-	if(el.classList.contains('mdc-select--autosubmit')){
+	if (el.classList.contains('mdc-select--autosubmit')) {
 		select.listen('MDCSelect:change', function() {
 			document.getElementById(el.dataset.form).submit();
 		});
@@ -99,7 +99,7 @@ const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(e
 	select.menu_.quickOpen = true;
 	return select;
 });
-[].map.call(document.querySelectorAll('.mdc-menu--with-button'),function(menuElement){
+[].map.call(document.querySelectorAll('.mdc-menu--with-button'), function(menuElement) {
 	const menu = new MDCMenu(menuElement);
 	window.menu = menu;
 	menu.setAnchorCorner(3);
@@ -110,28 +110,34 @@ const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(e
 	}
 });
 let el = document.querySelector('.mdc-snackbar');
-if(el){
+if (el) {
 	const snackbar = new MDCSnackbar(el);
 	snackbar.open();
 	window.snackbar = snackbar;
 }
 const priceEditorElement = document.querySelector('.price-editor');
 const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
-	if(priceEditorElement && priceEditorElement.contains(el)){ return; }
+	if (priceEditorElement && priceEditorElement.contains(el)) {
+		return;
+	}
 	let textField = new MDCTextField(el);
-	if(!el.classList.contains('optional-form-field')) {
+	if (!el.classList.contains('optional-form-field')) {
 		textField.required = true;
 	}
 	return textField;
 });
-const textFieldHelperTexts = [].map.call(document.querySelectorAll('.mdc-text-field-helper-text'),function(el) {
+const textFieldHelperTexts = [].map.call(document.querySelectorAll('.mdc-text-field-helper-text'), function(el) {
 	return new MDCTextFieldHelperText(el);
 });
 const selectHelperTexts = [].map.call(document.querySelectorAll('.mdc-select-helper-text'), function(el) {
 	return new MDCSelectHelperText(el);
 });
 const options = {
-	month: 'short',day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+	month: 'short',
+	day: '2-digit',
+	hour: '2-digit',
+	minute: '2-digit',
+	hour12: false,
 };
 [].map.call(document.querySelectorAll('.timestamp'), function(el) {
 	let t = new Date(parseFloat(el.dataset.timestamp));
@@ -178,4 +184,35 @@ if (dialogElement) {
 		event.preventDefault();
 		dialog.open();
 	}
+}
+var productList = document.getElementById('product-datalist');
+if(productList){
+	var updateThumbnail = function () {
+		let img = this.parentElement.parentElement.parentElement.querySelector('.product-thumbnail');
+		let selected = productList.querySelector('option[value=\'' + this.value + '\']');
+		if(selected){
+			img.src = selected.dataset.imageSrc;
+			img.parentElement.href = selected.dataset.productHref;
+		} else {
+			img.src = '/storage/icons/ImagePlaceholder.svg';
+			img.parentElement.href = '#';
+		}
+	};
+	var linkProduct = function(){
+		let input = this.parentElement.parentElement.querySelector('.product-selector');
+		axios.post('/Dopebxtch/link', {'price_id':input.dataset.id,'product_id': input.value})
+			.then(response => window.location.reload())
+			.catch(error => window.location.reload());
+	};
+	var ignoreProduct = function(){
+		let input = this.parentElement.parentElement.querySelector('.product-selector');
+		axios.post('/Dopebxtch/ignore', {'price_id':input.dataset.id})
+			.then(response => window.location.reload())
+			.catch(error => window.location.reload());
+	};
+	[].map.call(document.getElementsByClassName('link-product-component'), function(el) {
+		el.querySelector('.product-selector').onchange = updateThumbnail;
+		el.querySelector('.ignore-button').onclick = ignoreProduct;
+		el.querySelector('.confirm-button').onclick = linkProduct;
+	});
 }
