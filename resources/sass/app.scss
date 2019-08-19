@@ -97,6 +97,24 @@ a.mdc-list-item__text:hover{
 .main-image-list {
 	@include mdc-image-list-standard-columns(2,16px);
 }
+.simple-text-input{
+	line-height: calc(1rem + 3px + 5px);
+	font-size: 1rem;
+	padding: 3px 0.5rem 5px;
+	border: rgba($mdc-theme-on-surface, .8) 1px solid;
+	border-radius: 4px;
+	outline: none;
+	background: none;
+	color: $mdc-theme-on-surface;
+	&:focus{
+		border: $mdc-theme-primary 1px solid;
+		border-radius: 4px;
+		outline: none;
+	}
+	&::-webkit-calendar-picker-indicator {
+  	display: none;
+	}
+}
 @media (min-width:600px){
 	.mdc-top-app-bar__row, .main-content {
 		width: 90%;
@@ -463,5 +481,16 @@ a.mdc-list-item__text:hover{
 	}
 	.log-delete-button{
 		@include mdc-icon-button-size(1rem, 1rem, 0.5rem);
+	}
+}
+// taobao.admin view
+#taobao-admin{
+	&>*{
+		flex: 0 1 100%;
+	}
+	@media (min-width:1024px){
+		&>*{
+			flex: 0 1 50%;
+		}
 	}
 }
