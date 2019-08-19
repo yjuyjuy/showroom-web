@@ -19,7 +19,6 @@ class CreateLogsTable extends Migration
 						$table->unsignedBigInteger('product_id');
 						$table->unsignedBigInteger('price_id')->nullable();
 						$table->string('price_type')->nullable();
-						$table->softDeletes();
             $table->timestamps();
         });
     }

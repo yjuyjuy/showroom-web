@@ -24,7 +24,6 @@ class CreateProductsTable extends Migration
 			$table->unsignedBigInteger('brand_id');
 			$table->unsignedBigInteger('taobao_id')->nullable();
 			$table->text('comment')->nullable();
-			$table->softDeletes();
 			$table->timestamps();
 
 			$table->index('category_id');

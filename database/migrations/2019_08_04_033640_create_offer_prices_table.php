@@ -18,7 +18,6 @@ class CreateOfferPricesTable extends Migration
 			$table->unsignedBigInteger('vendor_id');
 			$table->unsignedBigInteger('product_id');
 			$table->json('prices');
-			$table->softDeletes();
 			$table->timestamps();
 
 			$table->index('vendor_id');

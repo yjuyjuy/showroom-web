@@ -19,7 +19,6 @@ class CreateRetailPricesTable extends Migration
 			$table->unsignedBigInteger('product_id')->nullable();
 			$table->json('prices');
 			$table->json('link')->nullable();
-			$table->softDeletes();
 			$table->timestamps();
 
 			$table->index('retailer_id');
