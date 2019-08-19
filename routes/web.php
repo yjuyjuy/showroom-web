@@ -27,8 +27,11 @@ Route::middleware(['auth','vendor'])->group(function () {
 	Route::post('/products/{product}/prices', 'PriceController@store')->name('prices.store');
 });
 
-Route::middleware(['auth', 'vendor', 'retailer'])->group(function () {
-	Route::get('/retailer', 'RetailerController@home')->name('retailer.home');
+Route::middleware(['auth', 'admin'])->group(function () {
+	Route::get('/{shop}/admin', 'TaobaoController@admin');
+	Route::post('/{shop}/link', 'TaobaoController@link');
+	Route::post('/{shop}/ignore', 'TaobaoController@ignore');
+	Route::get('/{shop}/update', 'TaobaoController@update')->middleware('throttle:10,1');
 });
 
 Route::middleware(['auth','admin'])->group(function () {
@@ -42,3 +45,4 @@ Route::middleware(['auth','admin'])->group(function () {
 	Route::delete('/logs/{log}','LogController@destroy')->name('logs.destroy');
 	Route::get('/admin','AdminController@index');
 });
+Route::get('/{shop}', 'TaobaoController@index');
