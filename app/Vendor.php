@@ -20,7 +20,7 @@ class Vendor extends Model
 	}
 	public function products()
 	{
-		return $this->belongsToMany(Product::class, 'offer_prices', 'vendor_id', 'product_id')->whereNull('offer_prices.deleted_at');
+		return $this->belongsToMany(Product::class, 'offer_prices', 'vendor_id', 'product_id');
 	}
 	public function retailer()
 	{

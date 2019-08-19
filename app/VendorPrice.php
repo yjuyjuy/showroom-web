@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VendorPrice extends Model
 {
-	use SoftDeletes;
 
   // protected $touches = ['product'];
 	protected $guarded = [];
