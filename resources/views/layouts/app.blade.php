@@ -57,12 +57,6 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">{{ __('Price sheet') }}</span>
 					</a>
-					@if($user->vendor->retailer)
-					<a class="mdc-list-item" href="{{ route('retailer.home') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
-						<span class="mdc-list-item__text">{{ $user->vendor->retailer->name }}</span>
-					</a>
-					@endif
 					@endif
 					@if($user->isSuperAdmin())
 					<a class="mdc-list-item" href="{{ route('products.create') }}">
