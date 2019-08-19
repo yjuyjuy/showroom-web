@@ -21,12 +21,12 @@
 			</div>
 			<div class="d-flex flex-column price-card col">
 				@if($diff['retail'])
-					<a href="{{ route('products.show',['product' => $diff['retail']->product_id,]) }}" target="_blank">{{ $diff['retail']->product->displayName() }}</a>
+					<a href="{{ route('products.show',['product' => $diff['retail']->product,]) }}" target="_blank">{{ $diff['retail']->product->displayName() }}</a>
 					@foreach($diff['retail']->prices as $size => $price)
 					<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
 					@endforeach
 				@else
-					<a href="{{ route('prices.create',['product' => $diff['product']->id,]) }}" target="_blank">添加报价</a>
+					<a href="{{ route('prices.create',['product' => $diff['product'],]) }}" target="_blank">添加报价</a>
 				@endif
 			</div>
 		</div>

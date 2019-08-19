@@ -1,6 +1,6 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="">
-		<a id="product-brand" href="{{ route('farfetch.index',['designer' => [$product->designer->id]]) }}"
+		<a id="product-brand" href="{{ route('farfetch.index',['designer' => [$product->designer]]) }}"
 			 class="mdc-typography--headline6">
 			{{ __($product->designer->name) }}</a>
 	</div>
