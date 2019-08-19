@@ -77,6 +77,10 @@ class Product extends Model
 	{
 		return $this->hasMany(VendorPrice::class);
 	}
+	public function taobao_prices()
+	{
+		return $this->hasMany(TaobaoPrice::class);
+	}
 	// Mutators
 	public function setCategoryAttribute($value)
 	{
