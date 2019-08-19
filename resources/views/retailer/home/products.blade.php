@@ -3,7 +3,7 @@
 	<div class="d-flex flex-column pr-2" style="max-height: 80vh; overflow: auto;">
 	<?php $retail = $retailer->retails->first();
 				$retail->title = "【Dope】OFF WHITE C/O VIRGIL ABLOH 19fw 女王油画涂鸦logo短袖 + 黑色 偏大4码, 不退";
-				$retail->link = ['href' => 'https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-7908580240.31.220b1e9aXW5UGN&id=597832916815']; ?>
+				$retail->link = 'https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-7908580240.31.220b1e9aXW5UGN&id=597832916815'; ?>
 
 
 @foreach([1,2,3,4,5,6,7,8,9,10] as $i)
@@ -14,7 +14,7 @@
 				<div class="product-card__content d-flex">
 					<div class="product-card__content--text d-flex flex-column p-2">
 						<div class="product-card__title1 my-2">
-							<a href="{{ $retail->link['href'] }}">{{ $retail->title }}</a>
+							<a href="{{ $retail->link }}">{{ $retail->title }}</a>
 						</div>
 						<div class="product-card__title2 my-2">
 							<div class="mdc-text-field mdc-text-field--outlined w-100">

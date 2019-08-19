@@ -9,7 +9,7 @@
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 			    @foreach($product->retails->where('link') as $retail)
 					<li class="mdc-list-item" role="menuitem">
-			      <a href="{{ $retail->link['href'] }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ __($retail->retailer->name) }}</a>
+			      <a href="{{ $retail->link }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ __($retail->retailer->name) }}</a>
 			    </li>
 					@endforeach
 			  </ul>

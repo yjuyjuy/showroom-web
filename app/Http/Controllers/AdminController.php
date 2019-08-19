@@ -113,7 +113,7 @@ class AdminController extends Controller
 			} else {
 				$retail = \App\RetailPrice::firstOrNew(['retailer_id' => $retailer_id, 'product_id' => $product->id]);
 				$retail->prices = $size_price;
-				$retail->link = ['href' => $url];
+				$retail->link = $url;
 				$retail->save();
 			}
 		}
