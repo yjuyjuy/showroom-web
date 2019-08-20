@@ -186,32 +186,36 @@ if (dialogElement) {
 	}
 }
 var productList = document.getElementById('product-datalist');
-if(productList){
+if (productList) {
 	var updateThumbnail = function () {
-		let img = this.parentElement.parentElement.parentElement.querySelector('.product-thumbnail');
+    let card = this.parentElement.parentElement.parentElement;
+		let img = card.querySelector('img');
 		let selected = productList.querySelector('option[value=\'' + this.value + '\']');
-		if(selected){
-			img.src = selected.dataset.imageSrc;
-			img.parentElement.href = selected.dataset.productHref;
+		if (selected) {
+      img.src = selected.dataset.imageSrc;
+			img.parentElement.href = selected.dataset.href;
 		} else {
-			img.src = '/storage/icons/ImagePlaceholder.svg';
-			img.parentElement.href = '#';
-		}
+      img.parentElement.href = "#";
+    }
 	};
 	var linkProduct = function(){
-		let input = this.parentElement.parentElement.querySelector('.product-selector');
-		axios.post('/Dopebxtch/link', {'price_id':input.dataset.id,'product_id': input.value})
-			.then(response => window.location.reload())
-			.catch(error => window.location.reload());
+    let card = this.parentElement.parentElement.parentElement;
+		let input = card.querySelector('input');
+		axios.post('/taobao/product/link', {'price_id':input.dataset.id,'product_id': input.value})
+      .then(response => card.parentElement.removeChild(card))
+			.catch(error => window.alert('action failed'));
 	};
-	var ignoreProduct = function(){
-		let input = this.parentElement.parentElement.querySelector('.product-selector');
-		axios.post('/Dopebxtch/ignore', {'price_id':input.dataset.id})
-			.then(response => window.location.reload())
-			.catch(error => window.location.reload());
+	var ignoreProduct = function() {
+    let card = this.parentElement.parentElement.parentElement;
+		let input = card.querySelector('input');
+		axios.post('/taobao/product/ignore', {'price_id':input.dataset.id})
+			.then(response => card.parentElement.removeChild(card))
+			.catch(error => window.alert('action failed'));
 	};
-	[].map.call(document.getElementsByClassName('link-product-component'), function(el) {
-		el.querySelector('.product-selector').onchange = updateThumbnail;
+	[].map.call(document.querySelectorAll('.product-card'), function(el) {
+    let input = el.querySelector('input');
+    input.onchange = updateThumbnail;
+		input.ondblclick = () => input.value = '';
 		el.querySelector('.ignore-button').onclick = ignoreProduct;
 		el.querySelector('.confirm-button').onclick = linkProduct;
 	});

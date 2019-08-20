@@ -34,20 +34,26 @@ class TaobaoProduct extends Model
 		'skuMap' => 'array',
 		'properties' => 'array',
 	];
-	public function product()
-	{
-		return $this->belongsTo(Product::class);
-	}
 	public function shop()
 	{
-		return $this->belongsTo(TaobaoShop::class, 'shop_id', 'id');
+		return $this->belongsTo(TaobaoShop::class, 'shop_id');
 	}
 	public function prices()
 	{
-		return $this->hasMany(TaobaoPrice::class, 'taobao_id', 'id');
+		return $this->hasMany(TaobaoPrice::class, 'taobao_id');
 	}
 	public function getUrlAttribute()
 	{
 		return "https://item.taobao.com/item.htm?id=".$this->id;
+	}
+	public function getPriceAttribute()
+	{
+		$min = null;
+		foreach($this->prices->where('prices', true) as $taobao_price){
+			if(!$min || min($taobao_price->prices) < $min){
+				$min = min($taobao_price->prices);
+			}
+		}
+		return $min ?? null;
 	}
 }

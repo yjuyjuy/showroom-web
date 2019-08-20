@@ -17,6 +17,8 @@ Auth::routes();
 
 Route::redirect('/', '/products');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/products', 'HomeController@products')->name('products');
+Route::get('/home/retailers', 'HomeController@retailers')->name('retailers');
 Route::resource('products', 'ProductController')->middleware(['auth','admin'])->except(['index','show']);
 Route::resource('products', 'ProductController')->only(['index','show']);
 
@@ -28,11 +30,16 @@ Route::middleware(['auth','vendor'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-	Route::get('/{shop}/admin', 'TaobaoController@admin');
-	Route::post('/{shop}/link', 'TaobaoController@link');
-	Route::post('/{shop}/ignore', 'TaobaoController@ignore');
-	Route::get('/{shop}/update', 'TaobaoController@update')->middleware('throttle:10,1');
+	Route::get('/taobao/home', 'TaobaoController@home')->name('taobao.home');
+	Route::get('/taobao/admin', 'TaobaoController@admin')->name('taobao.admin');
+	Route::post('/taobao/product/link', 'TaobaoController@link');
+	Route::post('/taobao/product/ignore', 'TaobaoController@ignore');
+	Route::get('/taobao/{shop}/diffs', 'TaobaoController@diffs')->name('taobao.diffs');
+	Route::get('/taobao/{shop}/reset', 'TaobaoController@reset');
 });
+Route::get('/taobao', 'TaobaoController@list')->name('taobao');
+Route::get('/taobao/{shop}', 'TaobaoController@index')->name('taobao.index');
+Route::get('/taobao/{shop}/{product}', 'TaobaoController@show')->name('taobao.show');
 
 Route::middleware(['auth','admin'])->group(function () {
 	Route::get('/products/{product}/images', 'ImageController@edit')->name('images.edit');
@@ -45,4 +52,3 @@ Route::middleware(['auth','admin'])->group(function () {
 	Route::delete('/logs/{log}','LogController@destroy')->name('logs.destroy');
 	Route::get('/admin','AdminController@index');
 });
-Route::get('/{shop}', 'TaobaoController@index');

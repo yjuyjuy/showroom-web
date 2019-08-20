@@ -29,15 +29,15 @@ class TaobaoPrice extends Model
 	];
 	public function product()
 	{
-		return $this->belongsTo(Product::class);
+		return $this->belongsTo(Product::class, 'product_id');
 	}
 	public function taobao_product()
 	{
-		return $this->belongsTo(TaobaoProduct::class, 'taobao_id', 'id');
+		return $this->belongsTo(TaobaoProduct::class, 'taobao_id')->where('is_shipping', false);
 	}
 	public function shop()
 	{
-		return $this->belongsTo(TaobaoShop::class, 'shop_id', 'id');
+		return $this->belongsTo(TaobaoShop::class, 'shop_id');
 	}
 	public function getDescriptionAttribute()
 	{

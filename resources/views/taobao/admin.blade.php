@@ -1,37 +1,37 @@
 @extends('layouts.app')
 
-@section('title', $shop->name.' - 管理中心')
+@section('title', '关联商品 - 淘宝')
 
 @section('content')
-<div id="taobao-admin" class="m-2 d-flex w-100 flex-wrap">
-	<div id="unlink-product-container">
-		<div class="mx-4">
-			<div class="w-100">
-				<span>未关联商品</span>
-			</div>
-			<div class="d-flex flex-column">
-				@foreach($shop->prices as $price)
-					<div class="d-flex justify-content-center my-4 link-product-component">
-						<div class="d-flex flex-column justify-content-around mr-2" style="width:80%;">
-							<div class=""><a href="{{$price->taobao_product->url}}" target="_blank">{{ $price->description }}</a></div>
-							<div class=""><input type="text" value="" list="product-datalist" class="simple-text-input product-selector" data-id="{{$price->id}}" placeholder="搜索商品"></div>
-							<div class="text-right"><button type="button" class="mdc-button ignore-button">忽略</button><button type="button" class="mdc-button confirm-button">确定</button></div>
-						</div>
-						<div class="" style="width:20%;">
-							<a href="#" target="_blank">
-								<img class="product-thumbnail" src="{{ asset('storage/icons/ImagePlaceholder.svg') }}" alt="">
-							</a>
-						</div>
+<div class="m-2 d-flex justify-content-center">
+	<div class="d-flex flex-column">
+		@forelse($prices as $price)
+			<div class="product-card">
+				<div class="product-card__left">
+					<a href="#" target="_blank">
+						<img class="product-thumbnail" src="{{ $price->taobao_product->image ?? asset('storage/icons/ImagePlaceholder.svg') }}" alt="">
+					</a>
+				</div>
+				<div class="product-card__right">
+					<div><a href="{{$price->taobao_product->url}}" target="_blank" class="product-card__headline">{{ $price->description }}</a></div>
+					<div><input type="text" size="15" value="" list="product-datalist" class="simple-text-input" data-id="{{$price->id}}" placeholder="{{ $price->taobao_product->properties[$price->property_id]['name'] }}"></div>
+					<div class="">
+						<button type="button" class="mdc-button mdc-button--outlined mdc-button--error ignore-button mr-2">忽略</button>
+						<button type="button" class="mdc-button mdc-button--unelevated confirm-button">确定</button>
 					</div>
-				@endforeach
-				<datalist id="product-datalist">
-					<option value="" data-image-src="{{ asset('storage/icons/ImagePlaceholder.svg') }}" data-product-href="#" hidden disabled></option>
-					@foreach(\App\Product::all() as $product)
-						<option value="{{ $product->id }}" data-image-src="{{ $product->image->url ?? asset('storage/icons/ImagePlaceholder.svg') }}" data-product-href="{{ route('products.show',['product' => $product]) }}">{{ $product->displayName() }} {{ __($product->color->name) }}</option>
-					@endforeach
-				</datalist>
+				</div>
 			</div>
-		</div>
+		@empty
+			<div class="d-flex justify-content-center align-items-center">
+				<span class="mdc-typography--headline5">没有未关联商品</span>
+			</div>
+		@endforelse
 	</div>
+	<datalist id="product-datalist">
+		<option value="" data-image-src="{{ asset('storage/icons/ImagePlaceholder.svg') }}" data-product-href="#" hidden disabled></option>
+		@foreach(\App\Product::all() as $product)
+		<option value="{{ $product->id }}" data-image-src="{{ $product->image->url ?? asset('storage/icons/ImagePlaceholder.svg') }}" data-href="{{ route('products.show',['product' => $product,]) }}">{{ $product->displayName() }} {{ __($product->color->name) }}</option>
+		@endforeach
+	</datalist>
 </div>
 @endsection

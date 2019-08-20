@@ -9,31 +9,29 @@ use Illuminate\Http\Request;
 
 class TaobaoController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function index(TaobaoShop $shop)
+	public function list()
 	{
-		$products = $shop->products;
-		$products->load(['retails' => function($query) use ($shop) {
-			$query->where('retailer_id', $shop->retailer_id);
-		}]);
-		return view('taobao.index', compact('shop','products'));
+		// $shops = auth()->user()->following_shops;
+		$shops = \App\TaobaoShop::all();
+		return view('taobao.shops',compact('shops'));
 	}
-
+	
+	public function home()
+	{
+		$shops = \App\TaobaoShop::all();
+		return view('taobao.home',compact('shops'));
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function admin(TaobaoShop $shop)
+	public function admin()
 	{
-		$shop->load(['prices' => function($query) {
-			$query->whereNull('product_id')->where('ignore', false);
-		},'prices.taobao_product']);
-		return view('taobao.admin', compact('shop'));
+		$prices = \App\TaobaoPrice::whereNull('product_id')->where('ignore', false)->where('shop_id', 70333625)
+			->orderBy('shop_id')->orderBy('taobao_id')->limit(50)
+			->with('taobao_product')->get();
+		return view('taobao.admin', compact('prices'));
 	}
 
 	public function link(Request $request)
@@ -66,6 +64,17 @@ class TaobaoController extends Controller
 		$price->save();
 		return ['success' => true,];
 	}
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index(TaobaoShop $shop)
+	{
+		$products = $shop->taobao_products()->get();
+		$products->load(['prices']);
+		return view('taobao.index', compact('shop','products'));
+	}
 
 	/**
 	 * Display the specified resource.
@@ -73,31 +82,19 @@ class TaobaoController extends Controller
 	 * @param  \App\TaobaoProduct  $product
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(TaobaoProduct $product)
+	public function show($shop, TaobaoProduct $product)
 	{
-		//
+		if($shop != $product->shop->name){
+			return redirect(route('taobao.show',['shop' => $product->shop->name,]));
+		}
+		$product->load(['prices','shop']);
+		return view('taobao.show',compact('product'));
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  \App\TaobaoProduct  $product
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit(TaobaoProduct $product)
+	public function diffs(TaobaoShop $shop)
 	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \App\TaobaoShop  $shop
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(TaobaoShop $shop)
-	{
-		if($shop->is_partner){
+		if(!$shop->is_partner){ abort(418); }
+		$diffs = Cache::remember(url()->full(), 60, function() use ($shop) {
 			$diffs = [];
 			$taobao_prices = $shop->prices()->whereNotNull('product_id')->whereNotNull('prices')->where('ignore',false)->get();
 			$retail_prices = \App\RetailPrice::where('retailer_id', $shop->retailer_id)->get();
@@ -117,7 +114,16 @@ class TaobaoController extends Controller
 					$diffs[] = ['retail' => $retail, 'taobao' => null, 'product' => $retail->product];
 				}
 			}
-			return view('taobao.partner',compact('shop','diffs'));
+			return $diffs;
+		});
+		return view('taobao.diffs',compact('shop','diffs'));
+	}
+	
+	public function reset(TaobaoShop $shop)
+	{
+		if($shop->is_partner){ 
+			$shop->prices->update(['ignore' => false, 'product_id' => null,]);
+			return redirect(route('taobao.admin'));
 		} else {
 			\App\RetailPrice::where('retailer_id', $shop->retailer_id)->delete();
 			foreach($shop->prices()->whereNotNull('product_id')->where('ignore',false)->get() as $price){
@@ -140,16 +146,5 @@ class TaobaoController extends Controller
 				$retail->save();
 			}
 		}
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  \App\TaobaoProduct  $product
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy(TaobaoProduct $product)
-	{
-		//
 	}
 }

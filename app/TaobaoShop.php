@@ -39,12 +39,16 @@ class TaobaoShop extends Model
 	{
 		return $this->belongsToMany(Product::class, 'crawler_taobao.prices', 'shop_id', 'product_id');
 	}
+	public function taobao_products()
+	{
+		return $this->hasMany(TaobaoProduct::class, 'shop_id')->where('is_shipping', false);
+	}
 	public function prices()
 	{
-		return $this->hasMany(TaobaoPrice::class, 'shop_id', 'id');
+		return $this->hasMany(TaobaoPrice::class, 'shop_id');
 	}
 	public function retailer()
 	{
-		return $this->belongsTo(Retailer::class, 'retailer_id', 'id');
+		return $this->belongsTo(Retailer::class, 'retailer_id');
 	}
 }
