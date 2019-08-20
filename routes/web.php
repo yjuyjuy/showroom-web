@@ -16,10 +16,10 @@
 Auth::routes();
 
 # main product pages
-Route::middleware('auth')->name('products.')->group(function(){
-	Route::get('/','ProductController@index')->name('index');
-	Route::resource('', 'ProductController')->only(['show']);
-	Route::resource('', 'ProductController')->only(['create','store','edit','update','destroy'])->middleware(['auth', 'admin']);
+Route::get('/','ProductController@index')->name('products.index');
+Route::middleware('auth')->group(function(){
+	Route::resource('products', 'ProductController')->only(['show']);
+	Route::resource('products', 'ProductController')->only(['create','store','edit','update','destroy'])->middleware(['auth', 'admin']);
 });
 
 # user pages
@@ -31,18 +31,20 @@ Route::prefix('home')->name('home')->middleware('auth')->group(function() {
 
 
 # Price model routes
-Route::prefix('prices')->name('prices.')->middleware(['auth','vendor'])->group(function () {
-	Route::resource('', 'PriceController')->only(['index','edit','destroy','update']);
-	Route::get('/products/{product}/create', 'PriceController@create')->name('create');
-	Route::post('/products/{product}', 'PriceController@store')->name('store');
+Route::middleware(['auth','vendor'])->group(function () {
+	Route::resource('prices', 'PriceController')->only(['index','edit','destroy','update']);
+	Route::get('/prices/products/{product}/create', 'PriceController@create')->name('prices.create');
+	Route::post('/prices/products/{product}', 'PriceController@store')->name('prices.store');
 });
 
 # Image model routes
-Route::prefix('images')->name('images.')->middleware(['auth','admin'])->group(function () {
-	Route::get('products/{product}', 'ImageController@edit')->name('edit');
-	Route::patch('swap', 'ImageController@swap')->name('swap');
-	Route::patch('{image}/move', 'ImageController@move')->name('move');
-	Route::resource('', 'ImageController')->only(['store','update','destroy']);
+Route::middleware(['auth','admin'])->group(function () {
+	Route::resource('images', 'ImageController')->only(['store','update','destroy']);
+	Route::prefix('images')->name('images.')->group(function(){
+		Route::get('products/{product}', 'ImageController@edit')->name('edit');
+		Route::patch('swap', 'ImageController@swap')->name('swap');
+		Route::patch('{image}/move', 'ImageController@move')->name('move');
+	});
 });
 
 # taobao routes

@@ -1,7 +1,7 @@
 <div class="d-flex flex-column products-show__info--properties">
 
 	<div class="mdc-typography--headline6">
-		<a id="product-brand" href="{{ route('products.index',['brand' => [$product->brand]]) }}">
+		<a id="product-brand" href="{{ route('products.index',['brand' => [$product->brand_id,]]) }}">
 			{{ __($product->brand->full_name) }}</a>
 	</div>
 	<div class="mdc-typography--headline6">
