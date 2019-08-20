@@ -7,7 +7,7 @@
 	@foreach($diffs as $diff)
 		<div class="d-flex diff-card my-4">
 			<div class="diff-card__image" style="width:20%;">
-				<img src="{{ $product->image->url ?? asset('storage/icons/ImagePlaceholder.svg') }}" alt="">
+				<img src="{{ $diff['product']->image->url ?? asset('storage/icons/ImagePlaceholder.svg') }}" alt="">
 			</div>
 			<div class="d-flex flex-column price-card col">
 				@if($diff['taobao'])
@@ -21,7 +21,7 @@
 			</div>
 			<div class="d-flex flex-column price-card col">
 				@if($diff['retail'])
-					<a href="{{ route('products.show',['product' => $diff['retail']->product,]) }}" target="_blank">{{ $diff['retail']->product->displayName() }}</a>
+					<a href="{{ route('products.show',['product' => $diff['retail']->product,]) }}" target="_blank">{{ $diff['product']->displayName().'-'.__($diff['product']->color->name) }}</a>
 					@foreach($diff['retail']->prices as $size => $price)
 					<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
 					@endforeach

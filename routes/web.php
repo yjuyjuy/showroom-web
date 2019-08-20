@@ -15,40 +15,64 @@
 
 Auth::routes();
 
-Route::redirect('/', '/products');
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home/products', 'HomeController@products')->name('products');
-Route::get('/home/retailers', 'HomeController@retailers')->name('retailers');
-Route::resource('products', 'ProductController')->middleware(['auth','admin'])->except(['index','show']);
-Route::resource('products', 'ProductController')->only(['index','show']);
-
-Route::middleware(['auth','vendor'])->group(function () {
-	Route::resource('prices', 'PriceController')->except(['create','store','index','show']);
-	Route::get('/vendors/prices', 'PriceController@index')->name('prices.index');
-	Route::get('/products/{product}/prices/create', 'PriceController@create')->name('prices.create');
-	Route::post('/products/{product}/prices', 'PriceController@store')->name('prices.store');
+# main product pages
+Route::middleware('auth')->name('products.')->group(function(){
+	Route::get('/','ProductController@index')->name('index');
+	Route::resource('', 'ProductController')->only(['show']);
+	Route::resource('', 'ProductController')->only(['create','store','edit','update','destroy'])->middleware(['auth', 'admin']);
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
-	Route::get('/taobao/home', 'TaobaoController@home')->name('taobao.home');
-	Route::get('/taobao/admin', 'TaobaoController@admin')->name('taobao.admin');
-	Route::post('/taobao/product/link', 'TaobaoController@link');
-	Route::post('/taobao/product/ignore', 'TaobaoController@ignore');
-	Route::get('/taobao/{shop}/diffs', 'TaobaoController@diffs')->name('taobao.diffs');
-	Route::get('/taobao/{shop}/reset', 'TaobaoController@reset');
-});
-Route::get('/taobao', 'TaobaoController@list')->name('taobao');
-Route::get('/taobao/{shop}', 'TaobaoController@index')->name('taobao.index');
-Route::get('/taobao/{shop}/{product}', 'TaobaoController@show')->name('taobao.show');
+# user pages
+Route::prefix('home')->name('home')->middleware('auth')->group(function() {
+	Route::get('', 'HomeController@index');
+	Route::get('products', 'HomeController@products')->name('.products');
+	Route::get('retailers', 'HomeController@retailers')->name('.retailers');
+});	
 
-Route::middleware(['auth','admin'])->group(function () {
-	Route::get('/products/{product}/images', 'ImageController@edit')->name('images.edit');
-	Route::patch('/images/swap', 'ImageController@swap')->name('images.swap');
-	Route::patch('/images/{image}/move', 'ImageController@move')->name('images.move');
-	Route::resource('images', 'ImageController')->only(['store','update','destroy']);
-	Route::get('/farfetch/men/off-white','FarfetchController@index')->name('farfetch.index');
-	Route::get('/farfetch/men/off-white/{product}','FarfetchController@show')->name('farfetch.show');
-	Route::get('/logs','LogController@index')->name('logs');
-	Route::delete('/logs/{log}','LogController@destroy')->name('logs.destroy');
-	Route::get('/admin','AdminController@index');
+
+# Price model routes
+Route::prefix('prices')->name('prices.')->middleware(['auth','vendor'])->group(function () {
+	Route::resource('', 'PriceController')->only(['index','edit','destroy','update']);
+	Route::get('/products/{product}/create', 'PriceController@create')->name('create');
+	Route::post('/products/{product}', 'PriceController@store')->name('store');
+});
+
+# Image model routes
+Route::prefix('images')->name('images.')->middleware(['auth','admin'])->group(function () {
+	Route::get('products/{product}', 'ImageController@edit')->name('edit');
+	Route::patch('swap', 'ImageController@swap')->name('swap');
+	Route::patch('{image}/move', 'ImageController@move')->name('move');
+	Route::resource('', 'ImageController')->only(['store','update','destroy']);
+});
+
+# taobao routes
+Route::prefix('taobao')->name('taobao.')->middleware('auth')->group(function() {
+	Route::middleware('admin')->group(function () {
+		Route::get('home', 'TaobaoController@home')->name('home');
+		Route::prefix('products')->name('products.')->group(function(){
+			Route::get('manage', 'TaobaoController@manage')->name('manage');
+			Route::post('link', 'TaobaoController@link')->name('link');
+			Route::post('ignore', 'TaobaoController@ignore')->name('ignore');
+			Route::get('reset', 'TaobaoController@reset_products')->name('reset');
+		});
+		Route::prefix('prices')->name('prices.')->group(function(){
+			Route::get('diffs', 'TaobaoController@diffs')->name('diffs');
+			Route::get('reset', 'TaobaoController@reset_prices')->name('reset');
+		});
+	});
+	// Route::get('', 'TaobaoController@list')->name('taobao');
+	Route::get('{shop}', 'TaobaoController@index')->name('index');
+	Route::get('{shop}/{product}', 'TaobaoController@show')->name('show');
+});
+
+# farfetch routes
+Route::prefix('farfetch')->name('farfetch.')->middleware(['auth','admin'])->group(function () {
+	Route::view('', 'farfetch.home')->name('home');
+	Route::get('men/off-white', 'FarfetchController@index')->name('index');
+	Route::get('men/off-white/{product}', 'FarfetchController@show')->name('show');
+});
+
+# admin helper routes
+Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
+	Route::get('', 'AdminController@index');
 });

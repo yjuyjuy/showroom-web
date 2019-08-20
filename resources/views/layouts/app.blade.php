@@ -52,17 +52,16 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
 						<span class="mdc-list-item__text">{{ __('Home') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('products')}}">
+					<a class="mdc-list-item" href="{{route('home.products')}}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
 						<span class="mdc-list-item__text">{{ __('Followed products') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('retailers')}}">
+					<a class="mdc-list-item" href="{{route('home.retailers')}}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
 						<span class="mdc-list-item__text">{{ __('Followed retailers') }}</span>
 					</a>
 					@if($user->is_reseller)
 					<hr class="mdc-list-divider">
-      		<h6 class="mdc-list-group__subheader">同行</h6>
 					<a class="mdc-list-item" href="{{route('home')}}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">track_changes</i>
 						<span class="mdc-list-item__text">{{ __('Followed vendors') }}</span>
@@ -70,7 +69,6 @@
 					@endif
 					@if($user->vendor)
 					<hr class="mdc-list-divider">
-      		<h6 class="mdc-list-group__subheader">合作商</h6>
 					<a class="mdc-list-item" href="{{ route('prices.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
 						<span class="mdc-list-item__text">{{ __('My price sheet') }}</span>
@@ -78,21 +76,17 @@
 					@endif
 					@if($user->isSuperAdmin())
 					<hr class="mdc-list-divider">
-      		<h6 class="mdc-list-group__subheader">淘宝合作商</h6>
-					<a class="mdc-list-item" href="{{ route('taobao.diffs', ['shop' => 'Dopebxtch',]) }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
+					<a class="mdc-list-item" href="{{ route('taobao.home') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">{{ __('My taobao') }}</span>
 					</a>
-					
+					@endif
+					@if($user->isSuperAdmin())
 					<hr class="mdc-list-divider">
-      		<h6 class="mdc-list-group__subheader">管理员</h6>
+					<h6 class="mdc-list-group__subheader">管理员功能</h6>
 					<a class="mdc-list-item" href="{{ route('products.create') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
 						<span class="mdc-list-item__text">{{ __('Create product') }}</span>
-					</a>
-					<a class="mdc-list-item" href="{{ route('taobao.admin') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">event_note</i>
-						<span class="mdc-list-item__text">需要处理</span>
 					</a>
 					@endif
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -113,7 +107,7 @@
 				<div class="mdc-top-app-bar__row">
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
 						<a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-						<a href="/" class="mdc-top-app-bar__title">{{config('app.name','app.name')}}</a>
+						<a href="/" class="mdc-top-app-bar__title">{{config('app.name','app.name')}}@yield('header','')</a>
 					</section>
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
 						<a href="{{ route('products.index',['sort' => 'random', 'category' => old('category'),'brand' => old('brand'),'season' => old('season'),'color' => old('color')]) }}"
