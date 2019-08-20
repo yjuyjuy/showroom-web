@@ -17,30 +17,36 @@ class DatabaseSeeder extends Seeder
 
 		$admin = \App\User::where('email', 'yjuyjuy@gmail.com')->first();
 		$admin->password = Hash::make('Tptz9kKZ48rTefK');
-		$admin->is_reseller = true;
 		$admin->save();
-		$vendor = \App\Vendor::where('name', 'Dopebxtch')->first();
-		$vendor->users()->save($admin);
-
-		foreach(\App\Vendor::all() as $vendor){
-			if(!$vendor->retailer){
-				$retailer = new \App\Retailer(['name' => $vendor->name, 'id' => $vendor->id]);
-				$retailer->save();
-				$vendor->retailer()->associate($retailer);
-				$vendor->save();
-			}
-		}
-
-		if(!\App\Retailer::where('name', 'Farfetch')->first()){
-			$retailer = new \App\Retailer();
-			$retailer->name = "Farfetch";
-			$retailer->homepage = "https://www.farfetch.com/";
-			$retailer->save();
-		}
-
-		$admin->vendors()->sync(\App\Vendor::all()->pluck('id'));
-		$admin->following()->sync(\App\Retailer::all()->pluck('id'));
-		$admin->vendor->retailer->partner_vendors()->sync(\App\Vendor::where('id','<>',$admin->vendor->id)->get()->pluck('id'));
+		
+		// $admin->is_reseller = true;
+		// $admin->save();
+		// $vendor = \App\Vendor::where('name', 'Dopebxtch')->first();
+		// $vendor->users()->save($admin);
+		// 
+		// if($farfetch_vendor = \App\Vendor::where('name','Farfetch')->first()) {
+		// 	$farfetch_vendor->delete();
+		// }
+		// 
+		// foreach(\App\Vendor::all() as $vendor){
+		// 	if(!$vendor->retailer){
+		// 		$retailer = new \App\Retailer(['name' => $vendor->name, 'id' => $vendor->id]);
+		// 		$retailer->save();
+		// 		$vendor->retailer()->associate($retailer);
+		// 		$vendor->save();
+		// 	}
+		// }
+		// 
+		// if(!\App\Retailer::where('name', 'Farfetch')->first()){
+		// 	$retailer = new \App\Retailer();
+		// 	$retailer->name = "Farfetch";
+		// 	$retailer->homepage = "https://www.farfetch.com/";
+		// 	$retailer->save();
+		// }
+		// 
+		// $admin->vendors()->sync(\App\Vendor::all()->pluck('id'));
+		// $admin->following()->sync(\App\Retailer::all()->pluck('id'));
+		// $admin->vendor->retailer->partner_vendors()->sync(\App\Vendor::where('id','<>',$admin->vendor->id)->get()->pluck('id'));
 		// $admin->vendor->retailer->followers()->sync(\App\User::all()->pluck('id'));
 	}
 }
