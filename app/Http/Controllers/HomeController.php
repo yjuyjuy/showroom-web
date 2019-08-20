@@ -14,6 +14,7 @@ class HomeController extends Controller
 	public function __construct()
 	{
 		$this->middleware('auth');
+		return redirect(route('products.index'));
 	}
 
 	/**
@@ -23,6 +24,14 @@ class HomeController extends Controller
 	 */
 	public function index()
 	{
-		return redirect(route('products.index'));
+		//
+	}
+	public function products()
+	{
+		//
+	}
+	public function retailers()
+	{
+		//
 	}
 }
