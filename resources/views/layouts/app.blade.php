@@ -52,24 +52,47 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
 						<span class="mdc-list-item__text">{{ __('Home') }}</span>
 					</a>
+					<a class="mdc-list-item" href="{{route('products')}}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
+						<span class="mdc-list-item__text">{{ __('Followed products') }}</span>
+					</a>
+					<a class="mdc-list-item" href="{{route('retailers')}}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
+						<span class="mdc-list-item__text">{{ __('Followed retailers') }}</span>
+					</a>
+					@if($user->is_reseller)
+					<hr class="mdc-list-divider">
+      		<h6 class="mdc-list-group__subheader">同行</h6>
+					<a class="mdc-list-item" href="{{route('home')}}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">track_changes</i>
+						<span class="mdc-list-item__text">{{ __('Followed vendors') }}</span>
+					</a>
+					@endif
 					@if($user->vendor)
+					<hr class="mdc-list-divider">
+      		<h6 class="mdc-list-group__subheader">合作商</h6>
 					<a class="mdc-list-item" href="{{ route('prices.index') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
-						<span class="mdc-list-item__text">{{ __('Price sheet') }}</span>
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
+						<span class="mdc-list-item__text">{{ __('My price sheet') }}</span>
 					</a>
 					@endif
 					@if($user->isSuperAdmin())
+					<hr class="mdc-list-divider">
+      		<h6 class="mdc-list-group__subheader">淘宝合作商</h6>
+					<a class="mdc-list-item" href="{{ route('taobao.diffs', ['shop' => 'Dopebxtch',]) }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
+						<span class="mdc-list-item__text">{{ __('My taobao') }}</span>
+					</a>
+					
+					<hr class="mdc-list-divider">
+      		<h6 class="mdc-list-group__subheader">管理员</h6>
 					<a class="mdc-list-item" href="{{ route('products.create') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
 						<span class="mdc-list-item__text">{{ __('Create product') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('logs') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">ballot</i>
-						<span class="mdc-list-item__text">{{ __('Change log') }}</span>
-					</a>
-					<a class="mdc-list-item" href="{{ route('farfetch.index') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
-						<span class="mdc-list-item__text">{{ __('Farfetch') }}</span>
+					<a class="mdc-list-item" href="{{ route('taobao.admin') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">event_note</i>
+						<span class="mdc-list-item__text">需要处理</span>
 					</a>
 					@endif
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
