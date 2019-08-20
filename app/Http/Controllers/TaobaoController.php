@@ -123,14 +123,16 @@ class TaobaoController extends Controller
 		return view('taobao.diffs', compact('shop', 'diffs'));
 	}
 	
-	public function reset_products(TaobaoShop $shop)
+	public function reset_products(Request $request)
 	{
+		$shop = TaobaoShop::where('name', $request->input('shop'))->firstOrFail();
 		$shop->prices()->update(['ignore' => false, 'product_id' => null,]);
 		return redirect(route('taobao.home'));
 	}
 	
-	public function reset_prices(TaobaoShop $shop)
+	public function reset_prices(Request $request)
 	{
+		$shop = TaobaoShop::where('name', $request->input('shop'))->firstOrFail();
 		if ($shop->is_partner) {
 			return redirect(route('taobao.home'));
 		}
