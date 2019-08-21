@@ -1,80 +1,82 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-
-
 Auth::routes();
 
-# main product pages
-Route::get('/','ProductController@index')->name('products.index');
-Route::middleware('auth')->group(function(){
-	Route::resource('products', 'ProductController')->only(['show']);
-	Route::resource('products', 'ProductController')->only(['create','store','edit','update','destroy'])->middleware(['auth', 'admin']);
+Route::redirect('', 'products');
+
+# User model
+Route::middleware('auth')->group(function() {
+	Route::get('home', 'HomeController@index')->name('home');
+	Route::get('home/settings', 'UserController@edit')->name('settings.edit');
+	Route::patch('home/settings', 'UserController@update')->name('settings.update');
+	Route::get('home/followings/products', 'ProductController@following')->name('following.products');
+	Route::get('home/followings/retailers', 'RetailerController@following')->name('following.retailers');
 });
 
-# user pages
-Route::prefix('home')->name('home')->middleware('auth')->group(function() {
-	Route::get('', 'HomeController@index');
-	Route::get('products', 'HomeController@products')->name('.products');
-	Route::get('retailers', 'HomeController@retailers')->name('.retailers');
-});	
-
-
-# Price model routes
-Route::middleware(['auth','vendor'])->group(function () {
-	Route::resource('prices', 'PriceController')->only(['index','edit','destroy','update']);
-	Route::get('/prices/products/{product}/create', 'PriceController@create')->name('prices.create');
-	Route::post('/prices/products/{product}', 'PriceController@store')->name('prices.store');
+# Product model
+Route::get('products', 'ProductController@index')->name('products.index');
+Route::middleware('auth')->group(function() {
+	Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
+	Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
+	Route::get('products/random', 'ProductController@random')->name('products.random');
+	Route::get('products/{product}', 'ProductController@show')->name('products.show');
+	Route::patch('products/{product}', 'ProductController@update')->name('products.update')->middleware('admin');
+	Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy')->middleware('admin');
+	Route::get('products/{product}/edit', 'ProductController@edit')->name('products.edit')->middleware('admin');
+	Route::patch('products/{product}/follow', 'ProductController@follow')->name('follow.product');
+	Route::patch('products/{product}/unfollow', 'ProductController@unfollow')->name('unfollow.product');
 });
 
-# Image model routes
-Route::middleware(['auth','admin'])->group(function () {
-	Route::resource('images', 'ImageController')->only(['store','update','destroy']);
-	Route::prefix('images')->name('images.')->group(function(){
-		Route::get('products/{product}', 'ImageController@edit')->name('edit');
-		Route::patch('swap', 'ImageController@swap')->name('swap');
-		Route::patch('{image}/move', 'ImageController@move')->name('move');
-	});
+# Price model
+Route::middleware(['auth', 'vendor'])->group(function() {
+	Route::get('prices', 'PriceController@index')->name('prices.index');
+	Route::patch('prices/{price}', 'PriceController@update')->name('prices.update');
+	Route::delete('prices/{price}', 'PriceController@destroy')->name('prices.destroy');
+	Route::get('prices/{price}/edit', 'PriceController@edit')->name('prices.edit');
+	Route::post('products/{product}/prices', 'PriceController@store')->name('prices.store');
+	Route::get('products/{product}/prices/create', 'PriceController@create')->name('prices.create');
 });
 
-# taobao routes
-Route::prefix('taobao')->name('taobao.')->middleware('auth')->group(function() {
-	Route::middleware('admin')->group(function () {
-		Route::get('home', 'TaobaoController@home')->name('home');
-		Route::prefix('products')->name('products.')->group(function(){
-			Route::get('manage', 'TaobaoController@manage')->name('manage');
-			Route::post('link', 'TaobaoController@link')->name('link');
-			Route::post('ignore', 'TaobaoController@ignore')->name('ignore');
-			Route::get('reset', 'TaobaoController@reset_products')->name('reset');
-		});
-		Route::prefix('prices')->name('prices.')->group(function(){
-			Route::get('diffs', 'TaobaoController@diffs')->name('diffs');
-			Route::get('reset', 'TaobaoController@reset_prices')->name('reset');
-		});
-	});
-	// Route::get('', 'TaobaoController@list')->name('taobao');
-	Route::get('{shop}', 'TaobaoController@index')->name('index');
-	Route::get('{shop}/{product}', 'TaobaoController@show')->name('show');
+# Image model
+Route::middleware(['auth', 'admin'])->group(function() {
+	Route::post('images', 'ImageController@store')->name('images.store');
+	Route::patch('images/swap', 'ImageController@swap')->name('images.swap');
+	Route::patch('images/{image}', 'ImageController@update')->name('images.update');
+	Route::delete('images/{image}', 'ImageController@destroy')->name('images.destroy');
+	Route::patch('images/{image}/move', 'ImageController@move')->name('images.move');
+	Route::get('products/{product}/images', 'ImageController@edit')->name('images.edit');
 });
 
-# farfetch routes
-Route::prefix('farfetch')->name('farfetch.')->middleware(['auth','admin'])->group(function () {
-	Route::view('', 'farfetch.home')->name('home');
-	Route::get('men/off-white', 'FarfetchController@index')->name('index');
-	Route::get('men/off-white/{product}', 'FarfetchController@show')->name('show');
+# Retailer
+Route::middleware('auth')->group(function () {
+	Route::get('retailer/search', 'RetailerController@search')->name('retailer.search');
+	Route::patch('retailer/{retailer}/follow', 'RetailerController@follow')->name('follow.retailer');
+	Route::patch('retailer/{retailer}/unfollow', 'RetailerController@unfollow')->name('unfollow.retailer');
+	Route::get('retailer/{retailer}/products', 'RetailerController@index')->name('retailer.products.index');
+	Route::get('retailer/{retailer}/products/random', 'RetailerController@random')->name('retailer.products.random');
+	Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
+});
+
+# Taobao
+Route::middleware('auth')->group(function () {
+	Route::get('taobao/admin', 'TaobaoController@admin')->name('taobao.admin')->middleware('taobao');
+	Route::get('taobao/{shop}', 'TaobaoController@index')->name('taobao.products.index');
+	Route::get('taobao/{shop}/{product}', 'TaobaoController@show')->name('taobao.products.show');
+	Route::get('taobao/admin/edit', 'TaobaoController@edit')->name('taobao.admin.edit')->middleware('taobao');
+	Route::get('taobao/admin/diffs', 'TaobaoController@diffs')->name('taobao.admin.diffs')->middleware('taobao');
+	Route::post('taobao/admin/link', 'TaobaoController@link')->name('taobao.admin.link')->middleware('taobao');
+	Route::post('taobao/admin/unlink', 'TaobaoController@unlink')->name('taobao.admin.unlink')->middleware('taobao');
+	Route::post('taobao/admin/ignore', 'TaobaoController@ignore')->name('taobao.admin.ignore')->middleware('taobao');
+});
+
+# Farfetch
+Route::middleware(['auth', 'admin'])->group(function() {
+	Route::get('farfetch', 'FarfetchController@index')->name('farfetch.index');
+	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
 });
 
 # admin helper routes
-Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
-	Route::get('', 'AdminController@index');
-});
+Route::get('admin', 'AdminController@index')->name('admin')->middleware(['auth', 'admin']);
+
+# token
+Route::get('{token}', 'UrlTokenController@find')->name('token')->middleware(['auth', 'throttle:15,1']);
