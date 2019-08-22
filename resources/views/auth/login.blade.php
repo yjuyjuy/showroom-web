@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', __('Login'))
 
 @section('content')
 <div id="login" class="d-flex justify-content-center auth">
@@ -47,6 +48,9 @@
 		</form>
 		<div class="mdc-card__actions justify-content-end">
 			<div class="mdc-card__action-buttons flex-wrap justify-content-end">
+				<a id="register-button" class="mdc-button mdc-card__action mdc-card__action--button" href="{{ route('register') }}">
+					<span class="mdc-button__label">{{ __('Register') }}</span>
+				</a>
 				@if (Route::has('password.request'))
 				<a id="forgot-password-button" class="mdc-button mdc-card__action mdc-card__action--button" href="{{ route('password.request') }}">
 					<span class="mdc-button__label">{{ __('Forgot Your Password?') }}</span>

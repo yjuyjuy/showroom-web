@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', __('Register'))
 
 @section('content')
 <div id="register" class="d-flex justify-content-center auth">
@@ -51,6 +52,9 @@
 			</label>
 		</form>
 		<div class="mdc-card__actions justify-content-end">
+			<a id="login-button" class="mdc-button mdc-card__action mdc-card__action--button" href="{{ route('login') }}">
+				<span class="mdc-button__label">{{ __('Login') }}</span>
+			</a>
 			<div class="mdc-card__action-buttons flex-wrap justify-content-end">
 				<button type="submit" class="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button" form="register-form">
 					<span class="mdc-button__label">{{ __('Register') }}</span>
