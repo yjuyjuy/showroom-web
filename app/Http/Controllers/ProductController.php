@@ -34,7 +34,7 @@ class ProductController extends Controller
 		$user = auth()->user();
 		if ($user) {
 			$products->each(function ($product, $index) use ($user) {
-				$product->retails = $product->retails->whereIn('retailer_id', $user->following->pluck('id'));
+				$product->retails = $product->retails->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 			});
 		} else {
 			$products->each(function ($product, $index) use ($user) {
@@ -43,12 +43,7 @@ class ProductController extends Controller
 		}
 
 		$sortOptions = $this->sortOptions();
-		$filters = [
-			"category" => \App\Category::all(),
-			"color" => \App\Color::all(),
-			"season" => \App\Season::all(),
-			"brand" => \App\Brand::all()
-			];
+		$filters = $this->filterOptions();
 		$request->flash();
 		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
 	}
@@ -87,20 +82,19 @@ class ProductController extends Controller
 	public function show(Product $product)
 	{
 		$user = auth()->user();
-		$product->load([
-			'images', 'retails.retailer']);
-		if($user && $user->isSuperAdmin()){
+		$product->load(['images']);
+		if ($user && $user->isSuperAdmin()) {
 			$product->load(['retails','offers','retails.retailer','offers.vendor']);
 		} else {
-			if($user){
+			if ($user) {
 				$product->load([
 					'retails' => function ($query) use ($user) {
-						$query->whereIn('retailer_id',$user->following->pluck('id'));
+						$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 					}, 'retails.retailer', ]);
-				if($user->is_reseller){
+				if ($user->is_reseller) {
 					$product->load([
-						'offers' => function($query) use ($user) {
-							$query->whereIn('vendor_id', $user->vendors->pluck('id'));
+						'offers' => function ($query) use ($user) {
+							$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 						}, 'offers.vendor', ]);
 				}
 			} else {
@@ -113,6 +107,13 @@ class ProductController extends Controller
 		return view('products.show', compact('product', 'user'));
 	}
 
+	public function random()
+	{
+		$user = auth()->user();
+		$product = \App\Product::inRandomOrder()->first();
+		return view('products.show', compact('product', 'user'));
+	}
+	
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -225,7 +226,16 @@ class ProductController extends Controller
 	{
 		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
 	}
-
+	
+	public function filterOptions()
+	{
+		return [
+			"category" => \App\Category::all(),
+			"color" => \App\Color::all(),
+			"season" => \App\Season::all(),
+			"brand" => \App\Brand::all()
+		];
+	}
 	public function sort($products)
 	{
 		if (request()->input('sort')) {
@@ -280,5 +290,23 @@ class ProductController extends Controller
 				break;
 		}
 		return $products;
+	}
+	public function follow(Request $request, Product $product)
+	{
+		$user = auth()->user();
+		return $user->syncWithoutDetaching([$product]);
+	}
+	public function unfollow(Request $request, Product $product)
+	{
+		$user = auth()->user();
+		return $user->detach($product);
+	}
+	public function following()
+	{
+		$user = auth()->user();
+		$products = $user->following_products;
+		$sortOptions = $this->sortOptions();
+		$filters = $this->filterOptions();
+		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
 	}
 }
