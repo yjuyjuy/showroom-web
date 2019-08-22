@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePartnersTable extends Migration
+class CreateVendorRetailerTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -13,13 +13,12 @@ class CreatePartnersTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('partners', function (Blueprint $table) {
+		Schema::create('vendor_retailer', function (Blueprint $table) {
 			$table->bigIncrements('id');
 			$table->unsignedBigInteger('vendor_id');
 			$table->unsignedBigInteger('retailer_id');
 			$table->float('profit_rate')->default(15.0);
-			$table->timestamps();
-
+	
 			$table->index('vendor_id');
 			$table->index('retailer_id');
 		});
@@ -32,6 +31,6 @@ class CreatePartnersTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('partners');
+		Schema::dropIfExists('vendor_retailer');
 	}
 }

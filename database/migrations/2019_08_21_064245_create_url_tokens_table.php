@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResellerVendorTable extends Migration
+class CreateUrlTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateResellerVendorTable extends Migration
      */
     public function up()
     {
-        Schema::create('reseller_vendor', function (Blueprint $table) {
-            $table->bigIncrements('id');
-						$table->unsignedBigInteger('user_id');
-						$table->unsignedBigInteger('vendor_id');
+        Schema::create('url_tokens', function (Blueprint $table) {
+            $table->char('token', 15);
+            $table->text('target');
             $table->timestamps();
+            
+            $table->primary('token');
         });
     }
 
@@ -28,6 +29,6 @@ class CreateResellerVendorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reseller_vendor');
+        Schema::dropIfExists('url_tokens');
     }
 }
