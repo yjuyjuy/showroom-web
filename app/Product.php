@@ -81,6 +81,10 @@ class Product extends Model
 	{
 		return $this->hasMany(TaobaoPrice::class);
 	}
+	public function followers()
+	{
+		return $this->belongsToMany(User::class, 'user_product', 'product_id', 'user_id');
+	}
 	// Mutators
 	public function setCategoryAttribute($value)
 	{
@@ -105,7 +109,7 @@ class Product extends Model
 			return min($retail->prices);
 		})->min();
 	}
-	public function getPriceAttribute($attribute)
+	public function getPriceAttribute()
 	{
 		return $this->getMinPrice();
 	}
@@ -116,7 +120,7 @@ class Product extends Model
 			foreach ($this->offers as $offer) {
 				foreach ($offer->prices as $size => $price) {
 					if (!array_key_exists($size, $data) || $price < $data[$size]['price']) {
-						$data[$size] = ['price' => $price, 'vendor' => $offer->vendor->name];
+						$data[$size] = ['price' => $price, 'vendor' => $offer->vendor->name, 'link' => $offer->vendor->link];
 					}
 				}
 			}
@@ -124,7 +128,7 @@ class Product extends Model
 			foreach ($this->retails as $retail) {
 				foreach ($retail->prices as $size => $price) {
 					if (!array_key_exists($size, $data) || $price < $data[$size]['price']) {
-						$data[$size] = ['price' => $price, 'retailer' => $retail->retailer->name];
+						$data[$size] = ['price' => $price, 'retailer' => $retail->retailer->name, 'link' => $retail->link];
 					}
 				}
 			}
@@ -134,7 +138,6 @@ class Product extends Model
 		});
 		return $data;
 	}
-
 	public function getAllPrices()
 	{
 		$prices = collect();
