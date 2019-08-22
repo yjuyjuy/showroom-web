@@ -48,17 +48,25 @@
 					</a>
 					@else
 					<?php $user = auth()->user(); ?>
-					<a class="mdc-list-item mdc-list-item--activated" href="{{route('home')}}">
+					<a class="mdc-list-item mdc-list-item--activated" href="{{ route('home') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
 						<span class="mdc-list-item__text">{{ __('Home') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('home.products')}}">
+					<a class="mdc-list-item" href="{{ route('following.products') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
 						<span class="mdc-list-item__text">{{ __('Followed products') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('home.retailers')}}">
+					<a class="mdc-list-item" href="{{route('following.retailers')}}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
 						<span class="mdc-list-item__text">{{ __('Followed retailers') }}</span>
+					</a>
+					<a class="mdc-list-item" href="{{ route('products.random') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">casino</i>
+						<span class="mdc-list-item__text">{{ __('Random product') }}</span>
+					</a>
+					<a class="mdc-list-item" href="{{route('retailer.search')}}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">search</i>
+						<span class="mdc-list-item__text">{{ __('Search retailer') }}</span>
 					</a>
 					@if($user->is_reseller)
 					<hr class="mdc-list-divider">
@@ -76,17 +84,14 @@
 					@endif
 					@if($user->isSuperAdmin())
 					<hr class="mdc-list-divider">
-					<a class="mdc-list-item" href="{{ route('taobao.home') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
-						<span class="mdc-list-item__text">{{ __('My taobao') }}</span>
-					</a>
-					@endif
-					@if($user->isSuperAdmin())
-					<hr class="mdc-list-divider">
 					<h6 class="mdc-list-group__subheader">管理员功能</h6>
 					<a class="mdc-list-item" href="{{ route('products.create') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
 						<span class="mdc-list-item__text">{{ __('Create product') }}</span>
+					</a>
+					<a class="mdc-list-item" href="{{ route('admin.taobao') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
+						<span class="mdc-list-item__text">淘宝管理</span>
 					</a>
 					@endif
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -110,7 +115,7 @@
 						<a href="/" class="mdc-top-app-bar__title">{{config('app.name','app.name')}}@yield('header','')</a>
 					</section>
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-						<a href="{{ route('products.index',['sort' => 'random', 'category' => old('category'),'brand' => old('brand'),'season' => old('season'),'color' => old('color')]) }}"
+						<a href="{{ route('products.random') }}"
 							 class="material-icons mdc-top-app-bar__action-item" aria-label="surprise">casino</a>
 					</section>
 				</div>
