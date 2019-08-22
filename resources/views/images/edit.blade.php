@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', '图片管理 - '.$product->displayName())
 @section('content')
 <div class="px-2" style="position:relative;">
 	<div class="d-flex" style="position:absolute; top:0; left:15px; z-index:1;">
