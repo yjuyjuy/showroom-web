@@ -47,17 +47,17 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo(Vendor::class);
 	}
-	public function vendors()
+	public function following_vendors()
 	{
 		return $this->belongsToMany(Vendor::class, 'reseller_vendor');
 	}
-	public function following()
+	public function following_retailers()
 	{
-		return $this->belongsToMany(Retailer::class);
+		return $this->belongsToMany(Retailer::class, 'user_retailer', 'user_id', 'retailer_id');
 	}
-	public function isReseller()
+	public function following_products()
 	{
-		return $this->is_reseller;
+		return $this->belongsToMany(Product::class, 'user_product', 'user_id', 'product_id');
 	}
 	public function isSuperAdmin()
 	{
