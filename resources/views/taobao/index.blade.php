@@ -7,7 +7,7 @@
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products as $product)
 		<li class="mdc-image-list__item">
-			<a href="{{ route('taobao.show',['shop' => $shop, 'product' => $product,]) }}">
+			<a href="{{ route('taobao.products.show',['shop' => $shop, 'product' => $product,]) }}">
 				<div class="mdc-image-list__image-aspect-container">
 					<img class="mdc-image-list__image" src="{{ $product->image ?? asset('storage/icons/ImagePlaceholder.svg') }}">
 				</div>
