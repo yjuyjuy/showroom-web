@@ -18,7 +18,17 @@ class Retailer extends Model
 	 * @var string
 	 */
 	protected $table = 'retailers';
-  
+	/**
+	 * Get the route key for the model.
+	 *
+	 * @return string
+	 */
+	public function getRouteKeyName()
+	{
+	    return 'name';
+	}
+	
+	# relationships
 	public function retails()
 	{
 		return $this->hasMany(RetailPrice::class);
@@ -29,7 +39,7 @@ class Retailer extends Model
 	}
 	public function partner_vendors()
 	{
-		return $this->belongsToMany(Vendor::class, 'partners')->withPivot('profit_rate');
+		return $this->belongsToMany(Vendor::class, 'vendor_retailer')->withPivot('profit_rate');
 	}
 	public function vendors()
 	{
@@ -37,7 +47,7 @@ class Retailer extends Model
 	}
 	public function followers()
 	{
-		return $this->belongsToMany(User::class);
+		return $this->belongsToMany(User::class, 'user_retailer', 'retailer_id', 'user_id');
 	}
   public function taobao_shop()
   {
