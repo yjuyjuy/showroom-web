@@ -32,7 +32,7 @@
 							.then(response=>{ window.location.replace(response.data.redirect) })">
 				<span class="mdc-button__label">{{ __('submit') }}</span>
 			</button>
-			<button type="button" class="mdc-button mdc-button--outlined mdc-button--error ml-2" @click="deletePrice({{$price->id}})">
+			<button type="button" class="mdc-button mdc-button--outlined mdc-button--error ml-2" onclick="delete_price({{$price->id}})">
 				<span class="mdc-button__label">{{ __('delete all') }}</span>
 			</button>
 		</div>
