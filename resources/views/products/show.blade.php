@@ -12,7 +12,7 @@
 		@include('products.show.properties')
 		@include('products.show.customer')
 		@auth
-			@if($user->isReseller())
+			@if($user->is_reseller)
 				@include('products.show.reseller')
 			@endif
 			@if($user->isSuperAdmin())
