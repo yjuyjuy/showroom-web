@@ -31,13 +31,6 @@ Vue.component('empty-image', require('./components/EmptyImageComponent.vue').def
 
 const app = new Vue({
 	el: '#app',
-	methods: {
-		deletePrice: function(id) {
-			axios.delete('/prices/' + id)
-				.then(response => window.location.replace(response.data.redirect))
-				.catch(error => console.log(error));
-		}
-	},
 });
 
 import {MDCRipple} from '@material/ripple';
@@ -144,7 +137,8 @@ const options = {
 	el.textContent = new Intl.DateTimeFormat('zh', options).format(t);
 });
 
-// display options dialog component
+
+// filter/sort options dialog component
 const dialogElement = document.getElementById('display-options-dialog');
 if (dialogElement) {
 	const dialog = new MDCDialog(dialogElement);
@@ -185,6 +179,7 @@ if (dialogElement) {
 		dialog.open();
 	}
 }
+// product list component
 var productList = document.getElementById('product-datalist');
 if (productList) {
 	var updateThumbnail = function () {
@@ -201,14 +196,14 @@ if (productList) {
 	var linkProduct = function(){
     let card = this.parentElement.parentElement.parentElement;
 		let input = card.querySelector('input');
-		axios.post('/taobao/product/link', {'price_id':input.dataset.id,'product_id': input.value})
+		axios.post('/taobao/link', {'price_id':input.dataset.id,'product_id': input.value})
       .then(response => card.parentElement.removeChild(card))
 			.catch(error => window.alert('action failed'));
 	};
 	var ignoreProduct = function() {
     let card = this.parentElement.parentElement.parentElement;
 		let input = card.querySelector('input');
-		axios.post('/taobao/product/ignore', {'price_id':input.dataset.id})
+		axios.post('/taobao/ignore', {'price_id':input.dataset.id})
 			.then(response => card.parentElement.removeChild(card))
 			.catch(error => window.alert('action failed'));
 	};
@@ -219,4 +214,48 @@ if (productList) {
 		el.querySelector('.ignore-button').onclick = ignoreProduct;
 		el.querySelector('.confirm-button').onclick = linkProduct;
 	});
+}
+// admin requests component
+if(document.getElementById('admin-requests')){
+	var handle = function(route, user_id) {
+		axios.post(route, {'user_id': user_id,})
+		.then(response=>window.location.reload())
+		.catch(error=>window.alert('action failed'))
+	};
+	[].map.call(document.querySelectorAll('.upgrade-request'), function(el) {
+		let user_id = el.dataset.userId;
+		el.querySelector('.agree-button').onclick = () => handle('/admin/requests/agree', user_id);
+		el.querySelector('.reject-button').onclick = () => handle('/admin/requests/reject', user_id);
+	})
+}
+
+var delete_price = function(id) {
+	event.preventDefault();
+	axios.delete('/prices/' + id)
+		.then(response => window.location.replace(response.data.redirect))
+		.catch(error => window.alert('action failed'));
+}
+window.follow_product = function(id) {
+	event.preventDefault();
+	axios.post('/products/' + id + '/follow')
+		.then(response => window.location.reload())
+		.catch(error => window.alert('action failed'));
+}
+window.unfollow_product = function(id) {
+	event.preventDefault();
+	axios.post('/products/' + id + '/unfollow')
+		.then(response => window.location.reload())
+		.catch(error => window.alert('action failed'));
+}
+window.follow_retailer = function(name) {
+	event.preventDefault();
+	axios.post('/retailer/' + name + '/follow')
+		.then(response => window.location.reload())
+		.catch(error => window.alert('action failed'));
+}
+window.unfollow_retailer = function(name) {
+	event.preventDefault();
+	axios.post('/retailer/' + name + '/unfollow')
+		.then(response => window.location.reload())
+		.catch(error => window.alert('action failed'));
 }
