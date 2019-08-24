@@ -15,9 +15,9 @@ class CreateResellerVendorTable extends Migration
 	{
 		Schema::create('reseller_vendor', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->unsignedBigInteger('reseller_id');
+			$table->unsignedBigInteger('user_id');
 			$table->unsignedBigInteger('vendor_id');
-		  
+
 			$table->index('reseller_id');
 			$table->index('vendor_id');
 		});
