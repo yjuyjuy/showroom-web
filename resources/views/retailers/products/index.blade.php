@@ -2,6 +2,7 @@
 @section('title', __('All products').' - '.$retailer->name)
 @section('content')
 <div id="products-index" class="">
+	@include('retailers.banner')
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products as $product)
 		<li class="mdc-image-list__item">
