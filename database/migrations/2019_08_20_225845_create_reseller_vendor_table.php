@@ -18,7 +18,7 @@ class CreateResellerVendorTable extends Migration
 			$table->unsignedBigInteger('user_id');
 			$table->unsignedBigInteger('vendor_id');
 
-			$table->index('reseller_id');
+			$table->index('user_id');
 			$table->index('vendor_id');
 		});
 	}
