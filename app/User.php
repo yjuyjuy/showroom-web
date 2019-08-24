@@ -33,16 +33,13 @@ class User extends Authenticatable
 	 */
 	protected $casts = [
 		'email_verified_at' => 'datetime',
-		'is_reseller' => 'boolean',
 	];
 	/**
 	 * The model's default values for attributes.
 	 *
 	 * @var array
 	 */
-	protected $attributes = [
-		'is_reseller' => false,
-	];
+	protected $attributes = [];
 	public function vendor()
 	{
 		return $this->belongsTo(Vendor::class);
@@ -58,6 +55,27 @@ class User extends Authenticatable
 	public function following_products()
 	{
 		return $this->belongsToMany(Product::class, 'user_product', 'user_id', 'product_id');
+	}
+	# accessors, mutators
+	public function getIsResellerAttribute()
+	{
+		return $this->type == 'reseller';
+	}
+	public function setIsResellerAttribute($value)
+	{
+		if($value) $this->type = "reseller";
+	}
+	public function getIsPendingAttribute()
+	{
+		return $this->type == 'pending';
+	}
+	public function setIsPendingAttribute($value)
+	{
+		if($value) $this->type = "pending";
+	}
+	public function getIsRejectedAttribute()
+	{
+		return $this->type == 'rejected';
 	}
 	public function isSuperAdmin()
 	{
