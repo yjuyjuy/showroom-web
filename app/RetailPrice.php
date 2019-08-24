@@ -16,7 +16,6 @@ class RetailPrice extends Model
 	 */
 	protected $casts = [
 		'prices' => 'array',
-		'link' => 'array',
 	];
 	public function retailer()
 	{
