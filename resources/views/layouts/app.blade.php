@@ -48,35 +48,40 @@
 					</a>
 					@else
 					<?php $user = auth()->user(); ?>
-					<a class="mdc-list-item mdc-list-item--activated" href="{{ route('home') }}">
+					<a class="mdc-list-item mdc-list-item--activated" href="{{ route('products.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
-						<span class="mdc-list-item__text">{{ __('Home') }}</span>
+						<span class="mdc-list-item__text">{{ __('All products') }}</span>
 					</a>
 					<a class="mdc-list-item" href="{{ route('following.products') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
-						<span class="mdc-list-item__text">{{ __('Followed products') }}</span>
+						<span class="mdc-list-item__text">{{ __('Following products') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('following.retailers')}}">
+					<a class="mdc-list-item" href="{{ route('following.retailers') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
-						<span class="mdc-list-item__text">{{ __('Followed retailers') }}</span>
+						<span class="mdc-list-item__text">{{ __('Following retailers') }}</span>
 					</a>
 					<a class="mdc-list-item" href="{{ route('products.random') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">casino</i>
 						<span class="mdc-list-item__text">{{ __('Random product') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{route('retailer.search')}}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">search</i>
-						<span class="mdc-list-item__text">{{ __('Search retailer') }}</span>
-					</a>
-					@if($user->is_reseller)
 					<hr class="mdc-list-divider">
-					<a class="mdc-list-item" href="{{route('home')}}">
+					<h6 class="mdc-list-group__subheader">高级功能</h6>
+					@if($user->is_reseller)
+					<a class="mdc-list-item" href="{{ route('products.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">work_outline</i>
+						<span class="mdc-list-item__text">所有报价</span>
+					</a>
+					<a class="mdc-list-item" href="{{ route('following.vendors') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">track_changes</i>
-						<span class="mdc-list-item__text">{{ __('Followed vendors') }}</span>
+						<span class="mdc-list-item__text">{{ __('Following vendors') }}</span>
+					</a>
+					@else
+					<a class="mdc-list-item" href="{{ route('account.status') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">verified_user</i>
+						<span class="mdc-list-item__text">申请卖家账户</span>
 					</a>
 					@endif
 					@if($user->vendor)
-					<hr class="mdc-list-divider">
 					<a class="mdc-list-item" href="{{ route('prices.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
 						<span class="mdc-list-item__text">{{ __('My price sheet') }}</span>
@@ -89,11 +94,23 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
 						<span class="mdc-list-item__text">{{ __('Create product') }}</span>
 					</a>
+					<a class="mdc-list-item" href="{{ route('admin.functions') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">extension</i>
+						<span class="mdc-list-item__text">手动执行程序</span>
+					</a>
+					<a class="mdc-list-item" href="{{ route('admin.requests') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+						<span class="mdc-list-item__text">升级账户申请</span>
+					</a>
 					<a class="mdc-list-item" href="{{ route('admin.taobao') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
 					</a>
 					@endif
+					<a class="mdc-list-item" href="{{ route('account.settings.edit') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+						<span class="mdc-list-item__text">设置</span>
+					</a>
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
 						<span class="mdc-list-item__text">{{ __('Logout') }}</span>
