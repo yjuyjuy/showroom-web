@@ -21,25 +21,12 @@ class ProductController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		Cache::forget(url()->full());
-		$products = Cache::remember(url()->full(), 10, function () use ($request) {
-			$products = $this->filter(Product::query());
-			$products = $this->sort($products);
-			$products->load(['image','brand','retails']);
-			return $products;
-		});
+		$user = auth()->user();
+		$products = $this->filter(Product::query());
+		$products = $this->sort($products);
+
 		if ($request->input('sort') === 'random') {
 			$products = $products->shuffle();
-		}
-		$user = auth()->user();
-		if ($user) {
-			$products->each(function ($product, $index) use ($user) {
-				$product->retails = $product->retails->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-			});
-		} else {
-			$products->each(function ($product, $index) use ($user) {
-				$product->retails = $product->retails->where('retailer_id', 1);
-			});
 		}
 
 		$sortOptions = $this->sortOptions();
@@ -82,38 +69,37 @@ class ProductController extends Controller
 	public function show(Product $product)
 	{
 		$user = auth()->user();
-		$product->load(['images']);
-		if ($user && $user->isSuperAdmin()) {
-			$product->load(['retails','offers','retails.retailer','offers.vendor']);
-		} else {
-			if ($user) {
-				$product->load([
-					'retails' => function ($query) use ($user) {
-						$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-					}, 'retails.retailer', ]);
-				if ($user->is_reseller) {
-					$product->load([
-						'offers' => function ($query) use ($user) {
-							$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
-						}, 'offers.vendor', ]);
-				}
-			} else {
-				$product->load([
-					'retails' => function ($query) use ($user) {
-						$query->where('retailer_id', 1);
-					}, 'retails.retailer']);
-			}
+		if ($user->isSuperAdmin()) {
+			$product->load(['prices.vendor']);
 		}
+		if ($user->is_reseller) {
+			$product->load([
+				'offers' => function ($query) use ($user) {
+					$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
+				}, 'offers.vendor', ]);
+		}
+		$product->loadMissing([
+			'retails' => function ($query) use ($user) {
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+			}, 'retails.retailer', 'images', 'brand','season','color'
+		]);
 		return view('products.show', compact('product', 'user'));
 	}
 
 	public function random()
 	{
-		$user = auth()->user();
-		$product = \App\Product::inRandomOrder()->first();
-		return view('products.show', compact('product', 'user'));
+		$user = auth()->user()->load('following_retailers');
+		while (true) {
+			$product = \App\Product::inRandomOrder()->first();
+			$product->load(['retails' => function($query) use ($user) {
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+			}]);
+			if($product->retails->isNotEmpty()){
+				return $this->show($product);
+			}
+		}
 	}
-	
+
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -185,6 +171,16 @@ class ProductController extends Controller
 			$query->whereIn("{$field}_id", $values);
 		}
 		$products = $query->get();
+		$user = auth()->user();
+		if ($user) {
+			$retailer_ids = $user->following_retailers->pluck('id');
+		} else {
+			$retailer_ids = [1];
+		}
+		$products->load(['retails' => function ($query) use ($retailer_ids) {
+			$query->whereIn('retailer_id', $retailer_ids);
+		}, 'image', 'brand']);
+
 		if ($request->input('show_available_only')) {
 			$products = $products->filter(function ($item) {
 				return $item->retails->isNotEmpty();
@@ -192,31 +188,39 @@ class ProductController extends Controller
 		}
 
 		# admin filters
-		if (($user = auth()->user()) && ($user->isSuperAdmin())) {
+		if ($user && ($user->isSuperAdmin())) {
 			if ($request->input('show_empty_only')) {
 				$products = $products->filter(function ($item) {
-					return $item->images->isEmpty();
+					return $item->image;
 				});
 			} elseif ($request->input('show_not_empty_only')) {
 				$products = $products->filter(function ($item) {
-					return $item->images->isNotEmpty();
+					return $item->image;
 				});
 			}
 			if ($vendors = $request->input('vendor')) {
-				$products = $products->filter(function ($item) use ($vendors) {
-					return $item->offer->whereIn('vendor_id', $vendors)->isNotEmpty();
+				$products->load(['offers' => function ($query) use ($vendors) {
+					foreach ($vendors as $vendor) {
+						$query->orWhere('vendor_id', $vendor);
+					}
+				}]);
+				$products = $products->filter(function ($item) {
+					return $item->offers->isNotEmpty();
 				});
 			}
 		} else {
 			$products = $products->filter(function ($item) {
-				return $item->images->isNotEmpty();
+				return $item->image;
 			});
 		}
 
 		# vendor filters
 		if ($user && ($vendor = $user->vendor) && $request->input('show_my_stock_only')) {
-			$products = $products->filter(function ($item) use ($vendor) {
-				return $item->offer->where('vendor_id', $vendor->id)->isNotEmpty();
+			$products->load(['prices' => function ($query) {
+				$query->where('vendor_id', $vendor->id);
+			}]);
+			$products = $products->filter(function ($item) {
+				return $item->prices->isNotEmpty();
 			});
 		}
 		return $products;
@@ -226,7 +230,7 @@ class ProductController extends Controller
 	{
 		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
 	}
-	
+
 	public function filterOptions()
 	{
 		return [
@@ -259,13 +263,13 @@ class ProductController extends Controller
 
 			case 'price-high-to-low':
 				$products = $products->sortByDesc(function ($item) {
-					return $item->getMinPrice('retail', 0);
+					return $item->getMinPrice(0);
 				});
 				break;
 
 			case 'price-low-to-high':
 				$products = $products->sortBy(function ($item) {
-					return $item->getMinPrice('retail', INF);
+					return $item->getMinPrice(INF);
 				});
 				break;
 
@@ -291,20 +295,21 @@ class ProductController extends Controller
 		}
 		return $products;
 	}
-	public function follow(Request $request, Product $product)
+	public function follow(Product $product)
 	{
 		$user = auth()->user();
-		return $user->syncWithoutDetaching([$product]);
+		return $user->following_products()->syncWithoutDetaching($product);
 	}
-	public function unfollow(Request $request, Product $product)
+	public function unfollow(Product $product)
 	{
 		$user = auth()->user();
-		return $user->detach($product);
+		return $user->following_products()->detach($product);
 	}
 	public function following()
 	{
 		$user = auth()->user();
-		$products = $user->following_products;
+		$products = $this->filter($user->following_products());
+		$products = $this->sort($products);
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
