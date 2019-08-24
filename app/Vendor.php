@@ -28,7 +28,7 @@ class Vendor extends Model
 	}
 	public function partner_retailers()
 	{
-		return $this->belongsToMany(Retailer::class, 'partners');
+		return $this->belongsToMany(Retailer::class, 'vendor_retailer')->withPivot('profit_rate');
 	}
 	public function resellers()
 	{
