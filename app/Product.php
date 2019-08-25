@@ -120,6 +120,8 @@ class Product extends Model
 				foreach ($offer->prices as $size => $price) {
 					if (!array_key_exists($size, $data) || $price < $data[$size]['price']) {
 						$data[$size] = ['price' => $price, 'vendor' => $offer->vendor->name, 'link' => $offer->vendor->link];
+					} elseif ($price == $data[$size]['price']) {
+						$data[$size]['vendor'] = $data[$size]['vendor'].' / '.$offer->vendor->name;
 					}
 				}
 			}
@@ -128,6 +130,8 @@ class Product extends Model
 				foreach ($retail->prices as $size => $price) {
 					if (!array_key_exists($size, $data) || $price < $data[$size]['price']) {
 						$data[$size] = ['price' => $price, 'retailer' => $retail->retailer->name, 'link' => $retail->link];
+					} elseif ($price == $data[$size]['price']) {
+						$data[$size]['retailer'] = $data[$size]['retailer'].' / '.$retail->retailer->name;
 					}
 				}
 			}
