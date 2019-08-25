@@ -38,15 +38,14 @@ class RetailerController extends Controller
 				$query->where('retailer_id', $retailer->id);
 			},
 		]);
-		if($sort == 'price-high-to-low') {
-			$products->sortByDesc(function ($item) {
+		if ($sort == 'price-high-to-low') {
+			$products = $products->sortByDesc(function ($item) {
 				return $item->getMinPrice(0);
-			});
-		}
-		if($sort == 'price-low-to-high') {
-			$products->sortBy(function ($item) {
+			})->values();
+		} elseif ($sort == 'price-low-to-high') {
+			$products = $products->sortBy(function ($item) {
 				return $item->getMinPrice(INF);
-			});
+			})->values();
 		}
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
@@ -68,13 +67,13 @@ class RetailerController extends Controller
 		return $user->following_retailers()->syncWithoutDetaching($retailer);
 	}
 
-  public function unfollow(Retailer $retailer)
+	public function unfollow(Retailer $retailer)
 	{
 		$user = auth()->user();
 		return $user->following_retailers()->detach($retailer);
 	}
 
-  public function following(Request $request)
+	public function following(Request $request)
 	{
 		$not_found = false;
 		if ($request->input('name')) {

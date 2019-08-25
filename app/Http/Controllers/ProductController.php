@@ -79,14 +79,14 @@ class ProductController extends Controller
 			});
 		}
 		if($sort == 'price-high-to-low') {
-			$products->sortByDesc(function ($item) {
+			$products = $products->sortByDesc(function ($item) {
 				return $item->getMinPrice(0);
-			});
+			})->values();
 		}
 		if($sort == 'price-low-to-high') {
-			$products->sortBy(function ($item) {
+			$products = $products->sortBy(function ($item) {
 				return $item->getMinPrice(INF);
-			});
+			})->values();
 		}
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
