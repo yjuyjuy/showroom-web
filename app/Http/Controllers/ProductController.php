@@ -17,7 +17,7 @@ class ProductController extends Controller
 	public function index(Request $request, $query=false)
 	{
 		$user = auth()->user();
-		$admin = $user->isSuperAdmin() ?? false;
+		$admin = ($user) ? $user->isSuperAdmin() : false;
 		$vendor = $user->vendor ?? false;
 		if(!$query) {
 			# vendor filters
