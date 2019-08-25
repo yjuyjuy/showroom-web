@@ -25,7 +25,12 @@ class ProductController extends Controller
 			$vendor = $user->vendor;
 		}
 		if(!$query) {
-			$query = \App\Product::query();
+			# vendor filters
+			if ($vendor && $request->input('show_my_stock_only')) {
+				$query = $vendor->products();
+			} else {
+				$query = \App\Product::query();
+			}
 		}
 		$filters = $this->validateFilters();
 		foreach ($filters as $field => $values) {
@@ -71,15 +76,6 @@ class ProductController extends Controller
 			} elseif ($admin && $request->input('show_not_empty_only')) {
 				$products = $products->filter(function ($item) {
 					return !$item->image;
-				});
-			}
-			# vendor filters
-			if ($vendor && $request->input('show_my_stock_only')) {
-				$products->load(['prices' => function ($query) {
-					$query->where('vendor_id', $vendor->id);
-				}]);
-				$products = $products->filter(function ($item) {
-					return $item->prices->isNotEmpty();
 				});
 			}
 		} else {
