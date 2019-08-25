@@ -9,11 +9,6 @@ use Illuminate\Validation\Rule;
 
 class FarfetchController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function index(Request $request, $gender='men', $designer='off-white')
 	{
 		// Cache::forget(url()->full());
@@ -105,12 +100,6 @@ class FarfetchController extends Controller
 		}
 		return $products;
 	}
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  \App\FarfetchProduct  $farfetchProduct
-	 * @return \Illuminate\Http\Response
-	 */
 	public function show(FarfetchProduct $product)
 	{
 		$product->loadMissing(['categories','designer','images']);

@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class PriceController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function index()
 	{
 		$user = auth()->user();
@@ -35,11 +30,6 @@ class PriceController extends Controller
 		return view('prices.index', compact('vendor','products'));
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function create(Product $product)
 	{
 		if (auth()->user()->isSuperAdmin() && ($vendor = request()->input('vendor'))) {
@@ -50,12 +40,6 @@ class PriceController extends Controller
 		return view('prices.create', compact('product', 'vendor'));
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
 	public function store(Request $request, Product $product)
 	{
 		$this->authorize('create', VendorPrice::class);
@@ -74,36 +58,12 @@ class PriceController extends Controller
 		return ['redirect' => route('products.show', ['product' => $product])];
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  \App\VendorPrice  $price
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show(VendorPrice $price)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  \App\VendorPrice  $price
-	 * @return \Illuminate\Http\Response
-	 */
 	public function edit(VendorPrice $price)
 	{
 		$product = $price->product;
 		return view('prices.edit', compact('price', 'product'));
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\VendorPrice  $price
-	 * @return \Illuminate\Http\Response
-	 */
 	public function update(Request $request, VendorPrice $price)
 	{
 		$this->authorize('update', $price);
@@ -117,12 +77,6 @@ class PriceController extends Controller
 		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  \App\VendorPrice  $price
-	 * @return \Illuminate\Http\Response
-	 */
 	public function destroy(VendorPrice $price)
 	{
 		$this->authorize('delete', $price);

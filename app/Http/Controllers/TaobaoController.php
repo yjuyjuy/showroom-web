@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Cache;
 
 class TaobaoController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function index(TaobaoShop $shop)
 	{
 		$products = $shop->taobao_products()->get();
@@ -23,12 +18,6 @@ class TaobaoController extends Controller
 		});
 		return view('taobao.index', compact('shop', 'products'));
 	}
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  \App\TaobaoProduct  $product
-	 * @return \Illuminate\Http\Response
-	 */
 	public function show($shop, TaobaoProduct $product)
 	{
 		if ($shop != $product->shop->name) {
