@@ -20,7 +20,7 @@ class Vendor extends Model
 	}
 	public function products()
 	{
-		return $this->belongsToMany(Product::class, 'offer_prices', 'vendor_id', 'product_id');
+		return $this->belongsToMany(Product::class, 'vendor_prices', 'vendor_id', 'product_id');
 	}
 	public function retailer()
 	{
