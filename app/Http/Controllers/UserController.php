@@ -32,13 +32,13 @@ class UserController extends Controller
 		$user = auth()->user();
 		$message = false;
 
-		if ($request->input('name')) {
-			$name = $request->validate([
-				'name' => ['sometimes', 'string', 'max:255'],
-			])['name'];
-			$vendor = \App\Vendor::where('name', $name)->first();
+		if ($request->input('wechat_id')) {
+			$wechat_id = $request->validate([
+				'wechat_id' => ['sometimes', 'string', 'max:255'],
+			])['wechat_id'];
+			$vendor = \App\Vendor::where('wechat_id', $wechat_id)->first();
 			if (!$vendor) {
-				$message = '没有找到同行"'.$name.'"';
+				$message = '没有找到微信号是"'.$wechat_id.'"的同行';
 			} elseif ($user->following_vendors->contains($vendor)) {
 				$message = '已经关注"'.$vendor->name.'"了';
 			} else {
@@ -46,7 +46,7 @@ class UserController extends Controller
 				$message = '成功添加关注"'.$vendor->name.'"';
 			}
 		}
-		$vendors = $user->following_vendors;
+		$vendors = $user->fresh()->following_vendors;
 		return view('vendors.following', compact('vendors', 'message'));
 	}
 	public function edit()
