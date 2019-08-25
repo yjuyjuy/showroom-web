@@ -30,6 +30,16 @@ class ProductController extends Controller
 		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
 	}
 
+	public function following()
+	{
+		$user = auth()->user();
+		$products = $this->filter($user->following_products());
+		$products = $this->sort($products);
+		$sortOptions = $this->sortOptions();
+		$filters = $this->filterOptions();
+		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
+	}
+
 	public function create()
 	{
 		$product = new Product();
@@ -69,10 +79,10 @@ class ProductController extends Controller
 		$user = auth()->user()->load('following_retailers');
 		while (true) {
 			$product = \App\Product::inRandomOrder()->first();
-			$product->load(['retails' => function($query) use ($user) {
+			$product->load(['retails' => function ($query) use ($user) {
 				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 			}]);
-			if($product->retails->isNotEmpty()){
+			if ($product->retails->isNotEmpty()) {
 				return $this->show($product);
 			}
 		}
@@ -263,14 +273,5 @@ class ProductController extends Controller
 	{
 		$user = auth()->user();
 		return $user->following_products()->detach($product);
-	}
-	public function following()
-	{
-		$user = auth()->user();
-		$products = $this->filter($user->following_products());
-		$products = $this->sort($products);
-		$sortOptions = $this->sortOptions();
-		$filters = $this->filterOptions();
-		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
 	}
 }
