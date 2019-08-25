@@ -6,7 +6,7 @@
 	<div class="d-flex flex-column mx-3 w-100" style="max-width:600px;">
 		<div class="mdc-typography--headline5">待处理用户升级账户申请</div>
 		@foreach($users as $user)
-		<div class="my-3 upgrade-request" data-user-id="{{ $user->id }}">
+		<div class="m-3 upgrade-request" data-user-id="{{ $user->id }}">
 			<div class="my-1">用户名: {{$user->username}}</div>
 			<div class="my-1">微信号: {{$user->wechat_id}}</div>
 			<div class="text-right my-1">
