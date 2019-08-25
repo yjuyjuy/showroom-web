@@ -104,12 +104,9 @@ class Product extends Model
 	// Helpers
 	public function getMinPrice($default = false)
 	{
-		$min = Cache::remember("product-{$this->id}-price", 60, function () {
-			return ($this->retails->isEmpty())? false : (int)$this->retails->map(function ($retail) {
-				return min($retail->prices);
-			})->min();
-		});
-		return ($min)?$min:$default;
+		return ($this->retails->isEmpty())? $default : (int)$this->retails->map(function ($retail) {
+			return min($retail->prices);
+		})->min();
 	}
 	public function getPriceAttribute()
 	{
