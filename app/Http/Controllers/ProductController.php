@@ -17,13 +17,8 @@ class ProductController extends Controller
 	public function index(Request $request, $query=false)
 	{
 		$user = auth()->user();
-		if (!$user) {
-			$admin = false;
-			$vendor = false;
-		} else {
-			$admin = $user->isSuperAdmin();
-			$vendor = $user->vendor;
-		}
+		$admin = $user->isSuperAdmin() ?? false;
+		$vendor = $user->vendor ?? false;
 		if(!$query) {
 			# vendor filters
 			if ($vendor && $request->input('show_my_stock_only')) {
