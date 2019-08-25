@@ -14,30 +14,97 @@ use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
-	public function index(Request $request)
+	public function index(Request $request, $query=false)
 	{
 		$user = auth()->user();
-		$products = $this->filter(Product::query());
-		$products = $this->sort($products);
-
-		if ($request->input('sort') === 'random') {
-			$products = $products->shuffle();
+		if (!$user) {
+			$admin = false;
+			$vendor = false;
+		} else {
+			$admin = $user->isSuperAdmin();
+			$vendor = $user->vendor;
+		}
+		if(!$query) {
+			$query = \App\Product::query();
+		}
+		$filters = $this->validateFilters();
+		foreach ($filters as $field => $values) {
+			$query->whereIn("{$field}_id", $values);
+		}
+		$sort = $request->input('sort');
+		if (!$sort || !in_array($sort, $this->sortOptions())) {
+			$sort = 'random';
+		}
+		if ($sort == 'newest') {
+			$query->orderBy('season_id', 'desc');
+		} elseif ($sort == 'oldest') {
+			$query->orderBy('season_id');
+		} elseif ($sort == 'random') {
+			$query->inRandomOrder();
 		}
 
+		$products = $query->get();
+		if ($user) {
+			$retailer_ids = $user->following_retailers()->pluck('retailer_id');
+		} else {
+			$retailer_ids = [1];
+		}
+
+		$products->load([
+			'image', 'brand', 'retails' => function ($query) use ($retailer_ids) {
+				$query->whereIn('retailer_id', $retailer_ids);
+			},
+		]);
+		if ($user) {
+			if ($request->input('show_available_only')) {
+				$products = $products->filter(function ($item) {
+					return $item->retails->isNotEmpty();
+				});
+			}
+			# admin filters
+			if ($admin && $request->input('show_empty_only')) {
+					$products = $products->filter(function ($item) {
+						return $item->image;
+					});
+			} elseif ($admin && $request->input('show_not_empty_only')) {
+				$products = $products->filter(function ($item) {
+					return !$item->image;
+				});
+			}
+			# vendor filters
+			if ($vendor && $request->input('show_my_stock_only')) {
+				$products->load(['prices' => function ($query) {
+					$query->where('vendor_id', $vendor->id);
+				}]);
+				$products = $products->filter(function ($item) {
+					return $item->prices->isNotEmpty();
+				});
+			}
+		} else {
+			$products = $products->filter(function ($item) {
+				return $item->retails->isNotEmpty() && $item->image;
+			});
+		}
+		if($sort == 'price-high-to-low') {
+			$products->sortByDesc(function ($item) {
+				return $item->getMinPrice(0);
+			});
+		}
+		if($sort == 'price-low-to-high') {
+			$products->sortBy(function ($item) {
+				return $item->getMinPrice(INF);
+			});
+		}
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
 		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
 	}
 
-	public function following()
+	public function following(Request $request)
 	{
 		$user = auth()->user();
-		$products = $this->filter($user->following_products());
-		$products = $this->sort($products);
-		$sortOptions = $this->sortOptions();
-		$filters = $this->filterOptions();
-		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
+		return $this->index($request, $user->following_products());
 	}
 
 	public function create()
@@ -132,69 +199,6 @@ class ProductController extends Controller
 		]);
 	}
 
-	public function filter($query)
-	{
-		$request = request();
-		$filters = $this->validateFilters();
-		foreach ($filters as $field => $values) {
-			$query->whereIn("{$field}_id", $values);
-		}
-		$products = $query->get();
-		$user = auth()->user();
-		if ($user) {
-			$retailer_ids = $user->following_retailers->pluck('id');
-		} else {
-			$retailer_ids = [1];
-		}
-		$products->load(['retails' => function ($query) use ($retailer_ids) {
-			$query->whereIn('retailer_id', $retailer_ids);
-		}, 'image', 'brand']);
-
-		if ($request->input('show_available_only')) {
-			$products = $products->filter(function ($item) {
-				return $item->retails->isNotEmpty();
-			});
-		}
-
-		# admin filters
-		if ($user && ($user->isSuperAdmin())) {
-			if ($request->input('show_empty_only')) {
-				$products = $products->filter(function ($item) {
-					return $item->image;
-				});
-			} elseif ($request->input('show_not_empty_only')) {
-				$products = $products->filter(function ($item) {
-					return $item->image;
-				});
-			}
-			if ($vendors = $request->input('vendor')) {
-				$products->load(['offers' => function ($query) use ($vendors) {
-					foreach ($vendors as $vendor) {
-						$query->orWhere('vendor_id', $vendor);
-					}
-				}]);
-				$products = $products->filter(function ($item) {
-					return $item->offers->isNotEmpty();
-				});
-			}
-		} else {
-			$products = $products->filter(function ($item) {
-				return $item->image;
-			});
-		}
-
-		# vendor filters
-		if ($user && ($vendor = $user->vendor) && $request->input('show_my_stock_only')) {
-			$products->load(['prices' => function ($query) {
-				$query->where('vendor_id', $vendor->id);
-			}]);
-			$products = $products->filter(function ($item) {
-				return $item->prices->isNotEmpty();
-			});
-		}
-		return $products;
-	}
-
 	public function sortOptions()
 	{
 		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
@@ -209,69 +213,20 @@ class ProductController extends Controller
 			"brand" => \App\Brand::all()
 		];
 	}
-	public function sort($products)
-	{
-		if (request()->input('sort')) {
-			$sort = request()->validate([
-				'sort' => ['sometimes',Rule::in($this->sortOptions())],
-			])['sort'];
-		} else {
-			$sort = 'default';
-		}
-		$products = $products->shuffle();
-		switch ($sort) {
-			case 'default':
-				$products = $products->sortBy(function ($item) {
-					return $item->category_id.(999-$item->season_id).$item->id;
-				});
-				break;
-
-			case 'random':
-				$products = $products->shuffle();
-				break;
-
-			case 'price-high-to-low':
-				$products = $products->sortByDesc(function ($item) {
-					return $item->getMinPrice(0);
-				});
-				break;
-
-			case 'price-low-to-high':
-				$products = $products->sortBy(function ($item) {
-					return $item->getMinPrice(INF);
-				});
-				break;
-
-			case 'newest':
-				$products = $products->sortByDesc(function ($item) {
-					return $item->season_id;
-				});
-				break;
-
-			case 'oldest':
-				$products = $products->sortBy(function ($item) {
-					return $item->season_id;
-				});
-				break;
-
-			case 'best selling':
-			case 'hottest':
-			default:
-				$products = $products->sortBy(function ($item) {
-					return $item->category_id.(999-$item->season_id).$item->id;
-				});
-				break;
-		}
-		return $products;
-	}
 	public function follow(Product $product)
 	{
 		$user = auth()->user();
-		return $user->following_products()->syncWithoutDetaching($product);
+		if(!$user->following_products->contains($product)) {
+			$user->following_products()->attach($product);
+		}
+		return ['success'];
 	}
 	public function unfollow(Product $product)
 	{
 		$user = auth()->user();
-		return $user->following_products()->detach($product);
+		if($user->following_products->contains($product)) {
+			$user->following_products()->detach($product);
+		}
+		return ['success'];
 	}
 }
