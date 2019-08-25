@@ -33,12 +33,14 @@ class ProductController extends Controller
 		}
 		$sort = $request->input('sort');
 		if (!$sort || !in_array($sort, $this->sortOptions())) {
-			$sort = 'random';
+			$sort = 'default';
 		}
-		if ($sort == 'newest') {
-			$query->orderBy('season_id', 'desc');
+		if ($sort == 'default') {
+			$query->orderBy('season_id', 'desc')->orderBy('category_id')->inRandomOrder();
+		} elseif ($sort == 'newest') {
+			$query->orderBy('season_id', 'desc')->inRandomOrder();
 		} elseif ($sort == 'oldest') {
-			$query->orderBy('season_id');
+			$query->orderBy('season_id')->inRandomOrder();
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
 		}
@@ -201,7 +203,7 @@ class ProductController extends Controller
 
 	public function sortOptions()
 	{
-		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
+		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest'];
 	}
 
 	public function filterOptions()
