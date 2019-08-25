@@ -137,7 +137,7 @@ class AdminController extends Controller
 
 	public function requests()
 	{
-		$users = \App\User::where('type', 'pending')->get();
+		$users = \App\User::where('type', 'pending')->orderBy('updated_at')->get();
 		return view('admin.requests', compact('users'));
 	}
 	public function agree(Request $request)
