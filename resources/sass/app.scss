@@ -49,6 +49,7 @@ img {
 	width: 100%;
 }
 .mdc-button {
+	word-break: keep-all;
 	&:hover {
 		text-decoration: none;
 	}
