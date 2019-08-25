@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
 		\App\User::where('email', 'yjuyjuy@gmail.com')->update(['password' => Hash::make('Tptz9kKZ48rTefK'),]);
 		\App\User::where('email', 'admin@dopebxtch.com')->update(['password' => Hash::make('iZ92pa9knDN3taT'),]);
 		\App\User::where('email', 'user@dopebxtch.com')->update(['password' => Hash::make('9SckaJsgDHiznAh'),]);
-		\App\User::where('email', 'vendor@dopebxtch.com')->update(['password' => Hash::make('Ku47dCJwrQKP7hv'),]);
 		\App\User::where('email', 'reseller@dopebxtch.com')->update(['password' => Hash::make('5U2U5H8upHzAZrv'),]);
+		\App\User::where('email', 'vendor@dopebxtch.com')->update(['password' => Hash::make('Ku47dCJwrQKP7hv'),]);
 
 		// $admin->is_reseller = true;
 		// $admin->save();
