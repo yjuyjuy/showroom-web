@@ -2,6 +2,11 @@
 @section('title', __('All products'))
 @section('content')
 <div id="products-index" class="">
+	@if($products->isEmpty())
+		<div class="my-5 text-center">
+			没有相关商品
+		</div>
+	@else
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products as $product)
 		<li class="mdc-image-list__item">
@@ -62,5 +67,6 @@
 	  </div>
 	  <div class="mdc-dialog__scrim"></div>
 	</div>
+	@endif
 </div>
 @endsection
