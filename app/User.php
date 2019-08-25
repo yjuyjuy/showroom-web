@@ -77,6 +77,10 @@ class User extends Authenticatable
 	{
 		return $this->type == 'rejected';
 	}
+	public function setIsRejectedAttribute($value)
+	{
+		if($value) $this->type = 'rejected';
+	}
 	public function isSuperAdmin()
 	{
 		return in_array($this->id, [1,27,]);
