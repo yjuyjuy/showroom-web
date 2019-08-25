@@ -13,8 +13,41 @@ class RetailerController extends Controller
 	public function index(Request $request, Retailer $retailer)
 	{
 		$user = auth()->user();
-		$products = $this->filter($retailer);
-		$products = $this->sort($products);
+		$query = $retailer->products();
+		$filters = $this->validateFilters();
+		foreach ($filters as $field => $values) {
+			$query->whereIn("{$field}_id", $values);
+		}
+		$sort = $request->input('sort');
+		if (!$sort || !in_array($sort, $this->sortOptions())) {
+			$sort = 'default';
+		}
+		if ($sort == 'default') {
+			$query->orderBy('season_id', 'desc')->orderBy('category_id')->inRandomOrder();
+		} elseif ($sort == 'newest') {
+			$query->orderBy('season_id', 'desc')->inRandomOrder();
+		} elseif ($sort == 'oldest') {
+			$query->orderBy('season_id')->inRandomOrder();
+		} elseif ($sort == 'random') {
+			$query->inRandomOrder();
+		}
+		$products = $query->get();
+
+		$products->load([
+			'image', 'brand', 'retails' => function ($query) use ($retailer) {
+				$query->where('retailer_id', $retailer->id);
+			},
+		]);
+		if($sort == 'price-high-to-low') {
+			$products->sortByDesc(function ($item) {
+				return $item->getMinPrice(0);
+			});
+		}
+		if($sort == 'price-low-to-high') {
+			$products->sortBy(function ($item) {
+				return $item->getMinPrice(INF);
+			});
+		}
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
@@ -61,7 +94,7 @@ class RetailerController extends Controller
 		return view('retailers.following', compact('retailers', 'not_found'));
 	}
 
-  public function validateFilters()
+	public function validateFilters()
 	{
 		return request()->validate([
 			'category.*' => 'sometimes|exists:categories,id',
@@ -90,12 +123,12 @@ class RetailerController extends Controller
 		return $products;
 	}
 
-  public function sortOptions()
+	public function sortOptions()
 	{
-		return ['default', 'random','price-high-to-low','price-low-to-high','hottest','best-selling','newest','oldest'];
+		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest'];
 	}
 
-  public function filterOptions()
+	public function filterOptions()
 	{
 		return [
 			"category" => \App\Category::all(),
