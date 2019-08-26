@@ -33,7 +33,7 @@ class PriceController extends Controller
 	public function create(Product $product)
 	{
 		if (auth()->user()->isSuperAdmin() && ($vendor = request()->input('vendor'))) {
-			$vendor = \App\Vendor::find($vendor);
+			$vendor = \App\Vendor::where('name', $vendor)->first();
 		} else {
 			$vendor = auth()->user()->vendor;
 		}
