@@ -13,4 +13,5 @@
 		@include('farfetch.show.customer')
 	</div>
 </div>
+@include('layouts.back_fab')
 @endsection

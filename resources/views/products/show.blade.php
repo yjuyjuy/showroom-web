@@ -11,18 +11,19 @@
 	<div class="content-container d-flex flex-column">
 		@include('products.show.properties')
 		@include('products.show.customer')
-		@auth
-			@if($user->is_reseller)
-				@include('products.show.reseller')
+		@if($user->is_reseller)
+			@include('products.show.reseller')
+		@endif
+		@include('products.show.buttons')
+
+		@if($user->isSuperAdmin())
+			@include('products.show.admin')
+		@else
+			@if($vendor = $user->vendor)
+				@include('products.show.vendor')
 			@endif
-			@if($user->isSuperAdmin())
-				@include('products.show.admin')
-			@else
-				@if($vendor = $user->vendor)
-					@include('products.show.vendor')
-				@endif
-			@endif
-		@endauth
+		@endif
+		@include('layouts.back_fab')
 	</div>
 </div>
 @endsection

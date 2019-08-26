@@ -15,4 +15,5 @@
 		@include('products.show.buttons')
 	</div>
 </div>
+@include('layouts.back_fab')
 @endsection

@@ -11,7 +11,7 @@
 		<div class="d-flex flex-column products-show__info--properties">
 			<div class="mdc-typography--headline6">
 				<a class="product-name" href="{{ $product->url }}" target="_blank">{{ $product->title }}</a>
-			</div>		
+			</div>
 		</div>
 			@forelse($product->prices as $price)
 			<div class="d-flex flex-column products-show__info--customer">
@@ -32,4 +32,5 @@
 	</div>
 	</div>
 </div>
+@include('layouts.back_fab')
 @endsection
