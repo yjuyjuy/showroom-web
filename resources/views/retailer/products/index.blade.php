@@ -32,6 +32,7 @@
 		</li>
 		@endforeach
 	</ul>
+	@include('layouts.pages')
 	<button id="display-options-fab" class="mdc-fab" aria-label="display options">
 	  <span class="mdc-fab__icon material-icons">filter_list</span>
 	</button>

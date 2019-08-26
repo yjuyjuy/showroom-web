@@ -46,10 +46,13 @@ class ResellerController extends Controller
 				return $item->getMinOffer(INF);
 			})->values();
 		}
+		$total_pages = ceil($products->count() / 24.0);
+		$page = min(max($request->query('page',1), 1), $total_pages);
+		$products = $products->forPage($page, 24);
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
-		return view('reseller.products.index', compact('products', 'sortOptions', 'filters', 'user'));
+		return view('reseller.products.index', compact('products', 'sortOptions', 'filters', 'user', 'page', 'total_pages'));
 	}
 
 	public function validateFilters()

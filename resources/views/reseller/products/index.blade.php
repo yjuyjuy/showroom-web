@@ -4,7 +4,7 @@
 <div id="products-index" class="">
 	@if($products->isEmpty())
 		<div class="my-5 text-center">
-			没有搜索到相关商品
+			没有相关商品
 		</div>
 	@else
 	<ul class="mdc-image-list main-image-list">
@@ -17,9 +17,9 @@
 				<div class="mdc-image-list__supporting">
 					<span class="mdc-image-list__label brand">{{ $product->brand->name }}</span>
 					<span class="mdc-image-list__label product-name">{{ $product->name_cn }}</span>
-					@if($product->price)
+					@if($product->getMinOffer())
 					<span class="mdc-image-list__label">
-						{{ "\u{00a5}".$product->price }}
+						{{ "\u{00a5}".$product->getMinOffer() }}
 					</span>
 					@else
 					<span class="mdc-image-list__label mdc-theme--primary">

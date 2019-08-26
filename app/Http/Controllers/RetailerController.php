@@ -47,18 +47,22 @@ class RetailerController extends Controller
 				return $item->getMinPrice(INF);
 			})->values();
 		}
+		$total_pages = ceil($products->count() / 24.0);
+		$page = min(max($request->query('page',1), 1), $total_pages);
+		$products = $products->forPage($page, 24);
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
-		return view('retailers.products.index', compact('products', 'sortOptions', 'filters', 'user', 'retailer'));
+		return view('retailer.products.index', compact('products', 'sortOptions', 'filters', 'user', 'retailer', 'page', 'total_pages'));
 	}
 
 	public function show(Retailer $retailer, Product $product)
 	{
+		$user = auth()->user();
 		$product->load(['images', 'retails' => function ($query) use ($retailer) {
 			$query->where('retailer_id', $retailer->id);
 		}]);
-		return view('retailers.products.show', compact('product', 'retailer'));
+		return view('retailer.products.show', compact('product', 'retailer', 'user'));
 	}
 
 	public function follow(Retailer $retailer)
@@ -90,7 +94,7 @@ class RetailerController extends Controller
 		}
 		$user = auth()->user();
 		$retailers = $user->following_retailers;
-		return view('retailers.following', compact('retailers', 'not_found'));
+		return view('retailer.following', compact('retailers', 'not_found'));
 	}
 
 	public function validateFilters()
@@ -101,25 +105,6 @@ class RetailerController extends Controller
 			'color.*' => 'sometimes|exists:colors,id',
 			'brand.*' => 'sometimes|exists:brands,id',
 		]);
-	}
-
-	public function filter($retailer)
-	{
-		$query = $retailer->products();
-		$request = request();
-		$filters = $this->validateFilters();
-		foreach ($filters as $field => $values) {
-			$query->whereIn("{$field}_id", $values);
-		}
-		$products = $query->get();
-		$user = auth()->user();
-		$products->load(['retails' => function ($query) use ($retailer) {
-			$query->where('retailer_id', $retailer->id);
-		}, 'image', 'brand']);
-		$products = $products->filter(function ($item) {
-			return $item->retails->isNotEmpty() && $item->image;
-		});
-		return $products;
 	}
 
 	public function sortOptions()

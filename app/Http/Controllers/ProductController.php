@@ -88,10 +88,13 @@ class ProductController extends Controller
 				return $item->getMinPrice(INF);
 			})->values();
 		}
+		$total_pages = ceil($products->count() / 24.0);
+		$page = min(max($request->query('page',1), 1), $total_pages);
+		$products = $products->forPage($page, 24);
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
-		return view('products.index', compact('products', 'sortOptions', 'filters', 'user'));
+		return view('products.index', compact('products', 'sortOptions', 'filters', 'user', 'page', 'total_pages'));
 	}
 
 	public function following(Request $request)
