@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vendor extends Model
 {
+	public function getRouteKeyName()
+	{
+	    return 'name';
+	}
 	public function users()
 	{
 		return $this->hasMany(User::class);
@@ -33,9 +37,5 @@ class Vendor extends Model
 	public function resellers()
 	{
 		return $this->belongsToMany(User::class, 'reseller_vendor');
-	}
-	public function getLinkAttribute()
-	{
-		return 'weixin://';
 	}
 }
