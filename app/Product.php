@@ -108,6 +108,12 @@ class Product extends Model
 			return min($retail->prices);
 		})->min();
 	}
+	public function getMinOffer($default = false)
+	{
+		return ($this->offers->isEmpty())? $default : (int)$this->offers->map(function ($offer) {
+			return min($offer->prices);
+		})->min();
+	}
 	public function getPriceAttribute()
 	{
 		return $this->getMinPrice();
