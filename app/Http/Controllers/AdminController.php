@@ -7,15 +7,62 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
+	public function requests()
+	{
+		$users = \App\User::where('type', 'pending')->orderBy('updated_at')->get();
+		return view('admin.requests', compact('users'));
+	}
+	public function agree(Request $request)
+	{
+		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
+		$user->is_reseller = true;
+		$user->save();
+		return ['success'];
+	}
+	public function reject(Request $request)
+	{
+		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
+		$user->is_rejected = true;
+		$user->save();
+		return ['success'];
+	}
 	public function index()
 	{
-		$this->updatePrices();
-		// $this->convertWebpToJpg();
-		$this->updateDesignerStyleId();
-		$this->updateFarfetchPrices();
+		$functions = $this->available_functions();
+		return view('admin.index', compact('functions'));
 	}
 
-	public function updateDesignerStyleId()
+	public function call($function)
+	{
+		if (array_key_exists($function, $this->available_functions())) {
+			$this->$function();
+			return redirect(route('admin.index'));
+		} else {
+			abort(404);
+		}
+	}
+
+	public function available_functions()
+	{
+		return [
+			'follow_all' => '关注所有同行和卖家',
+			'update_designer_style_id' => '根据图片名称更新货号',
+			'convert_webp_to_jpg' => '转换webp格式图片到jpg格式',
+			'clear_prices' => '清空所有调货价, 售价',
+			'update_prices' => '重新计算调货价, 售价',
+			'update_farfetch_prices' => '重新导入Farfetch价格',
+			'update_taobao_prices' => '重新导入淘宝价格',
+		];
+	}
+
+	public function follow_all()
+	{
+		$user = auth()->user();
+		$user->following_vendors()->sync(\App\Vendor::all());
+		$user->following_retailers()->sync(\App\Retailer::all());
+	}
+
+	public function update_designer_style_id()
 	{
 		$products = \App\Product::whereNull('designerStyleId')->with([
 			'images' => function ($query) {
@@ -76,7 +123,7 @@ class AdminController extends Controller
 		}
 	}
 
-	public function convertWebpToJpg()
+	public function convert_webp_to_jpg()
 	{
 		foreach (\App\Image::where('path', 'like', '%.webp')->get() as $image) {
 			$i = \Intervention\Image\Facades\Image::make(public_path('storage/'.$image->path));
@@ -91,25 +138,47 @@ class AdminController extends Controller
 		}
 	}
 
-	public function updateFarfetchPrices()
+	public function clear_prices()
+	{
+		\App\OfferPrice::delete();
+		\App\RetailPrice::delete();
+	}
+
+	public function update_prices()
+	{
+		foreach (\App\VendorPrice::all() as $vendorPrice) {
+			$vendorPrice->data = array_map(function ($row) {
+				return [
+						'size' => $row['size'],
+						'cost' => (int)($row['cost']),
+						'offer' => (int)(array_key_exists('offer', $row) ? $row['offer'] : $row['resell']),
+						'retail' => (int)($row['retail'])
+					];
+			}, $vendorPrice->data);
+			$vendorPrice->save();
+		}
+	}
+
+	public function update_farfetch_prices()
 	{
 		$retailer_id = \App\Retailer::where('name', 'Farfetch')->first()->id;
-		foreach(\App\Product::whereNotNull('designerStyleId')->get() as $product){
+		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
+		foreach (\App\Product::whereNotNull('designerStyleId')->get() as $product) {
 			$url = null;
 			$size_price = array();
-			foreach(\App\FarfetchProduct::whereNotNull('size_price')->where('designerStyleId',$product->designerStyleId)->get() as $farfetch_product){
-				foreach($farfetch_product->size_price as $size => $price){
+			foreach (\App\FarfetchProduct::whereNotNull('size_price')->where('designerStyleId', $product->designerStyleId)->get() as $farfetch_product) {
+				foreach ($farfetch_product->size_price as $size => $price) {
 					if ((!array_key_exists($size, $size_price)) || ($size_price[$size] > $price)) {
-						$price = (int)ceil($price * 6.9);
+						$price = (int)ceil($price * 7);
 						$size_price[$size] = $price;
-						if(min($size_price) == $price){
+						if (min($size_price) == $price) {
 							$url = $farfetch_product->url;
 						}
 					}
 				}
 			}
-			if(empty($size_price)){
-				\App\RetailPrice::where('retailer_id',$retailer_id)->where('product_id',$product->id)->delete();
+			if (empty($size_price)) {
+				\App\RetailPrice::where('retailer_id', $retailer_id)->where('product_id', $product->id)->delete();
 			} else {
 				$retail = \App\RetailPrice::firstOrNew(['retailer_id' => $retailer_id, 'product_id' => $product->id]);
 				$retail->prices = $size_price;
@@ -119,39 +188,15 @@ class AdminController extends Controller
 		}
 	}
 
-	public function updatePrices()
+	public function update_taobao_prices()
 	{
-		\App\OfferPrice::query()->forceDelete();
-		\App\RetailPrice::query()->forceDelete();
-		foreach(\App\VendorPrice::all() as $vendorPrice){
-			$vendorPrice->data = array_map(function($row) {
-				return [
-					'size' => $row['size'],
-					'cost' => (int)($row['cost']),
-					'offer' => (int)(array_key_exists('offer',$row) ? $row['offer'] : $row['resell']),
-					'retail' => (int)($row['retail'])
-				]; }, $vendorPrice->data);
-			$vendorPrice->save();
+		foreach(\App\TaobaoShop::all() as $shop) {
+			\App\RetailPrice::where('retailer_id', $shop->retailer_id)->delete();
+			foreach($shop->prices()->whereNotNull('product_id')->whereNotNull('prices')->get() as $price) {
+				$retail = \App\RetailPrice::firstOrNew(['product_id' => $price->product_id, 'retailer_id' => $shop->retailer_id]);
+				$retail->prices = $price->prices;
+				$retail->save();
+			}
 		}
-	}
-
-	public function requests()
-	{
-		$users = \App\User::where('type', 'pending')->orderBy('updated_at')->get();
-		return view('admin.requests', compact('users'));
-	}
-	public function agree(Request $request)
-	{
-		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
-		$user->is_reseller = true;
-		$user->save();
-		return ['success'];
-	}
-	public function reject(Request $request)
-	{
-		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
-		$user->is_rejected = true;
-		$user->save();
-		return ['success'];
 	}
 }

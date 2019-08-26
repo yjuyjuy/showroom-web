@@ -91,7 +91,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 # admin helper routes
 Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('admin', 'AdminController@index')->name('admin.index');
-	Route::get('admin/functions', 'AdminController@index')->name('admin.functions');
+	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
 	Route::get('admin/requests', 'AdminController@requests')->name('admin.requests');
 	Route::post('admin/requests/agree', 'AdminController@agree')->name('admin.requests.agree');
 	Route::post('admin/requests/reject', 'AdminController@reject')->name('admin.requests.reject');
