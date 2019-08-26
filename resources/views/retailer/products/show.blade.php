@@ -3,7 +3,7 @@
 @section('title',$product->displayName().' - '.$retailer->name)
 
 @section('content')
-@include('retailers.banner')
+@include('retailer.banner')
 <div class="images-content-container">
 	<div class="images-container">
 		@include('products.show.images')
@@ -12,6 +12,7 @@
 	<div class="content-container d-flex flex-column">
 		@include('products.show.properties')
 		@include('products.show.customer')
+		@include('products.show.buttons')
 	</div>
 </div>
 @endsection

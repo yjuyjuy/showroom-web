@@ -2,7 +2,12 @@
 @section('title', __('All products').' - '.$retailer->name)
 @section('content')
 <div id="products-index" class="">
-	@include('retailers.banner')
+	@include('retailer.banner')
+	@if($products->isEmpty())
+		<div class="my-5 text-center">
+			没有搜索到相关商品
+		</div>
+	@else
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products as $product)
 		<li class="mdc-image-list__item">
@@ -63,5 +68,6 @@
 	  </div>
 	  <div class="mdc-dialog__scrim"></div>
 	</div>
+	@endif
 </div>
 @endsection
