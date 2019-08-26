@@ -9,12 +9,11 @@ Route::middleware('auth')->group(function () {
 	Route::get('home', 'HomeController@index')->name('home');
 	Route::get('account/status', 'UserController@status')->name('account.status');
 	Route::post('account/status/request', 'UserController@request')->name('account.request');
-	;
 	Route::get('account/settings/edit', 'UserController@edit')->name('account.settings.edit');
 	Route::patch('account/settings', 'UserController@update')->name('account.settings.update');
 	Route::get('following/products', 'ProductController@following')->name('following.products');
 	Route::get('following/retailers', 'RetailerController@following')->name('following.retailers');
-	Route::get('following/vendors', 'UserController@following_vendors')->name('following.vendors');
+	Route::get('following/vendors', 'VendorController@following')->name('following.vendors')->middleware('reseller');
 });
 
 # Product model
@@ -59,6 +58,14 @@ Route::middleware('auth')->group(function () {
 	Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
 });
 
+# Vendor
+Route::middleware(['auth', 'reseller'])->group(function () {
+	Route::get('reseller/products', 'ResellerController@index')->name('reseller.products.index');
+	Route::post('vendor/{vendor}/unfollow', 'VendorController@unfollow')->name('unfollow.vendor');
+	Route::get('vendor/{vendor}', 'VendorController@index')->name('vendor.products.index');
+	Route::get('vendor/{vendor}/products/{product}', 'VendorController@show')->name('vendor.products.show');
+});
+
 # Taobao
 Route::middleware('auth')->group(function () {
 	Route::post('taobao/link', 'TaobaoAdminController@link')->name('taobao.admin.link');
@@ -83,7 +90,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 # admin helper routes
 Route::middleware(['auth', 'admin'])->group(function () {
-	Route::get('admin', 'AdminController@index')->name('admin');
+	Route::get('admin', 'AdminController@index')->name('admin.index');
 	Route::get('admin/functions', 'AdminController@index')->name('admin.functions');
 	Route::get('admin/requests', 'AdminController@requests')->name('admin.requests');
 	Route::post('admin/requests/agree', 'AdminController@agree')->name('admin.requests.agree');
