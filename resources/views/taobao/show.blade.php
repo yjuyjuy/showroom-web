@@ -22,7 +22,7 @@
 			</div>
 			@empty
 			<div class="">
-				<span class="not-available">{{ __('not available') }}</span>
+				<span>{{ __('not available') }}</span>
 			</div>
 			@endforelse
 		<div class="">
