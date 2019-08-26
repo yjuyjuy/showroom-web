@@ -67,7 +67,7 @@
 					<hr class="mdc-list-divider">
 					<h6 class="mdc-list-group__subheader">高级功能</h6>
 					@if($user->is_reseller)
-					<a class="mdc-list-item" href="{{ route('products.index') }}">
+					<a class="mdc-list-item" href="{{ route('reseller.products.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">work_outline</i>
 						<span class="mdc-list-item__text">所有报价</span>
 					</a>
@@ -94,7 +94,7 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_box</i>
 						<span class="mdc-list-item__text">{{ __('Create product') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('admin.functions') }}">
+					<a class="mdc-list-item" href="{{ route('admin.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">extension</i>
 						<span class="mdc-list-item__text">手动执行程序</span>
 					</a>
@@ -142,6 +142,7 @@
 				@yield('content')
 				<div class="py-2"></div>
 			</main>
+			<footer style="height:72px;"></footer>
 		</div>
 	</body>
 
