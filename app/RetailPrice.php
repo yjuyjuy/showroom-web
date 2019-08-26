@@ -30,8 +30,4 @@ class RetailPrice extends Model
 	{
 		 return $this->morphMany(Log::class, 'price');
 	}
-	public function getLinkAttribute()
-	{
-		return $this->attributes['link'] ?? 'weixin://';
-	}
 }
