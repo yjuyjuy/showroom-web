@@ -16,7 +16,7 @@
 					<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
 					@endforeach
 				@else
-					<a href="https://router.publish.taobao.com/router/publish.htm" target="_blank">发布商品</a>
+					<a href="https://router.publish.taobao.com/router/publish.htm" target="_blank">没有商品 (点击上架)</a>
 				@endif
 			</div>
 			<div class="d-flex flex-column price-card col">
@@ -26,7 +26,7 @@
 					<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
 					@endforeach
 				@else
-					<a href="{{ route('prices.create',['product' => $diff['product'],]) }}" target="_blank">添加报价</a>
+					<a href="{{ route('prices.create',['product' => $diff['product'],]) }}" target="_blank">没有商品 (点击添加)</a>
 				@endif
 			</div>
 		</div>
