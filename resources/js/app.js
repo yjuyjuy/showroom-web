@@ -259,3 +259,14 @@ window.unfollow_retailer = function(name) {
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
 }
+window.unfollow_vendor = function(name) {
+	event.preventDefault();
+	axios.post('/vendor/' + name + '/unfollow')
+		.then(response => window.location = '/following/vendors')
+		.catch(error => window.alert('action failed'));
+}
+window.open_wechat = function(name) {
+	event.preventDefault();
+	window.alert('打开微信联系卖家' + name);
+	window.open('weixin://', '_blank');
+}
