@@ -74,6 +74,11 @@ img {
 .mdc-icon-button{
 	@include mdc-icon-button-ink-color(primary);
 }
+.mdc-fab {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+}
 .mdc-dialog__title,
 .mdc-drawer__title,
 .mdc-floating-label,
@@ -345,8 +350,7 @@ a.mdc-list-item__text:hover {
 		}
 	}
 
-	.products-show__info--admin > *,
-	.products-show__info--vendor {
+	.products-show__info--admin > * {
 		margin-bottom: 1rem;
 	}
 }
@@ -482,12 +486,6 @@ a.mdc-list-item__text:hover {
 				}
 			}
 		}
-	}
-
-	#display-options-fab {
-		position: fixed;
-		right: 1rem;
-		bottom: 1rem;
 	}
 
 	#display-options-dialog {
