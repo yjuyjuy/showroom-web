@@ -26,9 +26,6 @@
 
 	<div class="d-flex justify-content-end">
 		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button" name="button" onclick="window.history.back()">
-				<span class="mdc-button__label">{{__('Back')}}</span>
-			</button>
 			<button type="button" class="mdc-button open-menu-button">
 				<span class="mdc-button__label">{{ __('add price') }}</span>
 				<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
