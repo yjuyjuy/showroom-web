@@ -13,6 +13,13 @@
 		@include('products.show.properties')
 		@include('products.show.reseller')
 		@include('products.show.buttons')
+		@if($user->isSuperAdmin())
+			@include('products.show.admin')
+		@else
+			@if($vendor = $user->vendor)
+				@include('products.show.vendor')
+			@endif
+		@endif
 	</div>
 </div>
 @include('layouts.back_fab')
