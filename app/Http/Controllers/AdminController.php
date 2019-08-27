@@ -140,8 +140,8 @@ class AdminController extends Controller
 
 	public function clear_prices()
 	{
-		\App\OfferPrice::delete();
-		\App\RetailPrice::delete();
+		\App\OfferPrice::query()->delete();
+		\App\RetailPrice::query()->delete();
 	}
 
 	public function update_prices()
