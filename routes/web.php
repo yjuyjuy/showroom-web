@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('taobao/link', 'TaobaoAdminController@link')->name('taobao.admin.link');
 	Route::post('taobao/unlink', 'TaobaoAdminController@unlink')->name('taobao.admin.unlink');
 	Route::post('taobao/ignore', 'TaobaoAdminController@ignore')->name('taobao.admin.ignore');
-	Route::get('taobao/admin', 'TaobaoAdminController@shops')->name('admin.taobao')->middleware('admin');
+	Route::get('taobao/admin', 'TaobaoAdminController@index')->name('admin.taobao.index')->middleware('admin');
 	Route::get('taobao/admin/links', 'TaobaoAdminController@links')->name('admin.taobao.links')->middleware('admin');
 	Route::get('taobao/{shop}', 'TaobaoController@index')->name('taobao.products.index');
 	Route::get('taobao/{shop}/admin', 'TaobaoAdminController@admin')->name('taobao.admin');
@@ -91,8 +91,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 # admin helper routes
 Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('admin', 'AdminController@index')->name('admin.index');
-	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
 	Route::get('admin/requests', 'AdminController@requests')->name('admin.requests');
+	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
 	Route::post('admin/requests/agree', 'AdminController@agree')->name('admin.requests.agree');
 	Route::post('admin/requests/reject', 'AdminController@reject')->name('admin.requests.reject');
 });
