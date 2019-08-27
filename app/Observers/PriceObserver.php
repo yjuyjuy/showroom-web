@@ -7,11 +7,50 @@ use App\OfferPrice;
 use App\RetailPrice;
 use App\Product;
 use App\Retailer;
+use App\Vendor;
 use Illuminate\Support\Arr;
 
 class PriceObserver
 {
-	public function handle(VendorPrice $vendor_price)
+	public function update_retail(VendorPrice $vendor_price)
+	{
+		$product = $vendor_price->product;
+		$vendor = $vendor_price->vendor;
+
+		$retailers = $vendor->partner_retailers;
+		if($retailer = $vendor->retailer){
+			$retailers->push($retailer);
+		}
+		foreach($retailers as $retailer) {
+			$prices = array();
+			$retail = RetailPrice::firstOrNew(['product_id' => $product->id, 'retailer_id' => $retailer->id]);
+			foreach($retailer->vendors as $vendor) {
+				if ($vendor_price = VendorPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
+					foreach($vendor_price->data as $data) {
+						$prices[$data['size']] = min($data['retail'], $prices[$data['size']] ?? INF);
+					}
+				}
+			}
+
+			foreach($retailer->partner_vendors as $vendor) {
+				if ($offer_price = OfferPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
+					$profit_rate = $vendor->pivot->profit_rate;
+					foreach($offer_price->prices as $size => $price) {
+						$calc_price = ceil($price * (1 + $profit_rate / 100.0));
+						$prices[$size] = min($calc_price, $prices[$size] ?? INF);
+					}
+				}
+			}
+
+			if(empty($prices)) {
+				$retail->delete();
+			} else {
+				$retail->prices = $prices;
+				$retail->save();
+			}
+		}
+	}
+	public function update_offer(VendorPrice $vendor_price)
 	{
 		$product = $vendor_price->product;
 		$vendor = $vendor_price->vendor;
@@ -23,56 +62,28 @@ class PriceObserver
 		}
 		$offer->prices = $prices;
 		$offer->save();
-
-		$retailers = $vendor->partner_retailers;
-		if($retailer = $vendor->retailer){
-			$retailers->push($retailer);
-		}
-		foreach($retailers as $retailer) {
-			$this->update_retailer($product, $retailer);
-		}
 	}
-
-	public function update_retailer(Product $product, Retailer $retailer)
+	public function delete_offer(VendorPrice $vendor_price)
 	{
-		$prices = array();
-		$retail = RetailPrice::firstOrNew(['product_id' => $product->id, 'retailer_id' => $retailer->id]);
-		foreach($retailer->vendors as $vendor) {
-			if ($vendor_price = VendorPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
-				foreach($vendor_price->data as $data) {
-					$prices[$data['size']] = min($data['retail'], $prices[$data['size']] ?? INF);
-				}
-			}
-		}
+		$product = $vendor_price->product;
+		$vendor = $vendor_price->vendor;
 
-		foreach($retailer->partner_vendors as $vendor) {
-			if ($offer_price = OfferPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
-				$profit_rate = $vendor->pivot->profit_rate;
-				foreach($offer_price->prices as $size => $price) {
-					$calc_price = ceil($price * (1 + $profit_rate / 100.0));
-					$prices[$size] = min($calc_price, $prices[$size] ?? INF);
-				}
-			}
-		}
-
-		if(empty($prices)) {
-			$retail->delete();
-		} else {
-			$retail->prices = $prices;
-			$retail->save();
-		}
+		$offer = OfferPrice::firstOrNew(['product_id' => $product->id, 'vendor_id' => $vendor->id]);
+		$offer->delete();
 	}
-
-	public function created(VendorPrice $vendorPrice)
+	public function created(VendorPrice $vendor_price)
 	{
-		$this->handle($vendorPrice);
+		$this->update_offer($vendor_price);
+		$this->update_retail($vendor_price);
 	}
-	public function updated(VendorPrice $vendorPrice)
+	public function updated(VendorPrice $vendor_price)
 	{
-		$this->handle($vendorPrice);
+		$this->update_offer($vendor_price);
+		$this->update_retail($vendor_price);
 	}
-	public function deleted(VendorPrice $vendorPrice)
+	public function deleted(VendorPrice $vendor_price)
 	{
-		$this->handle($vendorPrice);
+		$this->delete_offer($vendor_price);
+		$this->update_retail($vendor_price);
 	}
 }
