@@ -229,7 +229,7 @@ if(document.getElementById('admin-requests')){
 	})
 }
 
-var delete_price = function(id) {
+window.delete_price = function(id) {
 	event.preventDefault();
 	axios.delete('/prices/' + id)
 		.then(response => window.location.replace(response.data.redirect))
