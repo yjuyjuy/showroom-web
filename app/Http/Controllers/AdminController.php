@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
-	public function requests()
-	{
-		$users = \App\User::where('type', 'pending')->orderBy('updated_at')->get();
-		return view('admin.requests', compact('users'));
-	}
 	public function agree(Request $request)
 	{
 		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
