@@ -137,6 +137,7 @@ class AdminController extends Controller
 	{
 		\App\OfferPrice::query()->delete();
 		\App\RetailPrice::query()->delete();
+		\App\VendorPrice::whereDoesntHave('product')->orWhereDoesntHave('vendor')->delete();
 	}
 
 	public function update_prices()
