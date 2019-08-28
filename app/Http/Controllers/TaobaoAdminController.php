@@ -55,9 +55,16 @@ class TaobaoAdminController extends Controller
 				if (!$taobao_price) {
 					// 需要上架
 					$diffs->push(['retail' => $retail, 'taobao' => null, 'product' => $retail->product]);
-				} elseif ($retail->prices != $taobao_price->prices) {
+				} elseif(array_keys($retail->prices) != array_keys($taobao_price->prices)) {
 					// 需要修改
 					$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
+				} else {
+					foreach($taobao_price->prices as $size => $price) {
+						if($price < $retail->prices[$size] * 1.05 || $price > $retail->prices[$size] * 1.25) {
+							$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
+							break;
+						}
+					}
 				}
 			}
 			foreach ($taobao_prices as $price) {
