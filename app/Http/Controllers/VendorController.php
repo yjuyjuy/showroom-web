@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Vendor;
+use App\Product;
 
 class VendorController extends Controller
 {
@@ -46,7 +47,7 @@ class VendorController extends Controller
 			})->values();
 		}
 		$total_pages = ceil($products->count() / 48.0);
-		$page = min(max($request->query('page',1), 1), $total_pages);
+		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $products->forPage($page, 48);
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
@@ -54,7 +55,7 @@ class VendorController extends Controller
 		return view('vendor.products.index', compact('products', 'sortOptions', 'filters', 'user', 'vendor', 'page', 'total_pages'));
 	}
 
-	public function show(Vendor $vendor, \App\Product $product)
+	public function show(Vendor $vendor, Product $product)
 	{
 		$this->authorize('view', $vendor);
 		$user = auth()->user();
@@ -63,6 +64,24 @@ class VendorController extends Controller
 		}]);
 		return view('vendor.products.show', compact('product', 'vendor', 'user'));
 	}
+
+	// public function edit(Vendor $vendor)
+	// {
+	// 	$this->authorize('view', $vendor);
+	// 	$vendor = $user->vendors()->find($vendor->id);
+	// 	return view('vendor.following.edit', compact('vendor'));
+	// }
+	//
+	// public function update(Vendor $vendor)
+	// {
+	// 	$this->authorize('view', $vendor);
+	// 	$user = auth()->user();
+	// 	$profit_rate = $this->validate([
+	// 		'profit_rate' => ['required', 'number', 'min:'.($vendor->min_profit_rate ?? 5.0), 'max:100'],
+	// 	])['profit_rate'];
+	// 	$user->following_vendors()->updateExistingPivot($vendor->id, compact('profit_rate'));
+	// 	return redirect(route('vendor.products.index', compact('vendor')));
+	// }
 
 	public function unfollow(Vendor $vendor)
 	{
