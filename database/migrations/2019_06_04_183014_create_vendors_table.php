@@ -18,6 +18,7 @@ class CreateVendorsTable extends Migration
 			$table->string('name');
 			$table->string('wechat_id')->nullable();
 			$table->unsignedBigInteger('retailer_id')->nullable();
+			$table->float('min_profit_rate')->default(10.0);
 			$table->string('city');
 			$table->timestamps();
 		});
