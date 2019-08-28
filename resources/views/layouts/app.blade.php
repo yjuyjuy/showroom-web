@@ -98,22 +98,19 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">extension</i>
 						<span class="mdc-list-item__text">手动执行程序</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('admin.requests') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-						<span class="mdc-list-item__text">升级账户申请</span>
+					<a class="mdc-list-item" href="{{ route('admin.inbox') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+						<span class="mdc-list-item__text">管理员收件箱</span>
 					</a>
 					<a class="mdc-list-item" href="{{ route('admin.taobao.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
 					</a>
+					<hr class="mdc-list-divider">
 					@endif
-					<a class="mdc-list-item" href="{{ route('sugguestion.create') }}">
+					<a class="mdc-list-item" href="{{ route('suggestion.create') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_comment</i>
 						<span class="mdc-list-item__text">功能建议</span>
-					</a>
-					<a class="mdc-list-item" href="{{ route('account.settings.edit') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
-						<span class="mdc-list-item__text">设置</span>
 					</a>
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
