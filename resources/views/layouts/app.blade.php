@@ -52,6 +52,10 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
 						<span class="mdc-list-item__text">{{ __('All products') }}</span>
 					</a>
+					<a class="mdc-list-item" href="{{ route('products.random') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">casino</i>
+						<span class="mdc-list-item__text">{{ __('Random product') }}</span>
+					</a>
 					<a class="mdc-list-item" href="{{ route('following.products') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">stars</i>
 						<span class="mdc-list-item__text">{{ __('Following products') }}</span>
@@ -59,10 +63,6 @@
 					<a class="mdc-list-item" href="{{ route('following.retailers') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
 						<span class="mdc-list-item__text">{{ __('Following retailers') }}</span>
-					</a>
-					<a class="mdc-list-item" href="{{ route('products.random') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">casino</i>
-						<span class="mdc-list-item__text">{{ __('Random product') }}</span>
 					</a>
 					<hr class="mdc-list-divider">
 					<h6 class="mdc-list-group__subheader">高级功能</h6>
@@ -102,11 +102,15 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
 						<span class="mdc-list-item__text">升级账户申请</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('admin.taobao') }}">
+					<a class="mdc-list-item" href="{{ route('admin.taobao.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
 					</a>
 					@endif
+					<a class="mdc-list-item" href="{{ route('sugguestion.create') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_comment</i>
+						<span class="mdc-list-item__text">功能建议</span>
+					</a>
 					<a class="mdc-list-item" href="{{ route('account.settings.edit') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
 						<span class="mdc-list-item__text">设置</span>

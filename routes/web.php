@@ -7,6 +7,8 @@ Route::redirect('', 'products');
 # User model
 Route::middleware('auth')->group(function () {
 	Route::get('home', 'HomeController@index')->name('home');
+	Route::get('suggestion', 'SuggestionController@create')->name('suggestion.create');
+	Route::post('suggestion', 'SuggestionController@store')->name('suggestion.store');
 	Route::get('account/status', 'UserController@status')->name('account.status');
 	Route::post('account/status/request', 'UserController@request')->name('account.request');
 	Route::get('account/settings/edit', 'UserController@edit')->name('account.settings.edit');
@@ -14,6 +16,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('following/products', 'ProductController@following')->name('following.products');
 	Route::get('following/retailers', 'RetailerController@following')->name('following.retailers');
 	Route::get('following/vendors', 'VendorController@following')->name('following.vendors')->middleware('reseller');
+	Route::get('following/vendors/{vendor}', 'VendorController@edit')->name('following.vendors.edit')->middleware('reseller');
+	Route::patch('following/vendors/{vendor}', 'VendorController@update')->name('following.vendors.edit')->middleware('reseller');
 });
 
 # Product model
