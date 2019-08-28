@@ -17,7 +17,7 @@
 		@endforeach
 		<div class="price-grid__footer text-right">
 				<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button" onclick="event.preventDefault(); window.location.replace(this.href);">{{ __('edit') }}</a>
-				<button type="button" name="button" class="mdc-button mdc-button--error" onclick="delete_price({{$price->id}})">
+				<button type="button" class="mdc-button mdc-button--error" onclick="delete_price({{$price->id}})">
 					<span class="mdc-button__label">{{ __('delete') }}</span>
 				</button>
 		</div>

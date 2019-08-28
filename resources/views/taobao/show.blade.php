@@ -26,7 +26,7 @@
 			</div>
 			@endforelse
 		<div class="">
-			<a type="button" name="button" class="mdc-button mdc-button--unelevated" href="{{ $product->url }}" target="_blank">
+			<a type="button" class="mdc-button mdc-button--unelevated" href="{{ $product->url }}" target="_blank">
 				<span class="mdc-button__label">{{ __('Taobao link') }}</span>
 			</a>
 	</div>

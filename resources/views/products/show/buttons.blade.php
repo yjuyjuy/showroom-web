@@ -1,17 +1,17 @@
 <div class="">
 	@if(auth()->user()->following_products->contains($product))
-	<button type="button" name="button" class="mdc-button mdc-button--error" onclick="unfollow_product({{ $product->id }})">
+	<button type="button" class="mdc-button mdc-button--error" onclick="unfollow_product({{ $product->id }})">
 		<span class="mdc-button__label">{{ __('following') }}</span>
 	</button>
 	@else
-	<button type="button" name="button" class="mdc-button mdc-button--unelevated" onclick="follow_product({{ $product->id }})">
+	<button type="button" class="mdc-button mdc-button--unelevated" onclick="follow_product({{ $product->id }})">
 		<span class="mdc-button__label">{{ __('follow') }}</span>
 	</button>
 	@endif
 	@if(Route::currentRouteName() != 'vendor.products.show')
 		@if($product->retails->count() > 1)
 		<div class="mdc-menu-surface--anchor d-inline-block">
-			<button type="button" name="button" class="ml-2 mdc-button open-menu-button mdc-button--unelevated">
+			<button type="button" class="ml-2 mdc-button open-menu-button mdc-button--unelevated">
 				<span class="mdc-button__label">{{ __('Contact retailer') }}</span>
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
@@ -41,7 +41,7 @@
 	@if($user->is_reseller)
 		@if($product->offers->count() > 1)
 		<div class="mdc-menu-surface--anchor d-inline-block">
-			<button type="button" name="button" class="ml-2 mdc-button open-menu-button mdc-button--unelevated">
+			<button type="button" class="ml-2 mdc-button open-menu-button mdc-button--unelevated">
 				<span class="mdc-button__label">{{ __('Contact vendor') }}</span>
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
