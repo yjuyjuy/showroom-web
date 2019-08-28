@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="fullscreen-center">
-	<div class="d-flex flex-column">
+	<div class="d-flex flex-column mt-n4">
 		@foreach($shops->shuffle() as $shop)
 		<div class="text-center my-4">
 			<a href="{{ route('taobao.admin', ['shop' => $shop,]) }}" class="mdc-typography--headline5">{{ $shop->name }}</a>
