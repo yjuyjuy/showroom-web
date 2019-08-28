@@ -7,8 +7,8 @@
 
 	<form class="my-5 d-flex justify-content-center align-items-center">
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" name="name" class="mdc-text-field__input" aria-label="Label" autofocus
-			placeholder="{{ __('Search retailer') }}">
+			<input type="text" name="retailer_name" class="mdc-text-field__input" aria-label="Label" autofocus
+			placeholder="{{ __('Search retailer') }}" autocomplete="off">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>

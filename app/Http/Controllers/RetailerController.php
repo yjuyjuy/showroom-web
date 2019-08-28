@@ -80,11 +80,11 @@ class RetailerController extends Controller
 	public function following(Request $request)
 	{
 		$not_found = false;
-		if ($request->input('name')) {
-			$name = $request->validate([
-				'name' => ['sometimes', 'string', 'max:255'],
-			])['name'];
-			$retailer = \App\Retailer::where('name', $name)->first();
+		if ($request->input('retailer_name')) {
+			$retailer_name = $request->validate([
+				'retailer_name' => ['sometimes', 'string', 'max:255'],
+			])['retailer_name'];
+			$retailer = \App\Retailer::where('name', $retailer_name)->first();
 			if ($retailer) {
 				return redirect(route('retailer.products.index', ['retailer' => $retailer,]));
 			} else {
