@@ -186,7 +186,7 @@ class AdminController extends Controller
 
 	public function update_taobao_prices()
 	{
-		foreach(\App\TaobaoShop::all() as $shop) {
+		foreach(\App\TaobaoShop::where('is_partner', false) as $shop) {
 			\App\RetailPrice::where('retailer_id', $shop->retailer_id)->delete();
 			foreach($shop->prices()->whereNotNull('product_id')->whereNotNull('prices')->get() as $price) {
 				$retail = \App\RetailPrice::firstOrNew(['product_id' => $price->product_id, 'retailer_id' => $shop->retailer_id]);
