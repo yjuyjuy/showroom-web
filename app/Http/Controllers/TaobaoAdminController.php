@@ -60,7 +60,10 @@ class TaobaoAdminController extends Controller
 					$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
 				} else {
 					foreach($taobao_price->prices as $size => $price) {
-						if($price < $retail->prices[$size] * 1.05 || $price > $retail->prices[$size] * 1.25) {
+						if($price < $retail->prices[$size] / 1.15 * 1.05) {
+							$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
+							break;
+						} elseif($price > $retail->prices[$size] / 1.15 * 1.35) {
 							$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
 							break;
 						}
