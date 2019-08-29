@@ -8,8 +8,8 @@
 		<span>{{$size}} - &yen;{{$data['price']}} - {{$data['vendor']}}</span>
 		@endforeach
 		<div class="mt-2">
-			<input type="text" value="{{ $product->offers_to_string }}" style="opacity:0;position:fixed;">
-			<button type="button" class="mdc-button" onclick="var input = this.parentElement.firstChild;input.setSelectionRange(0,input.value.length);input.select();document.execCommand('copy');input.blur();">
+			<input type="text" value="{{ $product->offers_to_string }}" style="opacity:0;position:absolute;left:-100%;">
+			<button type="button" class="mdc-button" onclick="var input = this.parentElement.firstChild;input.focus();input.setSelectionRange(0,input.value.length);document.execCommand('copy');input.blur();">
 				<span class="mdc-button__label">复制尺码价格</span>
 			</button>
 		</div>
