@@ -49,7 +49,7 @@ class ProductController extends Controller
 		if ($user) {
 			$retailer_ids = $user->following_retailers()->pluck('retailer_id');
 		} else {
-			$retailer_ids = [1];
+			$retailer_ids = [2471873538];
 		}
 
 		$products->load([

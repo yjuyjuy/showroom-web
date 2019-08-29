@@ -83,6 +83,6 @@ class User extends Authenticatable
 	}
 	public function isSuperAdmin()
 	{
-		return in_array($this->id, [1,27,]);
+		return in_array($this->id, [1111111111, 4021500970, 8888888888]);
 	}
 }

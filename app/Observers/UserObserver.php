@@ -14,7 +14,7 @@ class UserObserver
 	 */
 	public function created(User $user)
 	{
-		$user->following_retailers()->attach(1);
+		$user->following_retailers()->attach(2471873538);
 	}
 
 	/**
