@@ -17,7 +17,6 @@ class CreateRetailersTable extends Migration
             $table->bigIncrements('id');
 						$table->string('name');
 						$table->string('homepage')->nullable();
-						$table->enum('strategy', ['safe', 'competitive'])->nullable();
             $table->timestamps();
         });
     }
