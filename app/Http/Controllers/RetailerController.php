@@ -47,9 +47,9 @@ class RetailerController extends Controller
 				return $item->getMinPrice(INF);
 			})->values();
 		}
-		$total_pages = ceil($products->count() / 48.0);
+		$total_pages = ceil($products->count() / 24.0);
 		$page = min(max($request->query('page',1), 1), $total_pages);
-		$products = $products->forPage($page, 48);
+		$products = $products->forPage($page, 24);
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();

@@ -53,7 +53,7 @@ class ProductController extends Controller
 		}
 
 		$products->load([
-			'image', 'brand', 'retails' => function ($query) use ($retailer_ids) {
+			'retails' => function ($query) use ($retailer_ids) {
 				$query->whereIn('retailer_id', $retailer_ids);
 			},
 		]);
@@ -63,19 +63,9 @@ class ProductController extends Controller
 					return $item->retails->isNotEmpty();
 				});
 			}
-			# admin filters
-			if ($admin && $request->input('show_empty_only')) {
-					$products = $products->filter(function ($item) {
-						return $item->image;
-					});
-			} elseif ($admin && $request->input('show_not_empty_only')) {
-				$products = $products->filter(function ($item) {
-					return !$item->image;
-				});
-			}
 		} else {
 			$products = $products->filter(function ($item) {
-				return $item->retails->isNotEmpty() && $item->image;
+				return $item->retails->isNotEmpty();
 			});
 		}
 		if($sort == 'price-high-to-low') {
@@ -88,9 +78,10 @@ class ProductController extends Controller
 				return $item->getMinPrice(INF);
 			})->values();
 		}
-		$total_pages = ceil($products->count() / 48.0);
+		$total_pages = ceil($products->count() / 24.0);
 		$page = min(max($request->query('page',1), 1), $total_pages);
-		$products = $products->forPage($page, 48);
+		$products = $products->forPage($page, 24);
+		$products->load(['brand', 'image']);
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
