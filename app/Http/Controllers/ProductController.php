@@ -19,7 +19,7 @@ class ProductController extends Controller
 		$user = auth()->user();
 		$admin = ($user) ? $user->isSuperAdmin() : false;
 		$vendor = $user->vendor ?? false;
-		if(!$query) {
+		if (!$query) {
 			# vendor filters
 			if ($vendor && $request->input('show_my_stock_only')) {
 				$query = $vendor->products();
@@ -68,18 +68,18 @@ class ProductController extends Controller
 				return $item->retails->isNotEmpty();
 			});
 		}
-		if($sort == 'price-high-to-low') {
+		if ($sort == 'price-high-to-low') {
 			$products = $products->sortByDesc(function ($item) {
 				return $item->getMinPrice(0);
 			})->values();
 		}
-		if($sort == 'price-low-to-high') {
+		if ($sort == 'price-low-to-high') {
 			$products = $products->sortBy(function ($item) {
 				return $item->getMinPrice(INF);
 			})->values();
 		}
 		$total_pages = ceil($products->count() / 24.0);
-		$page = min(max($request->query('page',1), 1), $total_pages);
+		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $products->forPage($page, 24);
 		$products->load(['brand', 'image']);
 		$sortOptions = $this->sortOptions();
@@ -102,8 +102,11 @@ class ProductController extends Controller
 
 	public function store(Request $request)
 	{
-		// TODO: think of a better way to generate unique product id for new product
 		$product = new Product($this->validateProduct());
+		$product->id = random_int(1000000000, 9999999999);
+		while (Product::find($product->id)) {
+			$product->id = random_int(1000000000, 9999999999);
+		}
 		$product->save();
 		return redirect(route('images.edit', ['product' => $product]));
 	}
@@ -203,7 +206,7 @@ class ProductController extends Controller
 	public function follow(Product $product)
 	{
 		$user = auth()->user();
-		if(!$user->following_products->contains($product)) {
+		if (!$user->following_products->contains($product)) {
 			$user->following_products()->attach($product);
 		}
 		return ['success'];
@@ -211,7 +214,7 @@ class ProductController extends Controller
 	public function unfollow(Product $product)
 	{
 		$user = auth()->user();
-		if($user->following_products->contains($product)) {
+		if ($user->following_products->contains($product)) {
 			$user->following_products()->detach($product);
 		}
 		return ['success'];
