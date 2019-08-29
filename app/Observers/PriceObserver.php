@@ -32,7 +32,7 @@ class PriceObserver
 				}
 			}
 
-			foreach($retailer->partner_vendors as $vendor) {
+			foreach($retailer->partner_vendors->whereNotIn('id', $retailer->vendors->pluck('id')) as $vendor) {
 				if ($offer_price = OfferPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
 					$profit_rate = $vendor->pivot->profit_rate;
 					foreach($offer_price->prices as $size => $price) {
