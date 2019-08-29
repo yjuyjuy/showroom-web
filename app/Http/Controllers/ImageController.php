@@ -18,15 +18,12 @@ class ImageController extends Controller
 			'website_id' => ['required','exists:websites,id'],
 			'image' => ['required_without:images','file','mimetypes:image/*','max:10000'],
 			'images.*' => ['required_without:image','file','mimetypes:image/*','max:10000'],
-			'type_id' => ['required_with:image','exists:types,id'],
+			'order' => ['required_with:image','numeric', 'min:1'],
 		]);
 		if (request('images')) {
-			$existed = \App\Product::find(request('product_id'))->images->where('website_id', request('website_id'))->pluck('type_id');
-			$type_ids = \App\Type::all()->whereNotIn('id', $existed)->pluck('id')->toArray();
+			$order = \App\Product::find(request('product_id'))->images->where('website_id', request('website_id'))->max('order');
 			foreach (request('images') as $uploadedFile) {
-				if (count($type_ids) <= 0) {
-					break;
-				}
+				$order += 1;
 				\Intervention\Image\Facades\Image::make($uploadedFile->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 				$path = $uploadedFile->store('images/'.request('product_id'), 'public');
 				\App\Image::create([
@@ -34,7 +31,7 @@ class ImageController extends Controller
 					'source' => $uploadedFile->getClientOriginalName(),
 					'product_id' => request('product_id'),
 					'website_id' => request('website_id'),
-					'type_id' => array_shift($type_ids),
+					'order' => $order,
 				]);
 			}
 		} else {
@@ -45,7 +42,7 @@ class ImageController extends Controller
 				'source' => request('image')->getClientOriginalName(),
 				'product_id' => request('product_id'),
 				'website_id' => request('website_id'),
-				'type_id' => request('type_id'),
+				'order' => request('order'),
 			]);
 		}
 		return ['success'];
@@ -53,13 +50,12 @@ class ImageController extends Controller
 
 	public function edit(Product $product)
 	{
-		$images = $product->images()->orderBy('website_id', 'asc')->orderBy('type_id', 'asc')->get();
+		$images = $product->images()->orderBy('website_id', 'asc')->orderBy('order')->get();
 		$images = $images->mapToGroups(function ($item, $key) {
 			return [$item->website_id => $item];
 		});
-		$types = \App\Type::all();
 		$websites = \App\Website::all();
-		return view('images.edit', compact('product', 'images', 'types', 'websites'));
+		return view('images.edit', compact('product', 'images', 'websites'));
 	}
 
 	public function update(Image $image)
@@ -77,7 +73,7 @@ class ImageController extends Controller
 			'source' => request('image')->getClientOriginalName(),
 			'product_id' => $image->product_id,
 			'website_id' => $image->website_id,
-			'type_id' => $image->type_id,
+			'order' => $image->order,
 		]);
 		$image->delete();
 		return ['success'];
@@ -87,11 +83,11 @@ class ImageController extends Controller
 	{
 		request()->validate([
 			'website_id' => ['required','exists:websites,id'],
-			'type_id' => ['required','exists:types,id'],
+			'order' => ['required','numeric', 'min:1'],
 		]);
 		$image->update([
 			'website_id' => request('website_id'),
-			'type_id' => request('type_id'),
+			'order' => request('order'),
 		]);
 		return ['success'];
 	}
@@ -106,11 +102,11 @@ class ImageController extends Controller
 		$image2 = Image::find(request('image_id2'));
 
 		$website_id = $image1->website_id;
-		$type_id = $image1->type_id;
+		$buff = $image1->order;
 		$image1->website_id = $image2->website_id;
-		$image1->type_id = $image2->type_id;
+		$image1->order = $image2->order;
 		$image2->website_id = $website_id;
-		$image2->type_id = $type_id;
+		$image2->order = $buff;
 
 		$image1->save();
 		$image2->save();
@@ -123,40 +119,21 @@ class ImageController extends Controller
 		}
 		$image->delete();
 	}
-
-	public function types()
-	{
-		return [
-			['id' => 1,'name' => 'front','name_cn' => '正面','angle' => 'front'],
-			['id' => 2,'name' => 'front-angled','name_cn' => '正侧面','angle' => 'front'],
-			['id' => 3,'name' => 'back','name_cn' => '背面','angle' => 'back'],
-			['id' => 4,'name' => 'back-angled','name_cn' => '背侧面','angle' => 'back'],
-			['id' => 5,'name' => 'detail1','name_cn' => '细节1','angle' => 'close-up'],
-			['id' => 6,'name' => 'detail2','name_cn' => '细节2','angle' => 'close-up'],
-			['id' => 7,'name' => 'detail3','name_cn' => '细节3','angle' => 'close-up'],
-			['id' => 8,'name' => 'detail4','name_cn' => '细节4','angle' => 'close-up'],
-			['id' => 9,'name' => 'pose1','name_cn' => '全身1','angle' => 'front'],
-			['id' => 10,'name' => 'pose2','name_cn' => '全身2','angle' => 'back'],
-			['id' => 11,'name' => 'cover1','name_cn' => '正面平铺','angle' => 'front'],
-			['id' => 12,'name' => 'cover1','name_cn' => '反面平铺','angle' => 'back'],
-			['id' => 14,'name' => 'side','name_cn' => '侧面','angle' => 'back'],
-		];
-	}
 	public function websites()
 	{
 		return [
-			['id' => 1,'name' => 'off---white'],
-			['id' => 2,'name' => 'farfetch'],
-			['id' => 3,'name' => 'antonioli'],
-			['id' => 4,'name' => 'Dopebxtch'],
-			['id' => 5,'name' => 'ssense'],
-			['id' => 6,'name' => 'endclothing'],
-			['id' => 7,'name' => 'selfridges'],
-			['id' => 8,'name' => 'matchesfashion'],
-			['id' => 9,'name' => 'luisaviaroma'],
-			['id' => 10,'name' => 'vrient'],
-			['id' => 11,'name' => 'lindelepalais'],
-			['id' => 12,'name' => 'revolve'],
+			['id' => 1,		'name' => 'off---white'],
+			['id' => 2,		'name' => 'farfetch'],
+			['id' => 3,		'name' => 'antonioli'],
+			['id' => 4,		'name' => 'Dopebxtch'],
+			['id' => 5,		'name' => 'ssense'],
+			['id' => 6,		'name' => 'endclothing'],
+			['id' => 7,		'name' => 'selfridges'],
+			['id' => 8,		'name' => 'matchesfashion'],
+			['id' => 9,		'name' => 'luisaviaroma'],
+			['id' => 10,	'name' => 'vrient'],
+			['id' => 11,	'name' => 'lindelepalais'],
+			['id' => 12,	'name' => 'revolve'],
 		];
 	}
 }

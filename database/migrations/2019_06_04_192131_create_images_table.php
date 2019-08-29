@@ -17,7 +17,7 @@ class CreateImagesTable extends Migration
 			$table->bigIncrements('id');
 			$table->unsignedBigInteger('product_id');
 			$table->unsignedInteger('website_id');
-			$table->unsignedInteger('type_id');
+			$table->integer('order');
 			$table->string('path');
 			$table->string('source')->nullable();
 			$table->timestamps();

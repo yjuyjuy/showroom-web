@@ -154,7 +154,7 @@ class ProductController extends Controller
 	public function edit(Product $product)
 	{
 		$product->load(['images' => function ($query) {
-			$query->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+			$query->orderBy('website_id')->orderBy('order');
 		}]);
 		return view('products.edit', compact('product'));
 	}

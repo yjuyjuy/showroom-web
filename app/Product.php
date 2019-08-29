@@ -57,12 +57,12 @@ class Product extends Model
 	}
 	public function images()
 	{
-		return $this->hasMany(Image::class)->orderBy('website_id', 'ASC')->orderBy('type_id', 'ASC');
+		return $this->hasMany(Image::class)->orderBy('website_id')->orderBy('order');
 		;
 	}
 	public function image()
 	{
-		return $this->hasOne(Image::class)->orderBy('website_id')->orderBy('type_id');
+		return $this->hasOne(Image::class)->orderBy('website_id')->orderBy('order');
 	}
 	public function logs()
 	{
