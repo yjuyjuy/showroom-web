@@ -96,7 +96,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('admin', 'AdminController@index')->name('admin.index');
 	Route::view('admin/inbox', 'admin.inbox')->name('admin.inbox');
-	Route::view('admin/inbox/requests', 'AdminController@requests')->name('admin.inbox.requests');
+	Route::view('admin/inbox/requests', 'admin.requests')->name('admin.inbox.requests');
 	Route::view('admin/inbox/suggestions', 'admin.suggestions')->name('admin.inbox.suggestions');
 	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
 	Route::post('admin/requests/agree', 'AdminController@agree')->name('admin.requests.agree');
