@@ -10,14 +10,10 @@
 				<img src="{{ $diff['product']->image->url ?? asset('storage/icons/ImagePlaceholder.svg') }}" alt="">
 			</div>
 			<div class="d-flex flex-column price-card col">
-				@if($diff['taobao'])
-					<a href="{{ $diff['taobao']->url }}" target="_blank">{{ $diff['taobao']->description }}</a>
-					@foreach($diff['taobao']->prices as $size => $price)
-					<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
-					@endforeach
-				@else
-					<a href="https://router.publish.taobao.com/router/publish.htm" target="_blank">没有找到商品 (点击上架)</a>
-				@endif
+				<a href="{{ $diff['taobao']->url }}" target="_blank">{{ $diff['taobao']->description }}</a>
+				@foreach($diff['taobao']->prices as $size => $price)
+				<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
+				@endforeach
 			</div>
 			<div class="d-flex flex-column price-card col">
 				<a href="{{ route('products.show',['product' => $diff['product'],]) }}" target="_blank">没有找到报价 (点击添加)</a>
@@ -33,7 +29,7 @@
 				<a href="https://router.publish.taobao.com/router/publish.htm" target="_blank">没有找到商品 (点击上架)</a>
 			</div>
 			<div class="d-flex flex-column price-card col">
-				<a href="{{ route('products.show',['product' => $diff['retail']->product,]) }}" target="_blank">{{ $diff['product']->displayName().'-'.__($diff['product']->color->name) }}</a>
+				<a href="{{ route('products.show',['product' => $diff['retail']->product,]) }}">{{ $diff['product']->displayName().'-'.__($diff['product']->color->name) }}</a>
 				@foreach($diff['retail']->prices as $size => $price)
 				<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
 				@endforeach
@@ -52,7 +48,7 @@
 				@endforeach
 			</div>
 			<div class="d-flex flex-column price-card col">
-				<a href="{{ route('products.show',['product' => $diff['retail']->product,]) }}" target="_blank">{{ $diff['product']->displayName().'-'.__($diff['product']->color->name) }}</a>
+				<a href="{{ route('products.show',['product' => $diff['retail']->product,]) }}">{{ $diff['product']->displayName().'-'.__($diff['product']->color->name) }}</a>
 				@foreach($diff['retail']->prices as $size => $price)
 				<span class="size-price">{{ $size }} - &yen;{{ $price }}</span>
 				@endforeach
