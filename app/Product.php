@@ -167,4 +167,13 @@ class Product extends Model
 	{
 		return $this->brand->name.' '.$this->season->name.' '.$this->name_cn;
 	}
+	public function getOffersToStringAttribute()
+	{
+		$string = implode(' ', collect($this->getSizePrice('offer'))->mapToGroups(function ($item, $key) {
+			return [$item['price'] => $key];
+		})->map(function ($sizes, $price) {
+			return implode('/', $sizes->toArray())." \u{00a5}".$price;
+		})->toArray());
+		return $this->displayName().' '.$string;
+	}
 }

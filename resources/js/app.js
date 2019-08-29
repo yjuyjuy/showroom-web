@@ -270,3 +270,6 @@ window.open_wechat = function(name) {
 	window.alert('打开微信联系卖家' + name);
 	window.open('weixin://', '_blank');
 }
+window.copy_to_clipboard = function(text) {
+	navigator.clipboard.writeText(text).catch(()=>window.alert('复制失败'));
+}
