@@ -59,7 +59,7 @@ class AdminController extends Controller
 		$user->following_retailers()->sync(\App\Retailer::all());
 	}
 
-	public function following_vendors()
+	public function follow_all_vendors()
 	{
 		$user = auth()->user();
 		$user->following_vendors()->sync(\App\Vendor::all());
