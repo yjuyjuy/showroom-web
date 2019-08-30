@@ -3,7 +3,8 @@
 namespace App\Observers;
 
 use App\User;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Auth\Notifications\VerifyEmail ;
 class UserObserver
 {
 	/**
@@ -15,6 +16,7 @@ class UserObserver
 	public function created(User $user)
 	{
 		$user->following_retailers()->attach(2471873538);
+		$user->sendEmailVerificationNotification();
 	}
 
 	/**
