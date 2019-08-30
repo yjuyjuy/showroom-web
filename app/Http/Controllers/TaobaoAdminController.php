@@ -25,9 +25,9 @@ class TaobaoAdminController extends Controller
 	public function links(TaobaoShop $shop = null)
 	{
 		if (!$shop) {
-			$prices = \App\TaobaoPrice::whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->orderBy('taobao_id')->get();
+			$prices = \App\TaobaoPrice::whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->whereHas('taobao_product', function($query) { $query->where('title', 'like', '%off%white%'); })->orderBy('taobao_id')->limit(30)->get();
 		} else {
-			$prices = $shop->prices()->whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->orderBy('taobao_id')->get();
+			$prices = $shop->prices()->whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->whereHas('taobao_product', function($query) { $query->where('title', 'like', '%off%white%'); })->orderBy('taobao_id')->limit(30)->get();
 		}
 		return view('taobao.admin.links', compact('prices', 'shop'));
 	}
@@ -98,7 +98,7 @@ class TaobaoAdminController extends Controller
 		$price->ignore = false;
 		$price->save();
 		if (!$price->shop->is_partner) {
-			$retail = \App\Retail::firstOrNew([
+			$retail = \App\RetailPrice::firstOrNew([
 						'retailer_id' => $price->shop->retailer_id,
 						'product_id' => $price->product_id,
 					]);
