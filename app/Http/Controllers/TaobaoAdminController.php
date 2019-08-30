@@ -73,6 +73,10 @@ class TaobaoAdminController extends Controller
 			foreach ($taobao_prices as $price) {
 				if ($retail_prices->where('product_id', $price->product_id)->isEmpty()) {
 					// 需要下架
+					if(!$price->product_id) {
+						$price->product_id = null;
+						$price->save();
+					}
 					$diffs->push(['retail' => null, 'taobao' => $price, 'product' => $price->product]);
 				}
 			}
