@@ -13,6 +13,9 @@
 		@include('products.show.properties')
 		@include('products.show.customer')
 		@include('products.show.buttons')
+		@if(auth()->user() && auth()->user()->isSuperAdmin())
+			@include('products.show.admin')
+		@endif
 	</div>
 </div>
 @include('layouts.back_fab')
