@@ -103,6 +103,7 @@ class TaobaoAdminController extends Controller
 						'product_id' => $price->product_id,
 					]);
 			$retail->prices = $price->prices;
+			$retail->link = $price->url;
 			$retail->save();
 		}
 		return ['success' => true,];
