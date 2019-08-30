@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Price sheet').' - '.$vendor->name)
+@section('title', '价格表 - '.$vendor->name)
 
 @section('content')
 <div class="d-flex flex-column align-items-center">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Add price').'-'.$product->displayName())
+@section('title', '添加报价 - '.$product->displayName())
 
 @section('content')
 <div class="images-content-container">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $shop->name)
+@section('title', '淘宝店铺 - '$shop->name)
 
 @section('content')
 <div id="products-index" class="">

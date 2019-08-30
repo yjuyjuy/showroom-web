@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('title', '升级账户申请 - 管理员功能')
 
 @section('content')

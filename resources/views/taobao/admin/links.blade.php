@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '关联商品 - 淘宝')
+@section('title', '关联商品 - 淘宝管理')
 
 @section('content')
 <div class="m-2 d-flex justify-content-center">

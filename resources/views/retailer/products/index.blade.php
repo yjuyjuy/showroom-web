@@ -1,5 +1,7 @@
 @extends('layouts.app')
-@section('title', __('All products').' - '.$retailer->name)
+
+@section('title', $retailer->name.'的所有商品')
+
 @section('content')
 <div id="products-index" class="">
 	@include('retailer.banner')

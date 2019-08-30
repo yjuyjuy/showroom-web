@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '手动执行程序 - admin')
+@section('title', '手动执行程序 - 管理员功能')
 
 @section('content')
 <div class="fullscreen-center">

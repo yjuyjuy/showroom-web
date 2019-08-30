@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Edit product').'-'.$product->displayName())
+@section('title', '修改商品 -'.$product->displayName())
 
 @section('content')
 <div class="container">

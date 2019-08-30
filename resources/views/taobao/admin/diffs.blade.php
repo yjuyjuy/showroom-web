@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $shop->name.' - 管理中心')
+@section('title', '价格同步 - 淘宝管理')
 
 @section('content')
 <div class="mx-2">

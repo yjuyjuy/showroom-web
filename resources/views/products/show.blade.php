@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',$product->displayName())
+@section('title', $product->displayName())
 
 @section('content')
 <div class="images-content-container">

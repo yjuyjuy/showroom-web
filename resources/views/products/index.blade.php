@@ -1,5 +1,7 @@
 @extends('layouts.app')
-@section('title', __('All products'))
+
+@section('title', '所有商品')
+
 @section('content')
 <div id="products-index" class="">
 	@if($products->isEmpty())

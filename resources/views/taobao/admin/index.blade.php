@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','所有店铺 - 管理员')
+@section('title', '所有店铺 - 淘宝管理')
 
 @section('content')
 <div class="fullscreen-center">

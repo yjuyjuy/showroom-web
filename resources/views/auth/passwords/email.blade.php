@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Reset Password'))
+
 @section('content')
 <div class="d-flex justify-content-center auth">
 	<div class="mdc-card mdc-card--outlined">

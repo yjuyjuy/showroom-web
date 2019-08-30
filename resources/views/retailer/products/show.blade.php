@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',$product->displayName().' - '.$retailer->name)
+@section('title', $product->displayName().' - '.$retailer->name)
 
 @section('content')
 @include('retailer.banner')

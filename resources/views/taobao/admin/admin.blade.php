@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', '管理员 - '.$shop->name)
+
+@section('title', '淘宝管理 - '.$shop->name)
 
 @section('content')
 <div class="fullscreen-center">
