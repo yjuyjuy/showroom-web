@@ -14,6 +14,7 @@ class AdminController extends Controller
 		$user->save();
 		return ['success'];
 	}
+
 	public function reject(Request $request)
 	{
 		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
@@ -21,6 +22,7 @@ class AdminController extends Controller
 		$user->save();
 		return ['success'];
 	}
+
 	public function index()
 	{
 		$functions = $this->available_functions();
@@ -40,7 +42,8 @@ class AdminController extends Controller
 	public function available_functions()
 	{
 		return [
-			'follow_all' => '关注所有同行和卖家',
+			'follow_all_retailers' => '关注所有卖家',
+			'follow_all_vendors' => '关注所有同行',
 			'update_designer_style_id' => '根据图片名称更新货号',
 			'convert_webp_to_jpg' => '转换webp格式图片到jpg格式',
 			'clear_prices' => '清空所有调货价, 售价',
@@ -50,11 +53,16 @@ class AdminController extends Controller
 		];
 	}
 
-	public function follow_all()
+	public function follow_all_retailers()
+	{
+		$user = auth()->user();
+		$user->following_retailers()->sync(\App\Retailer::all());
+	}
+
+	public function following_vendors()
 	{
 		$user = auth()->user();
 		$user->following_vendors()->sync(\App\Vendor::all());
-		$user->following_retailers()->sync(\App\Retailer::all());
 	}
 
 	public function update_designer_style_id()
@@ -186,9 +194,9 @@ class AdminController extends Controller
 
 	public function update_taobao_prices()
 	{
-		foreach(\App\TaobaoShop::where('is_partner', false) as $shop) {
+		foreach (\App\TaobaoShop::where('is_partner', false) as $shop) {
 			\App\RetailPrice::where('retailer_id', $shop->retailer_id)->delete();
-			foreach($shop->prices()->whereNotNull('product_id')->whereNotNull('prices')->get() as $price) {
+			foreach ($shop->prices()->whereNotNull('product_id')->whereNotNull('prices')->get() as $price) {
 				$retail = \App\RetailPrice::firstOrNew(['product_id' => $price->product_id, 'retailer_id' => $shop->retailer_id]);
 				$retail->prices = $price->prices;
 				$retail->save();
