@@ -121,12 +121,7 @@ class TaobaoAdminController extends Controller
 			$price->save();
 		}
 		if (!$price->shop->is_partner) {
-			$retails = \App\Retail::where('retailer_id', $price->shop->retailer_id)->where('product_id', $price->product_id)->get();
-			if ($retails->isNotEmpty()) {
-				foreach ($retails as $retail) {
-					$retail->delete();
-				}
-			}
+			$retails = \App\RetailPrice::where('retailer_id', $price->shop->retailer_id)->where('product_id', $price->product_id)->delete();
 		}
 		return ['success' => true,];
 	}
@@ -138,6 +133,7 @@ class TaobaoAdminController extends Controller
 			]);
 		$price = TaobaoPrice::find($data['price_id']);
 		$this->authorize('update', $price->shop);
+		$price->product_id = null;
 		$price->ignore = true;
 		$price->save();
 		return ['success' => true,];
