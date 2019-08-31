@@ -32,7 +32,7 @@ export default {
 					},
 				})
 				.then(response => window.location.reload())
-				.catch(error => console.log(error));
+				.catch(error => window.alert('action failed'));
 		},
 		delete_image: function() {
 			axios.delete('/images/' + this.id)
@@ -48,7 +48,7 @@ export default {
 					image_id2: id,
 				})
 				.then(response => window.location.reload())
-				.catch(error => console.log(error));
+				.catch(error => window.alert('action failed'));
 		}
 	},
 }

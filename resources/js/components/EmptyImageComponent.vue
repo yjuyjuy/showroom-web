@@ -31,7 +31,7 @@ export default {
 						},
 					})
 					.then(response => window.location.reload())
-					.catch(error => console.log(error));
+					.catch(error => window.alert('action failed'));
 			} else {
 				var formData = new FormData();
 				for (let i = 0; i < files.length; i++) {
@@ -45,7 +45,7 @@ export default {
 						},
 					})
 					.then(response => window.location.reload())
-					.catch(error => console.log(error));
+					.catch(error => window.alert('action failed'));
 			}
 		},
 		move_image: function(id) {
@@ -54,7 +54,7 @@ export default {
 					order: this.order,
 				})
 				.then(response => window.location.reload())
-				.catch(error => console.log(error));
+				.catch(error => window.alert('action failed'));
 		}
 	},
 }
