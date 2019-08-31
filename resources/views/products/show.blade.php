@@ -18,12 +18,10 @@
 
 		@if($user->isSuperAdmin())
 			@include('products.show.admin')
-		@else
-			@if($vendor = $user->vendor)
-				@include('products.show.vendor')
-			@endif
+		@elseif($vendor = $user->vendor)
+			@include('products.show.vendor')
 		@endif
-		@include('layouts.back_fab')
 	</div>
 </div>
+@include('layouts.back_fab')
 @endsection

@@ -15,6 +15,8 @@
 		@include('products.show.buttons')
 		@if(auth()->user() && auth()->user()->isSuperAdmin())
 			@include('products.show.admin')
+		@elseif(auth()->user() && ($vendor = auth()->user()->vendor))
+			@include('products.show.vendor')
 		@endif
 	</div>
 </div>
