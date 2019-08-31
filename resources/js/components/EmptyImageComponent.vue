@@ -19,7 +19,6 @@ export default {
 			}
 		},
 		store_image: function(files) {
-			console.log(files);
 			if (files.length == 1) {
 				var formData = new FormData();
 				formData.append('image', files[0]);

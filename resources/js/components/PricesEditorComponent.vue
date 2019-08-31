@@ -168,7 +168,6 @@ export default {
 			event.target.value = event.target.placeholder;
 		},
 		prepare: function(evt) {
-			console.log('submit event fired');
 			evt.preventDefault();
 			for (let index in this.prices) {
 				if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].offer && !this.prices[index].retail) {
