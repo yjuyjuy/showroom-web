@@ -234,42 +234,49 @@ window.delete_price = function(id) {
 	axios.delete('/prices/' + id)
 		.then(response => window.location.replace(response.data.redirect))
 		.catch(error => window.alert('action failed'));
-}
+};
 window.follow_product = function(id) {
 	event.preventDefault();
 	axios.post('/products/' + id + '/follow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
-}
+};
 window.unfollow_product = function(id) {
 	event.preventDefault();
 	axios.post('/products/' + id + '/unfollow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
-}
+};
 window.follow_retailer = function(name) {
 	event.preventDefault();
 	axios.post('/retailer/' + name + '/follow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
-}
+};
 window.unfollow_retailer = function(name) {
 	event.preventDefault();
 	axios.post('/retailer/' + name + '/unfollow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
-}
+};
 window.unfollow_vendor = function(name) {
 	event.preventDefault();
 	axios.post('/vendor/' + name + '/unfollow')
 		.then(response => window.location = '/following/vendors')
 		.catch(error => window.alert('action failed'));
-}
+};
 window.open_wechat = function(name) {
 	event.preventDefault();
 	window.alert('打开微信联系卖家' + name);
 	window.location = 'weixin://';
-}
+};
 window.copy_to_clipboard = function(text) {
 	navigator.clipboard.writeText(text).catch(()=>window.alert('复制失败'));
-}
+};
+
+[].map.call(document.querySelectorAll('img'), function($el) {
+  if ($el.dataset.src) {
+    new Image($el.dataset.src);
+    $el.src = $el.dataset.src;
+  }
+});
