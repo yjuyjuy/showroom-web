@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('taobao/ignore', 'TaobaoAdminController@ignore')->name('taobao.admin.ignore');
 	Route::get('taobao/admin', 'TaobaoAdminController@index')->name('admin.taobao.index')->middleware('admin');
 	Route::get('taobao/admin/links', 'TaobaoAdminController@links')->name('admin.taobao.links')->middleware('admin');
+	Route::get('taobao/admin/ignored', 'TaobaoAdminController@ignored')->name('admin.taobao.ignored')->middleware('admin');
+	Route::get('taobao/admin/linked', 'TaobaoAdminController@linked')->name('admin.taobao.linked')->middleware('admin');
 	Route::get('taobao/{shop}', 'TaobaoController@index')->name('taobao.products.index');
 	Route::get('taobao/{shop}/admin', 'TaobaoAdminController@admin')->name('taobao.admin');
 	Route::get('taobao/{shop}/admin/links', 'TaobaoAdminController@links')->name('taobao.admin.links');

@@ -25,22 +25,38 @@ class TaobaoAdminController extends Controller
 	public function links(TaobaoShop $shop = null)
 	{
 		if (!$shop) {
-			$prices = \App\TaobaoPrice::whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->whereHas('taobao_product', function($query) { $query->where('title', 'like', '%off%white%'); })->orderBy('taobao_id')->limit(30)->get();
+			$prices = \App\TaobaoPrice::whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->whereHas('taobao_product', function ($query) {
+				$query->where('title', 'like', '%off%white%');
+			})->orderBy('taobao_id')->limit(30)->get();
 		} else {
-			$prices = $shop->prices()->whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->whereHas('taobao_product', function($query) { $query->where('title', 'like', '%off%white%'); })->orderBy('taobao_id')->limit(30)->get();
+			$prices = $shop->prices()->whereNotNull('prices')->whereNull('product_id')->where('ignore', false)->whereHas('taobao_product', function ($query) {
+				$query->where('title', 'like', '%off%white%');
+			})->orderBy('taobao_id')->limit(30)->get();
 		}
 		return view('taobao.admin.links', compact('prices', 'shop'));
 	}
 
 	public function linked(TaobaoShop $shop)
 	{
-		$prices = $shop->prices()->whereNotNull('prices')->whereNotNull('product_id')->where('ignore', false)->orderBy('updated_at', 'desc')->get();
+		if (!$shop) {
+			$prices = \App\TaobaoPrice::whereNotNull('prices')->whereNotNull('product_id')->where('ignore', false)->orderBy('updated_at', 'desc')->get();
+		} else {
+			$prices = $shop->prices()->whereNotNull('prices')->whereNotNull('product_id')->where('ignore', false)->orderBy('updated_at', 'desc')->get();
+		}
 		return view('taobao.admin.links', compact('prices', 'shop'));
 	}
 
-	public function ignored(TaobaoShop $shop)
+	public function ignored(TaobaoShop $shop = null)
 	{
-		$prices = $shop->prices()->whereNotNull('prices')->where('ignore', true)->get();
+		if (!$shop) {
+			$prices = \App\TaobaoPrice::whereNotNull('prices')->whereNull('product_id')->where('ignore', true)->whereHas('taobao_product', function ($query) {
+				$query->where('title', 'like', '%off%white%');
+			})->orderBy('taobao_id')->limit(30)->get();
+		} else {
+			$prices = $shop->prices()->whereNotNull('prices')->whereNull('product_id')->where('ignore', true)->whereHas('taobao_product', function ($query) {
+				$query->where('title', 'like', '%off%white%');
+			})->orderBy('taobao_id')->limit(30)->get();
+		}
 		return view('taobao.admin.links', compact('prices', 'shop'));
 	}
 
@@ -55,15 +71,15 @@ class TaobaoAdminController extends Controller
 				if (!$taobao_price) {
 					// 需要上架
 					$diffs->push(['retail' => $retail, 'taobao' => null, 'product' => $retail->product]);
-				} elseif(array_keys($retail->prices) != array_keys($taobao_price->prices)) {
+				} elseif (array_keys($retail->prices) != array_keys($taobao_price->prices)) {
 					// 需要修改
 					$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
 				} else {
-					foreach($taobao_price->prices as $size => $price) {
-						if($price < $retail->prices[$size] / 1.15 * 1.05) {
+					foreach ($taobao_price->prices as $size => $price) {
+						if ($price < $retail->prices[$size] / 1.15 * 1.05) {
 							$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
 							break;
-						} elseif($price > $retail->prices[$size] / 1.15 * 1.35) {
+						} elseif ($price > $retail->prices[$size] / 1.15 * 1.35) {
 							$diffs->push(['retail' => $retail, 'taobao' => $taobao_price, 'product' => $retail->product]);
 							break;
 						}
@@ -73,7 +89,7 @@ class TaobaoAdminController extends Controller
 			foreach ($taobao_prices as $price) {
 				if ($retail_prices->where('product_id', $price->product_id)->isEmpty()) {
 					// 需要下架
-					if(!$price->product_id) {
+					if (!$price->product_id) {
 						$price->product_id = null;
 						$price->save();
 					}
@@ -99,10 +115,18 @@ class TaobaoAdminController extends Controller
 		$price->save();
 		if (!$price->shop->is_partner) {
 			$retail = \App\RetailPrice::firstOrNew([
-						'retailer_id' => $price->shop->retailer_id,
-						'product_id' => $price->product_id,
-					]);
-			$retail->prices = $price->prices;
+				'retailer_id' => $price->shop->retailer_id,
+				'product_id' => $price->product_id,
+			]);
+			if ($retail->prices) {
+				$prices = $retail->prices;
+				foreach($price->prices as $size => $value) {
+					if (!array_key_exists($size, $prices) || $value < $prices[$size]) {
+						$prices[$size] = $value;
+					}
+				}
+			}
+			$retail->prices = $prices ?? $retail->prices;
 			$retail->link = $price->url;
 			$retail->save();
 		}
