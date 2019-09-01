@@ -18,6 +18,6 @@ class Image extends Model
 	}
 	public function getUrlAttribute()
 	{
-		return asset('storage/'.$this->path);
+		return asset('storage/'.$this->path.'_400.jpeg');
 	}
 }

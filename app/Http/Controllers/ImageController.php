@@ -26,6 +26,7 @@ class ImageController extends Controller
 				$order += 1;
 				\Intervention\Image\Facades\Image::make($uploadedFile->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 				$path = $uploadedFile->store('images/'.request('product_id'), 'public');
+				\Intervention\Image\Facades\Image::make('public/storage/'.$path)->fit(400, 565)->save('public/storage/'.$path.'_400.jpeg', 80);
 				\App\Image::create([
 					'path' => $path,
 					'source' => $uploadedFile->getClientOriginalName(),
@@ -37,6 +38,7 @@ class ImageController extends Controller
 		} else {
 			\Intervention\Image\Facades\Image::make(request('image')->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 			$path = request('image')->store('images/'.request('product_id'), 'public');
+			\Intervention\Image\Facades\Image::make('public/storage/'.$path)->fit(400, 565)->save('public/storage/'.$path.'_400.jpeg', 80);
 			\App\Image::create([
 				'path' => $path,
 				'source' => request('image')->getClientOriginalName(),
@@ -68,6 +70,7 @@ class ImageController extends Controller
 		}
 		\Intervention\Image\Facades\Image::make(request('image')->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 		$path = request('image')->store("images/{$image->product_id}", 'public');
+		\Intervention\Image\Facades\Image::make('public/storage/'.$path)->fit(400, 565)->save('public/storage/'.$path.'_400.jpeg', 80);
 		\App\Image::create([
 			'path' => $path,
 			'source' => request('image')->getClientOriginalName(),
