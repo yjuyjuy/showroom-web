@@ -36,7 +36,7 @@ class TaobaoAdminController extends Controller
 		return view('taobao.admin.links', compact('prices', 'shop'));
 	}
 
-	public function linked(TaobaoShop $shop)
+	public function linked(TaobaoShop $shop = null)
 	{
 		if (!$shop) {
 			$prices = \App\TaobaoPrice::whereNotNull('prices')->whereNotNull('product_id')->where('ignore', false)->orderBy('updated_at', 'desc')->get();
