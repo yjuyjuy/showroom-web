@@ -198,15 +198,15 @@ class AdminController extends Controller
 			\App\RetailPrice::where('retailer_id', $shop->retailer_id)->delete();
 			foreach ($shop->prices()->whereNotNull('product_id')->whereNotNull('prices')->get() as $price) {
 				$retail = \App\RetailPrice::firstOrNew(['product_id' => $price->product_id, 'retailer_id' => $shop->retailer_id]);
+				$prices = $price->prices;
 				if ($retail->prices) {
-					$prices = $retail->prices;
-					foreach($price->prices as $size => $value) {
+					foreach($retail->prices as $size => $value) {
 						if (!array_key_exists($size, $prices) || $value < $prices[$size]) {
 							$prices[$size] = $value;
 						}
 					}
 				}
-				$retail->prices = $prices ?? $retail->prices;
+				$retail->prices = $prices;
 				$retail->link = $price->url;
 				$retail->save();
 			}

@@ -118,15 +118,15 @@ class TaobaoAdminController extends Controller
 				'retailer_id' => $price->shop->retailer_id,
 				'product_id' => $price->product_id,
 			]);
+			$prices = $price->prices;
 			if ($retail->prices) {
-				$prices = $retail->prices;
-				foreach($price->prices as $size => $value) {
+				foreach($retail->prices as $size => $value) {
 					if (!array_key_exists($size, $prices) || $value < $prices[$size]) {
 						$prices[$size] = $value;
 					}
 				}
 			}
-			$retail->prices = $prices ?? $retail->prices;
+			$retail->prices = $prices;
 			$retail->link = $price->url;
 			$retail->save();
 		}
