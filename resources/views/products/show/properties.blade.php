@@ -5,7 +5,7 @@
 			{{ __($product->brand->full_name) }}</a>
 	</div>
 	<div class="mdc-typography--headline6">
-		<a class="product-name" href="{{ route('products.show',['product' => $product]) }}" onclick="event.preventDefault(); window.location.replace(this.href);">
+		<a class="product-name" href="{{ route('products.show',['product' => $product]) }}">
 			{{ $product->name_cn }}
 		</a>
 	</div>
@@ -16,7 +16,7 @@
 		@if($product->designerStyleId)<div class="">{{ __('designerStyleId') }}: {{$product->designerStyleId}}</div>@endif
 		<div class="">
 			<span class="">ID: {{ $product->id }}</span>
-			<a href="{{ route('products.edit',['product' => $product ]) }}" onclick="event.preventDefault(); window.location.replace(this.href);">{{ __('edit') }}</a>
+			<a href="{{ route('products.edit',['product' => $product ]) }}">{{ __('edit') }}</a>
 		</div>
 	</div>
 	@endcan

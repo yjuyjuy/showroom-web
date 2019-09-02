@@ -23,7 +23,7 @@
 		</form>
 
 		<div class="d-flex justify-content-end">
-			<a href="{{ route('products.show', ['product' => $price->product,]) }}" class="mdc-button mdc-button--outlined" onclick="event.preventDefault(); window.location.replace(this.href);">
+			<a href="#" class="mdc-button mdc-button--outlined" onclick="event.preventDefault(); window.history.back();">
 				<span class="mdc-button__label">{{ __('Back') }}</span>
 			</a>
 			<button type="button" class="mdc-button mdc-button--outlined ml-2" form="update-form"
