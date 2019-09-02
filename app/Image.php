@@ -16,6 +16,14 @@ class Image extends Model
 	{
 		return $this->belongsTo(Website::class);
 	}
+	public function getSmallAttribute()
+	{
+		return asset('storage/'.$this->path.'_200.jpeg');
+	}
+	public function getMediumAttribute()
+	{
+		return asset('storage/'.$this->path.'_400.jpeg');
+	}
 	public function getUrlAttribute()
 	{
 		return asset('storage/'.$this->path.'_400.jpeg');

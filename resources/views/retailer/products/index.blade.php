@@ -15,7 +15,7 @@
 		<li class="mdc-image-list__item">
 			<a href="{{ route('retailer.products.show',['retailer' => $retailer, 'product' => $product ]) }}">
 				<div class="">
-					<img class="mdc-image-list__image" src="{{$product->image->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
+					<img class="mdc-image-list__image" src="{{$product->image->small ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
 				<div class="mdc-image-list__supporting">
 					<span class="mdc-image-list__label brand">{{ $product->brand->name }}</span>

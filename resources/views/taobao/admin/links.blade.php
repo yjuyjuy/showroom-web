@@ -37,7 +37,7 @@
 	<datalist id="product-datalist">
 		<option value="" data-image-src="{{ asset('storage/icons/ImagePlaceholder.svg') }}" data-product-href="#" hidden disabled></option>
 		@foreach(\App\Product::orderBy('season_id')->orderBy('category_id')->get() as $product)
-		<option value="{{ $product->id }}" data-image-src="{{ $product->image->url ?? asset('storage/icons/ImagePlaceholder.svg') }}" data-href="{{ route('products.show',['product' => $product,]) }}">{{ $product->displayName() }} {{ __($product->color->name) }}</option>
+		<option value="{{ $product->id }}" data-image-src="{{ $product->image->small ?? asset('storage/icons/ImagePlaceholder.svg') }}" data-href="{{ route('products.show',['product' => $product,]) }}">{{ $product->displayName() }} {{ __($product->color->name) }}</option>
 		@endforeach
 	</datalist>
 </div>
