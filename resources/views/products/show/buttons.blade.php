@@ -19,9 +19,9 @@
 					@foreach($product->retails as $retail)
 					<li class="mdc-list-item" role="menuitem">
 						@if($retail->link)
-						<a href="{{ $retail->link }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ $retail->retailer->name }}</a>
+						<a href="{{ $retail->link }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ $retail->retailer->name.' - '.implode('/', array_keys($retail->prices)) }}</a>
 						@else
-						<a href="#" onclick="open_wechat('{{ $retail->retailer->name }}')" class="mdc-list-item__text w-100 text-left">{{ $retail->retailer->name }}</a>
+						<a href="#" onclick="open_wechat('{{ $retail->retailer->name }}')" class="mdc-list-item__text w-100 text-left">{{ $retail->retailer->name.' - '.implode('/', array_keys($retail->prices)) }}</a>
 						@endif
 					</li>
 					@endforeach
@@ -49,9 +49,9 @@
 					@foreach($product->offers as $offer)
 					<li class="mdc-list-item" role="menuitem">
 						@if($offer->link)
-						<a href="{{ $offer->link }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ $offer->vendor->name }}</a>
+						<a href="{{ $offer->link }}" class="mdc-list-item__text w-100 text-left" target="_blank">{{ $offer->vendor->name.' - '.implode('/', array_keys($offer->prices)) }}</a>
 						@else
-						<a href="#" onclick="open_wechat('{{ $offer->vendor->name }}')" class="mdc-list-item__text w-100 text-left">{{ $offer->vendor->name }}</a>
+						<a href="#" onclick="open_wechat('{{ $offer->vendor->name }}')" class="mdc-list-item__text w-100 text-left">{{ $offer->vendor->name.' - '.implode('/', array_keys($offer->prices)) }}</a>
 						@endif
 					</li>
 					@endforeach
