@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700,900&display=swap'); // Variables
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap'); // Variables
 @import 'variables'; // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 @import "@material/typography/mdc-typography";
@@ -10,7 +10,6 @@
 @import "@material/top-app-bar/mdc-top-app-bar";
 @import "@material/form-field/mdc-form-field";
 @import "@material/checkbox/mdc-checkbox";
-@import "@material/switch/mdc-switch";
 @import "@material/list/mdc-list";
 @import "@material/menu-surface/mdc-menu-surface";
 @import "@material/menu/mdc-menu";

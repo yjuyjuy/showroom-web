@@ -1,3 +1,4 @@
+'use strict'
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -33,12 +34,12 @@ const app = new Vue({
 	el: '#app',
 });
 
+[].forEach.call(document.querySelectorAll('.lazy'), (el) => new Image(el.dataset.src));
 import {MDCRipple} from '@material/ripple';
 import {MDCTopAppBar} from '@material/top-app-bar';
 import {MDCDrawer} from "@material/drawer";
 import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
-import {MDCSwitch} from '@material/switch';
 import {MDCMenu} from '@material/menu';
 import {MDCList} from '@material/list';
 import {MDCDialog} from '@material/dialog';
@@ -59,91 +60,54 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 });
 
 // standard components
-const buttonRipples = [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
-	return new MDCRipple(el);
-});
-const iconButtonRipples = [].map.call(document.querySelectorAll('.mdc-icon-button'), function(el) {
-	let iconButtonRipple = new MDCRipple(el);
+[].forEach.call(document.querySelectorAll('.mdc-icon-button'), (el) => {
+	const iconButtonRipple = new MDCRipple(el);
 	iconButtonRipple.unbounded = true;
-	return iconButtonRipple;
 });
-const fabs = [].map.call(document.querySelectorAll('.mdc-fab'), function(el) {
-	return new MDCRipple(el);
-});
-const radios = [].map.call(document.querySelectorAll('.mdc-radio'), function(el) {
-	return new MDCRadio(el);
-});
-const checkboxes = [].map.call(document.querySelectorAll('.mdc-checkbox'), function(el) {
-	return new MDCCheckbox(el);
-});
-const formFields = [].map.call(document.querySelectorAll('.mdc-form-field'), function(el) {
-	return new MDCFormField(el);
-});
-const selects = [].map.call(document.querySelectorAll('.mdc-select'), function(el) {
-	let select = new MDCSelect(el);
+[].forEach.call(document.querySelectorAll('.mdc-button'), (el) => new MDCRipple(el));
+[].forEach.call(document.querySelectorAll('.mdc-fab'), (el) => new MDCRipple(el));
+[].forEach.call(document.querySelectorAll('.mdc-radio'), (el) => new MDCRadio(el));
+[].forEach.call(document.querySelectorAll('.mdc-checkbox'), (el) => new MDCCheckbox(el));
+[].forEach.call(document.querySelectorAll('.mdc-form-field'), (el) => new MDCFormField(el));
+[].forEach.call(document.querySelectorAll('.mdc-select'), (el) => {
+	const select = new MDCSelect(el);
+  select.menu_.quickOpen = true;
 	if (!el.classList.contains('optional-form-field')) {
 		select.required = true;
 	}
 	if (el.classList.contains('mdc-select--autosubmit')) {
-		select.listen('MDCSelect:change', function() {
-			document.getElementById(el.dataset.form).submit();
-		});
+		select.listen('MDCSelect:change', () => document.getElementById(el.dataset.form).submit());
 	}
-	select.menu_.quickOpen = true;
-	return select;
 });
-[].map.call(document.querySelectorAll('.mdc-menu--with-button'), function(menuElement) {
+[].forEach.call(document.querySelectorAll('.mdc-menu--with-button'), function(menuElement) {
 	const menu = new MDCMenu(menuElement);
-	window.menu = menu;
 	menu.setAnchorCorner(3);
 	const button = menuElement.parentElement.querySelector('.open-menu-button');
-	button.onclick = function(event) {
-		event.preventDefault();
-		menu.open = !menu.open;
-	}
+	button.onclick = () => menu.open = !menu.open;
 });
-let el = document.querySelector('.mdc-snackbar');
-if (el) {
-	const snackbar = new MDCSnackbar(el);
+[].forEach.call(document.querySelectorAll('.mdc-text-field-helper-text'), (el) => new MDCTextFieldHelperText(el));
+[].forEach.call(document.querySelectorAll('.mdc-select-helper-text'), (el) => new MDCSelectHelperText(el));
+
+if (document.querySelector('.mdc-snackbar')) {
+	window.snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 	snackbar.open();
-	window.snackbar = snackbar;
 }
 const priceEditorElement = document.querySelector('.price-editor');
-const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
+[].forEach.call(document.querySelectorAll('.mdc-text-field'), (el) => {
 	if (priceEditorElement && priceEditorElement.contains(el)) {
 		return;
 	}
-	let textField = new MDCTextField(el);
+	const textField = new MDCTextField(el);
 	if (!el.classList.contains('optional-form-field')) {
 		textField.required = true;
 	}
-	return textField;
 });
-const textFieldHelperTexts = [].map.call(document.querySelectorAll('.mdc-text-field-helper-text'), function(el) {
-	return new MDCTextFieldHelperText(el);
-});
-const selectHelperTexts = [].map.call(document.querySelectorAll('.mdc-select-helper-text'), function(el) {
-	return new MDCSelectHelperText(el);
-});
-const options = {
-	month: 'short',
-	day: '2-digit',
-	hour: '2-digit',
-	minute: '2-digit',
-	hour12: false,
-};
-[].map.call(document.querySelectorAll('.timestamp'), function(el) {
-	let t = new Date(parseFloat(el.dataset.timestamp));
-	el.textContent = new Intl.DateTimeFormat('zh', options).format(t);
-});
-
 
 // filter/sort options dialog component
-const dialogElement = document.getElementById('display-options-dialog');
-if (dialogElement) {
+if (document.querySelector('.mdc-dialog')) {
+  const dialogElement = document.querySelector('.mdc-dialog');
 	const dialog = new MDCDialog(dialogElement);
-	const filterListElements = dialogElement.querySelectorAll('.mdc-list');
-	const filterLists = [].map.call(filterListElements, function(el) {
+	[].forEach.call(dialogElement.querySelectorAll('.mdc-list'), function(el) {
 		el.open = function() {
 			this.classList.add('show');
 			this.style.height = this.childElementCount * 48 + 'px';
@@ -152,36 +116,31 @@ if (dialogElement) {
 			this.classList.remove('show');
 			this.style.height = '0';
 		};
-		return new MDCList(el);
+		new MDCList(el);
 	});
 
-	// const filterGroupSubheaders = dialogElement.querySelectorAll('.mdc-list-group__subheader');
-	const subHeaders = dialogElement.querySelectorAll('.mdc-list-group__subheader');
-
-	subHeaders.forEach(function(subHeader) {
-		subHeader.addEventListener('click', function() {
+	[].forEach.call(dialogElement.querySelectorAll('.mdc-list-group__subheader'), function(subHeader) {
+		subHeader.addEventListener('click', () => {
 			event.preventDefault();
-			let targetListElement = document.querySelector(this.getAttribute('href'));
+			const targetListElement = document.querySelector(this.getAttribute('href'));
 			if (targetListElement.classList.contains('show')) {
 				targetListElement.close();
 			} else {
-				filterListElements.forEach((filterListElement) => filterListElement.close());
+				[].forEach.call(dialogElement.querySelectorAll('.mdc-list'), (el) => el.close());
 				targetListElement.open();
 			}
 		});
 	});
 	const sortList = document.getElementById('sort-list');
-	sortList.classList.add('show');
-	sortList.style.height = sortList.childElementCount * 48 + 'px';
-
-	document.getElementById('display-options-fab').onclick = function(event) {
+	sortList.open();
+	document.getElementById('display-options-fab').onclick = () => {
 		event.preventDefault();
 		dialog.open();
 	}
 }
 // product list component
-var productList = document.getElementById('product-datalist');
-if (productList) {
+if (document.getElementById('product-datalist')) {
+  const productList = document.getElementById('product-datalist');
 	var updateThumbnail = function () {
     let card = this.parentElement.parentElement.parentElement;
 		let img = card.querySelector('img');
@@ -229,54 +188,49 @@ if(document.getElementById('admin-requests')){
 	})
 }
 
-window.delete_price = function(id) {
+window.delete_price = (id) => {
 	event.preventDefault();
 	axios.delete('/prices/' + id)
 		.then(response => window.location.replace(response.data.redirect))
 		.catch(error => window.alert('action failed'));
 };
-window.follow_product = function(id) {
+window.follow_product = (id) => {
 	event.preventDefault();
 	axios.post('/products/' + id + '/follow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
 };
-window.unfollow_product = function(id) {
+window.unfollow_product = (id) => {
 	event.preventDefault();
 	axios.post('/products/' + id + '/unfollow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
 };
-window.follow_retailer = function(name) {
+window.follow_retailer = (name) => {
 	event.preventDefault();
 	axios.post('/retailer/' + name + '/follow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
 };
-window.unfollow_retailer = function(name) {
+window.unfollow_retailer = (name) => {
 	event.preventDefault();
 	axios.post('/retailer/' + name + '/unfollow')
 		.then(response => window.location.reload())
 		.catch(error => window.alert('action failed'));
 };
-window.unfollow_vendor = function(name) {
+window.unfollow_vendor = (name) => {
 	event.preventDefault();
 	axios.post('/vendor/' + name + '/unfollow')
 		.then(response => window.location = '/following/vendors')
 		.catch(error => window.alert('action failed'));
 };
-window.open_wechat = function(name) {
+window.open_wechat = (name) => {
 	event.preventDefault();
 	window.alert('打开微信联系卖家' + name);
 	window.location = 'weixin://';
 };
-window.copy_to_clipboard = function(text) {
+window.copy_to_clipboard = (text) => {
 	navigator.clipboard.writeText(text).catch(()=>window.alert('复制失败'));
 };
 
-[].map.call(document.querySelectorAll('img'), function($el) {
-  if ($el.dataset.src) {
-    new Image($el.dataset.src);
-    $el.src = $el.dataset.src;
-  }
-});
+[].forEach.call(document.querySelectorAll('.lazy'), (el) => el.src = el.dataset.src);
