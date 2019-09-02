@@ -122,7 +122,7 @@ if (document.querySelector('.mdc-dialog')) {
 	[].forEach.call(dialogElement.querySelectorAll('.mdc-list-group__subheader'), function(subHeader) {
 		subHeader.addEventListener('click', () => {
 			event.preventDefault();
-			const targetListElement = document.querySelector(this.getAttribute('href'));
+			const targetListElement = document.querySelector(subHeader.getAttribute('href'));
 			if (targetListElement.classList.contains('show')) {
 				targetListElement.close();
 			} else {
