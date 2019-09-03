@@ -83,12 +83,6 @@ class VendorController extends Controller
 	// 	return redirect(route('vendor.products.index', compact('vendor')));
 	// }
 
-	public function unfollow(Vendor $vendor)
-	{
-		$user = auth()->user();
-		return $user->following_vendors()->detach($vendor);
-	}
-
 	public function validateFilters()
 	{
 		return request()->validate([
