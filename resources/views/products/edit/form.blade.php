@@ -61,7 +61,7 @@
 </div>
 @enderror
 
-<div class="mdc-text-field">
+<div class="mdc-text-field optional-form-field">
 	<input type="text" class="mdc-text-field__input" name="name" autocomplete="off" value="{{ old('name') ?? $product->name ?? '' }}">
 	<label class="mdc-floating-label" for="my-text-field">{{ __('product name_en') }}</label>
 	<div class="mdc-line-ripple"></div>
