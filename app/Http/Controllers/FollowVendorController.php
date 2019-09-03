@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Vendor;
 use Illuminate\Http\Request;
 
 class FollowVendorController extends Controller

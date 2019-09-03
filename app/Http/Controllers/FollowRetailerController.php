@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Retailer;
 use Illuminate\Http\Request;
 
 class FollowRetailerController extends Controller
