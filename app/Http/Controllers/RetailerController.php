@@ -65,18 +65,6 @@ class RetailerController extends Controller
 		return view('retailer.products.show', compact('product', 'retailer', 'user'));
 	}
 
-	public function follow(Retailer $retailer)
-	{
-		$user = auth()->user();
-		return $user->following_retailers()->syncWithoutDetaching($retailer);
-	}
-
-	public function unfollow(Retailer $retailer)
-	{
-		$user = auth()->user();
-		return $user->following_retailers()->detach($retailer);
-	}
-
 	public function following(Request $request)
 	{
 		$not_found = false;
