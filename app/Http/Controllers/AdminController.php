@@ -7,22 +7,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
-	public function agree(Request $request)
-	{
-		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
-		$user->is_reseller = true;
-		$user->save();
-		return ['success'];
-	}
-
-	public function reject(Request $request)
-	{
-		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
-		$user->is_rejected = true;
-		$user->save();
-		return ['success'];
-	}
-
 	public function index()
 	{
 		$functions = $this->available_functions();
