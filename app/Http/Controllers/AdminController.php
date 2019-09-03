@@ -113,11 +113,11 @@ class AdminController extends Controller
 	public function convert_webp_to_jpg()
 	{
 		foreach (\App\Image::where('path', 'like', '%.webp')->get() as $image) {
-			$i = \Intervention\Image\Facades\Image::make(public_path('storage/'.$image->path));
+			$i = \Intervention\Image\Facades\Image::make(public_path('storage/' . $image->path));
 			if ($i->mime() === "image/webp") {
-				$i = $i->save($i->dirname.'/'.$i->filename.'.jpeg', 100);
-				if (Storage::exists('public/'.$image->path)) {
-					Storage::delete('public/'.$image->path);
+				$i = $i->save($i->dirname . '/' . $i->filename . '.jpeg', 100);
+				if (Storage::exists('public/' . $image->path)) {
+					Storage::delete('public/' . $image->path);
 				}
 				$image->path = str_replace('.webp', '.jpeg', $image->path);
 				$image->save();
@@ -137,11 +137,11 @@ class AdminController extends Controller
 		foreach (\App\VendorPrice::all() as $vendorPrice) {
 			$vendorPrice->data = array_map(function ($row) {
 				return [
-						'size' => $row['size'],
-						'cost' => (int)($row['cost']),
-						'offer' => (int)(array_key_exists('offer', $row) ? $row['offer'] : $row['resell']),
-						'retail' => (int)($row['retail'])
-					];
+					'size' => $row['size'],
+					'cost' => (int) ($row['cost']),
+					'offer' => (int) (array_key_exists('offer', $row) ? $row['offer'] : $row['resell']),
+					'retail' => (int) ($row['retail'])
+				];
 			}, $vendorPrice->data);
 			$vendorPrice->save();
 		}
@@ -151,6 +151,7 @@ class AdminController extends Controller
 	{
 		$retailer_id = \App\Retailer::where('name', 'Farfetch')->first()->id;
 		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
+		
 		foreach (\App\Product::whereNotNull('designerStyleId')->get() as $product) {
 			$url = null;
 			$size_price = array();
@@ -184,7 +185,7 @@ class AdminController extends Controller
 				$retail = \App\RetailPrice::firstOrNew(['product_id' => $price->product_id, 'retailer_id' => $shop->retailer_id]);
 				$prices = $price->prices;
 				if ($retail->prices) {
-					foreach($retail->prices as $size => $value) {
+					foreach ($retail->prices as $size => $value) {
 						if (!array_key_exists($size, $prices) || $value < $prices[$size]) {
 							$prices[$size] = $value;
 						}
