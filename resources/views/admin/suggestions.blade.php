@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex justify-content-center mt-4 mx-3">
 	<div class="d-flex flex-column">
-		@forelse(\App\Suggestion::whereNull('status')->get() as $suggestion)
+		@forelse($suggestions as $suggestion)
 		<div class="my-4">
 			<p class="my-2 mdc-typography--headline5">
 				{{ $suggestion->title }}
