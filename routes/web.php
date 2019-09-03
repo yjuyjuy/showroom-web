@@ -30,8 +30,8 @@ Route::middleware('auth')->group(function () {
 	Route::patch('products/{product}', 'ProductController@update')->name('products.update')->middleware('admin');
 	Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy')->middleware('admin');
 	Route::get('products/{product}/edit', 'ProductController@edit')->name('products.edit')->middleware('admin');
-	Route::post('products/{product}/follow', 'ProductController@follow')->name('follow.product');
-	Route::post('products/{product}/unfollow', 'ProductController@unfollow')->name('unfollow.product');
+	Route::post('products/{product}/follow', 'FollowProductController@follow')->name('follow.product');
+	Route::post('products/{product}/unfollow', 'FollowProductController@unfollow')->name('unfollow.product');
 });
 
 # Price model
@@ -56,8 +56,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 # Retailer
 Route::middleware('auth')->group(function () {
-	Route::post('retailer/{retailer}/follow', 'RetailerController@follow')->name('follow.retailer');
-	Route::post('retailer/{retailer}/unfollow', 'RetailerController@unfollow')->name('unfollow.retailer');
+	Route::post('retailer/{retailer}/follow', 'FollowRetailerController@follow')->name('follow.retailer');
+	Route::post('retailer/{retailer}/unfollow', 'FollowRetailerController@unfollow')->name('unfollow.retailer');
 	Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
 	Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
 });
@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
 # Vendor
 Route::middleware(['auth', 'reseller'])->group(function () {
 	Route::get('reseller/products', 'ResellerController@index')->name('reseller.products.index');
-	Route::post('vendor/{vendor}/unfollow', 'VendorController@unfollow')->name('unfollow.vendor');
+	Route::post('vendor/{vendor}/unfollow', 'FollowVendorController@unfollow')->name('unfollow.vendor');
 	Route::get('vendor/{vendor}', 'VendorController@index')->name('vendor.products.index');
 	Route::get('vendor/{vendor}/products/{product}', 'VendorController@show')->name('vendor.products.show');
 });
@@ -98,11 +98,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('admin', 'AdminController@index')->name('admin.index');
 	Route::view('admin/inbox', 'admin.inbox')->name('admin.inbox');
-	Route::view('admin/inbox/requests', 'admin.requests')->name('admin.inbox.requests');
-	Route::view('admin/inbox/suggestions', 'admin.suggestions')->name('admin.inbox.suggestions');
+	Route::get('requests', 'RequestController@index')->name('requests.index');
+	Route::get('suggestions', 'SuggestionController@index')->name('suggestions.index');
 	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
-	Route::post('admin/requests/agree', 'AdminController@agree')->name('admin.requests.agree');
-	Route::post('admin/requests/reject', 'AdminController@reject')->name('admin.requests.reject');
+	Route::post('requests/agree', 'RequestController@agree')->name('requests.agree');
+	Route::post('requests/reject', 'RequestController@reject')->name('requests.reject');
 });
 
 Route::get('{slug}', function() { abort(404); })->middleware(['auth', 'throttle:10,1']);

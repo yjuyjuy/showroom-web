@@ -183,8 +183,8 @@ if(document.getElementById('admin-requests')){
 	};
 	[].map.call(document.querySelectorAll('.upgrade-request'), function(el) {
 		let user_id = el.dataset.userId;
-		el.querySelector('.agree-button').onclick = () => handle('/admin/requests/agree', user_id);
-		el.querySelector('.reject-button').onclick = () => handle('/admin/requests/reject', user_id);
+		el.querySelector('.agree-button').onclick = () => handle('/requests/agree', user_id);
+		el.querySelector('.reject-button').onclick = () => handle('/requests/reject', user_id);
 	})
 }
 
