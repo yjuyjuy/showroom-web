@@ -156,8 +156,8 @@ class AdminController extends Controller
 			$size_price = array();
 			foreach (\App\FarfetchProduct::whereNotNull('size_price')->where('designerStyleId', $product->designerStyleId)->get() as $farfetch_product) {
 				foreach ($farfetch_product->size_price as $size => $price) {
+					$price = (int)$price;
 					if ((!array_key_exists($size, $size_price)) || ($size_price[$size] > $price)) {
-						$price = (int)ceil($price * 7);
 						$size_price[$size] = $price;
 						if (min($size_price) == $price) {
 							$url = $farfetch_product->url;
