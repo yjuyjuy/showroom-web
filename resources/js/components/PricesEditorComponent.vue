@@ -67,7 +67,7 @@ export default {
 				if (!this.prices[i].size || !this.prices[i].cost || !this.prices[i].offer || !this.prices[i].retail) {
 					continue;
 				}
-				this.prices[i].size = this.prices[i].size.toUpperCase();
+				this.prices[i].size = String(this.prices[i].size).toUpperCase();
 				let cost = this.prices[i].cost;
 				let offer = this.prices[i].offer;
 				let retail = this.prices[i].retail;
@@ -152,14 +152,14 @@ export default {
 		},
 		computed_offer: function(index) {
 			if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 1.15 / 10) * 10;
+				return this.prices[index].cost;
 			} else {
 				return '';
 			}
 		},
 		computed_retail: function(index) {
 			if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 1.15 * 1.1 / 10) * 10;
+				return Math.ceil(this.prices[index].cost * 1.15 / 10) * 10;
 			} else {
 				return '';
 			}
