@@ -19,19 +19,12 @@ class FarfetchProduct extends Model
 	 */
 	protected $table = 'products';
 	/**
-	 * The attributes that should be hidden for arrays.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['raw',];
-	/**
 	 * The attributes that should be cast to native types.
 	 *
 	 * @var array
 	 */
 	protected $casts = [
 		'category_ids' => 'array',
-		'raw' => 'array',
 		'size_price' => 'array',
 	];
 	public function displayName()
