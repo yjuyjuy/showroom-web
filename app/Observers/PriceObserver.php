@@ -36,7 +36,7 @@ class PriceObserver
 				if ($offer_price = OfferPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
 					$profit_rate = $vendor->pivot->profit_rate;
 					foreach($offer_price->prices as $size => $price) {
-						$calc_price = ceil($price * (1 + $profit_rate / 100.0));
+						$calc_price = ceil($price * (1 + $profit_rate / 100.0) / 10.0) * 10;
 						$prices[$size] = min($calc_price, $prices[$size] ?? INF);
 					}
 				}
