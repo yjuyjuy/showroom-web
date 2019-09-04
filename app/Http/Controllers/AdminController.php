@@ -51,45 +51,25 @@ class AdminController extends Controller
 
 	public function update_designer_style_id()
 	{
-		$products = \App\Product::whereNull('designerStyleId')->with([
-			'images' => function ($query) {
-				$query->where('website_id', 1);
-			},
-		])->get()->filter(function ($item) {
-			return $item->images->isNotEmpty();
-		});
+		$products = \App\Product::whereNull('designerStyleId')->whereHas('images', function ($query) { $query->where('website_id', 1); })->get();
 		foreach ($products as $product) {
 			$source = $product->images->first()->source;
 			$id = substr($source, 6, 20);
 			if (preg_match('/^[0-9A-Za-z]+$/', $id)) {
-				echo "{$product->name} {$id} <br>";
 				$product->designerStyleId = strtoupper($id);
 				$product->save();
 			}
 		}
-		$products = \App\Product::whereNull('designerStyleId')->with([
-			'images' => function ($query) {
-				$query->where('website_id', 3);
-			},
-		])->get()->filter(function ($item) {
-			return $item->images->isNotEmpty();
-		});
+		$products = \App\Product::whereNull('designerStyleId')->whereHas('images', function ($query) { $query->where('website_id', 3); })->get();
 		foreach ($products as $product) {
 			$source = $product->images->first()->source;
 			$id = substr($source, 0, 20);
 			if (preg_match('/^[0-9A-Za-z]+$/', $id)) {
-				echo "{$product->id} {$product->name} {$id} <br>";
 				$product->designerStyleId = strtoupper($id);
 				$product->save();
 			}
 		}
-		$products = \App\Product::whereNull('designerStyleId')->with([
-			'images' => function ($query) {
-				$query->where('website_id', 2);
-			},
-		])->get()->filter(function ($item) {
-			return $item->images->isNotEmpty();
-		});
+		$products = \App\Product::whereNull('designerStyleId')->whereHas('images', function ($query) { $query->where('website_id', 2); })->get();
 		foreach ($products as $product) {
 			$source = $product->images->first()->source;
 			$farfetch_id = substr($source, 0, 8);
@@ -97,14 +77,12 @@ class AdminController extends Controller
 			if ($farfetch_product) {
 				if ($farfetch_product->designerStyleId) {
 					$id = $farfetch_product->designerStyleId;
-					echo "{$product->id} {$product->name} {$id} <br>";
 					$product->designerStyleId = strtoupper($id);
 					$product->save();
 				}
 			} else {
 				$farfetch_product = new \App\FarfetchProduct();
 				$farfetch_product->id = $farfetch_id;
-				$farfetch_product->designer_id = 1205035;
 				$farfetch_product->save();
 			}
 		}
