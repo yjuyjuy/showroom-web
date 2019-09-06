@@ -73,17 +73,18 @@ class AdminController extends Controller
 		foreach ($products as $product) {
 			$source = $product->images->first()->source;
 			$farfetch_id = substr($source, 0, 8);
-			$farfetch_product = \App\FarfetchProduct::find($farfetch_id);
-			if ($farfetch_product) {
-				if ($farfetch_product->designerStyleId) {
-					$id = $farfetch_product->designerStyleId;
-					$product->designerStyleId = strtoupper($id);
-					$product->save();
+			if(preg_match('/^[0-9]+$/',$farfetch_id)){
+				$farfetch_product = \App\FarfetchProduct::find($farfetch_id);
+				if ($farfetch_product) {
+					if($farfetch_product->designerStyleId){
+						$product->designerStyleId = strtoupper($farfetch_product->designerStyleId);
+						$product->save();
+					}
+				} else {
+					$farfetch_product = new \App\FarfetchProduct();
+					$farfetch_product->id = $farfetch_id;
+					$farfetch_product->save();
 				}
-			} else {
-				$farfetch_product = new \App\FarfetchProduct();
-				$farfetch_product->id = $farfetch_id;
-				$farfetch_product->save();
 			}
 		}
 	}
@@ -117,7 +118,7 @@ class AdminController extends Controller
 				return [
 					'size' => $row['size'],
 					'cost' => (int) ($row['cost']),
-					'offer' => (int) (array_key_exists('offer', $row) ? $row['offer'] : $row['resell']),
+					'offer' => (int) ($row['offer']),
 					'retail' => (int) ($row['retail'])
 				];
 			}, $vendorPrice->data);
