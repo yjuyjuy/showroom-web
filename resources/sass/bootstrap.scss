@@ -31,6 +31,11 @@ a:hover {
 	text-decoration: underline;
 }
 
+img {
+  display: block;
+  width: 100%;
+}
+
 .border {
 	border: 1px solid $mdc-theme-primary !important;
 }

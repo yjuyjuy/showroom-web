@@ -3,7 +3,7 @@
 	
 	<div class="carousel__content">		
 		<div v-for="(image,index) in images" class="carousel-item" v-bind:class="{ active: index == active }">
-			<img :src="image" class="d-block w-100">
+			<img :src="image">
 		</div>
 	</div>
 	
