@@ -2,9 +2,9 @@
 <div class="carousel">
 	
 	<div class="carousel__content">		
-		<a v-for="(image,index) in images" class="carousel-item" v-bind:class="{ active: index == active }" download :href="image" @click="next_item()">
+		<div v-for="(image,index) in images" class="carousel-item" v-bind:class="{ active: index == active }">
 			<img :src="image" class="d-block w-100">
-		</a>
+		</div>
 	</div>
 	
 	<div class="carousel__controls">
