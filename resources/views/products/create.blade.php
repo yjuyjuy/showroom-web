@@ -3,8 +3,8 @@
 @section('title', '添加新商品')
 
 @section('content')
-<div class="images-content-container">
-	<div class="content-container">
+<div class="container">
+	<div class="container__content">
 		<form id="create-product-form" class="product-form text-left" action="{{route('products.store')}}" method="post">
 			@csrf
 			@include('products.edit.form')

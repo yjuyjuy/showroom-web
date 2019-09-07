@@ -4,12 +4,12 @@
 
 @section('content')
 @include('vendor.banner')
-<div class="images-content-container">
-	<div class="images-container">
+<div class="container">
+	<div class="">
 		@include('products.show.images')
 	</div>
 
-	<div class="content-container d-flex flex-column">
+	<div class="container__content d-flex flex-column">
 		@include('products.show.properties')
 		@include('products.show.reseller')
 		@include('products.show.buttons')

@@ -3,12 +3,12 @@
 @section('title', $product->displayName())
 
 @section('content')
-<div class="images-content-container">
-	<div class="images-container">
+<div class="container">
+	<div class="">
 		@include('farfetch.show.images')
 	</div>
 
-	<div class="content-container d-flex flex-column">
+	<div class="container__content d-flex flex-column">
 		@include('farfetch.show.properties')
 		@include('farfetch.show.customer')
 	</div>

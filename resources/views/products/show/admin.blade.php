@@ -1,7 +1,7 @@
 <div class="d-flex flex-column products-show__info--admin">
 	<?php $product->prices->loadMissing('vendor'); ?>
 	@foreach($product->prices as $price)
-	<div class="price-grid">
+	<div class="price-grid mb-3">
 		<div class="font-weight-bold price-grid__header">
 			<a href="{{route('prices.edit',['price'=>$price])}}" class="price-grid__title">
 				{{$price->vendor->name.' - '.__($price->vendor->city)}}

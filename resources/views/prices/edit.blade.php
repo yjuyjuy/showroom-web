@@ -3,11 +3,11 @@
 @section('title', '修改报价 - '.$product->displayName())
 
 @section('content')
-<div class="images-content-container">
-	<div class="images-container">
+<div class="container">
+	<div class="">
 		@include('products.show.images')
 	</div>
-	<div class="content-container">
+	<div class="container__content">
 		@if(auth()->user()->isSuperAdmin())
 		<div class="w-100">
 			<div class="font-weight-bold text-left">

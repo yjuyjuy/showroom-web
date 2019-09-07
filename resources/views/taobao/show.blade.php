@@ -3,11 +3,11 @@
 @section('title', $product->title.' - 淘宝店铺'.$product->shop->name)
 
 @section('content')
-<div class="images-content-container">
-	<div class="images-container">
+<div class="container">
+	<div class="">
 		<img src="{{ $product->image }}" alt="">
 	</div>
-	<div class="content-container d-flex flex-column">
+	<div class="container__content d-flex flex-column">
 		<div class="d-flex flex-column products-show__info--properties">
 			<div class="mdc-typography--headline6">
 				<a class="product-name" href="{{ $product->url }}" target="_blank">{{ $product->title }}</a>

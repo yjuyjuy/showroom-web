@@ -138,7 +138,7 @@
 					</section>
 				</div>
 			</header>
-			<main id="main-content" class="main-content mdc-top-app-bar--fixed-adjust">
+			<main class="main-content mdc-top-app-bar--fixed-adjust">
 				<div class="py-2"></div>
 				@yield('content')
 				<div class="py-2"></div>

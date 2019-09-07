@@ -3,12 +3,12 @@
 @section('title', $product->displayName())
 
 @section('content')
-<div class="images-content-container">
-	<div class="images-container">
+<div class="container">
+	<div>
 		@include('products.show.images')
 	</div>
 
-	<div class="content-container d-flex flex-column">
+	<div class="container__content d-flex flex-column">
 		@include('products.show.properties')
 		@include('products.show.customer')
 		@if($user->is_reseller)

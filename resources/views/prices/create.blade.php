@@ -3,11 +3,11 @@
 @section('title', '添加报价 - '.$product->displayName())
 
 @section('content')
-<div class="images-content-container">
-	<div class="images-container">
+<div class="container">
+	<div class="">
 		@include('products.show.images')
 	</div>
-	<div class="content-container">
+	<div class="container__content">
 		@if(auth()->user()->isSuperAdmin())
 		<input type="hidden" name="vendor" value="{{$vendor->id}}" form="create-form">
 		<div class="w-100">

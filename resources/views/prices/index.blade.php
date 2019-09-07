@@ -23,8 +23,8 @@
 	@endif
 
 	@foreach($products as $product)
-	<div class="images-content-container mb-4 w-100">
-		<div class="images-container">
+	<div class="container mb-4 w-100">
+		<div class="">
 			<div class="d-flex">
 				<div class="mx-2 w-50">
 					<img src="{{$product->images[0]->small ?? asset('storage/icons/ImagePlaceholder.svg')}}">
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="content-container d-flex flex-column justify-content-center align-items-center">
+		<div class="container__content d-flex flex-column justify-content-center align-items-center">
 			<div class="price-grid p-4">
 				<div class="price-grid__header d-flex flex-column">
 					<span>{{ $product->brand->full_name }}</span>
