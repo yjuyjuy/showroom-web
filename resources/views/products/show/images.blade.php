@@ -1,5 +1,5 @@
 
-<images-slider :images='@json($product->images->pluck('url')->toArray())'></images-slider>
+<carousel :images='@json($product->images->pluck('url')->toArray())'></carousel>
 <div class="w-100 text-center">
 	<span>提示: 长按小图保存图片</span>
 	@can('update',\App\Image::class)

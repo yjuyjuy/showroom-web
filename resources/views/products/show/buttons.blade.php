@@ -1,10 +1,10 @@
 <div class="">
 	@if(auth()->user()->following_products->contains($product))
-	<button type="button" class="mdc-button mdc-button--error" onclick="unfollow_product({{ $product->id }})">
+	<button type="button" class="mdc-button mdc-button--error" onclick="follow('products',{{ $product->id }},false)">
 		<span class="mdc-button__label">{{ __('following') }}</span>
 	</button>
 	@else
-	<button type="button" class="mdc-button mdc-button--unelevated" onclick="follow_product({{ $product->id }})">
+	<button type="button" class="mdc-button mdc-button--unelevated" onclick="follow('products',{{ $product->id }})">
 		<span class="mdc-button__label">{{ __('follow') }}</span>
 	</button>
 	@endif
