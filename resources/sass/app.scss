@@ -39,16 +39,6 @@ input:-webkit-autofill {
 	-webkit-animation-fill-mode: both;
 	-webkit-text-fill-color: $mdc-theme-on-background !important;
 }
-body {
-  font-size: 1rem;
-}
-label {
-	margin-bottom: 0;
-}
-img {
-	display: block;
-	width: 100%;
-}
 .mdc-button {
 	word-break: keep-all;
 	&:hover {
@@ -168,7 +158,8 @@ a.mdc-list-item__text:hover {
 		max-width: 1280px;
 	}
 }
-// carousel vue component
+
+// components
 .carousel {
 	position: relative;
 	.carousel__content {
@@ -200,8 +191,6 @@ a.mdc-list-item__text:hover {
 		right: 0;
 	}
 }
-
-// price-grid custom class
 .price-grid {
 	display: flex;
 	flex-direction: column;
@@ -229,8 +218,6 @@ a.mdc-list-item__text:hover {
 		}
 	}
 }
-
-// price-editor vue component
 .price-editor {
 	.mdc-text-field {
 		height: 36px;
@@ -239,10 +226,8 @@ a.mdc-list-item__text:hover {
 			padding: 3px 0 5px;
 		}
 
-		&:not(.mdc-text-field--focused) {
-			.mdc-notched-outline > * {
-				border: none;
-			}
+		&:not(.mdc-text-field--focused) .mdc-notched-outline > * {
+			border: none;
 		}
 
 		&--focused {
@@ -256,25 +241,22 @@ a.mdc-list-item__text:hover {
 		}
 	}
 }
-
-// images-content-container custom class
-.images-content-container {
+.container {
 	display: flex;
 	flex-wrap: wrap;
 	@media (min-width:768px) {
 		flex-wrap: nowrap;
 	}
-
+	
 	& > * {
 		width: 100%;
 		padding: 0 16px 8px;
 		@media (min-width:768px) {
-			width: 50%;
 			padding: 0 8px 8px;
 		}
 	}
 
-	.content-container {
+	.container__content {
 		text-align: left;
 		@media (min-width:768px) {
 			max-width: 450px;
@@ -282,18 +264,11 @@ a.mdc-list-item__text:hover {
 			margin-left: auto;
 			text-align: right;
 		}
-
 		& > * {
 			margin-top: 1rem;
 		}
 	}
-
-	.products-show__info--admin > * {
-		margin-bottom: 1rem;
-	}
 }
-
-// fullscreen-center
 .fullscreen-center {
 	position: fixed;
 	top: 0;

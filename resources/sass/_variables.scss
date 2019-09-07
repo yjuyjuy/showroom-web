@@ -11,17 +11,3 @@ $mdc-theme-on-secondary: #000000;
 $mdc-theme-on-surface: #ffffff;
 $mdc-theme-on-background: #ffffff;
 $mdc-theme-on-error: #000000;
-
-// Body
-$body-bg: $mdc-theme-background;
-$body-color: $mdc-theme-on-background;
-
-// Typography
-$font-family-sans-serif: 'Roboto', sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
-$link-color: $body-color;
-
-// Colors
-$primary: $mdc-theme-primary;
-$secondary: $mdc-theme-secondary;

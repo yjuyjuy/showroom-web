@@ -1,5 +1,3 @@
-'use strict'
-
 require('./bootstrap');
 window.Vue = require('vue');
 
@@ -22,7 +20,7 @@ import {MDCSelect} from '@material/select';
 import {MDCSelectHelperText} from '@material/select/helper-text';
 import {MDCSnackbar} from '@material/snackbar';
 
-// permanent components
+// mdc components
 const drawer = MDCDrawer.attachTo(document.getElementById('nav-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
 const topAppBar = MDCTopAppBar.attachTo(topAppBarElement);
@@ -30,8 +28,6 @@ topAppBar.setScrollTarget(window);
 topAppBar.listen('MDCTopAppBar:nav', () => {
 	drawer.open = !drawer.open;
 });
-
-// standard components
 [].forEach.call(document.querySelectorAll('.mdc-select'), (el) => {
 	const select = new MDCSelect(el);
   select.menu_.quickOpen = true;
@@ -62,7 +58,6 @@ if (!document.querySelector('.price-editor')) {
     }
   });
 }
-// filter/sort options dialog component
 if (document.querySelector('.mdc-dialog')) {
   const dialogElement = document.querySelector('.mdc-dialog');
 	const dialog = new MDCDialog(dialogElement);
@@ -97,19 +92,8 @@ if (document.querySelector('.mdc-dialog')) {
 		dialog.open();
 	}
 }
-// admin requests component
-if (document.getElementById('admin-requests')){
-	var handle = function(route, user_id) {
-		axios.post(route, {'user_id': user_id,})
-		.then(response=>window.location.reload())
-		.catch(error=>window.alert('action failed'))
-	};
-	[].map.call(document.querySelectorAll('.upgrade-request'), function(el) {
-		let user_id = el.dataset.userId;
-		el.querySelector('.agree-button').onclick = () => handle('/requests/agree', user_id);
-		el.querySelector('.reject-button').onclick = () => handle('/requests/reject', user_id);
-	})
-}
+
+// axios functions
 window.delete_price = (id) => {
 	axios.delete('/prices/' + id)
 		.then(response => window.location.replace(response.data.redirect))
