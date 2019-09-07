@@ -1,7 +1,9 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap'); // Variables
-@import 'variables'; // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap'); 
+// Variables
+@import 'variables'; 
+// Bootstrap
+@import 'bootstrap';
 @import "@material/typography/mdc-typography";
 @import "@material/button/mdc-button";
 @import '@material/image-list/mdc-image-list';
@@ -166,104 +168,39 @@ a.mdc-list-item__text:hover {
 		max-width: 1280px;
 	}
 }
-// images-slider vue component
-.my-carousel {
+// carousel vue component
+.carousel {
 	position: relative;
-	top: 0;
-	left: 0;
-
-	.my-carousel__overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
+	.carousel__content {
+		display: flex;
+		overflow-x: hidden;
+		flex-wrap: nowrap;
 		width: 100%;
-		height: 100%;
-
-		.my-carousel__thumbnails {
-			position: absolute;
-			left: 0;
-			bottom: 0;
-			display: flex;
-			justify-content: center;
+		.carousel-item {
 			width: 100%;
-			padding: 0.25rem 0.5rem;
-			margin: 0;
-			overflow: hidden;
-			opacity: 0.5;
-			transition: opacity 0.2s ease-out 0s, background 0.2s ease-out 0s;
-
-			&:focus,
-			&:hover {
-				background: rgba(0,0,0,0.5);
-				opacity: 1;
-			}
-
-			.my-carousel__thumbnail {
-				@include mdc-elevation(1);
-				transition: box-shadow 0.2s ease-out 0s, opacity 0.2s ease-out 0s;
-				width: calc((100% - 40px) / 6 - 8px);
-				margin: 0 4px;
-				opacity: 0.5;
-				display: none;
-
-				&:focus,
-				&:hover {
-					@include mdc-elevation(5);
-					opacity: 0.8;
-				}
-
-				&.show {
-					display: block;
-				}
-
-				&.active {
-					@include mdc-elevation(10);
-					opacity: 1;
-				}
-			}
-
-			.my-carousel__thumbnail-control-next,
-			.my-carousel__thumbnail-control-prev {
-				@include mdc-icon-button-ink-color(surface);
-				@include mdc-icon-button-size(24px, 24px, 12px);
-				position: absolute;
-				top: calc(50% - 24px);
-				width: 48px;
-				height: 48px;
-				opacity: 1;
-			}
-
-			.my-carousel__thumbnail-control-prev {
-				left: -12px;
-			}
-
-			.my-carousel__thumbnail-control-next {
-				right: -12px;
-			}
+			flex-basis: 100%;
+			flex-shrink: 0;
+			display: none;
 		}
-
-		.my-carousel__controls {
-			.my-carousel__control-next,
-			.my-carousel__control-prev {
-				@include mdc-icon-button-ink-color(surface);
-				@include mdc-icon-button-size(24px, 24px, 12px);
-				position: absolute;
-				top: calc(50% - 24px);
-				width: 48px;
-				height: 48px;
-				opacity: 1;
-			}
-
-			.my-carousel__control-prev {
-				left: 0;
-			}
-
-			.my-carousel__control-next {
-				right: 0;
-			}
+		.carousel-item.active{
+			display: block;
 		}
 	}
+	.carousel__control-prev,
+	.carousel__control-next {
+		@include mdc-icon-button-ink-color(surface);
+		@include mdc-icon-button-size(24px, 24px, 12px);
+		position: absolute;
+		top: calc(50% - 24px);
+	}
+	.carousel__control-prev {
+		left: 0;
+	}
+	.carousel__control-next {
+		right: 0;
+	}
 }
+
 // price-grid custom class
 .price-grid {
 	display: flex;
@@ -292,6 +229,7 @@ a.mdc-list-item__text:hover {
 		}
 	}
 }
+
 // price-editor vue component
 .price-editor {
 	.mdc-text-field {
@@ -318,6 +256,7 @@ a.mdc-list-item__text:hover {
 		}
 	}
 }
+
 // images-content-container custom class
 .images-content-container {
 	display: flex;
@@ -353,6 +292,7 @@ a.mdc-list-item__text:hover {
 		margin-bottom: 1rem;
 	}
 }
+
 // fullscreen-center
 .fullscreen-center {
 	position: fixed;
@@ -364,7 +304,7 @@ a.mdc-list-item__text:hover {
 	align-items: center;
 	justify-content: center;
 }
-// layouts.app view
+
 // permanent components
 #nav-drawer {
 	.material-icons {
@@ -416,6 +356,7 @@ a.mdc-list-item__text:hover {
 		}
 	}
 }
+
 // auth views
 .auth .mdc-card {
 	padding: 1.5rem;
@@ -542,20 +483,6 @@ a.mdc-list-item__text:hover {
 
 	&.show {
 		display: flex;
-	}
-}
-// logs.index view
-#logs-index {
-	transition: height 0.5s ease-in-out;
-
-	.log-item {
-		display: flex;
-		align-items: center;
-		line-height: 3rem;
-	}
-
-	.log-delete-button {
-		@include mdc-icon-button-size(1rem, 1rem, 0.5rem);
 	}
 }
 .product-card {
