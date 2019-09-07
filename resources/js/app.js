@@ -122,7 +122,8 @@ window.follow = (model, id, follow = true) => {
         window.location = response.data.redirect;
       } else {
         window.location.reload();
-      } 
+      }
+		})
     .catch(error => window.alert('action failed'));
 };
 window.open_wechat = (name) => {
