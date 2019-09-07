@@ -55,7 +55,7 @@
 	</div>
 	@foreach($images as $website_id => $website_images)
 	<div id="website{{$website_id}}" class="row">
-		<div class="col-12 h3 text-center">{{$websites->firstWhere('id',$website_id)->name}}</div>
+		<div class="col-12 mdc-typography--headline5 text-center">{{$websites->firstWhere('id',$website_id)->name}}</div>
 		@foreach(range(1,max($website_images->max('order') + 1, 8)) as $order)
 		<div class="col-6 col-md-3 pb-3">
 			@if($image = $website_images->firstWhere('order',$order))
@@ -71,7 +71,7 @@
 
 	@foreach($websites->whereNotIn('id',$images->keys()) as $website)
 	<div id="website{{$website->id}}" class="row website-empty">
-		<div class="col-12 h3 text-center">{{$website->name}}</div>
+		<div class="col-12 mdc-typography--headline5 text-center">{{$website->name}}</div>
 		@foreach(range(1,8) as $order)
 		<div class="col-6 col-md-3 pb-3">
 			<empty-image product-id="{{$product->id}}" website-id="{{$website->id}}" order="{{ $order }}"></empty-image>
