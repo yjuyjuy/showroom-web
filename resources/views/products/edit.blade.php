@@ -4,12 +4,11 @@
 
 @section('content')
 <div class="container">
-	<div class="row">
-		<div class="col-md-6">
+		<div class="">
 			@include('products.show.images')
 		</div>
-		<div class="col-md-6">
-			<form id="update-form" class="product-form" action="{{ route('products.update',['product' => $product]) }}" method="post">
+		<div class="container__content">
+			<form id="update-form" class="product-form text-left" action="{{ route('products.update',['product' => $product]) }}" method="post">
 				@csrf
 				@method('PATCH')
 				@include('products.edit.form')
@@ -30,6 +29,5 @@
 				</form>
 			</div>
 		</div>
-	</div>
 </div>
 @endsection
