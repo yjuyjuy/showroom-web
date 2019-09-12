@@ -23,11 +23,11 @@ class RetailerController extends Controller
 			$sort = 'default';
 		}
 		if ($sort == 'default') {
-			$query->orderBy('category_id')->orderBy('season_id', 'desc')->inRandomOrder();
+			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		} elseif ($sort == 'newest') {
-			$query->orderBy('season_id', 'desc')->inRandomOrder();
+			$query->orderBy('season_id', 'desc')->orderBy('id');
 		} elseif ($sort == 'oldest') {
-			$query->orderBy('season_id')->inRandomOrder();
+			$query->orderBy('season_id')->orderBy('id');
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
 		}
