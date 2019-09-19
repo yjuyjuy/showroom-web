@@ -27,7 +27,7 @@ class ImageController extends Controller
 				\Intervention\Image\Facades\Image::make($uploadedFile->path())->fit(1000, 1413)->save(null, 100, 'jpg');
 				$path = $uploadedFile->store('images/'.request('product_id'), 'public');
 				\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(400, 565)->save(public_path('storage/'.$path.'_400.jpeg'), 80);
-				\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(200, 283)->save(public_path('storage/'.$path.'_200.jpeg'), 80);
+				\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(800, 1130)->save(public_path('storage/'.$path.'_800.jpeg'), 80);
 				\App\Image::create([
 					'path' => $path,
 					'source' => $uploadedFile->getClientOriginalName(),
