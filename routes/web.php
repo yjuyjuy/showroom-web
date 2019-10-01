@@ -88,10 +88,22 @@ Route::middleware('auth')->group(function () {
 	Route::get('taobao/{shop}/{product}', 'TaobaoController@show')->name('taobao.products.show');
 });
 
-# Farfetch
-Route::middleware(['auth', 'admin'])->group(function () {
-	Route::get('farfetch', 'FarfetchController@index')->name('farfetch.index');
-	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
+# Websites
+Route::middleware(['auth'])->group(function () {
+	Route::get('browse', 'WebsiteController@index')->name('websites');
+	# farfetch
+	Route::get('Farfetch', 'FarfetchController@index')->name('farfetch.index');
+	Route::get('Farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
+	Route::get('Farfetch/designers', 'FarfetchController@designers')->name('farfetch.designers.index');
+	Route::get('Farfetch/designers/{designer}', 'FarfetchController@index')->name('farfetch.designers.index');
+	# end clothing
+	Route::get('End', 'EndController@index')->name('end.products.index');
+	Route::get('End/{product}', 'EndController@show')->name('end.products.show');
+	Route::get('End/brands', 'EndController@brands')->name('end.brands.index');
+	Route::get('End/brands/{brand}', 'EndController@index')->name('end.brands.products.index');
+	# off---white
+	Route::get('Off-White', 'OffWhiteController@index')->name('offwhite.index');
+	Route::get('Off-White/{product}', 'OffWhiteController@show')->name('offwhite.show');
 });
 
 # admin helper routes
