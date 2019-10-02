@@ -24,7 +24,6 @@ class FarfetchProduct extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'category_ids' => 'array',
 		'size_price' => 'array',
 	];
 	public function displayName()
@@ -35,20 +34,12 @@ class FarfetchProduct extends Model
 	{
 		return $this->hasMany(FarfetchImage::class, 'product_id');
 	}
-	public function image()
-	{
-		return $this->hasOne(FarfetchImage::class,'product_id');
-	}
 	public function designer()
 	{
-		return $this->belongsTo(FarfetchDesigner::class);
-	}
-	public function categories()
-	{
-		return $this->belongsToMany(FarfetchCategory::class,'category_product','product_id','category_id');
+		return $this->belongsTo(FarfetchDesigner::class, 'designer_id');
 	}
 	public function category()
 	{
-		return $this->hasOne(FarfetchCategory::class,'id','category_id');
+		return $this->belongsTo(FarfetchCategory::class, 'category_id');
 	}
 }
