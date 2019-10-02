@@ -92,22 +92,22 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
 	Route::get('browse', 'WebsiteController@index')->name('websites');
 	# farfetch
-	Route::get('Farfetch', 'FarfetchController@index')->name('farfetch.index');
-	Route::get('Farfetch/designers', 'FarfetchController@designers')->name('farfetch.designers');
-	Route::get('Farfetch/categories', 'FarfetchController@categories')->name('farfetch.categories');
-	Route::get('Farfetch/designers/{designer}', 'FarfetchController@index')->name('farfetch.designers.index');
-	Route::get('Farfetch/categories/{category}', 'FarfetchController@index')->name('farfetch.categories.index');
-	Route::get('Farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
+	Route::get('farfetch', 'FarfetchController@index')->name('farfetch.index');
+	Route::get('farfetch/designers', 'FarfetchController@designers')->name('farfetch.designers');
+	Route::get('farfetch/categories', 'FarfetchController@categories')->name('farfetch.categories');
+	Route::get('farfetch/designers/{designer}', 'FarfetchController@index')->name('farfetch.designers.index');
+	Route::get('farfetch/categories/{category}', 'FarfetchController@index')->name('farfetch.categories.index');
+	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
 	# end clothing
-	Route::get('End', 'EndController@index')->name('end.index');
-	Route::get('End/brands', 'EndController@brands')->name('end.brands');
-	Route::get('End/departments', 'EndController@departments')->name('end.departments');
-	Route::get('End/brands/{brand}', 'EndController@index')->name('end.brands.index');
-	Route::get('End/departments/{department}', 'EndController@index')->name('end.departments.index');
-	Route::get('End/{product}', 'EndController@show')->name('end.show');
+	Route::get('end', 'EndController@index')->name('end.index');
+	Route::get('end/brands', 'EndController@brands')->name('end.brands');
+	Route::get('end/departments', 'EndController@departments')->name('end.departments');
+	Route::get('end/brands/{brand}', 'EndController@index')->name('end.brands.index');
+	Route::get('end/departments/{department}', 'EndController@index')->name('end.departments.index');
+	Route::get('end/{product}', 'EndController@show')->name('end.show');
 	# off---white
-	Route::get('Off-White', 'OffWhiteController@index')->name('offwhite.index');
-	Route::get('Off-White/{product}', 'OffWhiteController@show')->name('offwhite.show');
+	Route::get('off-white', 'OffWhiteController@index')->name('offwhite.index');
+	Route::get('off-white/{product}', 'OffWhiteController@show')->name('offwhite.show');
 });
 
 # admin helper routes
