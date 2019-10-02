@@ -1,18 +1,26 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="">
-		<a id="product-brand" href="{{ route('farfetch.index',['designer' => [$product->designer]]) }}"
+		<a href="{{ route('farfetch.designers.index',['designer' => $product->designer]) }}"
+			 class="mdc-typography--headline6" style="text-transform: uppercase;">
+			{{ $product->designer->description }}
+		</a>
+
+		<a href="{{ route('farfetch.categories.index',['category' => $product->category]) }}"
 			 class="mdc-typography--headline6">
-			{{ __($product->designer->name) }}</a>
+			{{ $product->category->description }}
+		</a>
 	</div>
-	<div class="mdc-typography--headline6" style="text-transform: capitalize;">
-		<span id="product-name">
+	<div class="">
+		<span class="mdc-typography--headline6" style="text-transform: capitalize;">
 			{{ $product->shortDescription }}
 		</span>
-		<span id="product-color">
-			{{ __($product->colors) }}
+
+		<span class="mdc-typography--headline6" style="text-transform: capitalize;">
+			{{ $product->colors }}
 		</span>
 	</div>
-	<div class="mt-1">
-		<a href="#" onclick="event.preventDefault(); navigator.clipboard.writeText(this.textContent);">{{$product->designerStyleId}}</a>
+
+	<div class="mt-2">
+		<span>{{$product->designerStyleId}}</span>
 	</div>
 </div>

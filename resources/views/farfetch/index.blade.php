@@ -1,24 +1,43 @@
 @extends('layouts.app')
 
-@section('title','Farfetch '.__('database'))
+@section('title')
+@if ($designer) {{ $designer->description.' - Farfetch' }}
+@elseif ($category) {{ $category->description.' - Farfetch' }}
+@else {{ 'Farfetch' }} @endif
+@endsection
 
 @section('content')
 <div id="products-index" class="">
+	@if($products->isEmpty())
+		<div class="my-5 text-center">
+			没有搜索到相关商品
+		</div>
+	@else
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products as $product)
 		<li class="mdc-image-list__item">
 			<a href="{{ route('farfetch.show',['product' => $product ]) }}">
 				<div class="">
-					<img class="mdc-image-list__image" src="{{$product->image->url ?? asset('storage/icons/ImagePlaceholder.svg')}}">
+					<img class="mdc-image-list__image" src="{{$product->image ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
 				<div class="mdc-image-list__supporting">
-					<span class="mdc-image-list__label brand">{{ $product->designer->name }}</span>
+					<span class="mdc-image-list__label brand">{{ $product->designer->description }}</span>
 					<span class="mdc-image-list__label product-name">{{ $product->shortDescription }}</span>
+					@if($product->price)
+					<span class="mdc-image-list__label">
+						{{ "\u{00a5}".$product->price }}
+					</span>
+					@else
+					<span class="mdc-image-list__label mdc-theme--primary">
+						{{ __('not available') }}
+					</span>
+					@endif
 				</div>
 			</a>
 		</li>
 		@endforeach
 	</ul>
+	@include('layouts.pages')
 	<button id="display-options-fab" class="mdc-fab" aria-label="display options">
 	  <span class="mdc-fab__icon material-icons">filter_list</span>
 	</button>
@@ -55,5 +74,6 @@
 	  </div>
 	  <div class="mdc-dialog__scrim"></div>
 	</div>
+	@endif
 </div>
 @endsection

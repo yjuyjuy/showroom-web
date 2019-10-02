@@ -13,7 +13,7 @@
 		           class="mdc-checkbox__native-control"
 							 value="{{$value->id}}"
 							 name="{{ $key }}[]"
-		           id="filter-{{$key}}-{{$value->urlToken}}-checkbox" {{ $checked ? 'checked' : '' }}>
+		           id="filter-{{$key}}-{{$value->url_token}}-checkbox" {{ $checked ? 'checked' : '' }}>
 		    <div class="mdc-checkbox__background">
 		      <svg class="mdc-checkbox__checkmark"
 		           viewBox="0 0 24 24">
@@ -25,8 +25,8 @@
 		    </div>
 		  </div>
 		</span>
-	  <label for="filter-{{$key}}-{{$value->urlToken}}-checkbox"
-					 class="mdc-list-item__text">{{ __($value->name) }}</label>
+	  <label for="filter-{{$key}}-{{$value->url_token}}-checkbox"
+					 class="mdc-list-item__text">{{ __($value->description) }}</label>
 	</li>
 	@endforeach
 </ul>
