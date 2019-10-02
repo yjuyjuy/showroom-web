@@ -1,9 +1,10 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap'); 
+@import 'fonts';
 // Variables
-@import 'variables'; 
+@import 'variables';
 // Bootstrap
 @import 'bootstrap';
+// Material Design
 @import "@material/typography/mdc-typography";
 @import "@material/button/mdc-button";
 @import '@material/image-list/mdc-image-list';
@@ -247,7 +248,7 @@ a.mdc-list-item__text:hover {
 	@media (min-width:768px) {
 		flex-wrap: nowrap;
 	}
-	
+
 	& > * {
 		width: 100%;
 		padding: 0 16px 8px;
@@ -271,11 +272,7 @@ a.mdc-list-item__text:hover {
 	}
 }
 .fullscreen-center {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	min-height: 80vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
