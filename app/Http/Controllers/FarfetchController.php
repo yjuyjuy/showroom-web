@@ -15,8 +15,8 @@ class FarfetchController extends Controller
 	{
 		$data = $request->validate([
 			'designer.*' => ['sometimes', 'exists:farfetch.designers,id'],
-			'category.*' => ['sometimes', 'exists:farfetch.categories,id'],
-			'sort' => ['sometimes', Rule::in(['default', 'price-low-to-high', 'price-high-to-low'])],
+			'category.*' => ['sometimes', Rule::in($this->getCategories())],
+			'sort' => ['sometimes', Rule::in($this->getSortOptions())],
 		]);
 		$filters = [];
 		$query = FarfetchProduct::with('designer', 'category');
@@ -26,9 +26,9 @@ class FarfetchController extends Controller
 			$query->where('designer_id', $designer->id);
 		} else {
 			$filters['designer'] = FarfetchDesigner::all();
-			if (array_key_exists('designer', $data) && $designers = $data['designer']) {
-				$query->where(function ($query) use ($designers) {
-					foreach ($designers as $designer_id) {
+			if (!empty($data['designer'])) {
+				$query->where(function ($query) use ($data) {
+					foreach ($data['designer'] as $designer_id) {
 						$query->orWhere('designer_id', $designer_id);
 					}
 				});
@@ -37,19 +37,19 @@ class FarfetchController extends Controller
 		if ($category) {
 			$query->where('category_id', $category->id);
 		} else {
-			$filters['category'] = FarfetchCategory::has('products')->get()->sortBy('description');
-			if (array_key_exists('category', $data) && $categories = $data['category']) {
-				$query->where(function ($query) use ($categories) {
-					foreach ($categories as $category) {
-						$query->orWhere('category_id', $category);
+			$filters['category'] = $this->getCategories();
+			if (!empty($data['category'])) {
+				$query->where(function ($query) use ($data) {
+					foreach ($data['category'] as $category_id) {
+						$query->orWhere('category_id', $category_id);
 					}
 				});
 			}
 		}
-		if (array_key_exists('sort', $data) && $sort = $data['sort']) {
-			if ($sort == 'price-low-to-high') {
+		if (!empty($data['sort'])) {
+			if ($data['sort'] == 'price-low-to-high') {
 				$query->where('price', '>', 0)->orderBy('price');
-			} elseif ($sort == 'price-high-to-low') {
+			} elseif ($data['sort'] == 'price-high-to-low') {
 				$query->where('price', '>', 0)->orderBy('price', 'desc');
 			} else {
 				$query->orderBy('id');
@@ -60,7 +60,7 @@ class FarfetchController extends Controller
 		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $query->skip(($page - 1) * 24)->take(24)->get();
 
-		$sortOptions = ['default', 'price-low-to-high', 'price-high-to-low'];
+		$sortOptions = $this->getSortOptions();
 		$request->flash();
 		return view('farfetch.index', compact('products', 'designer', 'category', 'sortOptions', 'filters', 'page', 'total_pages'));
 	}
@@ -79,9 +79,17 @@ class FarfetchController extends Controller
 
 	public function categories()
 	{
-		$categories = Cache::remember('categories-has-products', 60 * 60, function() {
+		$categories = $this->getCategories();
+		return view('farfetch.categories', compact('categories'));
+	}
+	public function getCategories()
+	{
+		return Cache::remember('farfetch-categories', 60 * 60, function () {
 			return FarfetchCategory::has('products')->get();
 		});
-		return view('farfetch.categories', compact('categories'));
+	}
+	public function getSortOptions()
+	{
+		return ['default', 'price-low-to-high', 'price-high-to-low'];
 	}
 }
