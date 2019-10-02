@@ -23,8 +23,4 @@ class FarfetchImage extends Model
 	{
 		return $this->belongsTo(FarfetchProduct::class,'product_id');
 	}
-	public function getUrlAttribute()
-	{
-		return asset('storage/'.$this->path);
-	}
 }
