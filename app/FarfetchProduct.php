@@ -28,7 +28,7 @@ class FarfetchProduct extends Model
 	];
 	public function displayName()
 	{
-		return $this->designer->name.' '.$this->shortDescription;
+		return $this->designer->description.' '.$this->short_description;
 	}
 	public function images()
 	{
