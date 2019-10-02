@@ -31,15 +31,4 @@ class FarfetchCategory extends Model
 	{
 		return $this->hasMany(FarfetchProduct::class, 'category_id');
 	}
-	public function getDescriptionAttribute()
-	{
-		$description = $this->attributes['description'];
-		if (strpos($this->url_token, '-1')) {
-			return '女装-'.$description;
-		} elseif (strpos($this->url_token, '-2')) {
-			return '男装-'.$description;
-		} else {
-			return $description;
-		}
-	}
 }
