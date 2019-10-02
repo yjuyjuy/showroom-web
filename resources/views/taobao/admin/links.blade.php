@@ -16,7 +16,7 @@
 			<div class="product-card">
 				<div class="product-card__left">
 					<a href="#" target="_blank">
-						<img class="product-thumbnail" src="{{ $price->product->image->url ?? $price->taobao_product->image ?? asset('storage/icons/ImagePlaceholder.svg') }}" alt="">
+						<img class="product-thumbnail lazy" data-src="{{ $price->product->image->url ?? $price->taobao_product->image ?? '' }}" alt="">
 					</a>
 				</div>
 				<div class="product-card__right">
@@ -37,7 +37,7 @@
 	<datalist id="product-datalist">
 		<option value="" data-image-src="{{ asset('storage/icons/ImagePlaceholder.svg') }}" data-product-href="#" hidden disabled></option>
 		@foreach(\App\Product::orderBy('season_id')->orderBy('category_id')->get() as $product)
-		<option value="{{ $product->id }}" data-image-src="{{ $product->image->small ?? asset('storage/icons/ImagePlaceholder.svg') }}" data-href="{{ route('products.show',['product' => $product,]) }}">{{ $product->displayName() }} {{ __($product->color->name) }}</option>
+		<option value="{{ $product->id }}" data-image-src="{{ $product->image->small ?? '' }}" data-href="{{ route('products.show',['product' => $product,]) }}">{{ $product->displayName() }} {{ __($product->color->name) }}</option>
 		@endforeach
 	</datalist>
 </div>

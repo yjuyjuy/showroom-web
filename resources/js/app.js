@@ -92,7 +92,16 @@ if (document.querySelector('.mdc-dialog')) {
 		dialog.open();
 	}
 }
-
+if (document.querySelector('img.lazy')) {
+	[].map.call(document.querySelectorAll('img.lazy'), function(el) {
+		el.src = 'storage/icons/ImagePlaceHolder.svg';
+		if (el.dataset.src) {
+			let image = new Image();
+			image.src = el.dataset.src;
+			image.onload = () => el.src = el.dataset.src;
+		}
+	});
+}
 // axios functions
 window.delete_price = (id) => {
 	axios.delete('/prices/' + id)

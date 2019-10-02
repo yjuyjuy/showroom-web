@@ -1,6 +1,6 @@
 <template>
 <div @dblclick="$refs.fileInput.click()" @dragstart="dragged" @dragover.prevent @drop.prevent="dropped($event)" style="position:relative;">
-	<img draggable="true" :src="src">
+	<img class="lazy" draggable="true" :data-src="src">
 	<a href="#" @click.prevent="delete_image" id="delete-link">×</a>
 	<input @change="replace_image($event.target.files[0])" type="file" ref="fileInput" style="display:none;">
 </div>

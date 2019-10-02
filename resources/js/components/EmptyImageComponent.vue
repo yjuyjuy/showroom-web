@@ -1,6 +1,6 @@
 <template>
 <div @drop.prevent="dropped($event)" @dragover.prevent>
-	<img @click="$refs.fileInput.click()" src="/storage/icons/ImageDropbox.svg">
+	<img @click="$refs.fileInput.click()" data-src="/storage/icons/ImageDropbox.svg" class="lazy">
 	<input @change="store_image($event.target.files)" type="file" ref="fileInput" style="display:none;">
 </div>
 </template>

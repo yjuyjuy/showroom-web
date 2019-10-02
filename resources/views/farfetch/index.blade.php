@@ -18,7 +18,7 @@
 		<li class="mdc-image-list__item">
 			<a href="{{ route('farfetch.show',['product' => $product ]) }}">
 				<div class="">
-					<img class="mdc-image-list__image" src="{{$product->image ?? asset('storage/icons/ImagePlaceholder.svg')}}">
+					<img class="mdc-image-list__image lazy" data-src="{{ $product->image ?? '' }}">
 				</div>
 				<div class="mdc-image-list__supporting">
 					<span class="mdc-image-list__label brand">{{ $product->designer->description }}</span>

@@ -27,10 +27,10 @@
 		<div class="">
 			<div class="d-flex">
 				<div class="mx-2 w-50">
-					<img src="{{$product->images[0]->small ?? asset('storage/icons/ImagePlaceholder.svg')}}">
+					<img class="lazy" data-src="{{$product->images[0]->small ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
 				<div class="mx-2 w-50">
-					<img src="{{$product->images[1]->small ?? asset('storage/icons/ImagePlaceholder.svg')}}">
+					<img class="lazy" data-src="{{$product->images[1]->small ?? asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
 			</div>
 		</div>

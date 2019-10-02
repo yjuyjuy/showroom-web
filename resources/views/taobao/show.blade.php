@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
 	<div class="">
-		<img src="{{ $product->image }}" alt="">
+		<img class="lazy" data-src="{{ $product->image }}" alt="">
 	</div>
 	<div class="container__content d-flex flex-column">
 		<div class="d-flex flex-column products-show__info--properties">

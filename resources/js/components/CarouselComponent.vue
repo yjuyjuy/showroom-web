@@ -1,17 +1,17 @@
 <template>
 <div class="carousel">
-	
-	<div class="carousel__content">		
+
+	<div class="carousel__content">
 		<div v-for="(image,index) in images" class="carousel-item" v-bind:class="{ active: index == active }">
-			<img :src="image">
+			<img class="lazy" :data-src="image">
 		</div>
 	</div>
-	
+
 	<div class="carousel__controls">
 		<button type="button" class="mdc-icon-button material-icons carousel__control-prev" @click="prev_item()">navigate_before</button>
 		<button type="button" class="mdc-icon-button material-icons carousel__control-next" @click="next_item()">navigate_next</button>
 	</div>
-	
+
 </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
 		};
 	},
 	beforeMount: function() {
-		
+
 	},
 	mounted: function() {},
 	watch: {},
