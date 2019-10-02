@@ -4,6 +4,8 @@
 			'retailer' => $retailer ?? null,
 			'designer' => $designer ?? null,
 			'category' => $category ?? null,
+			'brand' => $brand ?? null,
+			'department' => $department ?? null,
 		]; ?>
 		@if($page > 1)
 		<a href="{{ route(Route::currentRouteName(), array_merge(request()->query(), $route_params, ['page' => $page - 1,])) }}" class="mdc-button">

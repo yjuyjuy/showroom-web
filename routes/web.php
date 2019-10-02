@@ -101,9 +101,9 @@ Route::middleware(['auth'])->group(function () {
 	# end clothing
 	Route::get('End', 'EndController@index')->name('end.index');
 	Route::get('End/brands', 'EndController@brands')->name('end.brands');
-	Route::get('End/categories', 'EndController@categories')->name('end.categories');
+	Route::get('End/departments', 'EndController@departments')->name('end.departments');
 	Route::get('End/brands/{brand}', 'EndController@index')->name('end.brands.index');
-	Route::get('End/categories/{category}', 'EndController@index')->name('end.categories.index');
+	Route::get('End/departments/{department}', 'EndController@index')->name('end.departments.index');
 	Route::get('End/{product}', 'EndController@show')->name('end.show');
 	# off---white
 	Route::get('Off-White', 'OffWhiteController@index')->name('offwhite.index');
