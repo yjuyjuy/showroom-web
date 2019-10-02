@@ -18,9 +18,17 @@ class FarfetchDesigner extends Model
 	 * @var string
 	 */
 	protected $table = 'designers';
-
+	/**
+	 * Get the route key for the model.
+	 *
+	 * @return string
+	 */
+	public function getRouteKeyName()
+	{
+			return 'url_token';
+	}
 	public function products()
 	{
-		return $this->belongsToMany(FarfetchProduct::class);
+		return $this->hasMany(FarfetchProduct::class, 'designer_id');
 	}
 }
