@@ -94,7 +94,7 @@ if (document.querySelector('.mdc-dialog')) {
 }
 if (document.querySelector('img.lazy')) {
 	[].map.call(document.querySelectorAll('img.lazy'), function(el) {
-		el.src = 'storage/icons/ImagePlaceHolder.svg';
+		el.src = '/storage/icons/ImagePlaceholder.svg';
 		if (el.dataset.src) {
 			let image = new Image();
 			image.src = el.dataset.src;
