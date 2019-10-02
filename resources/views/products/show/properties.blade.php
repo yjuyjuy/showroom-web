@@ -13,7 +13,7 @@
 	@can('update',$product)
 	<div class="mt-2">
 		<div style="text-transform:capitalize;">{{ $product->name }} {{ __($product->color->name) }}</div>
-		@if($product->designerStyleId)<div class="">{{ __('designerStyleId') }}: {{$product->designerStyleId}}</div>@endif
+		@if($product->designer_style_id)<div class="">{{ __('designer_style_id') }}: {{$product->designer_style_id}}</div>@endif
 		<div class="">
 			<span class="">ID: {{ $product->id }}</span>
 			<a href="{{ route('products.edit',['product' => $product ]) }}">{{ __('edit') }}</a>

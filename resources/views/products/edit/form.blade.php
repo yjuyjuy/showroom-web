@@ -123,11 +123,11 @@
 @enderror
 
 <div class="mdc-text-field optional-form-field">
-	<input type="text" class="mdc-text-field__input" name="designerStyleId" autocomplete="off" value="{{ old('designerStyleId') ?? $product->designerStyleId ?? '' }}">
-	<label class="mdc-floating-label" for="my-text-field">{{ __('designerStyleId') }}</label>
+	<input type="text" class="mdc-text-field__input" name="designer_style_id" autocomplete="off" value="{{ old('designer_style_id') ?? $product->designer_style_id ?? '' }}">
+	<label class="mdc-floating-label" for="my-text-field">{{ __('designer_style_id') }}</label>
 	<div class="mdc-line-ripple"></div>
 </div>
-@error('designerStyleId')
+@error('designer_style_id')
 <div class="mdc-text-field-helper-line">
 	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
 </div>

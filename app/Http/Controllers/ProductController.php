@@ -174,7 +174,7 @@ class ProductController extends Controller
 			'name_cn' => ['required', 'string', 'max:255',],
 			'category' => ['required', 'exists:categories,id',],
 			'color' => ['required', 'exists:colors,id',],
-			'designerStyleId' => ['nullable','string','max:255',],
+			'designer_style_id' => ['nullable','string','max:255',],
 			'comment' => ['nullable','string','max:255',],
 		]);
 	}

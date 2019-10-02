@@ -51,33 +51,33 @@ class AdminController extends Controller
 
 	public function update_designer_style_id()
 	{
-		$products = \App\Product::whereNull('designerStyleId')->whereHas('images', function ($query) { $query->where('website_id', 1); })->get();
+		$products = \App\Product::whereNull('designer_style_id')->whereHas('images', function ($query) { $query->where('website_id', 1); })->get();
 		foreach ($products as $product) {
 			$source = $product->images->first()->source;
 			$id = substr($source, 6, 20);
 			if (preg_match('/^[0-9A-Za-z]+$/', $id)) {
-				$product->designerStyleId = strtoupper($id);
+				$product->designer_style_id = strtoupper($id);
 				$product->save();
 			}
 		}
-		$products = \App\Product::whereNull('designerStyleId')->whereHas('images', function ($query) { $query->where('website_id', 3); })->get();
+		$products = \App\Product::whereNull('designer_style_id')->whereHas('images', function ($query) { $query->where('website_id', 3); })->get();
 		foreach ($products as $product) {
 			$source = $product->images->first()->source;
 			$id = substr($source, 0, 20);
 			if (preg_match('/^[0-9A-Za-z]+$/', $id)) {
-				$product->designerStyleId = strtoupper($id);
+				$product->designer_style_id = strtoupper($id);
 				$product->save();
 			}
 		}
-		$products = \App\Product::whereNull('designerStyleId')->whereHas('images', function ($query) { $query->where('website_id', 2); })->get();
+		$products = \App\Product::whereNull('designer_style_id')->whereHas('images', function ($query) { $query->where('website_id', 2); })->get();
 		foreach ($products as $product) {
 			$source = $product->images->first()->source;
 			$farfetch_id = substr($source, 0, 8);
 			if(preg_match('/^[0-9]+$/',$farfetch_id)){
 				$farfetch_product = \App\FarfetchProduct::find($farfetch_id);
 				if ($farfetch_product) {
-					if($farfetch_product->designerStyleId){
-						$product->designerStyleId = strtoupper($farfetch_product->designerStyleId);
+					if($farfetch_product->designer_style_id){
+						$product->designer_style_id = strtoupper($farfetch_product->designer_style_id);
 						$product->save();
 					}
 				} else {
@@ -131,10 +131,10 @@ class AdminController extends Controller
 		$retailer_id = \App\Retailer::where('name', 'Farfetch')->first()->id;
 		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
 		
-		foreach (\App\Product::whereNotNull('designerStyleId')->get() as $product) {
+		foreach (\App\Product::whereNotNull('designer_style_id')->get() as $product) {
 			$url = null;
 			$size_price = array();
-			foreach (\App\FarfetchProduct::whereNotNull('size_price')->where('designerStyleId', $product->designerStyleId)->get() as $farfetch_product) {
+			foreach (\App\FarfetchProduct::whereNotNull('size_price')->where('designer_style_id', $product->designer_style_id)->get() as $farfetch_product) {
 				foreach ($farfetch_product->size_price as $size => $price) {
 					$price = (int)$price;
 					if ((!array_key_exists($size, $size_price)) || ($size_price[$size] > $price)) {
