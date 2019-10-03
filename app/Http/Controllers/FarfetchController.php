@@ -15,7 +15,7 @@ class FarfetchController extends Controller
 	{
 		$data = $request->validate([
 			'designer.*' => ['sometimes', 'exists:farfetch.designers,id'],
-			'category.*' => ['sometimes', Rule::in($this->getCategories())],
+			'category.*' => ['sometimes', Rule::in($this->getCategories()->pluck('id'))],
 			'sort' => ['sometimes', Rule::in($this->getSortOptions())],
 		]);
 		$filters = [];
