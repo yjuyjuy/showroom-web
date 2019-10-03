@@ -8,12 +8,12 @@
 			'department' => $department ?? null,
 		]; ?>
 		@if($page > 1)
-		<a href="{{ route(Route::currentRouteName(), array_merge(request()->query(), $route_params, ['page' => $page - 1,])) }}" class="mdc-button">
+		<a href="{{ route(Route::currentRouteName(), array_merge($route_params, request()->query(), ['page' => $page - 1,])) }}" class="mdc-button">
 			<span class="mdc-button__label">上一页</span>
 		</a>
 		@endif
 		@if($page < $total_pages)
-		<a href="{{ route(Route::currentRouteName(), array_merge(request()->query(), $route_params, ['page' => $page + 1,])) }}" class="mdc-button">
+		<a href="{{ route(Route::currentRouteName(), array_merge($route_params, request()->query(), ['page' => $page + 1,])) }}" class="mdc-button">
 			<span class="mdc-button__label">下一页</span>
 		</a>
 		@endif
