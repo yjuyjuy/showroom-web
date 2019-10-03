@@ -26,7 +26,7 @@
 		  </div>
 		</span>
 	  <label for="filter-{{$key}}-{{$token}}-checkbox"
-					 class="mdc-list-item__text">{{ $name }}</label>
+					 class="mdc-list-item__text">{{ __($name) }}</label>
 	</li>
 	@endforeach
 </ul>
