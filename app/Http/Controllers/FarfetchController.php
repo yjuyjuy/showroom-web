@@ -85,7 +85,7 @@ class FarfetchController extends Controller
 	public function getCategories()
 	{
 		return Cache::remember('farfetch-categories', 60 * 60, function () {
-			return FarfetchCategory::has('products')->get();
+			return FarfetchCategory::has('products')->orderBy('description')->get();
 		});
 	}
 	public function getSortOptions()
