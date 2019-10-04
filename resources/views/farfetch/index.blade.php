@@ -8,6 +8,29 @@
 
 @section('content')
 <div id="products-index" class="">
+	<div class="d-flex">
+		<div class="mdc-menu-surface--anchor">
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('category') }}</span></button>
+			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+					@foreach($categories as $value)
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('farfetch.categories.index', ['category' => $value,]) }}">{{ __($value->description) }}</a>
+				    </a>
+					@endforeach
+			  </ul>
+			</div>
+		</div>
+		<div class="mdc-menu-surface--anchor">
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('designer') }}</span></button>
+			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+					@foreach($designers as $value)
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('farfetch.designers.index', ['designer' => $value,]) }}">{{ __($value->description) }}</a>
+					@endforeach
+			  </ul>
+			</div>
+		</div>
+	</div>
 	@if($products->isEmpty())
 		<div class="my-5 text-center">
 			没有搜索到相关商品

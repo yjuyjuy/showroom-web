@@ -59,13 +59,13 @@ class EndController extends Controller
 			}
 		}
 
-		$total_pages = ceil($query->count() / 24.0);
+		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
-		$products = $query->skip(($page - 1) * 24)->take(24)->get();
+		$products = $query->skip(($page - 1) * 48)->take(48)->get();
 
 		$sortOptions = $this->getSortOptions();
 		$request->flash();
-		return view('end.index', compact('products', 'brand', 'department', 'sortOptions', 'filters', 'page', 'total_pages'));
+		return view('end.index', compact('products', 'brand', 'department', 'brands', 'departments', 'sortOptions', 'filters', 'page', 'total_pages'));
 	}
 
 	public function show(EndProduct $product)

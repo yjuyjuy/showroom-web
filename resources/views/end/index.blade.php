@@ -8,6 +8,29 @@
 
 @section('content')
 <div id="products-index" class="">
+	<div class="d-flex">
+		<div class="mdc-menu-surface--anchor">
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('department') }}</span></button>
+			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+					@foreach($departments as $key => $value)
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.departments.index', ['department' => $value,]) }}">{{ __($value) }}</a>
+				    </a>
+					@endforeach
+			  </ul>
+			</div>
+		</div>
+		<div class="mdc-menu-surface--anchor">
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('brand') }}</span></button>
+			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+					@foreach($brands as $key => $value)
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.brands.index', ['brand' => $value,]) }}">{{ __($value) }}</a>
+					@endforeach
+			  </ul>
+			</div>
+		</div>
+	</div>
 	@if($products->isEmpty())
 		<div class="my-5 text-center">
 			没有搜索到相关商品
