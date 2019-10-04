@@ -106,6 +106,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('end/{product}', 'EndController@show')->name('end.show');
 	# off---white
 	Route::get('off-white', 'OffWhiteController@index')->name('offwhite.index');
+	Route::get('off-white/categories', 'OffWhiteController@categories')->name('offwhite.categories');
+	Route::get('off-white/categories/{category}', 'OffWhiteController@index')->name('offwhite.categories.index');
 	Route::get('off-white/{product}', 'OffWhiteController@show')->name('offwhite.show');
 });
 
