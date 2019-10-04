@@ -104,7 +104,7 @@
 					</a>
 					<a class="mdc-list-item" href="{{ route('websites.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
-						<span class="mdc-list-item__text">官网</span>
+						<span class="mdc-list-item__text">所有网站</span>
 					</a>
 					<hr class="mdc-list-divider">
 					@endif
