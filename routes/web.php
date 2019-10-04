@@ -91,7 +91,7 @@ Route::middleware('auth')->group(function () {
 # Websites
 Route::middleware(['auth'])->group(function () {
 	# list of websites
-	Route::get('websites', 'WebsiteCOntroller@index')->name('websites.index');
+	Route::get('websites', 'WebsiteController@index')->name('websites.index');
 	# farfetch
 	Route::get('farfetch', 'FarfetchController@index')->name('farfetch.index');
 	Route::get('farfetch/designers', 'FarfetchController@designers')->name('farfetch.designers');
