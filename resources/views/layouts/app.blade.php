@@ -102,13 +102,9 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('farfetch.index') }}">
+					<a class="mdc-list-item" href="{{ route('websites.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
-						<span class="mdc-list-item__text">Farfetch</span>
-					</a>
-					<a class="mdc-list-item" href="{{ route('end.index') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
-						<span class="mdc-list-item__text">End Clothing</span>
+						<span class="mdc-list-item__text">官网</span>
 					</a>
 					<hr class="mdc-list-divider">
 					@endif
