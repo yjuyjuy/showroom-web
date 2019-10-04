@@ -98,13 +98,17 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">extension</i>
 						<span class="mdc-list-item__text">手动执行程序</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('admin.inbox') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-						<span class="mdc-list-item__text">管理员收件箱</span>
-					</a>
 					<a class="mdc-list-item" href="{{ route('admin.taobao.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
+					</a>
+					<a class="mdc-list-item" href="{{ route('farfetch.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
+						<span class="mdc-list-item__text">Farfetch</span>
+					</a>
+					<a class="mdc-list-item" href="{{ route('end.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
+						<span class="mdc-list-item__text">End Clothing</span>
 					</a>
 					<hr class="mdc-list-divider">
 					@endif
