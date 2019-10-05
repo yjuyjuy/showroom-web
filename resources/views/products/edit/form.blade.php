@@ -1,4 +1,4 @@
-<div class="mdc-select mt-md-0 mdc-menu-surface--anchor">
+<div class="mdc-select mt-md-0 mdc-menu-surface--anchor optional-form-field">
 	<input type="hidden" name="brand">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>
@@ -24,7 +24,7 @@
 @enderror
 
 
-<div class="mdc-select mdc-menu-surface--anchor">
+<div class="mdc-select mdc-menu-surface--anchor optional-form-field">
 	<input type="hidden" name="season">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>
@@ -49,7 +49,7 @@
 <p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
 @enderror
 
-<div class="mdc-text-field">
+<div class="mdc-text-field optional-form-field">
 	<input type="text" class="mdc-text-field__input" name="name_cn" autocomplete="off" value="{{ old('name_cn') ?? $product->name_cn ?? '' }}">
 	<label class="mdc-floating-label" for="my-text-field">{{ __('product name_cn') }}</label>
 	<div class="mdc-line-ripple"></div>
@@ -72,7 +72,7 @@
 </div>
 @enderror
 
-<div class="mdc-select mdc-menu-surface--anchor">
+<div class="mdc-select mdc-menu-surface--anchor optional-form-field">
 	<input type="hidden" name="category">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>
@@ -97,7 +97,7 @@
 <p class="mdc-select-helper-text mdc-select-helper-text--persistent" role="alert">{{ $message }}</p>
 @enderror
 
-<div class="mdc-select mdc-menu-surface--anchor">
+<div class="mdc-select mdc-menu-surface--anchor optional-form-field">
 	<input type="hidden" name="color">
 	<i class="mdc-select__dropdown-icon"></i>
 	<div class="mdc-select__selected-text"></div>
@@ -144,6 +144,17 @@
 	</div>
 </label>
 @error('comment')
+<div class="mdc-text-field-helper-line">
+	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
+</div>
+@enderror
+
+<div class="mdc-text-field optional-form-field">
+	<input type="text" class="mdc-text-field__input" name="url" autocomplete="off" value="">
+	<label class="mdc-floating-label" for="my-text-field">{{ __('url') }}</label>
+	<div class="mdc-line-ripple"></div>
+</div>
+@error('url')
 <div class="mdc-text-field-helper-line">
 	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
 </div>
