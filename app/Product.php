@@ -165,7 +165,19 @@ class Product extends Model
 	}
 	public function displayName()
 	{
-		return $this->brand->name.' '.$this->season->name.' '.$this->name_cn;
+		$parts = [];
+		if ($this->brand) {
+			$parts[] = $this->brand->name;
+		}
+		if ($this->season) {
+			$parts[] = $this->season->name;
+		}
+		if ($this->name_cn) {
+			$parts[] = $this->name_cn;
+		} else if ($this->name) {
+			$parts[] = $this->name;
+		}
+		return implode(' ', $parts);
 	}
 	public function getOffersToStringAttribute()
 	{
