@@ -100,15 +100,114 @@ class ProductController extends Controller
 		return view('products.create', compact('product'));
 	}
 
+	public function init(Product $product, $url)
+	{
+		if (strpos($url, 'farfetch')) {
+			# farfetch
+			if (preg_match('#notdopebxtch.com/farfetch/([0-9]+)#', $url, $results) || preg_match('#www\.farfetch.*?item-([0-9]+)\.aspx#', $url, $results))
+			{
+				if ($farfetch_product = \App\FarfetchProduct::find($results[1])) {
+					$brand_id_map = [
+						1205035 => 885468,
+					];
+					$data = [
+						'brand_id' => $brand_id_map[$farfetch_product->designer->id],
+						'name_cn' => $farfetch_product->short_description,
+						'designer_style_id' => $farfetch_product->designer_style_id,
+					];
+					$images = $farfetch_product->images;
+				}
+			}
+		} elseif (strpos($url, 'end')) {
+			# end
+			if (preg_match('#notdopebxtch.com/end/[0-9]+#', $url, $results)) {
+				$end_product = \App\EndProduct::find($results[1]);
+			} else if (preg_match('#www\.endclothing\.com/[a-zA-Z]+/([a-zA-Z0-9-]+)\.html#', $url, $results)) {
+				$end_product = \App\EndProduct::where('url', "https://www.endclothing.com/cn/{$results[1]}.html")->first();
+			}
+			if ($end_product ?? false) {
+				$brand_id_map = [
+					'Off-White' => 885468,
+				];
+				$data = [
+					'brand_id' => $brand_id_map[$end_product->brand],
+					'name' => $end_product->name,
+					'designer_style_id' => $end_product->sku,
+				];
+				$images = $end_product->images;
+			}
+		} elseif (preg_match('#www\.notdopebxtch\.com/off-white/([A-Z0-9]+)#', $url, $results) || preg_match('#www.off---white.com/.*/products/([a-zA-Z]+)#', $url, $results)) {
+			# off-white
+			if ($offwhite_product = \App\OffWhiteProduct::find(strtoupper($results[1]))) {
+				$data = [
+					'brand_id' => 885468,
+					'designer_style_id' => $offwhite_product->id,
+					'name' => $offwhite_product->name,
+				];
+				$images = $offwhite_product->images;
+			}
+		}
+		if (!$product) {
+			$product = new Product();
+			$product->id = $this->random_id();
+		}
+		if ($data ?? false) {
+			foreach($data as $attr => $value) {
+				if (empty($product[$attr]) && !empty($value)) {
+					$product[$attr] = $value;
+				}
+			}
+			$product->save();
+			if (!empty($images)) {
+				if(strpos($images[0]->url, 'cdn-images.farfetch-contents.com')) {
+					$website_id = 2;
+				} elseif (strpos($images[0]->url, 'media.endclothing.com')) {
+					$website_id = 6;
+				} elseif (strpos($images[0]->url, 'cdn.off---white.com')) {
+					$website_id = 1;
+				}
+				if ($website_id) {
+					$order = $product->images()->where('website_id', $website_id)->max('order');
+					foreach ($images as $image) {
+						$original_filename = explode('?', array_reverse(explode('/', $image->url))[0])[0];
+						if (!$product->images()->where('website_id', $website_id)->where('source', $original_filename)->first()) {
+							$order += 1;
+							$path = 'images/'.$product->id.'/'.bin2hex(random_bytes(20)).'.jpeg';
+							if (!is_dir(dirname('storage/'.$path))) {
+								mkdir(dirname('storage/'.$path), 0777, true);
+							}
+							if ($image->path) {
+								Storage::copy('storage/'.$image->path, 'storage/'.$path);
+							} else {
+								$f = fopen($image->url, 'r');
+								file_put_contents('storage/'.$path, $f);
+								fclose($f);
+							}
+							\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(400, 565)->save('storage/'.$path.'_400.jpeg', 80);
+							\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(800, 1130)->save('storage/'.$path.'_800.jpeg', 80);
+							\App\Image::create([
+								'path' => $path,
+								'source' => $original_filename,
+								'product_id' => $product->id,
+								'website_id' => $website_id,
+								'order' => $order,
+							]);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public function store(Request $request)
 	{
 		$product = new Product($this->validateProduct());
-		$product->id = random_int(1000000000, 9999999999);
-		while (Product::find($product->id)) {
-			$product->id = random_int(1000000000, 9999999999);
-		}
+		$product->id = $this->random_id();
 		$product->save();
-		return redirect(route('images.edit', ['product' => $product]));
+		if($url = $request->input('url')) {
+			$this->init($product, $url);
+		}
+		return redirect(route('products.edit', ['product' => $product]));
 	}
 
 	public function show(Product $product)
@@ -156,7 +255,10 @@ class ProductController extends Controller
 	public function update(Request $request, Product $product)
 	{
 		$product->update($this->validateProduct());
-		return redirect(route('products.show', ['product' => $product]));
+		if($url = $request->input('url')) {
+			$this->init($product, $url);
+		}
+		return redirect(route('products.edit', ['product' => $product]));
 	}
 
 	public function destroy(Product $product)
@@ -168,12 +270,12 @@ class ProductController extends Controller
 	public function validateProduct()
 	{
 		return request()->validate([
-			'brand' => ['required', 'exists:brands,id',],
-			'season' => ['required', 'exists:seasons,id',],
+			'brand' => ['nullable', 'exists:brands,id',],
+			'season' => ['nullable', 'exists:seasons,id',],
 			'name' => ['nullable', 'string', 'max:255',],
-			'name_cn' => ['required', 'string', 'max:255',],
-			'category' => ['required', 'exists:categories,id',],
-			'color' => ['required', 'exists:colors,id',],
+			'name_cn' => ['nullable', 'string', 'max:255',],
+			'category' => ['nullable', 'exists:categories,id',],
+			'color' => ['nullable', 'exists:colors,id',],
 			'designer_style_id' => ['nullable','string','max:255',],
 			'comment' => ['nullable','string','max:255',],
 		]);
@@ -202,5 +304,14 @@ class ProductController extends Controller
 			"season" => \App\Season::all(),
 			"brand" => \App\Brand::all()
 		];
+	}
+
+	public function random_id()
+	{
+		$id = random_int(1000000000, 9999999999);
+		while (Product::find($id)) {
+			$id = random_int(1000000000, 9999999999);
+		}
+		return $id;
 	}
 }
