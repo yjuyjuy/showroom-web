@@ -7,10 +7,99 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
+	public function available_functions()
+	{
+		return [
+			'import_all' => '导入farfetch, end商品库',
+			'follow_all_retailers' => '关注所有卖家',
+			'follow_all_vendors' => '关注所有同行',
+			'update_designer_style_id' => '根据图片名称更新货号',
+			'convert_webp_to_jpg' => '转换webp格式图片到jpg格式',
+			'clear_prices' => '清空所有调货价, 售价',
+			'update_prices' => '重新计算调货价, 售价',
+			'update_farfetch_prices' => '重新导入Farfetch价格',
+			'update_taobao_prices' => '重新导入淘宝价格',
+		];
+	}
+
 	public function index()
 	{
 		$functions = $this->available_functions();
 		return view('admin.index', compact('functions'));
+	}
+
+	public function import_all()
+	{
+		set_time_limit(600);
+		$retailer_id = \App\Retailer::where('name', 'Farfetch')->first()->id;
+		$website_id = \App\Website::where('name', 'Farfetch')->first()->id;
+		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
+		foreach(\App\Product::whereNotNull('designer_style_id')->get() as $product) {
+			$farfetch_prices = [];
+			$farfetch_min_price = INF;
+			$link = NULL;
+			foreach(\App\FarfetchProduct::where('designer_style_id', $product->designer_style_id)->get() as $farfetch_product) {
+				if ($farfetch_product->mapped_brand_id !== $product->brand_id) {
+					continue;
+				}
+				if ($farfetch_product->size_price) {
+					foreach($farfetch_product->size_price as $size => $price) {
+						if (!array_key_exists($size, $farfetch_prices) || $farfetch_prices[$size] > $price) {
+							$farfetch_prices[$size] = $price;
+						}
+						if ($price < $farfetch_min_price) {
+							$link = $farfetch_product->url;
+						}
+					}
+				}
+				if ($farfetch_product->images->isNotEmpty()) {
+					ImageController::import($farfetch_product->images, $product, $website_id);
+				}
+			}
+			if (!empty($farfetch_prices)) {
+				\App\RetailPrice::create([
+					'product_id' => $product->id,
+					'retailer_id' => $retailer_id,
+					'prices' =>$farfetch_prices,
+					'link' => $link,
+				]);
+			}
+		}
+		$retailer_id = \App\Retailer::where('name', 'EndClothing')->first()->id;
+		$website_id = \App\Website::where('name', 'EndClothing')->first()->id;
+		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
+		foreach(\App\Product::whereNotNull('designer_style_id')->get() as $product) {
+			$end_prices = [];
+			$end_min_price = INF;
+			$link = NULL;
+			foreach(\App\EndProduct::where('sku', $product->designer_style_id)->get() as $end_product) {
+				if ($end_product->mapped_brand_id !== $product->brand_id) {
+					continue;
+				}
+				if ($end_product->sizes && $end_product->price) {
+					foreach(explode(',', $end_product->sizes) as $size) {
+						if (!array_key_exists($size, $end_prices) || $end_prices[$size] > $end_product->price) {
+							$end_prices[$size] = $end_product->price;
+						}
+						if ($end_product->price < $end_min_price) {
+							$link = $end_product->url;
+						}
+					}
+				}
+				if ($end_product->images->isNotEmpty()) {
+					ImageController::import($end_product->images, $product, $website_id);
+				}
+			}
+			if (!empty($end_prices)) {
+				\App\RetailPrice::create([
+					'product_id' => $product->id,
+					'retailer_id' => $retailer_id,
+					'prices' =>$end_prices,
+					'link' => $link,
+				]);
+			}
+		}
+		set_time_limit(60);
 	}
 
 	public function call($function)
@@ -21,20 +110,6 @@ class AdminController extends Controller
 		} else {
 			abort(404);
 		}
-	}
-
-	public function available_functions()
-	{
-		return [
-			'follow_all_retailers' => '关注所有卖家',
-			'follow_all_vendors' => '关注所有同行',
-			'update_designer_style_id' => '根据图片名称更新货号',
-			'convert_webp_to_jpg' => '转换webp格式图片到jpg格式',
-			'clear_prices' => '清空所有调货价, 售价',
-			'update_prices' => '重新计算调货价, 售价',
-			'update_farfetch_prices' => '重新导入Farfetch价格',
-			'update_taobao_prices' => '重新导入淘宝价格',
-		];
 	}
 
 	public function follow_all_retailers()
@@ -130,7 +205,7 @@ class AdminController extends Controller
 	{
 		$retailer_id = \App\Retailer::where('name', 'Farfetch')->first()->id;
 		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
-		
+
 		foreach (\App\Product::whereNotNull('designer_style_id')->get() as $product) {
 			$url = null;
 			$size_price = array();
