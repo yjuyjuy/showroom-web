@@ -99,6 +99,7 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('farfetch/designers/{designer}', 'FarfetchController@index')->name('farfetch.designers.index');
 	Route::get('farfetch/categories/{category}', 'FarfetchController@index')->name('farfetch.categories.index');
 	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
+	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export');
 	# end clothing
 	Route::get('end', 'EndController@index')->name('end.index');
 	Route::get('end/brands', 'EndController@brands')->name('end.brands');
@@ -106,11 +107,13 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('end/brands/{brand}', 'EndController@index')->name('end.brands.index');
 	Route::get('end/departments/{department}', 'EndController@index')->name('end.departments.index');
 	Route::get('end/{product}', 'EndController@show')->name('end.show');
+	Route::get('end/{end_product}/export', 'EndController@export')->name('end.export');
 	# off---white
 	Route::get('off-white', 'OffWhiteController@index')->name('offwhite.index');
 	Route::get('off-white/categories', 'OffWhiteController@categories')->name('offwhite.categories');
 	Route::get('off-white/categories/{category}', 'OffWhiteController@index')->name('offwhite.categories.index');
 	Route::get('off-white/{product}', 'OffWhiteController@show')->name('offwhite.show');
+	Route::get('off-white/{offwhite_product}/export', 'OffWhiteController@export')->name('offwhite.export');
 });
 
 # admin helper routes
