@@ -24,8 +24,14 @@ class EndProduct extends Model
 	 * @var array
 	 */
 	protected $casts = [];
+
 	public function images()
 	{
 		return $this->hasMany(EndImage::class, 'product_id');
+	}
+
+	public function getMappedBrandIdAttribute()
+	{
+		return [ 'Off-White' => 885468, ][$this->brand];
 	}
 }

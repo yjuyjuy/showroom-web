@@ -40,4 +40,8 @@ class OffWhiteProduct extends Model
 	{
 		return $this->hasMany(\App\OffWhiteImage::class, 'product_id', 'id');
 	}
+	public function getMappedBrandIdAttribute()
+	{
+		return 885468;
+	}
 }

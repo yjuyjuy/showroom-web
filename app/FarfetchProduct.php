@@ -42,4 +42,8 @@ class FarfetchProduct extends Model
 	{
 		return $this->belongsTo(FarfetchCategory::class, 'category_id');
 	}
+	public function getMappedBrandIdAttribute()
+	{
+		return [ 1205035 => 885468, ][$this->designer->id];
+	}
 }
