@@ -125,6 +125,7 @@ class ImageController extends Controller
 		}
 		$image->delete();
 	}
+
 	public function websites()
 	{
 		return [
@@ -142,6 +143,7 @@ class ImageController extends Controller
 			['id' => 12,	'name' => 'revolve'],
 		];
 	}
+
 	public static function import($images, $product, $website_id)
 	{
 		$order = $product->images()->where('website_id', $website_id)->max('order');
