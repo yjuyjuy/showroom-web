@@ -188,4 +188,12 @@ class Product extends Model
 		})->toArray());
 		return $this->displayName().' '.$string;
 	}
+	public static function generate_id()
+	{
+		$id = random_int(1000000000, 9999999999);
+		while (Product::find($id)) {
+			$id = random_int(1000000000, 9999999999);
+		}
+		return $id;
+	}
 }
