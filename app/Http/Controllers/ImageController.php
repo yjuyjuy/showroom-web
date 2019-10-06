@@ -142,4 +142,34 @@ class ImageController extends Controller
 			['id' => 12,	'name' => 'revolve'],
 		];
 	}
+	public static function import($images, $product, $website_id)
+	{
+		$order = $product->images()->where('website_id', $website_id)->max('order');
+		foreach ($images as $image) {
+			$original_filename = explode('?', array_reverse(explode('/', $image->url))[0])[0];
+			if (!$product->images()->where('website_id', $website_id)->where('source', $original_filename)->first()) {
+				$order += 1;
+				$path = 'images/'.$product->id.'/'.bin2hex(random_bytes(20)).'.jpeg';
+				if (!is_dir(dirname('storage/'.$path))) {
+					mkdir(dirname('storage/'.$path), 0777, true);
+				}
+				if ($image->path) {
+					Storage::copy('storage/'.$image->path, 'storage/'.$path);
+				} else {
+					$f = fopen($image->url, 'r');
+					file_put_contents('storage/'.$path, $f);
+					fclose($f);
+				}
+				\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(400, 565)->save('storage/'.$path.'_400.jpeg', 80);
+				\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(800, 1130)->save('storage/'.$path.'_800.jpeg', 80);
+				\App\Image::create([
+					'path' => $path,
+					'source' => $original_filename,
+					'product_id' => $product->id,
+					'website_id' => $website_id,
+					'order' => $order,
+				]);
+			}
+		}
+	}
 }
