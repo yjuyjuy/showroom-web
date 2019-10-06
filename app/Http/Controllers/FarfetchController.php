@@ -39,7 +39,7 @@ class FarfetchController extends Controller
 		if ($category) {
 			$query->where('category_id', $category->id);
 		} else {
-			$filters['category'] = $this->getCategories();
+			$filters['category'] = $categories;
 			if (!empty($data['category'])) {
 				$query->where(function ($query) use ($data) {
 					foreach ($data['category'] as $category_id) {
