@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\FarfetchProduct;
 use App\FarfetchDesigner;
 use App\FarfetchCategory;
@@ -78,6 +79,7 @@ class FarfetchController extends Controller
 		$designers = FarfetchDesigner::all();
 		return view('farfetch.designers', compact('designers'));
 	}
+
 	public function getDesigners()
 	{
 		return Cache::remember('farfetch-designers', 60 * 60, function () {
@@ -90,14 +92,46 @@ class FarfetchController extends Controller
 		$categories = $this->getCategories();
 		return view('farfetch.categories', compact('categories'));
 	}
+
 	public function getCategories()
 	{
 		return Cache::remember('farfetch-categories', 60 * 60, function () {
 			return FarfetchCategory::has('products')->orderBy('description')->get();
 		});
 	}
+
 	public function getSortOptions()
 	{
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
+	}
+
+	public static function export(FarfetchProduct $farfetch_product, Product $product=null)
+	{
+		if ($product) {
+			foreach([
+				'brand_id' => $farfetch_product->mapped_brand_id,
+				'designer_style_id' => $farfetch_product->designer_style_id,
+				'name_cn' => $farfetch_product->short_description,
+				'name' => $farfetch_product->short_description,
+			] as $key => $value) {
+				if (empty($product[$key])) {
+					$product[$key] = $value;
+				}
+			}
+			$product->save();
+		} else  {
+			$product = Product::firstOrCreate([
+				'brand_id' => $farfetch_product->mapped_brand_id,
+				'designer_style_id' => $farfetch_product->designer_style_id,
+			], [
+				'name_cn' => $farfetch_product->short_description,
+				'name' => $farfetch_product->short_description,
+				'id' => \App\Product::generate_id(),
+			]);
+		}
+		if ($farfetch_product->images->isNotEmpty()) {
+			ImageController::import($farfetch_product->images, $product, 2);
+		}
+		return redirect(route('products.edit', ['product' => $product,]));
 	}
 }

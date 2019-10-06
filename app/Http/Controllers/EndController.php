@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\EndProduct;
+use App\EndImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
@@ -113,5 +115,35 @@ class EndController extends Controller
 	public function getSortOptions()
 	{
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
+	}
+
+	public static function export(EndProduct $end_product, Product $product=NULL)
+	{
+		if ($product) {
+			foreach([
+				'brand_id' => $end_product->mapped_brand_id,
+				'designer_style_id' => $end_product->sku,
+				'name_cn' => $end_product->name,
+				'name' => $end_product->name,
+			] as $key => $value) {
+				if (empty($product[$key])) {
+					$product[$key] = $value;
+				}
+			}
+			$product->save();
+		} else  {
+			$product = Product::firstOrCreate([
+				'brand_id' => $end_product->mapped_brand_id,
+				'designer_style_id' => $end_product->sku,
+			], [
+				'name_cn' => $end_product->name,
+				'name' => $end_product->name,
+				'id' => \App\Product::generate_id(),
+			]);
+		}
+		if ($end_product->images->isNotEmpty()) {
+			ImageController::import($end_product->images, $product, 6);
+		}
+		return redirect(route('products.edit', ['product' => $product,]));
 	}
 }

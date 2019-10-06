@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\OffWhiteProduct;
 use App\OffWhiteImage;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class OffWhiteController extends Controller
 			$category = $token;
 			$query->where('category', $category);
 		} else {
-			$category = NULL;
+			$category = null;
 			$filters['category'] = $categories;
 			if (!empty($data['category'])) {
 				$query->where(function ($query) use ($data, $categories) {
@@ -67,10 +68,10 @@ class OffWhiteController extends Controller
 
 	public function getCategories()
 	{
-		return Cache::remember('offwhite-categories', 60 * 60, function() {
+		return Cache::remember('offwhite-categories', 60 * 60, function () {
 			$categories = [];
-			foreach(OffWhiteProduct::pluck('category')->unique() as $category){
-				$token = preg_replace('/[^a-z]+/','-', strtolower($category));
+			foreach (OffWhiteProduct::pluck('category')->unique() as $category) {
+				$token = preg_replace('/[^a-z]+/', '-', strtolower($category));
 				$categories[$token] = $category;
 			}
 			return $categories;
@@ -80,5 +81,35 @@ class OffWhiteController extends Controller
 	public function getSortOptions()
 	{
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
+	}
+
+	public static function export(OffWhiteProduct $offwhite_product, Product $product=null)
+	{
+		if ($product) {
+			foreach ([
+					'brand_id' => $offwhite_product->mapped_brand_id,
+					'designer_style_id' => $offwhite_product->id,
+					'name_cn' => $offwhite_product->name,
+					'name' => $offwhite_product->name,
+				] as $key => $value) {
+				if (empty($product[$key])) {
+					$product[$key] = $value;
+				}
+			}
+			$product->save();
+		} else {
+			$product = Product::firstOrCreate([
+					'brand_id' => $offwhite_product->mapped_brand_id,
+					'designer_style_id' => $offwhite_product->id,
+				], [
+					'name_cn' => $offwhite_product->name,
+					'name' => $offwhite_product->name,
+					'id' => \App\Product::generate_id(),
+				]);
+		}
+		// if ($offwhite_product->images->isNotEmpty()) {
+		// 	ImageController::import($offwhite_product->images, $product, 1);
+		// }
+		return redirect(route('products.edit', ['product' => $product,]));
 	}
 }
