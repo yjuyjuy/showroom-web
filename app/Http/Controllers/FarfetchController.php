@@ -109,7 +109,7 @@ class FarfetchController extends Controller
 	{
 		if ($product) {
 			foreach([
-				'brand_id' => $farfetch_product->mapped_brand_id,
+				'brand_id' => $farfetch_product->designer->brand_id,
 				'designer_style_id' => $farfetch_product->designer_style_id,
 				'name_cn' => $farfetch_product->short_description,
 				'name' => $farfetch_product->short_description,
@@ -121,7 +121,7 @@ class FarfetchController extends Controller
 			$product->save();
 		} else  {
 			$product = Product::firstOrCreate([
-				'brand_id' => $farfetch_product->mapped_brand_id,
+				'brand_id' => $farfetch_product->designer->brand_id,
 				'designer_style_id' => $farfetch_product->designer_style_id,
 			], [
 				'name_cn' => $farfetch_product->short_description,

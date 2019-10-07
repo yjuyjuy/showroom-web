@@ -39,7 +39,7 @@ class AdminController extends Controller
 			$farfetch_min_price = INF;
 			$link = NULL;
 			foreach(\App\FarfetchProduct::where('designer_style_id', $product->designer_style_id)->get() as $farfetch_product) {
-				if ($farfetch_product->mapped_brand_id !== $product->brand_id) {
+				if ($farfetch_product->designer->brand_id !== $product->brand_id) {
 					continue;
 				}
 				if ($farfetch_product->size_price) {
@@ -73,7 +73,7 @@ class AdminController extends Controller
 			$end_min_price = INF;
 			$link = NULL;
 			foreach(\App\EndProduct::where('sku', $product->designer_style_id)->get() as $end_product) {
-				if ($end_product->mapped_brand_id !== $product->brand_id) {
+				if ($end_product->brand->id !== $product->brand_id) {
 					continue;
 				}
 				if ($end_product->sizes && $end_product->price) {
