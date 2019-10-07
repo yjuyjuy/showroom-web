@@ -30,8 +30,8 @@ class EndProduct extends Model
 		return $this->hasMany(EndImage::class, 'product_id');
 	}
 
-	public function getMappedBrandIdAttribute()
+	public function brand()
 	{
-		return [ 'Off-White' => 885468, ][$this->brand];
+		return $this->belongsTo(EndBrand::class, 'brand_name', 'name');
 	}
 }
