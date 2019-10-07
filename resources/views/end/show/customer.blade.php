@@ -13,7 +13,7 @@
 	</a>
 	@if(auth()->user()->isSuperAdmin())
 		<a href="{{ route('end.export', ['end_product' => $product,]) }}" class="ml-2 mdc-button mdc-button--unelevated">
-			@if(\App\Product::where('designer_style_id', $product->sku)->where('brand_id', $product->mapped_brand_id)->count() <= 0)
+			@if(\App\Product::where('designer_style_id', $product->sku)->where('brand_id', $product->brand->id)->count() <= 0)
 			<span class="mdc-button__label">上架</span>
 			@else
 			<span class="mdc-button__label">导入</span>
