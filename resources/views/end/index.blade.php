@@ -37,14 +37,14 @@
 		</div>
 	@else
 	<ul class="mdc-image-list main-image-list">
-		@foreach($products as $product)
+		@foreach($products->load('image') as $product)
 		<li class="mdc-image-list__item">
 			<a href="{{ route('end.show',['product' => $product ]) }}">
 				<div class="">
-					<img class="mdc-image-list__image lazy" data-src="{{ $product->image ?? '' }}">
+					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url }}">
 				</div>
 				<div class="mdc-image-list__supporting">
-					<span class="mdc-image-list__label brand">{{ $product->brand }}</span>
+					<span class="mdc-image-list__label brand">{{ $product->brand->name }}</span>
 					<span class="mdc-image-list__label product-name">{{ $product->name }}</span>
 					@if($product->price)
 					<span class="mdc-image-list__label">
