@@ -86,7 +86,7 @@ class EndController extends Controller
 	{
 		return Cache::remember('end-brands', 60 * 60, function() {
 			$brands = [];
-			foreach(EndProduct::pluck('brand')->unique() as $brand){
+			foreach(EndProduct::pluck('brand_name')->unique() as $brand){
 				$token = preg_replace('/[^a-z]+/','-',strtolower($brand));
 				$brands[$token] = $brand;
 			}
@@ -121,7 +121,7 @@ class EndController extends Controller
 	{
 		if ($product) {
 			foreach([
-				'brand_id' => $end_product->mapped_brand_id,
+				'brand_id' => $end_product->brand->id,
 				'designer_style_id' => $end_product->sku,
 				'name_cn' => $end_product->name,
 				'name' => $end_product->name,
@@ -133,7 +133,7 @@ class EndController extends Controller
 			$product->save();
 		} else  {
 			$product = Product::firstOrCreate([
-				'brand_id' => $end_product->mapped_brand_id,
+				'brand_id' => $end_product->brand->id,
 				'designer_style_id' => $end_product->sku,
 			], [
 				'name_cn' => $end_product->name,
