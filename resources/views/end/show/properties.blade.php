@@ -2,7 +2,7 @@
 	<div class="my-1">
 		<a href="{{ route('end.brands.index',['brand' => $product->brand]) }}"
 			 class="mdc-typography--headline6" style="text-transform: uppercase;">
-			{{ $product->brand }}
+			{{ $product->brand->name }}
 		</a>
 		<a href="{{ route('end.departments.index',['department' => $product->department]) }}"
 			 class="mdc-typography--headline6">
