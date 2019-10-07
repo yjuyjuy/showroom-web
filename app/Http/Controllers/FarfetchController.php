@@ -23,8 +23,8 @@ class FarfetchController extends Controller
 		]);
 		$filters = [];
 		$query = FarfetchProduct::with('designer', 'category');
-		$designer = FarfetchDesigner::where('url_token', $token)->first();
-		$category = FarfetchCategory::where('url_token', $token)->first();
+		$designer = FarfetchDesigner::whereNotNull('url_token')->where('url_token', $token)->first();
+		$category = FarfetchCategory::whereNotNull('url_token')->where('url_token', $token)->first();
 		if ($designer) {
 			$query->where('designer_id', $designer->id);
 		} else {
