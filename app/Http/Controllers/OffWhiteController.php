@@ -87,7 +87,7 @@ class OffWhiteController extends Controller
 	{
 		if ($product) {
 			foreach ([
-					'brand_id' => $offwhite_product->mapped_brand_id,
+					'brand_id' => $offwhite_product->brand_id,
 					'designer_style_id' => $offwhite_product->id,
 					'name_cn' => $offwhite_product->name,
 					'name' => $offwhite_product->name,
@@ -99,7 +99,7 @@ class OffWhiteController extends Controller
 			$product->save();
 		} else {
 			$product = Product::firstOrCreate([
-					'brand_id' => $offwhite_product->mapped_brand_id,
+					'brand_id' => $offwhite_product->brand_id,
 					'designer_style_id' => $offwhite_product->id,
 				], [
 					'name_cn' => $offwhite_product->name,
