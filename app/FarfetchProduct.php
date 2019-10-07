@@ -30,6 +30,12 @@ class FarfetchProduct extends Model
 	{
 		return $this->designer->description.' '.$this->short_description;
 	}
+
+	public function image()
+	{
+		return $this->hasOne(FarfetchImage::class, 'product_id');
+	}
+
 	public function images()
 	{
 		return $this->hasMany(FarfetchImage::class, 'product_id');

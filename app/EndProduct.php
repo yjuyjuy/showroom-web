@@ -25,6 +25,11 @@ class EndProduct extends Model
 	 */
 	protected $casts = [];
 
+	public function image()
+	{
+		return $this->hasOne(EndImage::class, 'product_id');
+	}
+
 	public function images()
 	{
 		return $this->hasMany(EndImage::class, 'product_id');
