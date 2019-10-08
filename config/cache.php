@@ -98,6 +98,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug('cache'),
+    'prefix' => env('CACHE_PREFIX', Str::slug('cache')),
 
 ];
