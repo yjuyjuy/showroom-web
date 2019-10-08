@@ -156,7 +156,7 @@ class ImageController extends Controller
 					mkdir(dirname('storage/'.$path), 0777, true);
 				}
 				if ($image->path) {
-					Storage::copy('storage/'.$image->path, 'storage/'.$path);
+					Storage::copy('public/'.$image->path, 'public/'.$path);
 				} else {
 					$f = fopen($image->url, 'r');
 					file_put_contents('storage/'.$path, $f);
