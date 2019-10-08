@@ -25,14 +25,14 @@ class EndController extends Controller
 		$query = EndProduct::query();
 		if (in_array($token, $brands)) {
 			$brand = $token;
-			$query->where('brand', $brand);
+			$query->where('brand_name', $brand);
 		} else {
 			$brand = NULL;
 			$filters['brand'] = $brands;
 			if (!empty($data['brand'])) {
 				$query->where(function ($query) use ($data, $brands) {
 					foreach ($data['brand'] as $token) {
-						$query->orWhere('brand', $brands[$token]);
+						$query->orWhere('brand_name', $brands[$token]);
 					}
 				});
 			}
