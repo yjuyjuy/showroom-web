@@ -11,6 +11,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+		.sass('resources/sass/fonts.scss', 'public/css')
     .sass('resources/sass/app.scss', 'public/css',{
       includePaths: ['node_modules'],
     });
