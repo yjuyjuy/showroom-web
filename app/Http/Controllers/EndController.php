@@ -27,7 +27,7 @@ class EndController extends Controller
 			$brand = $token;
 			$query->where('brand_name', $brand);
 		} else {
-			$brand = NULL;
+			$brand = null;
 			$filters['brand'] = $brands;
 			if (!empty($data['brand'])) {
 				$query->where(function ($query) use ($data, $brands) {
@@ -41,7 +41,7 @@ class EndController extends Controller
 			$department = $token;
 			$query->where('department', $department);
 		} else {
-			$department = NULL;
+			$department = null;
 			$filters['department'] = $departments;
 			if (!empty($data['department'])) {
 				$query->where(function ($query) use ($data, $departments) {
@@ -84,10 +84,10 @@ class EndController extends Controller
 
 	public function getBrands()
 	{
-		return Cache::remember('end-brands', 60 * 60, function() {
+		return Cache::remember('end-brands', 60 * 60, function () {
 			$brands = [];
-			foreach(EndProduct::pluck('brand_name')->unique() as $brand){
-				$token = preg_replace('/[^a-z]+/','-',strtolower($brand));
+			foreach (EndProduct::pluck('brand_name')->unique() as $brand) {
+				$token = preg_replace('/[^a-z]+/', '-', strtolower($brand));
 				$brands[$token] = $brand;
 			}
 			return $brands;
@@ -102,10 +102,10 @@ class EndController extends Controller
 
 	public function getDepartments()
 	{
-		return Cache::remember('end-departments', 60 * 60, function() {
+		return Cache::remember('end-departments', 60 * 60, function () {
 			$departments = [];
-			foreach(EndProduct::pluck('department')->unique() as $department){
-				$token = preg_replace('/[^a-z]+/','-', strtolower($department));
+			foreach (EndProduct::pluck('department')->unique() as $department) {
+				$token = preg_replace('/[^a-z]+/', '-', strtolower($department));
 				$departments[$token] = $department;
 			}
 			return $departments;
@@ -117,10 +117,10 @@ class EndController extends Controller
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
 	}
 
-	public static function export(EndProduct $end_product, Product $product=NULL)
+	public static function export(EndProduct $end_product, Product $product=null)
 	{
 		if ($product) {
-			foreach([
+			foreach ([
 				'brand_id' => $end_product->brand->id,
 				'designer_style_id' => $end_product->sku,
 				'name_cn' => $end_product->name,
@@ -131,7 +131,7 @@ class EndController extends Controller
 				}
 			}
 			$product->save();
-		} else  {
+		} else {
 			$product = Product::firstOrCreate([
 				'brand_id' => $end_product->brand->id,
 				'designer_style_id' => $end_product->sku,
