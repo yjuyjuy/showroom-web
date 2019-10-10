@@ -39,4 +39,28 @@ class EndProduct extends Model
 	{
 		return $this->belongsTo(EndBrand::class, 'brand_name', 'name');
 	}
+
+	public function getSizePriceAttribute()
+	{
+		$size_map = [
+			'XX-Small' => 'XXS',
+			'X-Small' => 'XS',
+			'Small' => 'S',
+			'Medium' => 'M',
+			'Large' => 'L',
+			'X-Large' => 'XL',
+			'XX-Large' => 'XXL',
+			'One Size' => 'OS',
+		];
+		$size_price = [];
+		foreach(explode(',',$this->sizes) as $size) {
+			if(array_key_exists($size, $size_map)) {
+				$size = $size_map[$size];
+			}
+			if (!array_key_exists($size, $size_price) || $size_price[$size] > $this->price) {
+				$size_price[$size] = $this->price;
+			}
+		}
+		return $size_price;
+	}
 }
