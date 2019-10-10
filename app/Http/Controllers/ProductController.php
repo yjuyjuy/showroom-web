@@ -192,6 +192,10 @@ class ProductController extends Controller
 
 	public function destroy(Product $product)
 	{
+		$product->offers()->delete();
+		$product->retails()->delete();
+		$product->prices()->delete();
+		$product->taobao_prices()->update(['product_id' => null,]);
 		$product->delete();
 		return redirect(route('products.index'));
 	}
