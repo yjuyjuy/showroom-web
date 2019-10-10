@@ -27,7 +27,9 @@ class Product extends Model
 	 *
 	 * @var array
 	 */
-	protected $attributes = [];
+	protected $attributes = [
+		'brand_id' => 999999,
+	];
 
 	// Relationships
 	public function category()
