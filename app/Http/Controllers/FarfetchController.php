@@ -107,6 +107,8 @@ class FarfetchController extends Controller
 
 	public static function export(FarfetchProduct $farfetch_product, Product $product=null)
 	{
+		$retailer_id = 1467053076;
+		$website_id = 2;
 		if ($product) {
 			foreach([
 				'brand_id' => $farfetch_product->designer->brand_id,
@@ -129,8 +131,20 @@ class FarfetchController extends Controller
 				'id' => \App\Product::generate_id(),
 			]);
 		}
-		if ($farfetch_product->images->isNotEmpty()) {
-			ImageController::import($farfetch_product->images, $product, 2);
+		$retail = \App\RetailPrice::firstOrNew([
+			'retailer_id' => $retailer_id,
+			'product_id' => $product->id,
+		]);
+		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNotNull('size_price')->get() as $p) {
+			$retail->merge($p->size_price);
+			if ($p->images->isNotEmpty()) {
+				ImageController::import($p->images, $product, $website_id);
+			}
+		}
+		if (!empty($retail->prices)) {
+			$retail->save();
+		} else {
+			$retail->delete();
 		}
 		return redirect(route('products.edit', ['product' => $product,]));
 	}

@@ -119,6 +119,8 @@ class EndController extends Controller
 
 	public static function export(EndProduct $end_product, Product $product=null)
 	{
+		$retailer_id = 3548857028;
+		$website_id = 6;
 		if ($product) {
 			foreach ([
 				'brand_id' => $end_product->brand->id,
@@ -141,8 +143,18 @@ class EndController extends Controller
 				'id' => \App\Product::generate_id(),
 			]);
 		}
+		$retail = \App\RetailPrice::firstOrNew([
+			'retailer_id' => $retailer_id,
+			'product_id' => $product->id,
+		]);
+		$retail->merge($end_product->size_price);
+		if (!empty($retail->prices)) {
+			$retail->save();
+		} else {
+			$retail->delete();
+		}
 		if ($end_product->images->isNotEmpty()) {
-			ImageController::import($end_product->images, $product, 6);
+			ImageController::import($end_product->images, $product, $website_id);
 		}
 		return redirect(route('products.edit', ['product' => $product,]));
 	}
