@@ -28,4 +28,14 @@ class RetailPrice extends Model
 	{
 		 return $this->morphMany(Log::class, 'price');
 	}
+	public function merge($size_price)
+	{
+		$prices = $this->prices ?? [];
+		foreach($size_price as $size => $price) {
+			if (!array_key_exists($size, $prices) || $prices[$size] > $price) {
+				$prices[$size] = $price;
+			}
+		}
+		$this->prices = $prices;
+	}
 }
