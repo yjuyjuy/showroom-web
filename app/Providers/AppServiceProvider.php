@@ -25,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
 	{
 		\App\User::observe(\App\Observers\UserObserver::class);
 		\App\VendorPrice::observe(\App\Observers\PriceObserver::class);
+		\Illuminate\Support\Facades\URL::forceScheme('https');
 	}
 }
