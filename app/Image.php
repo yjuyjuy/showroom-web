@@ -18,18 +18,18 @@ class Image extends Model
 	}
 	public function getSmallAttribute()
 	{
-		return asset('storage/'.$this->path.'_400.jpeg');
+		return secure_asset('storage/'.$this->path.'_400.jpeg');
 	}
 	public function getMediumAttribute()
 	{
-		return asset('storage/'.$this->path.'_800.jpeg');
+		return secure_asset('storage/'.$this->path.'_800.jpeg');
 	}
 	public function getLargeAttribute()
 	{
-		return asset('storage/'.$this->path);
+		return secure_asset('storage/'.$this->path);
 	}
 	public function getUrlAttribute()
 	{
-		return asset('storage/'.$this->path.'_800.jpeg');
+		return secure_asset('storage/'.$this->path.'_800.jpeg');
 	}
 }
