@@ -8,6 +8,7 @@ use App\EndImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class EndController extends Controller
 {
@@ -23,7 +24,7 @@ class EndController extends Controller
 		]);
 		$filters = [];
 		$query = EndProduct::query();
-		if (in_array($token, $brands)) {
+		if (array_key_exists($token, $brands)) {
 			$brand = $token;
 			$query->where('brand_name', $brand);
 		} else {
@@ -37,7 +38,7 @@ class EndController extends Controller
 				});
 			}
 		}
-		if (in_array($token, $departments)) {
+		if (array_key_exists($token, $departments)) {
 			$department = $token;
 			$query->where('department', $department);
 		} else {
@@ -87,7 +88,7 @@ class EndController extends Controller
 		return Cache::remember('end-brands', 60 * 60, function () {
 			$brands = [];
 			foreach (EndProduct::pluck('brand_name')->unique() as $brand) {
-				$token = preg_replace('/[^a-z]+/', '-', strtolower($brand));
+				$token = Str::slug($brand);
 				$brands[$token] = $brand;
 			}
 			return $brands;
@@ -105,7 +106,7 @@ class EndController extends Controller
 		return Cache::remember('end-departments', 60 * 60, function () {
 			$departments = [];
 			foreach (EndProduct::pluck('department')->unique() as $department) {
-				$token = preg_replace('/[^a-z]+/', '-', strtolower($department));
+				$token = Str::slug($department);
 				$departments[$token] = $department;
 			}
 			return $departments;

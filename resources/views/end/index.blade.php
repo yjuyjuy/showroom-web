@@ -13,8 +13,8 @@
 			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('department') }}</span></button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($departments as $key => $value)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.departments.index', ['department' => $value,]) }}">{{ __($value) }}</a>
+					@foreach($departments as $token => $name)
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.departments.index', ['department' => $token,]) }}">{{ __($name) }}</a>
 				    </a>
 					@endforeach
 			  </ul>
@@ -24,8 +24,8 @@
 			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('brand') }}</span></button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($brands as $key => $value)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.brands.index', ['brand' => $value,]) }}">{{ __($value) }}</a>
+					@foreach($brands as $token => $name)
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.brands.index', ['brand' => $token,]) }}">{{ __($name) }}</a>
 					@endforeach
 			  </ul>
 			</div>
