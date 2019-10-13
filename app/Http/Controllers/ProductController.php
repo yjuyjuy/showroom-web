@@ -43,6 +43,8 @@ class ProductController extends Controller
 			$query->orderBy('season_id')->orderBy('id');
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
+		} elseif ($sort == 'updated_at') {
+			$query->orderBy('created_at', 'desc')->orderBy('id');
 		}
 
 		$products = $query->get();
@@ -226,7 +228,7 @@ class ProductController extends Controller
 
 	public function sortOptions()
 	{
-		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest'];
+		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest','created_at'];
 	}
 
 	public function filterOptions()
