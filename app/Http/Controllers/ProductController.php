@@ -43,7 +43,7 @@ class ProductController extends Controller
 			$query->orderBy('season_id')->orderBy('id');
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
-		} elseif ($sort == 'updated_at') {
+		} elseif ($sort == 'created_at') {
 			$query->orderBy('created_at', 'desc')->orderBy('id');
 		}
 
