@@ -21,7 +21,7 @@ import {MDCSelectHelperText} from '@material/select/helper-text';
 import {MDCSnackbar} from '@material/snackbar';
 
 // mdc components
-const drawer = MDCDrawer.attachTo(document.getElementById('nav-drawer'));
+const drawer = MDCDrawer.attachTo(document.getElementById(	'nav-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
 const topAppBar = MDCTopAppBar.attachTo(topAppBarElement);
 topAppBar.setScrollTarget(window);
@@ -125,7 +125,12 @@ window.open_wechat = (name) => {
 	window.location = 'weixin://';
 };
 window.axios_submit = function(button) {
-	var formData = new FormData();
-	[].map.call(button.form.elements, function(el) {formData.append(el.name, el.value);});
-	axios.patch(button.form.action, formData).then(response=>window.location.reload())
+	var data = {};
+	for (let el of button.form.elements) {
+		if (el.name) {
+			data[el.name] = el.value;
+		}
+	}
+	console.log(data);
+	axios.patch(button.form.action, data).then(response=>window.location.reload())
 };
