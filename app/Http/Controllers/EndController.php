@@ -88,7 +88,7 @@ class EndController extends Controller
 	{
 		return Cache::remember('end-brands', 60 * 60, function () {
 			$brands = [];
-			foreach (EndBrand::has('products')->get() as $brand) {
+			foreach (EndBrand::has('products')->orderBy('name')->get() as $brand) {
 				$brands[$brand->url_token] = $brand->name;
 			}
 			return $brands;
