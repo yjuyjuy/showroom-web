@@ -18,7 +18,7 @@
 				<span class="mdc-button__label">上架</span>
 			</a>
 		@else
-		<div class="mdc-menu-surface--anchor">
+		<div class="mdc-menu-surface--anchor d-inline">
 			<button type="button" class="mdc-button mdc-button--unelevated ml-2 open-menu-button">
 				<span class="mdc-button__label">选择</span>
 			</button>
