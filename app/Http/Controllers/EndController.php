@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\EndProduct;
 use App\EndImage;
+use App\EndBrand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
@@ -25,7 +26,7 @@ class EndController extends Controller
 		$filters = [];
 		$query = EndProduct::query();
 		if (array_key_exists($token, $brands)) {
-			$brand = $token;
+			$brand = $brands[$token];
 			$query->where('brand_name', $brand);
 		} else {
 			$brand = null;
@@ -39,7 +40,7 @@ class EndController extends Controller
 			}
 		}
 		if (array_key_exists($token, $departments)) {
-			$department = $token;
+			$department = $departments[$token];
 			$query->where('department', $department);
 		} else {
 			$department = null;
@@ -87,9 +88,8 @@ class EndController extends Controller
 	{
 		return Cache::remember('end-brands', 60 * 60, function () {
 			$brands = [];
-			foreach (EndProduct::pluck('brand_name')->unique() as $brand) {
-				$token = Str::slug($brand);
-				$brands[$token] = $brand;
+			foreach (EndBrand::has('products')->get() as $brand) {
+				$brands[$brand->url_token] = $brand->name;
 			}
 			return $brands;
 		});
