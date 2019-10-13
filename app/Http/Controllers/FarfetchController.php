@@ -148,6 +148,6 @@ class FarfetchController extends Controller
 		} else {
 			$retail->delete();
 		}
-		return redirect(route('products.edit', ['product' => $product,]));
+		return redirect(route('products.show', ['product' => $product,]));
 	}
 }

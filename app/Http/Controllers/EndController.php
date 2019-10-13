@@ -157,6 +157,6 @@ class EndController extends Controller
 		if ($end_product->images->isNotEmpty()) {
 			ImageController::import($end_product->images, $product, $website_id);
 		}
-		return redirect(route('products.edit', ['product' => $product,]));
+		return redirect(route('products.show', ['product' => $product,]));
 	}
 }
