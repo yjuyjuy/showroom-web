@@ -26,8 +26,8 @@ class EndController extends Controller
 		$filters = [];
 		$query = EndProduct::query();
 		if (array_key_exists($token, $brands)) {
-			$brand = $brands[$token];
-			$query->where('brand_name', $brand);
+			$brand = $token;
+			$query->where('brand_name', $brands[$token]);
 		} else {
 			$brand = null;
 			$filters['brand'] = $brands;
@@ -40,8 +40,8 @@ class EndController extends Controller
 			}
 		}
 		if (array_key_exists($token, $departments)) {
-			$department = $departments[$token];
-			$query->where('department', $department);
+			$department = $token;
+			$query->where('department', $departments[$token]);
 		} else {
 			$department = null;
 			$filters['department'] = $departments;

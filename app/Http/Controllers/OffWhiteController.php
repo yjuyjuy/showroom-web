@@ -23,8 +23,8 @@ class OffWhiteController extends Controller
 		$filters = [];
 		$query = OffWhiteProduct::query();
 		if (array_key_exists($token, $categories)) {
-			$category = $categories[$token];
-			$query->where('category', $category);
+			$category = $token;
+			$query->where('category', $categories[$token]);
 		} else {
 			$category = null;
 			$filters['category'] = $categories;
