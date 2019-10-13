@@ -2,7 +2,7 @@
 	<div class="my-1">
 		<span class="mdc-typography--headline6">OFF-WHITE C/O VIRGIL ABLOH</span>
 		 -
-		<a href="{{ route('offwhite.categories.index',['category' => $product->category]) }}"
+		<a href="{{ route('offwhite.categories.index',['category' => Str::slug($product->category)]) }}"
 			 class="mdc-typography--headline6">
 			{{ strtoupper($product->category) }}
 		</a>

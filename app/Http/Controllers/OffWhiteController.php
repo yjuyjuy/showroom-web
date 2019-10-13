@@ -8,6 +8,7 @@ use App\OffWhiteImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class OffWhiteController extends Controller
 {
@@ -21,8 +22,8 @@ class OffWhiteController extends Controller
 		]);
 		$filters = [];
 		$query = OffWhiteProduct::query();
-		if (in_array($token, $categories)) {
-			$category = $token;
+		if (array_key_exists($token, $categories)) {
+			$category = $categories[$token];
 			$query->where('category', $category);
 		} else {
 			$category = null;
@@ -71,7 +72,7 @@ class OffWhiteController extends Controller
 		return Cache::remember('offwhite-categories', 60 * 60, function () {
 			$categories = [];
 			foreach (OffWhiteProduct::pluck('category')->unique() as $category) {
-				$token = preg_replace('/[^a-z]+/', '-', strtolower($category));
+				$token = Str::slug($category);
 				$categories[$token] = $category;
 			}
 			return $categories;
