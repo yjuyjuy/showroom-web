@@ -17,7 +17,7 @@
 				<button type="button" class="mdc-button mdc-button--outlined" onclick="window.history.back()">
 				  <span class="mdc-button__label">{{ __('Back') }}</span>
 				</button>
-				<button type="submit" class="mdc-button mdc-button--outlined ml-2" form="update-form">
+				<button type="button" class="mdc-button mdc-button--outlined ml-2" form="update-form" onclick="axios_submit(this)">
 					<span class="mdc-button__label">{{ __('update') }}</span>
 				</button>
 				<button type="submit" class="mdc-button mdc-button--outlined mdc-button--error ml-2" form="delete-product-form">

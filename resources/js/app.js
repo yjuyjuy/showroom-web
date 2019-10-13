@@ -124,3 +124,8 @@ window.open_wechat = (name) => {
 	window.alert('打开微信联系卖家' + name);
 	window.location = 'weixin://';
 };
+window.axios_submit = function(button) {
+	var formData = new FormData();
+	[].map.call(button.form.elements, function(el) {formData.append(el.name, el.value);});
+	axios.patch(button.form.action, formData).then(response=>window.location.reload())
+};
