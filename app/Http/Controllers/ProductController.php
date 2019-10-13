@@ -187,7 +187,7 @@ class ProductController extends Controller
 		if($url = $request->input('url')) {
 			$this->init($product, $url);
 		}
-		return redirect(route('products.edit', ['product' => $product]));
+		return redirect(route('products.show', ['product' => $product]));
 	}
 
 	public function destroy(Product $product)
