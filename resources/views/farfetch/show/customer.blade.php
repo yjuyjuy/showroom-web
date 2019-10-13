@@ -29,7 +29,7 @@
 					</a>
 					@foreach($guesses as $guess)
 					<a href="{{ route('farfetch.export', ['farfetch_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item" role="menuitem">
-						<span class="mdc-list-item__text">导入-{{ __($guess->color->name) }}</span>
+						<span class="mdc-list-item__text">导入-{{ __($guess->color->name ?? '') }}</span>
 					</a>
 					@endforeach
 				</ul>

@@ -135,10 +135,9 @@ class EndController extends Controller
 			}
 			$product->save();
 		} else {
-			$product = Product::firstOrCreate([
+			$product = Product::create([
 				'brand_id' => $end_product->brand->id,
 				'designer_style_id' => $end_product->sku,
-			], [
 				'name_cn' => $end_product->name,
 				'name' => $end_product->name,
 				'id' => \App\Product::generate_id(),
