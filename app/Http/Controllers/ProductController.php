@@ -102,27 +102,29 @@ class ProductController extends Controller
 		return view('products.create', compact('product'));
 	}
 
-	public function init(Product $product, $url)
+	public function import(Product $product, $url)
 	{
 		if (strpos($url, 'farfetch')) {
 			# farfetch
-			if (preg_match('#notdopebxtch.com/farfetch/([0-9]+)#', $url, $results) || preg_match('#www\.farfetch.*?item-([0-9]+)\.aspx#', $url, $results))
+			if (preg_match('#notdopebxtch.com/farfetch/([0-9]+)#', $url, $results) || preg_match('#www\.farfetch.*?item-([0-9]+)\.aspx#', $url, $results) || preg_match('#^farfetch-([0-9]+)$#', $url, $results))
 			{
 				if ($farfetch_product = \App\FarfetchProduct::find($results[1])) {
 					FarfetchController::export($farfetch_product, $product);
+				} else {
+					FarfetchProduct::create(['id' => $results[1]])
 				}
 			}
 		} elseif (strpos($url, 'end')) {
 			# end
 			if (preg_match('#notdopebxtch.com/end/[0-9]+#', $url, $results)) {
 				$end_product = \App\EndProduct::find($results[1]);
-			} else if (preg_match('#www\.endclothing\.com/[a-zA-Z]+/([a-zA-Z0-9-]+)\.html#', $url, $results)) {
+			} else if (preg_match('#www\.endclothing\.com/[a-zA-Z]+/([^/]+)\.html#', $url, $results)) {
 				$end_product = \App\EndProduct::where('url', "https://www.endclothing.com/cn/{$results[1]}.html")->first();
 			}
 			if ($end_product ?? false) {
 				EndController::export($end_product, $product);
 			}
-		} elseif (preg_match('#www\.notdopebxtch\.com/off-white/([A-Z0-9]+)#', $url, $results) || preg_match('#www.off---white.com/.*/products/([a-zA-Z]+)#', $url, $results)) {
+		} elseif (preg_match('#www\.notdopebxtch\.com/off-white/([^/]+)#', $url, $results) || preg_match('#www.off---white.com/.*/products/([^/]+)#', $url, $results)) {
 			# off-white
 			if ($offwhite_product = \App\OffWhiteProduct::find(strtoupper($results[1]))) {
 				OffWhiteController::export($offwhite_product);
@@ -136,7 +138,7 @@ class ProductController extends Controller
 		$product->id = Product::generate_id();
 		$product->save();
 		if($url = $request->input('url')) {
-			$this->init($product, $url);
+			$this->import($product, $url);
 		}
 		return redirect(route('products.edit', ['product' => $product]));
 	}
@@ -187,7 +189,7 @@ class ProductController extends Controller
 	{
 		$product->update($this->validateProduct());
 		if($url = $request->input('url')) {
-			$this->init($product, $url);
+			$this->import($product, $url);
 		}
 		return ['success' => true,];
 	}
