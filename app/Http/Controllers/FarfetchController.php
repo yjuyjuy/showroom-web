@@ -22,7 +22,7 @@ class FarfetchController extends Controller
 			'sort' => ['sometimes', Rule::in($this->getSortOptions())],
 		]);
 		$filters = [];
-		$query = FarfetchProduct::with('designer', 'category');
+		$query = FarfetchProduct::query();
 		$designer = $designers->where('url_token', $token)->first();
 		$category = $categories->where('url_token', $token)->first();
 		if ($designer) {
@@ -61,7 +61,7 @@ class FarfetchController extends Controller
 
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
-		$products = $query->skip(($page - 1) * 48)->take(48)->get();
+		$products = $query->skip(($page - 1) * 48)->take(48)->has('images')->with('designer', 'category')->get();
 
 		$sortOptions = $this->getSortOptions();
 		$request->flash();
