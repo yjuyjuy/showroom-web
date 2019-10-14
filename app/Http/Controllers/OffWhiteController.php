@@ -111,6 +111,6 @@ class OffWhiteController extends Controller
 		// if ($offwhite_product->images->isNotEmpty()) {
 		// 	ImageController::import($offwhite_product->images, $product, 1);
 		// }
-		return redirect(route('products.edit', ['product' => $product,]));
+		return redirect(route('products.show', ['product' => $product,]));
 	}
 }
