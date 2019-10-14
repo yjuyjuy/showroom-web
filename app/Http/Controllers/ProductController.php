@@ -111,7 +111,7 @@ class ProductController extends Controller
 				if ($farfetch_product = \App\FarfetchProduct::find($results[1])) {
 					FarfetchController::export($farfetch_product, $product);
 				} else {
-					FarfetchProduct::create(['id' => $results[1]])
+					FarfetchProduct::create(['id' => $results[1]]);
 				}
 			}
 		} elseif (strpos($url, 'end')) {
