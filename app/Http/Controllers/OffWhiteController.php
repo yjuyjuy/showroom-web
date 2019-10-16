@@ -84,7 +84,7 @@ class OffWhiteController extends Controller
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
 	}
 
-	public static function export(OffWhiteProduct $offwhite_product, Product $product=null)
+	public function export(OffWhiteProduct $offwhite_product, Product $product=null)
 	{
 		if ($product) {
 			foreach ([
@@ -109,7 +109,7 @@ class OffWhiteController extends Controller
 				]);
 		}
 		// if ($offwhite_product->images->isNotEmpty()) {
-		// 	ImageController::import($offwhite_product->images, $product, 1);
+		// 	(new ImageController())->import($offwhite_product->images, $product, 1);
 		// }
 		return redirect(route('products.show', ['product' => $product,]));
 	}

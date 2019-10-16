@@ -105,7 +105,7 @@ class FarfetchController extends Controller
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
 	}
 
-	public static function export(FarfetchProduct $farfetch_product, Product $product=null)
+	public function export(FarfetchProduct $farfetch_product, Product $product=null)
 	{
 		$retailer_id = 1467053076;
 		$website_id = 2;
@@ -141,7 +141,7 @@ class FarfetchController extends Controller
 				$retail->merge($p->size_price);
 			}
 			if ($p->images->isNotEmpty()) {
-				ImageController::import($p->images, $product, $website_id);
+				(new ImageController())->import($p->images, $product, $website_id);
 			}
 			$p->product_id = $product->id;
 			$p->save();

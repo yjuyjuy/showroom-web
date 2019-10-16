@@ -118,7 +118,7 @@ class EndController extends Controller
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
 	}
 
-	public static function export(EndProduct $end_product, Product $product=null)
+	public function export(EndProduct $end_product, Product $product=null)
 	{
 		$retailer_id = 3548857028;
 		$website_id = 6;
@@ -154,7 +154,7 @@ class EndController extends Controller
 			$retail->delete();
 		}
 		if ($end_product->images->isNotEmpty()) {
-			ImageController::import($end_product->images, $product, $website_id);
+			(new ImageController())->import($end_product->images, $product, $website_id);
 		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}

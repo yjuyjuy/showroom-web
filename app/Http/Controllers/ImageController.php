@@ -144,7 +144,7 @@ class ImageController extends Controller
 		];
 	}
 
-	public static function import($images, $product, $website_id)
+	public function import($images, $product, $website_id)
 	{
 		$order = $product->images()->where('website_id', $website_id)->max('order');
 		foreach ($images as $image) {
