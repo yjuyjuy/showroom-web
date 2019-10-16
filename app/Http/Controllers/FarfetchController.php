@@ -115,6 +115,7 @@ class FarfetchController extends Controller
 				'designer_style_id' => $farfetch_product->designer_style_id,
 				'name_cn' => $farfetch_product->short_description,
 				'name' => $farfetch_product->short_description,
+				'category_id' => $farfetch_product->category->mapped_id,
 			] as $key => $value) {
 				if (empty($product[$key])) {
 					$product[$key] = $value;
@@ -127,6 +128,7 @@ class FarfetchController extends Controller
 				'designer_style_id' => $farfetch_product->designer_style_id,
 				'name_cn' => $farfetch_product->short_description,
 				'name' => $farfetch_product->short_description,
+				'category_id' => $farfetch_product->category->mapped_id,
 				'id' => \App\Product::generate_id(),
 			]);
 		}
@@ -141,6 +143,8 @@ class FarfetchController extends Controller
 			if ($p->images->isNotEmpty()) {
 				ImageController::import($p->images, $product, $website_id);
 			}
+			$p->product_id = $product->id;
+			$p->save();
 		}
 		if (!empty($retail->prices)) {
 			$retail->save();
