@@ -20,7 +20,7 @@
 	</form>
 
 	@if($not_found)
-		<div class="my-5 text-center">{{ __('retailer not found') }}"{{ old('name') }}"</div>
+		<div class="my-5 text-center">{{ __('retailer not found') }}"{{ old('retailer_name') }}"</div>
 	@endif
 
 	<div class="my-3 d-flex justify-content-center flex-wrap">
