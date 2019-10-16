@@ -30,6 +30,9 @@ class RetailPrice extends Model
 	}
 	public function merge($size_price)
 	{
+		if (empty($size_price)) {
+			return;
+		}
 		$prices = $this->prices ?? [];
 		foreach($size_price as $size => $price) {
 			if (!array_key_exists($size, $prices) || $prices[$size] > $price) {
