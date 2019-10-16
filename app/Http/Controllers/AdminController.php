@@ -53,7 +53,7 @@ class AdminController extends Controller
 					}
 				}
 				if ($farfetch_product->images->isNotEmpty()) {
-					ImageController::import($farfetch_product->images, $product, $website_id);
+					(new ImageController())->import($farfetch_product->images, $product, $website_id);
 				}
 			}
 			if (!empty($farfetch_prices)) {
@@ -87,7 +87,7 @@ class AdminController extends Controller
 					}
 				}
 				if ($end_product->images->isNotEmpty()) {
-					ImageController::import($end_product->images, $product, $website_id);
+					(new ImageController())->import($end_product->images, $product, $website_id);
 				}
 			}
 			if (!empty($end_prices)) {
