@@ -193,7 +193,7 @@ class Product extends Model
 	public static function generate_id()
 	{
 		$id = random_int(1000000000, 9999999999);
-		while (Product::find($id)) {
+		while (self::find($id)) {
 			$id = random_int(1000000000, 9999999999);
 		}
 		return $id;
