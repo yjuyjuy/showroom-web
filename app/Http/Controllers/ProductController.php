@@ -239,7 +239,7 @@ class ProductController extends Controller
 			"category" => \App\Category::all(),
 			"color" => \App\Color::all(),
 			"season" => \App\Season::all(),
-			"brand" => \App\Brand::all()
+			"brand" => \App\Brand::orderBy('name')->get()
 		];
 	}
 }
