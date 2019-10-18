@@ -136,6 +136,7 @@ class FarfetchController extends Controller
 			'retailer_id' => $retailer_id,
 			'product_id' => $product->id,
 		]);
+		$retail->prices = [];
 		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->get() as $p) {
 			if (!empty($p->size_price)) {
 				$retail->merge($p->size_price);
