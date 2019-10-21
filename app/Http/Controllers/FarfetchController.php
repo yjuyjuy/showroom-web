@@ -105,39 +105,22 @@ class FarfetchController extends Controller
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
 	}
 
-	public function export(FarfetchProduct $farfetch_product, Product $product=null)
+	public function export(FarfetchProduct $farfetch_product)
 	{
 		$retailer_id = 1467053076;
 		$website_id = 2;
-		if ($product) {
-			foreach([
-				'brand_id' => $farfetch_product->designer->brand_id,
-				'designer_style_id' => $farfetch_product->designer_style_id,
-				'name_cn' => $farfetch_product->short_description,
-				'name' => $farfetch_product->short_description,
-				'category_id' => $farfetch_product->category->mapped_id,
-			] as $key => $value) {
-				if (empty($product[$key])) {
-					$product[$key] = $value;
-				}
-			}
-			$product->save();
-		} else  {
-			$product = Product::create([
-				'brand_id' => $farfetch_product->designer->brand_id,
-				'designer_style_id' => $farfetch_product->designer_style_id,
-				'name_cn' => $farfetch_product->short_description,
-				'name' => $farfetch_product->short_description,
-				'category_id' => $farfetch_product->category->mapped_id,
-				'id' => \App\Product::generate_id(),
-			]);
-		}
-		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $retailer_id,
-			'product_id' => $product->id,
+		$product = Product::create([
+			'brand_id' => $farfetch_product->designer->brand_id,
+			'designer_style_id' => $farfetch_product->designer_style_id,
+			'name_cn' => $farfetch_product->short_description,
+			'name' => $farfetch_product->short_description,
+			'category_id' => $farfetch_product->category->mapped_id,
+			'id' => \App\Product::generate_id(),
 		]);
-		$retail->prices = [];
-		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->get() as $p) {
+		$retail = new \App\RetailPrice();
+		$retail->retailer_id = $retailer_id;
+		$retail->product_id = $product->id;
+		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get() as $p) {
 			if (!empty($p->size_price)) {
 				$retail->merge($p->size_price);
 			}
@@ -153,5 +136,46 @@ class FarfetchController extends Controller
 			$retail->delete();
 		}
 		return redirect(route('products.show', ['product' => $product,]));
+	}
+
+	public function merge(FarfetchProduct $farfetch_product, Product $product)
+	{
+		$retailer_id = 1467053076;
+		$website_id = 2;
+		foreach([
+			'brand_id' => $farfetch_product->designer->brand_id,
+			'designer_style_id' => $farfetch_product->designer_style_id,
+			'name_cn' => $farfetch_product->short_description,
+			'name' => $farfetch_product->short_description,
+			'category_id' => $farfetch_product->category->mapped_id,
+		] as $key => $value) {
+			if (empty($product[$key])) {
+				$product[$key] = $value;
+			}
+		}
+		$farfetch_product->product_id = $product->id;
+		$farfetch_product->save();
+		$retail = \App\RetailPrice::firstOrNew([
+			'retailer_id' => $retailer_id,
+			'product_id' => $product->id,
+		]);
+		$retail->prices = [];
+		foreach($product->farfetch_products as $p) {
+			$retail->merge($p->size_price);
+			(new ImageController())->import($p->images, $product, $website_id);
+		}
+		if(!empty($retail->prices)) {
+			$retail->save();
+		} else {
+			$retail->delete();
+		}
+		return redirect(route('products.show', ['product' => $product,]));
+	}
+
+	public function unlink(FafetchProduct $farfetch_product)
+	{
+		$farfetch_product->product_id = NULL;
+		$farfetch_product->save();
+		return redirect(route('farfetch.show', ['product' => $farfetch_product]));
 	}
 }
