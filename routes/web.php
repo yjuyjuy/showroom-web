@@ -100,6 +100,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('farfetch/categories/{category}', 'FarfetchController@index')->name('farfetch.categories.index');
 	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
 	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export');
+	Route::get('farfetch/{farfetch_product}/merge/{product}', 'FarfetchController@merge')->name('farfetch.merge');
+	Route::get('farfetch/{farfetch_product}/unlink', 'FarfetchController@unlink')->name('farfetch.unlink');
 	# end clothing
 	Route::get('end', 'EndController@index')->name('end.index');
 	Route::get('end/brands', 'EndController@brands')->name('end.brands');
