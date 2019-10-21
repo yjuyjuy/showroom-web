@@ -82,6 +82,10 @@ class Product extends Model
 	{
 		return $this->hasMany(TaobaoPrice::class);
 	}
+	public function farfetch_products()
+	{
+		return $this->hasMany(\App\FarfetchProduct::class);
+	}
 	public function followers()
 	{
 		return $this->belongsToMany(User::class, 'user_product', 'product_id', 'user_id');
