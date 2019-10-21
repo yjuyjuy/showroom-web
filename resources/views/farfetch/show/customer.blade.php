@@ -12,16 +12,27 @@
 		<span class="mdc-button__label">Farfetch页面</span>
 	</a>
 	@if(auth()->user()->isSuperAdmin())
-		@if($product->product_id)
-		<a href="{{ route('products.show', ['product' => $product->product_id,]) }}" class="mdc-button mdc-button--unelevated">
-			<span class="mdc-button__label">已关联商品</span>
-		</a>
-		<a href="{{ route('products.show', ['product' => $product->product_id,]) }}" class="mdc-button mdc-button--unelevated">
-			<span class="mdc-button__label">取消关联</span>
-		</a>
-		<a href="{{ route('products.show', ['product' => $product->product_id,]) }}" class="mdc-button mdc-button--unelevated">
-			<span class="mdc-button__label">更新价格</span>
-		</a>
+		@if($product->product)
+		<div class="mdc-menu-surface--anchor d-inline">
+			<button type="button" class="mdc-button mdc-button--unelevated ml-2 open-menu-button">
+				<span class="mdc-button__label">操作</span>
+			</button>
+			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+				<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+					<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="mdc-list-item" role="menuitem">
+						<span class="mdc-list-item__text">已关联商品</span>
+					</a>
+					<a href="{{ route('farfetch.unlink', ['farfetch_product' => $product,]) }}" class="mdc-list-item" role="menuitem">
+						<span class="mdc-list-item__text">取消关联</span>
+					</a>
+					<a href="{{ route('farfetch.merge', ['farfetch_product' => $product, 'product' => $product->product,]) }}" class="mdc-list-item" role="menuitem">
+						<span class="mdc-list-item__text">更新</span>
+					</a>
+				</ul>
+			</div>
+		</div>
+
+
 
 		@else
 		<?php $guesses = \App\Product::where('designer_style_id', $product->designer_style_id)->where('brand_id', $product->designer->brand_id)->get(); ?>
@@ -40,8 +51,8 @@
 							<span class="mdc-list-item__text">上架新商品</span>
 						</a>
 						@foreach($guesses as $guess)
-						<a href="{{ route('farfetch.export', ['farfetch_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item" role="menuitem">
-							<span class="mdc-list-item__text">导入-{{ __($guess->color->name ?? '') }}</span>
+						<a href="{{ route('farfetch.merge', ['farfetch_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item" role="menuitem">
+							<span class="mdc-list-item__text">合并-{{ __($guess->color->name ?? '') }}</span>
 						</a>
 						@endforeach
 					</ul>
