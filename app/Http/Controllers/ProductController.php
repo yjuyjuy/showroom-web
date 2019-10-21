@@ -109,7 +109,7 @@ class ProductController extends Controller
 			if (preg_match('#notdopebxtch.com/farfetch/([0-9]+)#', $url, $results) || preg_match('#www\.farfetch.*?item-([0-9]+)\.aspx#', $url, $results) || preg_match('#^farfetch-([0-9]+)$#', $url, $results))
 			{
 				if ($farfetch_product = \App\FarfetchProduct::find($results[1])) {
-					(new FarfetchController())->export($farfetch_product, $product);
+					(new FarfetchController())->merge($farfetch_product, $product);
 				} else {
 					FarfetchProduct::create(['id' => $results[1]]);
 				}
