@@ -4,9 +4,9 @@
 			 class="mdc-typography--headline6" style="text-transform: uppercase;">
 			{{ $product->brand->name }}
 		</a>
-		<a href="{{ route('end.departments.index',['department' => Str::slug($product->department)]) }}"
+		<a href="{{ route('end.departments.index',['department' => Str::slug($product->department->name)]) }}"
 			 class="mdc-typography--headline6">
-			{{ __($product->department) }}
+			{{ __($product->department->name) }}
 		</a>
 	</div>
 	<div class="my-1">
