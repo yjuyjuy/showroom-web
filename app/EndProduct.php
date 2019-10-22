@@ -40,6 +40,11 @@ class EndProduct extends Model
 		return $this->belongsTo(EndBrand::class, 'brand_name', 'name');
 	}
 
+	public function department()
+	{
+		return $this->belongsTo(EndDepartment::class, 'department_name', 'name');
+	}
+
 	public function getSizePriceAttribute()
 	{
 		$size_map = [
