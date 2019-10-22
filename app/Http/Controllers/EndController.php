@@ -118,44 +118,75 @@ class EndController extends Controller
 		return ['default', 'price-low-to-high', 'price-high-to-low'];
 	}
 
-	public function export(EndProduct $end_product, Product $product=null)
+	public function export(EndProduct $end_product)
 	{
 		$retailer_id = 3548857028;
 		$website_id = 6;
-		if ($product) {
-			foreach ([
-				'brand_id' => $end_product->brand->id,
-				'designer_style_id' => $end_product->sku,
-				'name_cn' => $end_product->name,
-				'name' => $end_product->name,
-			] as $key => $value) {
-				if (empty($product[$key])) {
-					$product[$key] = $value;
-				}
-			}
-			$product->save();
-		} else {
-			$product = Product::create([
-				'brand_id' => $end_product->brand->id,
-				'designer_style_id' => $end_product->sku,
-				'name_cn' => $end_product->name,
-				'name' => $end_product->name,
-				'id' => \App\Product::generate_id(),
-			]);
-		}
-		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $retailer_id,
-			'product_id' => $product->id,
+		$product = Product::create([
+			'brand_id' => $end_product->brand->id,
+			'designer_style_id' => $end_product->sku,
+			'name_cn' => $end_product->name,
+			'name' => $end_product->name,
+			'id' => \App\Product::generate_id(),
 		]);
-		$retail->merge($end_product->size_price);
+		$end_product->product_id = $product->id;
+		$end_product->save();
+
+		$retail = new \App\RetailPrice();
+		$retail->retailer_id = $retailer_id;
+		$retail->product_id = $product->id;
+		foreach(\App\EndProduct::where('sku', $end_product->sku)->where('color', $end_product->color)->get() as $p){
+			$retail->merge($p->size_price);
+			if ($p->images->isNotEmpty()) {
+				(new ImageController())->import($p->images, $product, $website_id);
+			}
+		}
 		if (!empty($retail->prices)) {
 			$retail->save();
 		} else {
 			$retail->delete();
 		}
-		if ($end_product->images->isNotEmpty()) {
-			(new ImageController())->import($end_product->images, $product, $website_id);
+		return redirect(route('products.show', ['product' => $product,]));
+	}
+	public function merge(EndProduct $end_product, Product $product)
+	{
+		$retailer_id = 3548857028;
+		$website_id = 6;
+		foreach ([
+			'brand_id' => $end_product->brand->id,
+			'designer_style_id' => $end_product->sku,
+			'name_cn' => $end_product->name,
+			'name' => $end_product->name,
+		] as $key => $value) {
+			if (empty($product[$key])) {
+				$product[$key] = $value;
+			}
+		}
+		$product->save();
+		$end_product->product_id = $product->id;
+		$end_product->save();
+
+		$retail = \App\RetailPrice::firstOrNew([
+			'retailer_id' => $retailer_id,
+			'product_id' => $product->id,
+		]);
+		foreach(\App\EndProduct::where('product_id', $product->id)->get() as $p){
+			$retail->merge($p->size_price);
+			if ($p->images->isNotEmpty()) {
+				(new ImageController())->import($p->images, $product, $website_id);
+			}
+		}
+		if (!empty($retail->prices)) {
+			$retail->save();
+		} else {
+			$retail->delete();
 		}
 		return redirect(route('products.show', ['product' => $product,]));
+	}
+	public function unlink(EndProduct $end_product)
+	{
+		$end_product->product_id = NULL;
+		$end_product->save();
+		return redirect(route('end.show', ['product' => $end_product]));
 	}
 }
