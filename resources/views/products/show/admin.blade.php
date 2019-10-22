@@ -32,8 +32,8 @@
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-			    @foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)
-			      <a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor])}}" class="mdc-list-item text-left" role="menuitem">{{$vendor->name}}</a>
+					@foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)
+					<a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor])}}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">{{$vendor->name}}</a>
 					@endforeach
 			  </ul>
 			</div>

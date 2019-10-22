@@ -24,11 +24,11 @@
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 				<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					<a class="mdc-list-item" role="menuitem" href="{{ route('end.export', ['end_product' => $product,]) }}">
+					<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.export', ['end_product' => $product,]) }}">
 						<span class="mdc-list-item__text">上架新商品</span>
 					</a>
 					@foreach($guesses as $guess)
-					<a href="{{ route('end.export', ['end_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item" role="menuitem">
+					<a href="{{ route('end.export', ['end_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 						<span class="mdc-list-item__text">导入-{{ __($guess->color->name ?? '') }}</span>
 					</a>
 					@endforeach
