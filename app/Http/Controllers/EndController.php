@@ -48,7 +48,7 @@ class EndController extends Controller
 			if (!empty($data['department'])) {
 				$query->where(function ($query) use ($data, $departments) {
 					foreach ($data['department'] as $token) {
-						$query->orWhere('department', $departments[$token]);
+						$query->orWhere('department_name', $departments[$token]);
 					}
 				});
 			}
@@ -105,7 +105,7 @@ class EndController extends Controller
 	{
 		return Cache::remember('end-departments', 60 * 60, function () {
 			$departments = [];
-			foreach (EndProduct::pluck('department')->unique() as $department) {
+			foreach (EndProduct::pluck('department_name')->unique() as $department) {
 				$token = Str::slug($department);
 				$departments[$token] = $department;
 			}
@@ -127,6 +127,7 @@ class EndController extends Controller
 			'designer_style_id' => $end_product->sku,
 			'name_cn' => $end_product->name,
 			'name' => $end_product->name,
+			'category_id' => $end_product->department->mapped_id,
 			'id' => \App\Product::generate_id(),
 		]);
 		$end_product->product_id = $product->id;
@@ -135,7 +136,7 @@ class EndController extends Controller
 		$retail = new \App\RetailPrice();
 		$retail->retailer_id = $retailer_id;
 		$retail->product_id = $product->id;
-		foreach(\App\EndProduct::where('sku', $end_product->sku)->where('color', $end_product->color)->get() as $p){
+		foreach(\App\EndProduct::where('sku', $end_product->sku)->where('brand_name', $end_product->brand_name)->where('color', $end_product->color)->get() as $p){
 			$retail->merge($p->size_price);
 			if ($p->images->isNotEmpty()) {
 				(new ImageController())->import($p->images, $product, $website_id);
@@ -148,6 +149,7 @@ class EndController extends Controller
 		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
+
 	public function merge(EndProduct $end_product, Product $product)
 	{
 		$retailer_id = 3548857028;
@@ -157,6 +159,7 @@ class EndController extends Controller
 			'designer_style_id' => $end_product->sku,
 			'name_cn' => $end_product->name,
 			'name' => $end_product->name,
+			'category_id' => $end_product->department->mapped_id,
 		] as $key => $value) {
 			if (empty($product[$key])) {
 				$product[$key] = $value;
@@ -183,6 +186,7 @@ class EndController extends Controller
 		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
+
 	public function unlink(EndProduct $end_product)
 	{
 		$end_product->product_id = NULL;
