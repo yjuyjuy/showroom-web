@@ -110,6 +110,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('end/departments/{department}', 'EndController@index')->name('end.departments.index');
 	Route::get('end/{product}', 'EndController@show')->name('end.show');
 	Route::get('end/{end_product}/export', 'EndController@export')->name('end.export');
+	Route::get('end/{end_product}/unlink', 'EndController@unlink')->name('end.unlink');
+	Route::get('end/{end_product}/merge/{product}', 'EndController@merge')->name('end.merge');
 	# off---white
 	Route::get('off-white', 'OffWhiteController@index')->name('offwhite.index');
 	Route::get('off-white/categories', 'OffWhiteController@categories')->name('offwhite.categories');
