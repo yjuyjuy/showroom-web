@@ -14,6 +14,7 @@ class AdminController extends Controller
 			'follow_all_vendors' => '关注所有同行',
 			'sync_all_prices' => '同步farfetch, end, taobao价格',
 			'update_designer_style_id' => '根据图片名称更新货号',
+			'refactor_image_order' => 'refactor_image_order',
 		];
 	}
 
@@ -173,6 +174,20 @@ class AdminController extends Controller
 					$farfetch_product->id = $farfetch_id;
 					$farfetch_product->save();
 				}
+			}
+		}
+	}
+
+	public function refactor_image_order()
+	{
+		foreach (\App\Product::has('images')->get() as $product) {
+			$orders = [];
+			foreach($product->images()->orderBy('website_id')->orderBy('order')->get() as $image) {
+				if (in_array($image->order, $orders)) {
+					$image->order = max($orders) + 1;
+					$image->save();
+				}
+				$orders[] = $image->order;
 			}
 		}
 	}
