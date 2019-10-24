@@ -12,8 +12,8 @@
 		<span class="mdc-button__label">打开Farfetch</span>
 	</a>
 	@if($product->product)
-	<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
-		<span class="mdc-list-item__text">打开商品页面</span>
+	<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="mdc-button mdc-button--unelevated">
+		<span class="mdc-button__label">打开商品页面</span>
 	</a>
 	@endif
 	@can('export', $product)
