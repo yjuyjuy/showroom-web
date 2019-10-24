@@ -15,6 +15,7 @@ class AdminController extends Controller
 			'sync_all_prices' => '同步farfetch, end, taobao价格',
 			'update_designer_style_id' => '根据图片名称更新货号',
 			'refactor_image_order' => 'refactor_image_order',
+			'find_farfetch_products' => 'find_farfetch_products',
 		];
 	}
 
@@ -178,12 +179,31 @@ class AdminController extends Controller
 	{
 		foreach (\App\Product::has('images')->get() as $product) {
 			$orders = [];
-			foreach($product->images()->orderBy('website_id')->orderBy('order')->get() as $image) {
+			foreach ($product->images()->orderBy('website_id')->orderBy('order')->get() as $image) {
 				if (in_array($image->order, $orders)) {
 					$image->order = max($orders) + 1;
 					$image->save();
 				}
 				$orders[] = $image->order;
+			}
+		}
+	}
+
+	public function find_farfetch_products()
+	{
+		foreach (\App\Product::whereHas('images', function ($query) {
+			$query->where('website_id', 2);
+		})->get() as $product) {
+			foreach ($product->images()->where('website_id', 2)->get() as $image) {
+				$farfetch_id = substr($image->source, 0, 8);
+				if (preg_match('/^[0-9]+$/', $farfetch_id)) {
+					if (\App\FarfetchProduct::find($farfetch_id)) {
+						\App\FarfetchProduct::find($farfetch_id)->update(['product_id' => $product->id,]);
+					} else {
+						\App\FarfetchProduct::create(['id' => $farfetch_id,]);
+					}
+					break;
+				}
 			}
 		}
 	}
