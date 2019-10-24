@@ -124,7 +124,7 @@ class EndController extends Controller
 	{
 		$retailer_id = 3548857028;
 		$product = Product::create([
-			'brand_id' => $end_product->brand->id,
+			'brand_id' => $end_product->brand->mapped_id,
 			'designer_style_id' => $end_product->sku,
 			'name_cn' => $end_product->name,
 			'name' => $end_product->name,
@@ -155,7 +155,7 @@ class EndController extends Controller
 	{
 		$retailer_id = 3548857028;
 		foreach ([
-			'brand_id' => $end_product->brand->id,
+			'brand_id' => $end_product->brand->mapped_id,
 			'designer_style_id' => $end_product->sku,
 			'name_cn' => $end_product->name,
 			'name' => $end_product->name,
