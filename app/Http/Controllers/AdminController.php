@@ -44,9 +44,7 @@ class AdminController extends Controller
 	public function sync_farfetch()
 	{
 		set_time_limit(600);
-		// get retailer_id and website_id
 		$retailer_id = \App\Retailer::where('name', 'Farfetch')->first()->id;
-		$website_id = \App\Website::where('name', 'Farfetch')->first()->id;
 		// delete all retail prices
 		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
 		// foreach laravel.product
@@ -77,9 +75,7 @@ class AdminController extends Controller
 	public function sync_end()
 	{
 		set_time_limit(600);
-		// get retailer_id and website_id
 		$retailer_id = \App\Retailer::where('name', 'EndClothing')->first()->id;
-		$website_id = \App\Website::where('name', 'EndClothing')->first()->id;
 		\App\RetailPrice::where('retailer_id', $retailer_id)->delete();
 		foreach (\App\Product::whereNotNull('designer_style_id')->get() as $product) {
 			$retail = new \App\RetailPrice([

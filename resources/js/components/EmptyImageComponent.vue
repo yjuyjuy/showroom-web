@@ -7,7 +7,7 @@
 
 <script>
 export default {
-	props: ['productId', 'websiteId', 'order'],
+	props: ['productId', 'order'],
 	methods: {
 		dropped: function(evt) {
 			if (evt.dataTransfer.files[0]) {
@@ -23,7 +23,6 @@ export default {
 				var formData = new FormData();
 				formData.append('image', files[0]);
 				formData.append('product_id', this.productId);
-				formData.append('website_id', this.websiteId);
 				formData.append('order', this.order);
 				axios.post('/images', formData, {
 						headers: {
@@ -38,7 +37,6 @@ export default {
 					formData.append('images[]', files[i]);
 				}
 				formData.append('product_id', this.productId);
-				formData.append('website_id', this.websiteId);
 				axios.post('/images', formData, {
 						headers: {
 							'Content-Type': 'multipart/form-data',
@@ -50,7 +48,6 @@ export default {
 		},
 		move_image: function(id) {
 			axios.patch('/images/' + id + '/move', {
-					website_id: this.websiteId,
 					order: this.order,
 				})
 				.then(response => window.location.reload())

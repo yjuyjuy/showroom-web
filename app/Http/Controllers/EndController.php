@@ -121,7 +121,6 @@ class EndController extends Controller
 	public function export(EndProduct $end_product)
 	{
 		$retailer_id = 3548857028;
-		$website_id = 6;
 		$product = Product::create([
 			'brand_id' => $end_product->brand->id,
 			'designer_style_id' => $end_product->sku,
@@ -153,7 +152,6 @@ class EndController extends Controller
 	public function merge(EndProduct $end_product, Product $product)
 	{
 		$retailer_id = 3548857028;
-		$website_id = 6;
 		foreach ([
 			'brand_id' => $end_product->brand->id,
 			'designer_style_id' => $end_product->sku,

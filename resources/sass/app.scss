@@ -448,14 +448,6 @@ a.mdc-list-item__text:hover {
 		color: $mdc-theme-error;
 	}
 }
-// images.edit view
-.website-empty {
-	display: none;
-
-	&.show {
-		display: flex;
-	}
-}
 .product-card {
 	background-color: rgba(255,255,255,0.05);
 	border-radius: 0.8rem;

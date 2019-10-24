@@ -108,7 +108,6 @@ class FarfetchController extends Controller
 	public function export(FarfetchProduct $farfetch_product)
 	{
 		$retailer_id = 1467053076;
-		$website_id = 2;
 		$product = Product::create([
 			'brand_id' => $farfetch_product->designer->brand_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
@@ -141,7 +140,6 @@ class FarfetchController extends Controller
 	public function merge(FarfetchProduct $farfetch_product, Product $product)
 	{
 		$retailer_id = 1467053076;
-		$website_id = 2;
 		foreach([
 			'brand_id' => $farfetch_product->designer->brand_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
