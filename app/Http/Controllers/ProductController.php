@@ -104,30 +104,33 @@ class ProductController extends Controller
 
 	public function import(Product $product, $url)
 	{
-		if (strpos($url, 'farfetch')) {
+		if (strpos($url, 'farfetch') !== false) {
 			# farfetch
-			if (preg_match('#notdopebxtch.com/farfetch/([0-9]+)#', $url, $results) || preg_match('#www\.farfetch.*?item-([0-9]+)\.aspx#', $url, $results) || preg_match('#^farfetch-([0-9]+)$#', $url, $results))
-			{
+			if (preg_match('#notdopebxtch.com/farfetch/([0-9]+)#', $url, $results) || preg_match('#www\.farfetch.*?item-([0-9]+)\.aspx#', $url, $results) || preg_match('#^farfetch-([0-9]+)$#', $url, $results)) {
 				if ($farfetch_product = \App\FarfetchProduct::find($results[1])) {
 					(new FarfetchController())->merge($farfetch_product, $product);
 				} else {
 					FarfetchProduct::create(['id' => $results[1]]);
 				}
+			} else {
 			}
-		} elseif (strpos($url, 'end')) {
+		} elseif (strpos($url, 'end') !== false) {
 			# end
-			if (preg_match('#notdopebxtch.com/end/[0-9]+#', $url, $results)) {
+			if (preg_match('#notdopebxtch.com/end/[0-9]+#', $url, $results) ||
+			preg_match('#^end-([0-9]+)$#', $url, $results)) {
 				$end_product = \App\EndProduct::find($results[1]);
-			} else if (preg_match('#www\.endclothing\.com/[a-zA-Z]+/([^/]+)\.html#', $url, $results)) {
+			} elseif (preg_match('#www\.endclothing\.com/[a-zA-Z]+/([^/]+)\.html#', $url, $results)) {
 				$end_product = \App\EndProduct::where('url', "https://www.endclothing.com/cn/{$results[1]}.html")->first();
 			}
 			if ($end_product ?? false) {
 				(new EndController())->export($end_product, $product);
 			}
-		} elseif (preg_match('#www\.notdopebxtch\.com/off-white/([^/]+)#', $url, $results) || preg_match('#www.off---white.com/.*/products/([^/]+)#', $url, $results)) {
-			# off-white
-			if ($offwhite_product = \App\OffWhiteProduct::find(strtoupper($results[1]))) {
-				(new OffWhiteController())->export($offwhite_product);
+		} elseif (strpos($url, 'off') !== false && strpos($url, 'white') !== false) {
+			if (preg_match('#www\.notdopebxtch\.com/off-white/([^/]+)#', $url, $results) || preg_match('#www.off---white.com/.*/products/([^/]+)#', $url, $results)|| preg_match('#^offwhite-([0-9A-Za-z]+)$#', $url, $results)) {
+				# off-white
+				if ($offwhite_product = \App\OffWhiteProduct::find(strtoupper($results[1]))) {
+					(new OffWhiteController())->export($offwhite_product);
+				}
 			}
 		}
 	}
@@ -137,7 +140,7 @@ class ProductController extends Controller
 		$product = new Product($this->validateProduct());
 		$product->id = Product::generate_id();
 		$product->save();
-		if($url = $request->input('url')) {
+		if ($url = $request->input('url')) {
 			$this->import($product, $url);
 		}
 		return redirect(route('products.edit', ['product' => $product]));
@@ -186,7 +189,7 @@ class ProductController extends Controller
 	public function update(Request $request, Product $product)
 	{
 		$product->update($this->validateProduct());
-		if($url = $request->input('url')) {
+		if ($url = $request->input('url')) {
 			$this->import($product, $url);
 		}
 		return ['success' => true,];
