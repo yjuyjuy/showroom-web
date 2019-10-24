@@ -41,7 +41,7 @@ class EndController extends Controller
 		}
 		if (array_key_exists($token, $departments)) {
 			$department = $token;
-			$query->where('department', $departments[$token]);
+			$query->where('department_name', $departments[$token]);
 		} else {
 			$department = null;
 			$filters['department'] = $departments;
