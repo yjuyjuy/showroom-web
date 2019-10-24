@@ -12,7 +12,7 @@
 		<span class="mdc-button__label">打开Farfetch</span>
 	</a>
 	@if($product->product)
-	<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="mdc-button mdc-button--unelevated">
+	<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="ml-2 mdc-button mdc-button--unelevated">
 		<span class="mdc-button__label">打开商品页面</span>
 	</a>
 	@endif
