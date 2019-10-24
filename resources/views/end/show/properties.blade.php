@@ -1,12 +1,12 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="my-1">
-		<a href="{{ route('end.brands.index',['brand' => $product->brand]) }}"
+		<a href="{{ route('end.brands.index',['brand' => Str::slug($product->brand_name)]) }}"
 			 class="mdc-typography--headline6" style="text-transform: uppercase;">
-			{{ $product->brand->name }}
+			{{ $product->brand_name}}
 		</a>
-		<a href="{{ route('end.departments.index',['department' => Str::slug($product->department->name)]) }}"
+		<a href="{{ route('end.departments.index',['department' => Str::slug($product->department_name)]) }}"
 			 class="mdc-typography--headline6">
-			{{ __($product->department->name) }}
+			{{ __($product->department_name) }}
 		</a>
 	</div>
 	<div class="my-1">
