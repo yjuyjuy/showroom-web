@@ -24,9 +24,7 @@ class PriceController extends Controller
 			'prices' => function ($query) use ($vendor) {
 				$query->where('vendor_id', $vendor->id);
 			},
-			'images' => function ($query) {
-				$query->orderBy('website_id', 'asc')->orderBy('order', 'asc');
-			}]);
+			'images']);
 		return view('prices.index', compact('vendor','products'));
 	}
 

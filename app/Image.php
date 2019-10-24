@@ -12,10 +12,6 @@ class Image extends Model
 	{
 		return $this->belongsTo(Product::class);
 	}
-	public function website()
-	{
-		return $this->belongsTo(Website::class);
-	}
 	public function getSmallAttribute()
 	{
 		return secure_asset('storage/'.$this->path.'_400.jpeg');

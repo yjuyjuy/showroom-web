@@ -125,7 +125,7 @@ class FarfetchController extends Controller
 				$retail->merge($p->size_price);
 			}
 			if ($p->images->isNotEmpty()) {
-				(new ImageController())->import($p->images, $product, $website_id);
+				(new ImageController())->import($p->images, $product);
 			}
 			$p->product_id = $product->id;
 			$p->save();
@@ -162,7 +162,7 @@ class FarfetchController extends Controller
 		$retail->prices = [];
 		foreach($product->farfetch_products as $p) {
 			$retail->merge($p->size_price);
-			(new ImageController())->import($p->images, $product, $website_id);
+			(new ImageController())->import($p->images, $product);
 		}
 		if(!empty($retail->prices)) {
 			$retail->save();

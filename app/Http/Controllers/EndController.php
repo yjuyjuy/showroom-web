@@ -139,7 +139,7 @@ class EndController extends Controller
 		foreach(\App\EndProduct::where('sku', $end_product->sku)->where('brand_name', $end_product->brand_name)->where('color', $end_product->color)->get() as $p){
 			$retail->merge($p->size_price);
 			if ($p->images->isNotEmpty()) {
-				(new ImageController())->import($p->images, $product, $website_id);
+				(new ImageController())->import($p->images, $product);
 			}
 		}
 		if (!empty($retail->prices)) {
@@ -176,7 +176,7 @@ class EndController extends Controller
 		foreach(\App\EndProduct::where('product_id', $product->id)->get() as $p){
 			$retail->merge($p->size_price);
 			if ($p->images->isNotEmpty()) {
-				(new ImageController())->import($p->images, $product, $website_id);
+				(new ImageController())->import($p->images, $product);
 			}
 		}
 		if (!empty($retail->prices)) {
