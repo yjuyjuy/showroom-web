@@ -51,12 +51,14 @@ class FarfetchController extends Controller
 		}
 		if (!empty($data['sort'])) {
 			if ($data['sort'] == 'price-low-to-high') {
-				$query->where('price', '>', 0)->orderBy('price');
+				$query->where('price', '>', 0)->orderBy('price')->orderBy('id', 'desc');
 			} elseif ($data['sort'] == 'price-high-to-low') {
-				$query->where('price', '>', 0)->orderBy('price', 'desc');
+				$query->where('price', '>', 0)->orderBy('price', 'desc')->orderBy('id', 'desc');
 			} else {
-				$query->orderBy('id');
+				$query->orderBy('id', 'desc');
 			}
+		} else {
+			$query->orderBy('id', 'desc');
 		}
 
 		$total_pages = ceil($query->count() / 48.0);
