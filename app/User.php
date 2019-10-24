@@ -83,6 +83,6 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function isSuperAdmin()
 	{
-		return in_array($this->id, [1111111111, 4021500970, 8888888888]);
+		return in_array($this->id, [1111111111, 4021500970, 4328089657, 8888888888]);
 	}
 }
