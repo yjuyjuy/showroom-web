@@ -26,6 +26,8 @@ class FarfetchProduct extends Model
 	protected $casts = [
 		'size_price' => 'array',
 	];
+	protected $guarded = [];
+
 	public function displayName()
 	{
 		return $this->designer->description.' '.$this->short_description;
