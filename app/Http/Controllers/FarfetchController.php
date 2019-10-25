@@ -121,13 +121,12 @@ class FarfetchController extends Controller
 		$retail = new \App\RetailPrice();
 		$retail->retailer_id = $retailer_id;
 		$retail->product_id = $product->id;
+		$image_controller = new ImageController();
 		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get() as $p) {
 			if (!empty($p->size_price)) {
 				$retail->merge($p->size_price);
 			}
-			if ($p->images->isNotEmpty()) {
-				(new ImageController())->import($p->images, $product);
-			}
+			$image_controller->import($p->images, $product);
 			$p->product_id = $product->id;
 			$p->save();
 		}
@@ -160,9 +159,9 @@ class FarfetchController extends Controller
 			'product_id' => $product->id,
 		]);
 		$retail->prices = [];
+		(new ImageController())->import($farfetch_product->images, $product);
 		foreach($product->farfetch_products as $p) {
 			$retail->merge($p->size_price);
-			(new ImageController())->import($p->images, $product);
 		}
 		if(!empty($retail->prices)) {
 			$retail->save();

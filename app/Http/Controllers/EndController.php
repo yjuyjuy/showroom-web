@@ -137,11 +137,10 @@ class EndController extends Controller
 		$retail = new \App\RetailPrice();
 		$retail->retailer_id = $retailer_id;
 		$retail->product_id = $product->id;
+		$image_controller = (new ImageController());
 		foreach(\App\EndProduct::where('sku', $end_product->sku)->where('brand_name', $end_product->brand_name)->where('color', $end_product->color)->get() as $p){
 			$retail->merge($p->size_price);
-			if ($p->images->isNotEmpty()) {
-				(new ImageController())->import($p->images, $product);
-			}
+			$image_controller->import($p->images, $product);
 		}
 		if (!empty($retail->prices)) {
 			$retail->save();
@@ -173,11 +172,9 @@ class EndController extends Controller
 			'retailer_id' => $retailer_id,
 			'product_id' => $product->id,
 		]);
+		(new ImageController())->import($end_product->images, $product);
 		foreach(\App\EndProduct::where('product_id', $product->id)->get() as $p){
 			$retail->merge($p->size_price);
-			if ($p->images->isNotEmpty()) {
-				(new ImageController())->import($p->images, $product);
-			}
 		}
 		if (!empty($retail->prices)) {
 			$retail->save();
