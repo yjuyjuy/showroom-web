@@ -197,10 +197,12 @@ class AdminController extends Controller
 			foreach ($product->images()->where('website_id', 2)->get() as $image) {
 				$farfetch_id = substr($image->source, 0, 8);
 				if (preg_match('/^[0-9]+$/', $farfetch_id)) {
-					if (\App\FarfetchProduct::find($farfetch_id)) {
-						\App\FarfetchProduct::find($farfetch_id)->update(['product_id' => $product->id,]);
+					if ($farfetch_product = \App\FarfetchProduct::find($farfetch_id)) {
+						if (!$farfetch_product->product_id) {
+							$farfetch_product->update(['product_id' => $product->id,]);
+						}
 					} else {
-						\App\FarfetchProduct::create(['id' => $farfetch_id,]);
+						\App\FarfetchProduct::create(['id' => $farfetch_id, 'product_id' => $product->id,]);
 					}
 					break;
 				}
