@@ -7,9 +7,9 @@
 			@foreach(\App\Brand::all() as $brand)
 			<?php $selected = (old('brand') ?? $product->brand->id ?? null) === $brand->id; ?>
 			@if($selected)
-			<li data-value="{{ $brand->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+			<li data-value="{{ $brand->id }}" class="mdc-list-item mdc-list-item__text mdc-list-item--selected" aria-selected="true">
 				@else
-			<li data-value="{{ $brand->id }}" class="mdc-list-item">
+			<li data-value="{{ $brand->id }}" class="mdc-list-item mdc-list-item__text">
 				@endif
 				{{ __($brand->name) }}
 			</li>
@@ -33,9 +33,9 @@
 			@foreach(\App\Season::all() as $season)
 			<?php $selected = (old('season') ?? $product->season->id ?? null) === $season->id; ?>
 			@if($selected)
-			<li data-value="{{ $season->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+			<li data-value="{{ $season->id }}" class="mdc-list-item mdc-list-item__text mdc-list-item--selected" aria-selected="true">
 				@else
-			<li data-value="{{ $season->id }}" class="mdc-list-item">
+			<li data-value="{{ $season->id }}" class="mdc-list-item mdc-list-item__text">
 				@endif
 				{{ __($season->name) }}
 			</li>
@@ -81,9 +81,9 @@
 			@foreach(\App\Category::all() as $category)
 			<?php $selected = (old('category') ?? $product->category->id ?? null) === $category->id; ?>
 			@if($selected)
-			<li data-value="{{ $category->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+			<li data-value="{{ $category->id }}" class="mdc-list-item mdc-list-item__text mdc-list-item--selected" aria-selected="true">
 				@else
-			<li data-value="{{ $category->id }}" class="mdc-list-item">
+			<li data-value="{{ $category->id }}" class="mdc-list-item mdc-list-item__text">
 				@endif
 				{{ __($category->name) }}
 			</li>
@@ -106,9 +106,9 @@
 			@foreach(\App\Color::all() as $color)
 			<?php $selected = (old('color') ?? $product->color->id ?? null) === $color->id; ?>
 			@if($selected)
-			<li data-value="{{ $color->id }}" class="mdc-list-item mdc-list-item--selected" aria-selected="true">
+			<li data-value="{{ $color->id }}" class="mdc-list-item mdc-list-item__text mdc-list-item--selected" aria-selected="true">
 				@else
-			<li data-value="{{ $color->id }}" class="mdc-list-item">
+			<li data-value="{{ $color->id }}" class="mdc-list-item mdc-list-item__text">
 				@endif
 				{{ __($color->name) }}
 			</li>
