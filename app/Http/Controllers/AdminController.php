@@ -85,7 +85,7 @@ class AdminController extends Controller
 			]);
 			$min_price = INF;
 			foreach (\App\EndProduct::where('sku', $product->designer_style_id)->with('brand')->get() as $end_product) {
-				if ($end_product->brand->id !== $product->brand_id) {
+				if (!$end_product->brand || $end_product->brand->mapped_id !== $product->brand_id) {
 					continue;
 				}
 				if ($end_product->sizes && $end_product->price) {
