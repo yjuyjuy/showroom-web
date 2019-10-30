@@ -33,6 +33,7 @@ class ImageController extends Controller
 					'product_id' => request('product_id'),
 					'order' => $order,
 				]);
+				`~/rsync.sh ${path} &>/dev/null &`;
 			}
 		} else {
 			\Intervention\Image\Facades\Image::make(request('image')->path())->fit(1000, 1413)->save(null, 100, 'jpg');
@@ -45,6 +46,7 @@ class ImageController extends Controller
 				'product_id' => request('product_id'),
 				'order' => request('order'),
 			]);
+			`~/rsync.sh ${path} &>/dev/null &`;
 		}
 		return ['success'];
 	}
@@ -73,6 +75,7 @@ class ImageController extends Controller
 			'product_id' => $image->product_id,
 			'order' => $image->order,
 		]);
+		`~/rsync.sh ${path} &>/dev/null &`;
 		$image->delete();
 		return ['success'];
 	}
