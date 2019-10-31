@@ -53,7 +53,7 @@ class PricePolicy
      */
     public function update(User $user, VendorPrice $price)
     {
-			return $user->isSuperAdmin() || in_array($user->id, $price->vendor->users->pluck('id'));
+			return $user->isSuperAdmin() || in_array($user->id, $price->vendor->users->pluck('id')->toArray());
     }
 
     /**
