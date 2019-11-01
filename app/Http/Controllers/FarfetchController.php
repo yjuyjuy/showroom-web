@@ -171,7 +171,7 @@ class FarfetchController extends Controller
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
-	public function unlink(FafetchProduct $farfetch_product)
+	public function unlink(FarfetchProduct $farfetch_product)
 	{
 		$farfetch_product->product_id = NULL;
 		$farfetch_product->save();
