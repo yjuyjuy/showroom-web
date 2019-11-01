@@ -4,7 +4,7 @@
 	<div class="mdc-select__selected-text"></div>
 	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
 		<ul class="mdc-list">
-			@foreach(\App\Brand::all() as $brand)
+			@foreach(\App\Brand::orderBy('name')->get() as $brand)
 			<?php $selected = (old('brand') ?? $product->brand->id ?? null) === $brand->id; ?>
 			@if($selected)
 			<li data-value="{{ $brand->id }}" class="mdc-list-item mdc-list-item__text mdc-list-item--selected" aria-selected="true">
