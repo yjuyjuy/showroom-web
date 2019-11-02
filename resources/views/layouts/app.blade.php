@@ -98,10 +98,10 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">extension</i>
 						<span class="mdc-list-item__text">手动执行程序</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('admin.taobao.index') }}">
+					<!-- <a class="mdc-list-item" href="{{ route('admin.taobao.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
-					</a>
+					</a> -->
 					<hr class="mdc-list-divider">
 					@endif
 					<a class="mdc-list-item" href="{{ route('suggestion.create') }}">
