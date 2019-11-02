@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
 });
 
 # Websites
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'vendor'])->group(function () {
 	# list of websites
 	Route::get('websites', 'WebsiteController@index')->name('websites.index');
 	# farfetch

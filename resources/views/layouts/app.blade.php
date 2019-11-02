@@ -82,6 +82,10 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
 						<span class="mdc-list-item__text">{{ __('My price sheet') }}</span>
 					</a>
+					<a class="mdc-list-item" href="{{ route('websites.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
+						<span class="mdc-list-item__text">所有网站</span>
+					</a>
 					@endif
 					@if($user->isSuperAdmin())
 					<hr class="mdc-list-divider">
@@ -97,10 +101,6 @@
 					<a class="mdc-list-item" href="{{ route('admin.taobao.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
-					</a>
-					<a class="mdc-list-item" href="{{ route('websites.index') }}">
-						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
-						<span class="mdc-list-item__text">所有网站</span>
 					</a>
 					<hr class="mdc-list-divider">
 					@endif
