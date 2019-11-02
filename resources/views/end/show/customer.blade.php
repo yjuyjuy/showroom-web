@@ -34,7 +34,7 @@
 				<a href="{{ route('end.export', ['end_product' => $product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">上架新商品</span>
 				</a>
-				@foreach(\App\Product::where('designer_style_id', $product->sku)->where('brand_id', $product->brand->id ?? NULL)->get() as $guess)
+				@foreach(\App\Product::where('designer_style_id', $product->sku)->where('brand_id', $product->brand->mapped_id ?? NULL)->get() as $guess)
 				<a href="{{ route('end.merge', ['end_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">合并至{{ __($guess->color->name ?? '-') }}</span>
 				</a>
