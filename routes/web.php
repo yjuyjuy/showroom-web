@@ -99,9 +99,9 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('farfetch/designers/{designer}', 'FarfetchController@index')->name('farfetch.designers.index');
 	Route::get('farfetch/categories/{category}', 'FarfetchController@index')->name('farfetch.categories.index');
 	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
-	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export');
-	Route::get('farfetch/{farfetch_product}/merge/{product}', 'FarfetchController@merge')->name('farfetch.merge');
-	Route::get('farfetch/{farfetch_product}/unlink', 'FarfetchController@unlink')->name('farfetch.unlink');
+	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export')->middleware('can:export,App\FarfetchProduct');
+	Route::get('farfetch/{farfetch_product}/merge/{product}', 'FarfetchController@merge')->name('farfetch.merge')->middleware('can:export,App\FarfetchProduct');
+	Route::get('farfetch/{farfetch_product}/unlink', 'FarfetchController@unlink')->name('farfetch.unlink')->middleware('can:export,App\FarfetchProduct');
 	# end clothing
 	Route::get('end', 'EndController@index')->name('end.index');
 	Route::get('end/brands', 'EndController@brands')->name('end.brands');
@@ -109,9 +109,9 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('end/brands/{brand}', 'EndController@index')->name('end.brands.index');
 	Route::get('end/departments/{department}', 'EndController@index')->name('end.departments.index');
 	Route::get('end/{product}', 'EndController@show')->name('end.show');
-	Route::get('end/{end_product}/export', 'EndController@export')->name('end.export');
-	Route::get('end/{end_product}/unlink', 'EndController@unlink')->name('end.unlink');
-	Route::get('end/{end_product}/merge/{product}', 'EndController@merge')->name('end.merge');
+	Route::get('end/{end_product}/export', 'EndController@export')->name('end.export')->middleware('can:export,App\EndProduct');
+	Route::get('end/{end_product}/unlink', 'EndController@unlink')->name('end.unlink')->middleware('can:export,App\EndProduct');
+	Route::get('end/{end_product}/merge/{product}', 'EndController@merge')->name('end.merge')->middleware('can:export,App\EndProduct');
 	# off---white
 	Route::get('off-white', 'OffWhiteController@index')->name('offwhite.index');
 	Route::get('off-white/categories', 'OffWhiteController@categories')->name('offwhite.categories');
