@@ -141,6 +141,7 @@ class EndController extends Controller
 		foreach(\App\EndProduct::where('sku', $end_product->sku)->where('brand_name', $end_product->brand_name)->where('color', $end_product->color)->get() as $p){
 			$retail->merge($p->size_price);
 			$image_controller->import($p->images, $product);
+			$retail->link = $p->url;
 		}
 		if (!empty($retail->prices)) {
 			$retail->save();
