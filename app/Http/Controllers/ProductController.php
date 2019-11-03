@@ -168,16 +168,7 @@ class ProductController extends Controller
 
 	public function random()
 	{
-		$user = auth()->user()->load('following_retailers');
-		while (true) {
-			$product = \App\Product::inRandomOrder()->first();
-			$product->load(['retails' => function ($query) use ($user) {
-				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-			}]);
-			if ($product->retails->isNotEmpty()) {
-				return $this->show($product);
-			}
-		}
+		return redirect(route('products.show', ['product' => \App\Product::inRandomOrder()->first()]));
 	}
 
 	public function edit(Product $product)
