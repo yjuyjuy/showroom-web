@@ -67,7 +67,7 @@ export default {
 				if (!this.prices[i].size || !this.prices[i].cost || !this.prices[i].offer || !this.prices[i].retail) {
 					continue;
 				}
-				this.prices[i].size = String(this.prices[i].size).toUpperCase();
+				this.prices[i].size = String(this.prices[i].size).toUpperCase().replace('，',',');
 				let cost = this.prices[i].cost;
 				let offer = this.prices[i].offer;
 				let retail = this.prices[i].retail;
