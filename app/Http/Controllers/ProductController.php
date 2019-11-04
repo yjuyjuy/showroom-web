@@ -170,7 +170,7 @@ class ProductController extends Controller
 
 	public function random()
 	{
-		header('cache-control: no-cache');
+		header('cache-control: no-cache')
 		header('expires: Thu, 01 Jan 1970 00:00:01 GMT');
 		return redirect(route('products.show', ['product' => \App\Product::inRandomOrder()->first()]));
 	}
