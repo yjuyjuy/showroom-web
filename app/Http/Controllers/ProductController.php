@@ -36,7 +36,7 @@ class ProductController extends Controller
 			$sort = 'default';
 		}
 		if ($sort == 'default') {
-			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
+			$query->orderBy('created_at', 'desc')->orderBy('id');
 		} elseif ($sort == 'newest') {
 			$query->orderBy('season_id', 'desc')->orderBy('id');
 		} elseif ($sort == 'oldest') {
@@ -45,6 +45,8 @@ class ProductController extends Controller
 			$query->inRandomOrder();
 		} elseif ($sort == 'created_at') {
 			$query->orderBy('created_at', 'desc')->orderBy('id');
+		} elseif ($sort == 'category') {
+			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		}
 
 		$products = $query->get();
@@ -222,7 +224,7 @@ class ProductController extends Controller
 
 	public function sortOptions()
 	{
-		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest','created_at'];
+		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest','created_at','category'];
 	}
 
 	public function filterOptions()
