@@ -55,11 +55,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 # Retailer
+Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
+Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
 Route::middleware('auth')->group(function () {
 	Route::post('retailer/{retailer}/follow', 'FollowRetailerController@follow')->name('follow.retailer');
 	Route::post('retailer/{retailer}/unfollow', 'FollowRetailerController@unfollow')->name('unfollow.retailer');
-	Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
-	Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
 });
 
 # Vendor
