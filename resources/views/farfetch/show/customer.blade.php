@@ -43,6 +43,5 @@
 			</ul>
 		</div>
 	</div>
-	@elsecan
 	@endcan
 </div>
