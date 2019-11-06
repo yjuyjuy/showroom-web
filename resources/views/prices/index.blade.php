@@ -57,7 +57,7 @@
 					@endforeach
 					<div class="price-grid__footer d-flex justify-content-end">
 						<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('edit') }}</a>
-						<button type="button" class="mdc-button mdc-button--error" onclick="delete_price({{$price->id}})">
+						<button type="button" class="mdc-button mdc-button--error" onclick="axios.delete('/prices/{{$price->id}}').then(response => window.location.reload()).catch(error => window.alert('action failed'));">
 							<span class="mdc-button__label">{{ __('delete') }}</span>
 						</button>
 					</div>
