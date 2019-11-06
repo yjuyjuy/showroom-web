@@ -161,7 +161,7 @@ export default {
 			if (this.prices[index].offer) {
 				return Math.ceil(this.prices[index].offer * 1.15 / 10) * 10;
 			} else if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 1.15 / 10) * 10;
+				return Math.ceil(this.prices[index].cost * 1.30 / 10) * 10;
 			} else {
 				return '';
 			}
