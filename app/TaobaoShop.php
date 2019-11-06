@@ -37,7 +37,7 @@ class TaobaoShop extends Model
 	}
 	public function products()
 	{
-		return $this->belongsToMany(Product::class, 'crawler_taobao.prices', 'shop_id', 'product_id');
+		return $this->belongsToMany(Product::class, 'taobao.prices', 'shop_id', 'product_id');
 	}
 	public function taobao_products()
 	{
