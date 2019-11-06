@@ -158,7 +158,9 @@ export default {
 			}
 		},
 		computed_retail: function(index) {
-			if (this.prices[index].cost) {
+			if (this.prices[index].offer) {
+				return Math.ceil(this.prices[index].offer * 1.15 / 10) * 10;
+			} else if (this.prices[index].cost) {
 				return Math.ceil(this.prices[index].cost * 1.15 / 10) * 10;
 			} else {
 				return '';
