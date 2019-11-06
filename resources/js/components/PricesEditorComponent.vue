@@ -152,7 +152,7 @@ export default {
 		},
 		computed_offer: function(index) {
 			if (this.prices[index].cost) {
-				return this.prices[index].cost;
+				return Math.ceil(this.prices[index].cost * 1.15 / 10) * 10;
 			} else {
 				return '';
 			}
