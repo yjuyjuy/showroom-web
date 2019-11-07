@@ -114,7 +114,7 @@ export default {
 							});
 						}
 					}
-				} else if (/^([X]*[SML]+,)+[X]*[SML]+$/.test(this.prices[i].size) || /^([0-9]+,)+[0-9]+$/.test(this.prices[i].size)) {
+				} else if (/^([X]*[SML]+,)+[X]*[SML]+$/.test(this.prices[i].size) || /^([0-9.]+,)+[0-9.]+$/.test(this.prices[i].size)) {
 					let sizes = this.prices[i].size.split(',');
 					this.prices.splice(i, 1);
 					for (let size of sizes) {
