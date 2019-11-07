@@ -155,12 +155,12 @@ class FarfetchController extends Controller
 		}
 		$farfetch_product->product_id = $product->id;
 		$farfetch_product->save();
+		(new ImageController())->import($farfetch_product->images, $product);
 		$retail = \App\RetailPrice::firstOrNew([
 			'retailer_id' => $retailer_id,
 			'product_id' => $product->id,
 		]);
 		$retail->prices = [];
-		(new ImageController())->import($farfetch_product->images, $product);
 		foreach($product->farfetch_products as $p) {
 			$retail->merge($p->size_price);
 		}
@@ -174,8 +174,23 @@ class FarfetchController extends Controller
 
 	public function unlink(FarfetchProduct $farfetch_product)
 	{
+		$retailer_id = 1467053076;
+		$product = $farfetch_product->product;
 		$farfetch_product->product_id = NULL;
 		$farfetch_product->save();
+		$retail = \App\RetailPrice::firstOrNew([
+			'retailer_id' => $retailer_id,
+			'product_id' => $product->id,
+		]);
+		$retail->prices = [];
+		foreach($product->farfetch_products as $p) {
+			$retail->merge($p->size_price);
+		}
+		if(!empty($retail->prices)) {
+			$retail->save();
+		} else {
+			$retail->delete();
+		}
 		return redirect(route('farfetch.show', ['product' => $farfetch_product]));
 	}
 }
