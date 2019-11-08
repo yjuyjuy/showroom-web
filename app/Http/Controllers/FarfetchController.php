@@ -60,10 +60,10 @@ class FarfetchController extends Controller
 		} else {
 			$query->orderBy('id', 'desc');
 		}
-
+		$query->has('images');
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
-		$products = $query->skip(($page - 1) * 48)->take(48)->has('images')->with('designer', 'category')->get();
+		$products = $query->skip(($page - 1) * 48)->take(48)->with('designer', 'category')->get();
 
 		$sortOptions = $this->getSortOptions();
 		$request->flash();
