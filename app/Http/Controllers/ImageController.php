@@ -124,15 +124,24 @@ class ImageController extends Controller
 			if (!$product->images()->where('source', $original_filename)->first()) {
 				$order += 1;
 				$path = 'images/'.$product->id.'/'.bin2hex(random_bytes(20)).'.jpeg';
-				if (!is_dir(dirname('storage/'.$path))) {
-					mkdir(dirname('storage/'.$path), 0777, true);
+				$dir = dirname('storage/'.$path);
+				if (!is_dir($dir)) {
+					mkdir($dir, 0777, true);
 				}
-				if ($image->path) {
-					Storage::copy('public/'.$image->path, 'public/'.$path);
+				if ($image->path && Storage::exists('public/'.$image->path)) {
+					try {
+						Storage::copy('public/'.$image->path, 'public/'.$path);
+					} catch (Exception $e) {
+						return;
+					}
 				} else {
-					$f = fopen($image->url, 'r');
-					file_put_contents('storage/'.$path, $f);
-					fclose($f);
+					try {
+						$f = fopen($image->url, 'r');
+						file_put_contents('storage/'.$path, $f);
+						fclose($f);
+					} catch (Exception $e) {
+						return;
+					}
 				}
 				\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(400, 565)->save('storage/'.$path.'_400.jpeg', 80);
 				\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(800, 1130)->save('storage/'.$path.'_800.jpeg', 80);
