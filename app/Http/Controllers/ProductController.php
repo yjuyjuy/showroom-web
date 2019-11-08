@@ -230,10 +230,10 @@ class ProductController extends Controller
 	public function filterOptions()
 	{
 		return [
+			"brand" => \App\Brand::orderBy('name')->get(),
 			"category" => \App\Category::all(),
 			"color" => \App\Color::all(),
 			"season" => \App\Season::all(),
-			"brand" => \App\Brand::orderBy('name')->get()
 		];
 	}
 }
