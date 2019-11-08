@@ -131,7 +131,7 @@ class ImageController extends Controller
 				if ($image->path && Storage::exists('public/'.$image->path)) {
 					try {
 						Storage::copy('public/'.$image->path, 'public/'.$path);
-					} catch (Exception $e) {
+					} catch (Exception | ErrorException $e) {
 						return;
 					}
 				} else {
@@ -139,7 +139,7 @@ class ImageController extends Controller
 						$f = fopen($image->url, 'r');
 						file_put_contents('storage/'.$path, $f);
 						fclose($f);
-					} catch (Exception $e) {
+					} catch (Exception | ErrorException $e) {
 						return;
 					}
 				}
