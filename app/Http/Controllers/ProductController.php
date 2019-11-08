@@ -201,12 +201,12 @@ class ProductController extends Controller
 	public function validateProduct()
 	{
 		return request()->validate([
-			'brand' => ['nullable', 'exists:brands,id',],
-			'season' => ['nullable', 'exists:seasons,id',],
-			'name' => ['nullable', 'string', 'max:255',],
-			'name_cn' => ['nullable', 'string', 'max:255',],
-			'category' => ['nullable', 'exists:categories,id',],
-			'color' => ['nullable', 'exists:colors,id',],
+			'brand' => ['exists:brands,id',],
+			'season' => ['exists:seasons,id',],
+			'name' => ['string', 'max:255',],
+			'name_cn' => ['string', 'max:255',],
+			'category' => ['exists:categories,id',],
+			'color' => ['exists:colors,id',],
 			'designer_style_id' => ['nullable','string','max:255',],
 			'comment' => ['nullable','string','max:255',],
 		]);
