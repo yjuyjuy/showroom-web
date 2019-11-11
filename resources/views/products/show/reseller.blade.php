@@ -18,7 +18,7 @@
 </div>
 <?php $farfetch_products = \App\FarfetchProduct::where('product_id', $product->id)->get(); ?>
 <?php $end_products = \App\EndProduct::where('product_id', $product->id)->get(); ?>
-<?php if ($product->brand_id == 885468) { $offwhite_products = \App\OffWhiteProduct::where('id', $product->designer_style_id)->get(); } else {$offwhite_products = [];}?>
+<?php if ($product->brand_id == 885468) { $offwhite_products = \App\OffWhiteProduct::where('id', $product->designer_style_id)->get(); } else {$offwhite_products = collect();}?>
 @if($farfetch_products->isNotEmpty() || $end_products->isNotEmpty() || $offwhite_products->isNotEmpty())
 <div class="d-flex justify-content-end">
 	<div class="mdc-menu-surface--anchor">
