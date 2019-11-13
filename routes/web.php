@@ -99,9 +99,9 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('farfetch/designers/{designer}', 'FarfetchController@index')->name('farfetch.designers.index');
 	Route::get('farfetch/categories/{category}', 'FarfetchController@index')->name('farfetch.categories.index');
 	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
-	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export')->middleware('can:export,App\FarfetchProduct');
-	Route::get('farfetch/{farfetch_product}/merge/{product}', 'FarfetchController@merge')->name('farfetch.merge')->middleware('can:export,App\FarfetchProduct');
-	Route::get('farfetch/{farfetch_product}/unlink', 'FarfetchController@unlink')->name('farfetch.unlink')->middleware('can:export,App\FarfetchProduct');
+	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export')->middleware('can:create,App\Product');
+	Route::get('farfetch/{farfetch_product}/merge/{product}', 'FarfetchController@merge')->name('farfetch.merge')->middleware('can:create,App\Product');
+	Route::get('farfetch/{farfetch_product}/unlink', 'FarfetchController@unlink')->name('farfetch.unlink')->middleware('can:create,App\Product');
 	# end clothing
 	Route::get('end', 'EndController@index')->name('end.index');
 	Route::get('end/brands', 'EndController@brands')->name('end.brands');
@@ -109,15 +109,25 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('end/brands/{brand}', 'EndController@index')->name('end.brands.index');
 	Route::get('end/departments/{department}', 'EndController@index')->name('end.departments.index');
 	Route::get('end/{product}', 'EndController@show')->name('end.show');
-	Route::get('end/{end_product}/export', 'EndController@export')->name('end.export')->middleware('can:export,App\EndProduct');
-	Route::get('end/{end_product}/unlink', 'EndController@unlink')->name('end.unlink')->middleware('can:export,App\EndProduct');
-	Route::get('end/{end_product}/merge/{product}', 'EndController@merge')->name('end.merge')->middleware('can:export,App\EndProduct');
+	Route::get('end/{end_product}/export', 'EndController@export')->name('end.export')->middleware('can:create,App\Product');
+	Route::get('end/{end_product}/unlink', 'EndController@unlink')->name('end.unlink')->middleware('can:create,App\Product');
+	Route::get('end/{end_product}/merge/{product}', 'EndController@merge')->name('end.merge')->middleware('can:create,App\Product');
+
 	# off---white
 	Route::get('off-white', 'OffWhiteController@index')->name('offwhite.index');
 	Route::get('off-white/categories', 'OffWhiteController@categories')->name('offwhite.categories');
 	Route::get('off-white/categories/{category}', 'OffWhiteController@index')->name('offwhite.categories.index');
 	Route::get('off-white/{product}', 'OffWhiteController@show')->name('offwhite.show');
-	Route::get('off-white/{offwhite_product}/export', 'OffWhiteController@export')->name('offwhite.export');
+	Route::get('off-white/{offwhite_product}/export', 'OffWhiteController@export')->name('offwhite.export')->middleware('can:create,App\Product');
+	Route::get('off-white/{offwhite_product}/unlink', 'OffWhiteController@unlink')->name('offwhite.unlink')->middleware('can:create,App\Product');
+	Route::get('off-white/{offwhite_product}/merge/{product}', 'OffWhiteController@merge')->name('offwhite.merge')->middleware('can:create,App\Product');
+
+	Route::get('dior', 'DiorController@index')->name('dior.index');
+	Route::get('dior/categories/{category}', 'DiorController@index')->name('dior.categories.index');
+	Route::get('dior/{product}', 'DiorController@show')->name('dior.show');
+	Route::get('dior/{dior_product}/export', 'DiorController@export')->name('dior.export')->middleware('can:create,App\Product');
+	Route::get('dior/{dior_product}/unlink', 'DiorController@unlink')->name('dior.unlink')->middleware('can:create,App\Product');
+	Route::get('dior/{dior_product}/merge/{product}', 'DiorController@merge')->name('dior.merge')->middleware('can:create,App\Product');
 });
 
 # admin helper routes
