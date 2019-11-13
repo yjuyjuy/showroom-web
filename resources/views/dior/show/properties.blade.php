@@ -1,27 +1,32 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="my-1">
-		<span
-			 class="mdc-typography--headline6" style="text-transform: uppercase;">
+		<span class="mdc-typography--headline6" style="text-transform: uppercase;">
 			Dior
 		</span>
-		<a href="{{ route('end.departments.index',['department' => Str::slug($product->department_name)]) }}"
+	</div>
+
+	<div class="my-1">
+		<a href="{{ route('dior.categories.index',['category' => Str::slug($product->category)]) }}"
 			 class="mdc-typography--headline6">
 			{{ __($product->gender) }} - {{ __($product->category) }} - {{ __($product->subcategory) }}
 		</a>
 	</div>
+
 	<div class="my-1">
 		<span class="mdc-typography--headline6" style="text-transform: capitalize;">
-			{{ $product->name_cn }}
+			{!! $product->name_cn !!}
 		</span>
+	</div>
 
+	<div class="my-1">
 		<span class="mdc-typography--headline6" style="text-transform: capitalize;">
-			{{ $product->name }}
+			{!! $product->name !!}
 		</span>
-
 		<span class="mdc-typography--headline6" style="text-transform: capitalize;">
 			{{ __($product->color) }}
 		</span>
 	</div>
+
 	<div class="my-1">
 		<span>{{$product->id}}</span>
 	</div>
