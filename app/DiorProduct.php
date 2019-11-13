@@ -18,12 +18,19 @@ class DiorProduct extends Model
 	 * @var string
 	 */
 	protected $table = 'products';
+
 	/**
-	 * The attributes that should be cast to native types.
+	 * Indicates if the IDs are auto-incrementing.
 	 *
-	 * @var array
+	 * @var bool
 	 */
-	protected $casts = [];
+	public $incrementing = false;
+	/**
+		* The "type" of the auto-incrementing ID.
+		*
+		* @var string
+		*/
+	protected $keyType = 'string';
 
 	public function image()
 	{
