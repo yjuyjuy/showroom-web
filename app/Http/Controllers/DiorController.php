@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+use App\DiorProduct;
+use App\DiorImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class DiorController extends Controller
 {
@@ -14,7 +20,7 @@ class DiorController extends Controller
 			$category = $categories[$token];
 			$query->where('category', $category);
 		} else {
-			$category = NULL
+			$category = NULL;
 		}
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
