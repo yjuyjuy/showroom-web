@@ -30,7 +30,7 @@
 		<li class="mdc-image-list__item">
 			<a href="{{ route('dior.show',['product' => $product ]) }}">
 				<div class="">
-					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url }}">
+					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url ?? '' }}">
 				</div>
 				<div class="mdc-image-list__supporting">
 					<span class="mdc-image-list__label brand">{{ $product->brand_name }}</span>
