@@ -1,6 +1,6 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="my-1">
-		<span class="mdc-typography--headline6" style="text-transform: uppercase;">
+		<span class="mdc-typography--headline6 mr-3" style="text-transform: uppercase;">
 			Dior
 		</span>
 		<a href="{{ route('dior.categories.index',['category' => Str::slug($product->category)]) }}"
