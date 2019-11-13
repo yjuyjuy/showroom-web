@@ -3,9 +3,6 @@
 		<span class="mdc-typography--headline6" style="text-transform: uppercase;">
 			Dior
 		</span>
-	</div>
-
-	<div class="my-1">
 		<a href="{{ route('dior.categories.index',['category' => Str::slug($product->category)]) }}"
 			 class="mdc-typography--headline6">
 			{{ __($product->gender) }} - {{ __($product->category) }} - {{ __($product->subcategory) }}
@@ -25,10 +22,6 @@
 		<span class="mdc-typography--headline6" style="text-transform: capitalize;">
 			{{ __($product->color) }}
 		</span>
-	</div>
-
-	<div class="my-1">
-		<span>{{$product->id}}</span>
 	</div>
 
 	<div class="my-2"></div>
