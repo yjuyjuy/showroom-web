@@ -16,10 +16,11 @@ class FarfetchController extends Controller
 	{
 		$categories = $this->getCategories();
 		$designers = $this->getDesigners();
+		$sortOptions = $this->getSortOptions();
 		$data = $request->validate([
 			'designer.*' => ['sometimes', Rule::in($designers->pluck('id'))],
 			'category.*' => ['sometimes', Rule::in($categories->pluck('id'))],
-			'sort' => ['sometimes', Rule::in($this->getSortOptions())],
+			'sort' => ['sometimes', Rule::in($sortOptions)],
 		]);
 		$filters = [];
 		$query = FarfetchProduct::query();
@@ -60,12 +61,11 @@ class FarfetchController extends Controller
 		} else {
 			$query->orderBy('id', 'desc');
 		}
-		$query->has('images');
+
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $query->skip(($page - 1) * 48)->take(48)->with('designer', 'category')->get();
 
-		$sortOptions = $this->getSortOptions();
 		$request->flash();
 		return view('farfetch.index', compact('products', 'designer', 'designers', 'category', 'categories', 'sortOptions', 'filters', 'page', 'total_pages'));
 	}

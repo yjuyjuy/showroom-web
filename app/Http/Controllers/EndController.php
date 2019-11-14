@@ -69,7 +69,6 @@ class EndController extends Controller
 		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $query->skip(($page - 1) * 48)->take(48)->get();
 
-		$sortOptions = $this->getSortOptions();
 		$request->flash();
 		return view('end.index', compact('products', 'brand', 'department', 'brands', 'departments', 'sortOptions', 'filters', 'page', 'total_pages'));
 	}
