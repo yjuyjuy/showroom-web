@@ -16,7 +16,7 @@
 		<span class="mdc-button__label">打开商品页面</span>
 	</a>
 	@endif
-	@can('export', $product)
+	@can('create', \App\Product::class)
 	<div class="mdc-menu-surface--anchor d-inline-block">
 		<button type="button" class="mdc-button mdc-button--unelevated ml-2 open-menu-button">
 			<span class="mdc-button__label">操作</span>
