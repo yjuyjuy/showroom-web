@@ -13,12 +13,11 @@ use Illuminate\Support\Str;
 
 class LouisVuittonController extends Controller
 {
-	public function index(Request $request, $token=null)
+	public function index(Request $request, $category=null)
 	{
 		$categories = $this->getCategories();
 		$query = LouisVuittonProduct::orderBy('id', 'desc');
-		if (array_key_exists($token, $categories)) {
-			$category = $categories[$token];
+		if (in_array($category, $categories)) {
 			$query->where('category', $category);
 		} else {
 			$category = NULL;
@@ -40,12 +39,7 @@ class LouisVuittonController extends Controller
 	public function getCategories()
 	{
 		return Cache::remember('louisvuitton-categories', 60 * 60, function () {
-			$categories = [];
-			foreach (LouisVuittonCategory::has('products')->pluck('category')->unique() as $category) {
-				$token = Str::slug($category);
-				$categories[$token] = $category;
-			}
-			return $categories;
+			return LouisVuittonProduct::pluck('category')->unique()->toArray();
 		});
 	}
 
