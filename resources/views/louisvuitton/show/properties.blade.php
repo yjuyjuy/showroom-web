@@ -14,7 +14,7 @@
 			{{ $product->name }}
 		</span>
 		<span class="mdc-typography--headline6" style="text-transform: capitalize;">
-			#{{ __($product->color) }}
+			{{ __($product->color) }}
 		</span>
 	</div>
 	<div class="my-1">
