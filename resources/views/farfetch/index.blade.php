@@ -15,7 +15,6 @@
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 					@foreach($categories as $value)
 						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('farfetch.categories.index', ['category' => $value,]) }}">{{ __($value->description) }}</a>
-				    </a>
 					@endforeach
 			  </ul>
 			</div>

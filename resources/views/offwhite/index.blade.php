@@ -14,7 +14,6 @@
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 					@foreach($categories as $key => $value)
 						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('offwhite.categories.index', ['category' => $key,]) }}">{{ __($value) }}</a>
-				    </a>
 					@endforeach
 			  </ul>
 			</div>

@@ -15,7 +15,6 @@
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 					@foreach($departments as $token => $name)
 						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('end.departments.index', ['department' => $token,]) }}">{{ __($name) }}</a>
-				    </a>
 					@endforeach
 			  </ul>
 			</div>
