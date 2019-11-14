@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\LouisVuittonProduct;
 use App\LouisVuittonImage;
+use App\LouisVuittonCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
