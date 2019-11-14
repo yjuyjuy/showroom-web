@@ -27,12 +27,12 @@ class DiorController extends Controller
 		$products = $query->skip(($page - 1) * 48)->take(48)->get();
 
 		$request->flash();
-		return view('dior.index', compact('products', 'category', 'categories', 'sortOptions', 'filters', 'page', 'total_pages'));
+		return view('dior.index', compact('products', 'category', 'categories', 'page', 'total_pages'));
 	}
 
 	public function show(DiorProduct $product)
 	{
-		$product->loadMissing(['images']);
+		$product->load('images');
 		return view('dior.show', compact('product'));
 	}
 
