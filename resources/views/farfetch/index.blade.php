@@ -41,7 +41,7 @@
 		<li class="mdc-image-list__item">
 			<a href="{{ route('farfetch.show',['product' => $product ]) }}">
 				<div class="">
-					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url }}">
+					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url ?? '' }}">
 				</div>
 				<div class="mdc-image-list__supporting">
 					<span class="mdc-image-list__label brand">{{ $product->designer->description }}</span>
@@ -61,6 +61,7 @@
 		@endforeach
 	</ul>
 	@include('layouts.pages')
+	@endif
 	<button id="display-options-fab" class="mdc-fab" aria-label="display options">
 	  <span class="mdc-fab__icon material-icons">filter_list</span>
 	</button>
@@ -97,6 +98,5 @@
 	  </div>
 	  <div class="mdc-dialog__scrim"></div>
 	</div>
-	@endif
 </div>
 @endsection

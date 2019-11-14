@@ -20,11 +20,11 @@
 		</span>
 	</div>
 	<div class="my-1">
-		<span>{{$product->designer_style_id}}</span>
+		<span>{{ $product->designer_style_id }}</span>
 	</div>
-	<div class="my-2">
 
-	</div>
+	<div class="my-2"></div>
+
 	@if($product->composition)
 	<div class="my-1">
 		<span>材质: {{ $product->composition }}</span>
