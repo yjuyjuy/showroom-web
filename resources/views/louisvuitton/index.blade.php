@@ -27,7 +27,7 @@
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products->load('image') as $product)
 		<li class="mdc-image-list__item">
-			<a href="{{ route('louisvuitton.show',['product' => $product ]) }}">
+			<a href="{{ route('louisvuitton.show',['product' => urlencode($product->id) ]) }}">
 				<div class="">
 					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url ?? '' }}">
 				</div>
