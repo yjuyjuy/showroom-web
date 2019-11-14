@@ -1,11 +1,11 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="my-1">
 		<span class="mdc-typography--headline6 mr-3" style="text-transform: uppercase;">
-			Louis Vuitton -
+			Louis&nbsp;Vuitton&nbsp;-&nbsp;
 		</span>
-		<a href="{{ route('dior.categories.index',['category' => Str::slug($product->category)]) }}"
+		<a href="{{ route('louisvuittton.categories.index',['category' => Str::slug($product->category)]) }}"
 			 class="mdc-typography--headline6">
-			{{ __($product->gender) }} - {{ __($product->category) }} - {{ __($product->subcategory) }}
+			{{ __($product->gender) }}&nbsp;-&nbsp;{{ __($product->category) }}&nbsp;-&nbsp;{{ __($product->subcategory) }}
 		</a>
 	</div>
 
@@ -25,7 +25,7 @@
 
 	@if($product->description)
 	<div class="my-1">
-		{{ $product->description }}
+		{!! $product->description !!}
 	</div>
 	@endif
 

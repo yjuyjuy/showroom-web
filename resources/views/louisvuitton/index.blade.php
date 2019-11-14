@@ -33,8 +33,7 @@
 					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url ?? '' }}">
 				</div>
 				<div class="mdc-image-list__supporting">
-					<span class="mdc-image-list__label brand">{{ $product->brand_name }}</span>
-					<span class="mdc-image-list__label product-name">{{ $product->name_cn }}</span>
+					<span class="mdc-image-list__label brand">Louis&ngbsp;Vuitton</span>
 					<span class="mdc-image-list__label product-name">{{ $product->name }}</span>
 				</div>
 			</a>

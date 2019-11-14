@@ -29,7 +29,7 @@ class LouisVuittonImage extends Model
 		if ($this->path) {
 			return secure_asset('storage/'.$this->path);
 		} else {
-			return $this->attributes['url'];
+			return '';
 		}
 	}
 }
