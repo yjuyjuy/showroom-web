@@ -21,7 +21,7 @@ class DiorImage extends Model
 
 	public function product()
 	{
-		return $this->belongsTo(EndProduct::class, 'product_id');
+		return $this->belongsTo(DiorProduct::class, 'product_id');
 	}
 
 	public function getUrlAttribute()
