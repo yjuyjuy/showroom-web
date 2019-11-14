@@ -17,7 +17,7 @@ class LouisVuittonController extends Controller
 	{
 		$categories = $this->getCategories();
 		$query = LouisVuittonProduct::orderBy('id', 'desc');
-		if (in_array($category, $categories)) {
+		if ($category && in_array($category, $categories)) {
 			$query->where('category', $category);
 		} else {
 			$category = NULL;
@@ -39,7 +39,7 @@ class LouisVuittonController extends Controller
 	public function getCategories()
 	{
 		return Cache::remember('louisvuitton-categories', 60 * 60, function () {
-			return LouisVuittonProduct::pluck('category')->unique()->toArray();
+			return LouisVuittonProduct::whereNotNull('category')->pluck('category')->unique()->toArray();
 		});
 	}
 
