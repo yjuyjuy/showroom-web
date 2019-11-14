@@ -128,6 +128,13 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('dior/{dior_product}/export', 'DiorController@export')->name('dior.export')->middleware('can:create,App\Product');
 	Route::get('dior/{dior_product}/unlink', 'DiorController@unlink')->name('dior.unlink')->middleware('can:create,App\Product');
 	Route::get('dior/{dior_product}/merge/{product}', 'DiorController@merge')->name('dior.merge')->middleware('can:create,App\Product');
+
+	Route::get('louis-vuitton', 'LouisVuittonController@index')->name('louisvuitton.index');
+	Route::get('louis-vuitton/categories/{category}', 'LouisVuittonController@index')->name('louisvuitton.categories.index');
+	Route::get('louis-vuitton/{product}', 'LouisVuittonController@show')->name('louisvuitton.show');
+	Route::get('louis-vuitton/{lv_product}/export', 'LouisVuittonController@export')->name('louisvuitton.export')->middleware('can:create,App\Product');
+	Route::get('louis-vuitton/{lv_product}/unlink', 'LouisVuittonController@unlink')->name('louisvuitton.unlink')->middleware('can:create,App\Product');
+	Route::get('louis-vuitton/{lv_product}/merge/{product}', 'LouisVuittonController@merge')->name('louisvuitton.merge')->middleware('can:create,App\Product');
 });
 
 # admin helper routes
