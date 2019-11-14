@@ -3,7 +3,7 @@
 		<span class="mdc-typography--headline6 mr-3" style="text-transform: uppercase;">
 			Louis&nbsp;Vuitton&nbsp;-&nbsp;
 		</span>
-		<a href="{{ route('louisvuittton.categories.index',['category' => Str::slug($product->category)]) }}"
+		<a href="{{ route('louisvuitton.categories.index',['category' => Str::slug($product->category)]) }}"
 			 class="mdc-typography--headline6">
 			{{ __($product->gender) }}&nbsp;-&nbsp;{{ __($product->category) }}&nbsp;-&nbsp;{{ __($product->subcategory) }}
 		</a>
