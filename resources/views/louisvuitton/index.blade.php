@@ -13,7 +13,7 @@
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 					@foreach($categories as $token => $name)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('dior.categories.index', ['category' => $token,]) }}">{{ __($name) }}</a>
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('louisvuitton.categories.index', ['category' => $token,]) }}">{{ __($name) }}</a>
 				    </a>
 					@endforeach
 			  </ul>
@@ -28,7 +28,7 @@
 	<ul class="mdc-image-list main-image-list">
 		@foreach($products->load('image') as $product)
 		<li class="mdc-image-list__item">
-			<a href="{{ route('dior.show',['product' => $product ]) }}">
+			<a href="{{ route('louisvuitton.show',['product' => $product ]) }}">
 				<div class="">
 					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url ?? '' }}">
 				</div>
