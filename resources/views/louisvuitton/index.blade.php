@@ -12,8 +12,8 @@
 			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('category') }}</span></button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($categories as $category)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('louisvuitton.categories.index', ['category' => $category,]) }}">{{ $category }}</a>
+					@foreach($categories as $value)
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('louisvuitton.categories.index', ['category' => $value,]) }}">{{ $value }}</a>
 					@endforeach
 			  </ul>
 			</div>
