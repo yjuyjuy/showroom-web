@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('title')
-@if ($category) {{ __($category).' - Dior' }}
-@else {{ 'Dior' }} @endif
+@if ($category) {{ $category.' - Louis Vuitton' }}
+@else {{ 'Louis Vuitton' }} @endif
 @endsection
 
 @section('content')

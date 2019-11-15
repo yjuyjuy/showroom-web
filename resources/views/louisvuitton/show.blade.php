@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $product->name_cn.' - Dior')
+@section('title', $product->name.' - Louis Vuitton')
 
 @section('content')
 <div class="container">
