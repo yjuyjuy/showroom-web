@@ -24,18 +24,18 @@
 		<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 				@if($product->product)
-				<a href="{{ route('louisvuitton.unlink', ['lv_product' => $product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
+				<a href="{{ route('louisvuitton.unlink', ['lv_product' => urlencode($product->id),]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">取消关联</span>
 				</a>
-				<a href="{{ route('louisvuitton.merge', ['lv_product' => $product, 'product' => $product->product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
+				<a href="{{ route('louisvuitton.merge', ['lv_product' => urlencode($product->id), 'product' => $product->product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">更新</span>
 				</a>
 				@else
-				<a href="{{ route('louisvuitton.export', ['lv_product' => $product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
+				<a href="{{ route('louisvuitton.export', ['lv_product' => urlencode($product->id),]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">上架新商品</span>
 				</a>
 				@foreach(\App\Product::where('designer_style_id', $product->id)->where('brand_id', $product->brand_id)->get() as $guess)
-				<a href="{{ route('louisvuitton.merge', ['lv_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
+				<a href="{{ route('louisvuitton.merge', ['lv_product' => urlencode($product->id), 'product' => $guess,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">合并至{{ __($guess->color->name ?? '-') }}</span>
 				</a>
 				@endforeach
