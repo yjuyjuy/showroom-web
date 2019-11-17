@@ -22,7 +22,7 @@ class SuggestionController extends Controller
   {
 		\App\Suggestion::create($request->validate([
 			'content' => 'required|string',
-		]););
+		]));
   	return view('suggestion.stored');
   }
 
