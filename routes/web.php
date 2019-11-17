@@ -151,8 +151,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('requests', 'RequestController@index')->name('requests.index');
 	Route::get('suggestions', 'SuggestionController@index')->name('suggestions.index');
 	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
-	Route::post('requests/agree', 'RequestController@agree')->name('requests.agree');
-	Route::post('requests/reject', 'RequestController@reject')->name('requests.reject');
+	Route::post('requests/agree/{user_id}', 'RequestController@agree')->name('requests.agree');
+	Route::post('requests/reject/{user_id}', 'RequestController@reject')->name('requests.reject');
 });
 
 Route::get('{slug}', function() { abort(404); })->middleware(['auth', 'throttle:10,1']);

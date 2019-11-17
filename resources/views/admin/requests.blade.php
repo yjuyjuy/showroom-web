@@ -11,10 +11,10 @@
 			<div class="my-1 mdc-typography--headline6">用户名: {{$user->username}}</div>
 			<div class="my-1 mdc-typography--headline6">微信号: {{$user->wechat_id}}</div>
 			<div class="text-right my-1">
-				<button type="button" class="mdc-button agree-button">
+				<button type="button" class="mdc-button agree-button" onclick="window.axios.post('requests/agree/{{ $user->id }}').then(response => window.location.reload()).catch(error => window.alert('action failed'));">
 					<span class="mdc-button__label">同意</span>
 				</button>
-				<button type="button" class="mdc-button mdc-button--error reject-button">
+				<button type="button" class="mdc-button mdc-button--error reject-button"  onclick="window.axios.post('requests/reject/{{ $user->id }}').then(response => window.location.reload()).catch(error => window.alert('action failed'));">
 					<span class="mdc-button__label">拒绝</span>
 				</button>
 			</div>

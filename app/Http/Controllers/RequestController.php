@@ -11,18 +11,16 @@ class RequestController extends Controller
 		$users = \App\User::where('type', 'pending')->orderBy('updated_at')->get();
 		return view('admin.requests', compact('users'));
 	}
-	
-	public function agree(Request $request)
+
+	public function agree(Request $request, User $user)
 	{
-		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
 		$user->is_reseller = true;
 		$user->save();
 		return ['success'];
 	}
 
-	public function reject(Request $request)
+	public function reject(Request $request, User $user)
 	{
-		$user = \App\User::find($request->validate(['user_id' => 'exists:users,id'])['user_id']);
 		$user->is_rejected = true;
 		$user->save();
 		return ['success'];
