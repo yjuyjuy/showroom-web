@@ -5,7 +5,7 @@
 		</span>
 		<a href="{{ route('gucci.categories.index',['category' => $product->category]) }}"
 			 class="mdc-typography--headline6">
-			{{ __($product->category) }}&nbsp;-&nbsp;{{ $product->category_translation }}
+			{{ __($product->category_translation) }}
 		</a>
 	</div>
 
