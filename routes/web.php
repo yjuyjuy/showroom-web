@@ -135,6 +135,13 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('louis-vuitton/{lv_product}/export', 'LouisVuittonController@export')->name('louisvuitton.export')->middleware('can:create,App\Product');
 	Route::get('louis-vuitton/{lv_product}/unlink', 'LouisVuittonController@unlink')->name('louisvuitton.unlink')->middleware('can:create,App\Product');
 	Route::get('louis-vuitton/{lv_product}/merge/{product}', 'LouisVuittonController@merge')->name('louisvuitton.merge')->middleware('can:create,App\Product');
+
+	Route::get('gucci', 'GucciController@index')->name('gucci.index');
+	Route::get('gucci/categories/{category}', 'GucciController@index')->name('gucci.categories.index');
+	Route::get('gucci/{product}', 'GucciController@show')->name('gucci.show');
+	Route::get('gucci/{gucci_product}/export', 'GucciController@export')->name('gucci.export')->middleware('can:create,App\Product');
+	Route::get('gucci/{gucci_product}/unlink', 'GucciController@unlink')->name('gucci.unlink')->middleware('can:create,App\Product');
+	Route::get('gucci/{gucci_product}/merge/{product}', 'GucciController@merge')->name('gucci.merge')->middleware('can:create,App\Product');
 });
 
 # admin helper routes
