@@ -9,10 +9,11 @@ class WebsiteController extends Controller
   public function index()
 	{
 		$websites = [
+			'louisvuitton' => 'Louis Vuitton',
 			'farfetch' => 'Farfetch',
 			'end' => 'End Clothing',
-			'louisvuitton' => 'Louis Vuitton',
 			'dior' => 'Dior',
+			'gucci' => 'Gucci',
 			'offwhite' => 'OFF-WHITE',
 		];
 		return view('websites.index', compact('websites'));
