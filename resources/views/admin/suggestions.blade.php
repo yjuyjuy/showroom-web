@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="d-flex justify-content-center mt-4 mx-3">
-	<div class="d-flex flex-column">
+	<div class="d-flex flex-column w-100">
 		@foreach($suggestions as $suggestion)
 		<div class="my-4">
 			<p class="my-2 mdc-typography--headline6">
