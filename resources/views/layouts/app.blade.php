@@ -106,7 +106,7 @@
 					</a> -->
 					<a class="mdc-list-item" href="{{ route('requests.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">verified_user</i>
-						<span class="mdc-list-item__text">待处理用户升级账户申请</span>
+						<span class="mdc-list-item__text">待处理的申请</span>
 					</a>
 					<a class="mdc-list-item" href="{{ route('suggestions.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">all_inbox</i>
