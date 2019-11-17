@@ -55,7 +55,7 @@ class GucciProduct extends Model
 	public function getCategoryTranslationAttribute()
 	{
 		if ($this->category) {
-			return implode('-' array_map( '__', explode('-', $this->category) ) )
+			return implode('-', array_map( '__', explode('-', $this->category) ) );
 		} else {
 			return '';
 		};

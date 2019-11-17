@@ -13,7 +13,7 @@
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 					@foreach($categories as $value)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('gucci.categories.index', ['category' => $value,]) }}">{{ implode('-' array_map( '__', explode('-', $value) ) ) }}</a>
+						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('gucci.categories.index', ['category' => $value,]) }}">{{ implode('-', array_map( '__', explode('-', $value) ) ) }}</a>
 					@endforeach
 			  </ul>
 			</div>
