@@ -151,6 +151,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('requests', 'RequestController@index')->name('requests.index');
 	Route::get('suggestions', 'SuggestionController@index')->name('suggestions.index');
 	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
+	Route::post('suggestions/archive/{suggestion}', 'SuggestionController@archive')->name('suggestion.archive');
 	Route::post('requests/agree/{user}', 'RequestController@agree')->name('requests.agree');
 	Route::post('requests/reject/{user}', 'RequestController@reject')->name('requests.reject');
 });

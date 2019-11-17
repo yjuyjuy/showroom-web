@@ -9,28 +9,27 @@ class SuggestionController extends Controller
 {
   public function index()
   {
-    $suggestions = \App\Suggestion::whereNull('status')->get();
+    $suggestions = \App\Suggestion::whereNull('archived_at')->latest()->get();
     return view('admin.suggestions', compact('suggestions'));
   }
-  
+
   public function create()
   {
   	return view('suggestion.create');
   }
-	
+
   public function store(Request $request)
   {
-		$data = $request->validate([
-			'category' => 'sometimes|string|in:'.implode(',',$this->categories()),
-			'content' => 'required|string|max:255',
-		]);
-		\App\Suggestion::create($data);
+		\App\Suggestion::create($request->validate([
+			'content' => 'required|string',
+		]););
   	return view('suggestion.stored');
   }
-	public function categories()
+
+	public function archive(Suggestion $suggestion)
 	{
-		return [
-			'User Interface'
-		];
+		$suggestion->archived_at = NOW();
+		$suggestion->save();
+		return ['success'];
 	}
 }

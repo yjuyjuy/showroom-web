@@ -104,6 +104,14 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
 						<span class="mdc-list-item__text">淘宝管理</span>
 					</a> -->
+					<a class="mdc-list-item" href="{{ route('requests.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">verified_user</i>
+						<span class="mdc-list-item__text">待处理用户升级账户申请</span>
+					</a>
+					<a class="mdc-list-item" href="{{ route('suggestions.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">all_inbox</i>
+						<span class="mdc-list-item__text">收到的功能建议</span>
+					</a>
 					<hr class="mdc-list-divider">
 					@endif
 					<a class="mdc-list-item" href="{{ route('suggestion.create') }}">
