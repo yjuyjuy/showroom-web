@@ -5,8 +5,9 @@
 @section('content')
 <div class="d-flex justify-content-center mt-4 mx-3">
 	<div class="d-flex flex-column w-100">
+		<div class="m-3 mdc-typography--headline5">收到的建议</div>
 		@foreach($suggestions as $suggestion)
-		<div class="my-4">
+		<div class="m-3">
 			<p class="my-2 mdc-typography--headline6">
 				{{ $suggestion->content }}
 			</p>
