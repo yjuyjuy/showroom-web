@@ -47,11 +47,6 @@ class LouisVuittonProduct extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public function category()
-	{
-		return $this->belongsTo(Category::class, 'subcategory', 'subcategory')->where('category', $this->category)->where('gender', $this->gender);
-	}
-
 	public function getBrandIdAttribute()
 	{
 		return 700854;

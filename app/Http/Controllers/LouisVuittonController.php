@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\LouisVuittonProduct;
 use App\LouisVuittonImage;
-use App\LouisVuittonCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
@@ -67,7 +66,6 @@ class LouisVuittonController extends Controller
 			'designer_style_id' => $lv_product->id,
 			'name_cn' => $lv_product->name,
 			'name' => $lv_product->name,
-			'id' => \App\Product::generate_id(),
 		] as $key => $value) {
 			if (empty($product[$key])) {
 				$product[$key] = $value;

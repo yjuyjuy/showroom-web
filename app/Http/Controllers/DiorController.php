@@ -72,7 +72,6 @@ class DiorController extends Controller
 			'designer_style_id' => $dior_product->id,
 			'name_cn' => $dior_product->name_cn,
 			'name' => $dior_product->name,
-			'id' => \App\Product::generate_id(),
 		] as $key => $value) {
 			if (empty($product[$key])) {
 				$product[$key] = $value;
