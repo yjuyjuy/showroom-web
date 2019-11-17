@@ -24,10 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-      $schedule->call(function() {
-				(new \app\Http\Controllers\AdminController())->sync_all_prices();
-			})->hourly();
-    }
+			//
+		}
 
     /**
      * Register the commands for the application.
