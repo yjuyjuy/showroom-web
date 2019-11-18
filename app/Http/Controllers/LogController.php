@@ -21,7 +21,7 @@ class LogController extends Controller
 
 			$logs = $query->forPage($page, 100);
 
-			return view('admin.logs', compact('logs'));
+			return view('admin.logs', compact('logs', 'total_pages', 'page'));
     }
 
     /**
