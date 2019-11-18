@@ -73,14 +73,17 @@ class PriceController extends Controller
 		$data = json_decode($this->validateRequest()['data']);
 		if (empty($data)) {
 			$price->delete();
+		} elseif ($price->data == $data) {
+			$price->touch();
+			$price->save();
 		} else {
 			$price->data = $data;
 			$price->save();
+			Log::create([
+				'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+				'url' => route('products.show', ['product' => $price->product]),
+			]);
 		}
-		Log::create([
-			'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
-			'url' => route('products.show', ['product' => $price->product]),
-		]);
 		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
 
