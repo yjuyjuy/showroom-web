@@ -98,7 +98,7 @@ class PriceController extends Controller
 	{
 		return request()->validate([
 			'data' => ['required','json'],
-			'data.*.size' => ['required','regex:/^([0-9]+)|([X]*[SML]+)$/'],
+			'data.*.size' => ['required','regex:/^([0-9.XSML]+)$/'],
 			'data.*.cost' => ['required','integer'],
 			'data.*.offer' => ['required','integer'],
 			'data.*.retail' => ['required','integer'],
