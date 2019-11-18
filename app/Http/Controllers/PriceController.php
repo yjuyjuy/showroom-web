@@ -53,6 +53,10 @@ class PriceController extends Controller
 			$price->vendor_id = $vendor->id;
 			$price->save();
 		}
+		Log::create([
+			'content' => auth()->user()->username.'新增了'.$price->vendor->name.'的'.$product->displayName().'的价格',
+			'url' => route('products.show', ['product' => $product]),
+		]);
 		return ['redirect' => route('products.show', ['product' => $product])];
 	}
 
@@ -72,6 +76,10 @@ class PriceController extends Controller
 			$price->data = $data;
 			$price->save();
 		}
+		Log::create([
+			'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+			'url' => route('products.show', ['product' => $price->product]),
+		]);
 		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
 
@@ -79,6 +87,10 @@ class PriceController extends Controller
 	{
 		$this->authorize('delete', $price);
 		$price->delete();
+		Log::create([
+			'content' => auth()->user()->username.'删除了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+			'url' => route('products.show', ['product' => $price->product]),
+		]);
 		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
 
