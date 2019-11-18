@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VendorPrice;
 use App\Vendor;
 use App\Product;
+use App\Log;
 use Illuminate\Http\Request;
 
 class PriceController extends Controller
