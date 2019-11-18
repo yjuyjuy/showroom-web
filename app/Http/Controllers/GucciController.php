@@ -38,7 +38,7 @@ class GucciController extends Controller
 	public function getCategories()
 	{
 		return Cache::remember('gucci-categories', 60 * 60, function () {
-			return GucciProduct::whereNotNull('category')->sortBy('category')->pluck('category')->unique()->toArray();
+			return GucciProduct::whereNotNull('category')->orderBy('category')->pluck('category')->unique()->toArray();
 		});
 	}
 
