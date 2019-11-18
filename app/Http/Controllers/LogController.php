@@ -12,7 +12,7 @@ class LogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
       $query = Log::orderBy('created_at', 'desc');
 
