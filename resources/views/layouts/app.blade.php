@@ -112,6 +112,10 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">all_inbox</i>
 						<span class="mdc-list-item__text">收到的功能建议</span>
 					</a>
+					<a class="mdc-list-item" href="{{ route('logs.index') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">view_list</i>
+						<span class="mdc-list-item__text">操作日志</span>
+					</a>
 					<hr class="mdc-list-divider">
 					@endif
 					<a class="mdc-list-item" href="{{ route('suggestion.create') }}">
