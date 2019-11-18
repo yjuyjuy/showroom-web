@@ -19,7 +19,7 @@ class LogController extends Controller
 			$total_pages = ceil($query->count() / 100.0);
 			$page = min(max($request->query('page', 1), 1), $total_pages);
 
-			$logs = $query->forPage($page, 100);
+			$logs = $query->forPage($page, 100)->get();
 
 			return view('admin.logs', compact('logs', 'total_pages', 'page'));
     }
