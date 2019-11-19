@@ -12,18 +12,18 @@
 		</a>
 	</div>
 
-	@can('update',$product)
 	<div class="mt-2">
 		<div style="text-transform:capitalize;">{{ $product->name }} {{ __($product->color->name ?? '') }}</div>
 		<div class="">
 			@if($product->season_id)<span class="">{{$product->season->name}} {{ __('season') }}</span>@endif
 			@if($product->designer_style_id)<span class="">{{ __('designer_style_id') }}: {{$product->designer_style_id}}</span>@endif
 		</div>
+		@can('update',$product)
 		<div class="">
 			<span class="">ID: {{ $product->id }}</span>
 			<a href="{{ route('products.edit',['product' => $product ]) }}">{{ __('edit') }}</a>
 		</div>
+		@endcan
 	</div>
-	@endcan
 
 </div>
