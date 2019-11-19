@@ -84,11 +84,11 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
 						<span class="mdc-list-item__text">{{ __('My price sheet') }}</span>
 					</a>
+					@endif
 					<a class="mdc-list-item" href="{{ route('websites.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
 						<span class="mdc-list-item__text">所有网站</span>
 					</a>
-					@endif
 					@if($user->isSuperAdmin())
 					<hr class="mdc-list-divider">
 					<h6 class="mdc-list-group__subheader">管理员功能</h6>
