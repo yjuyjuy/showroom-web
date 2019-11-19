@@ -129,7 +129,7 @@ class Product extends Model
 				// End
 				foreach(\App\EndProduct::where('sku', $this->designer_style_id)
 				->whereIn('brand_name', \App\EndBrand::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
-				->get() as $product)) {
+				->get() as $product) {
 					$links['End链接'] = $product->url;
 				}
 				if ($this->brand_id == 182426) { // Louis Vuitton
