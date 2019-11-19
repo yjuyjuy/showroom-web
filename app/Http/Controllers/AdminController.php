@@ -56,7 +56,7 @@ class AdminController extends Controller
 			]);
 			$min_price = INF;
 			foreach (\App\FarfetchProduct::where('designer_style_id', $product->designer_style_id)->with('designer')->get() as $farfetch_product) {
-				if ($farfetch_product->designer->brand_id !== $product->brand_id) {
+				if ($farfetch_product->designer->mapped_id !== $product->brand_id) {
 					continue;
 				}
 				$retail->merge($farfetch_product->size_price);
