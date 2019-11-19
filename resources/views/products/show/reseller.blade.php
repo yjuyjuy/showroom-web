@@ -16,10 +16,7 @@
 	<span>{{ __('no offer') }}</span>
 	@endif
 </div>
-<?php $farfetch_products = \App\FarfetchProduct::where('product_id', $product->id)->get(); ?>
-<?php $end_products = \App\EndProduct::where('product_id', $product->id)->get(); ?>
-<?php if ($product->brand_id == 885468) { $offwhite_products = \App\OffWhiteProduct::where('id', $product->designer_style_id)->get(); } else {$offwhite_products = collect();}?>
-@if($farfetch_products->isNotEmpty() || $end_products->isNotEmpty() || $offwhite_products->isNotEmpty())
+@if(!empty($product->links))
 <div class="d-flex justify-content-end">
 	<div class="mdc-menu-surface--anchor">
 		<button type="button" class="mdc-button open-menu-button">
@@ -28,14 +25,8 @@
 		</button>
 		<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-				@foreach($farfetch_products as $index => $farfetch_product)
-				<a href="{{route('farfetch.show',['product' => $farfetch_product,])}}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">Farfetch链接{{$index + 1}}</a>
-				@endforeach
-				@foreach($end_products as $index => $end_product)
-					<a href="{{route('end.show',['product' => $end_product,])}}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">End链接{{$index + 1}}</a>
-				@endforeach
-				@foreach($offwhite_products as $index => $offwhite_product)
-					<a href="{{route('offwhite.show',['product' => $offwhite_product,])}}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">Off-White官网链接{{$index + 1}}</a>
+				@foreach($product->links as $link)
+					<a href="{{ $link->url }}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">{{ $link->description }}</a>
 				@endforeach
 			</ul>
 		</div>

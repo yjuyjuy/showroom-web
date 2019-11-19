@@ -105,6 +105,56 @@ class Product extends Model
 	{
 		$this->brand_id = $value;
 	}
+	// Accessors
+	public function getOffersToStringAttribute()
+	{
+		$string = implode(' ', collect($this->getSizePrice('offer'))->mapToGroups(function ($item, $key) {
+			return [$item['price'] => $key];
+		})->map(function ($sizes, $price) {
+			return str_replace('OS','',implode('/', $sizes->toArray()))." 售价\u{00a5}".(ceil($price * 0.115)*10)." 调货\u{00a5}".$price;
+		})->toArray());
+		return $this->displayName().' '.$string;
+	}
+	public function getLinkAttribute()
+	{
+		if ($this->brand && $this->designer_style_id) {
+			return Cache::remember('product-'.$this->id.'-links', 12 * 60 * 60, function() use ($this){
+				$links = []
+				// Farfetch
+				foreach(\App\FarfetchProduct::where('designer_style_id', $this->designer_style_id)
+				->whereIn('brand_id', \App\FarfetchDesigners::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
+				->get() as $index => $product) {
+					$links['Farfetch链接'.$index] = $product->url;
+				}
+				// End
+				foreach(\App\EndProduct::where('sku', $this->designer_style_id)
+				->whereIn('brand_name', \App\EndBrand::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
+				->get() as $product)) {
+					$links['End链接'] = $product->url;
+				}
+				if ($this->brand_id == 182426) { // Louis Vuitton
+					if(\App\LouisVuittonProduct::find($this->designer_style_id)) {
+						$links['Louis Vuitton官网链接'] = \App\LouisVuittonProduct::find($this->designer_style_id)->url;
+					}
+				} elseif ($this->brand_id == 355854) { // Dior
+					if(\App\DiorProduct::find($this->designer_style_id)) {
+						$links['Dior官网链接'] = \App\DiorProduct::find($this->designer_style_id)->url;
+					}
+				} elseif ($this->brand_id == 421758) { // Gucci
+					if(\App\GucciProduct::find($this->designer_style_id)) {
+						$links['Gucci官网链接'] = \App\GucciProduct::find($this->designer_style_id)->url;
+					}
+				} elseif ($this->brand_id == 885468) { // Off-White
+					if(\App\OffWhiteProduct::find($this->designer_style_id)) {
+						$links['Off-White官网链接'] = \App\OffWhiteProduct::find($this->designer_style_id)->url;
+					}
+				}
+				return $links;
+			});
+		} else {
+			return [];
+		}
+	}
 	// Helpers
 	public function getMinPrice($default = false)
 	{
@@ -182,15 +232,6 @@ class Product extends Model
 			$parts[] = $this->name;
 		}
 		return implode(' ', $parts);
-	}
-	public function getOffersToStringAttribute()
-	{
-		$string = implode(' ', collect($this->getSizePrice('offer'))->mapToGroups(function ($item, $key) {
-			return [$item['price'] => $key];
-		})->map(function ($sizes, $price) {
-			return str_replace('OS','',implode('/', $sizes->toArray()))." 售价\u{00a5}".(ceil($price * 0.115)*10)." 调货\u{00a5}".$price;
-		})->toArray());
-		return $this->displayName().' '.$string;
 	}
 	public static function generate_id()
 	{
