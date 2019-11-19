@@ -7,7 +7,7 @@
 	<div class="d-flex flex-column">
 	@foreach($logs as $log)
 		<div class="m-3">
-			<a href="{{ $log->url }}">{{ $log->content }}</a>
+			<a href="{{ $log->url }}">{{ $log->created_at }} {{ $log->content }}</a>
 		</div>
 	@endforeach
 	@include('layouts.pages')
