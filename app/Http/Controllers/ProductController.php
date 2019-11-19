@@ -53,7 +53,7 @@ class ProductController extends Controller
 		if ($user) {
 			$retailer_ids = $user->following_retailers()->pluck('retailer_id');
 		} else {
-			$retailer_ids = [2471873538];
+			$retailer_ids = \App\Retailer::public()->pluck('id');
 		}
 
 		$products->load([
@@ -61,13 +61,7 @@ class ProductController extends Controller
 				$query->whereIn('retailer_id', $retailer_ids);
 			},
 		]);
-		if ($user) {
-			if ($request->input('show_available_only')) {
-				$products = $products->filter(function ($item) {
-					return $item->retails->isNotEmpty();
-				});
-			}
-		} else {
+		if (!$user || $request->input('show_available_only')) {
 			$products = $products->filter(function ($item) {
 				return $item->retails->isNotEmpty();
 			});
