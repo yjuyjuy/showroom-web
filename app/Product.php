@@ -119,7 +119,7 @@ class Product extends Model
 	{
 		if ($this->brand && $this->designer_style_id) {
 			return Cache::remember('product-'.$this->id.'-links', 12 * 60 * 60, function() use ($this){
-				$links = []
+				$links = [];
 				// Farfetch
 				foreach(\App\FarfetchProduct::where('designer_style_id', $this->designer_style_id)
 				->whereIn('brand_id', \App\FarfetchDesigners::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
