@@ -15,7 +15,7 @@ class UserObserver
 	 */
 	public function created(User $user)
 	{
-		$user->following_retailers()->attach(2471873538);
+		$user->following_retailers()->attach(\App\Retailer::public()->get());
 		$user->sendEmailVerificationNotification();
 	}
 
