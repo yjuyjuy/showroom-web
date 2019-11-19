@@ -124,29 +124,29 @@ class Product extends Model
 				foreach(\App\FarfetchProduct::where('designer_style_id', $this->designer_style_id)
 				->whereIn('designer_id', \App\FarfetchDesigner::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
 				->get() as $index => $product) {
-					$links['Farfetch链接'.$index] = $product->url;
+					$links['Farfetch链接'.$index] = route('farfetch.show', ['product' => $product,]);
 				}
 				// End
 				foreach(\App\EndProduct::where('sku', $this->designer_style_id)
 				->whereIn('brand_name', \App\EndBrand::where('mapped_id', $this->brand_id)->pluck('name')->toArray())
 				->get() as $product) {
-					$links['End链接'] = $product->url;
+					$links['End链接'] = route('end.show', ['product' => $product,]);
 				}
 				if ($this->brand_id == 182426) { // Louis Vuitton
 					if(\App\LouisVuittonProduct::find($this->designer_style_id)) {
-						$links['Louis Vuitton官网链接'] = \App\LouisVuittonProduct::find($this->designer_style_id)->url;
+						$links['Louis Vuitton官网链接'] = route('louisvuitton.show', ['product' => urlencode(\App\LouisVuittonProduct::find($this->designer_style_id)->id),]);
 					}
 				} elseif ($this->brand_id == 355854) { // Dior
 					if(\App\DiorProduct::find($this->designer_style_id)) {
-						$links['Dior官网链接'] = \App\DiorProduct::find($this->designer_style_id)->url;
+						$links['Dior官网链接'] = route('dior.show', ['product' => \App\DiorProduct::find($this->designer_style_id),]);
 					}
 				} elseif ($this->brand_id == 421758) { // Gucci
 					if(\App\GucciProduct::find($this->designer_style_id)) {
-						$links['Gucci官网链接'] = \App\GucciProduct::find($this->designer_style_id)->url;
+						$links['Gucci官网链接'] = route('gucci.show', ['product' => \App\GucciProduct::find($this->designer_style_id),]);
 					}
 				} elseif ($this->brand_id == 885468) { // Off-White
 					if(\App\OffWhiteProduct::find($this->designer_style_id)) {
-						$links['Off-White官网链接'] = \App\OffWhiteProduct::find($this->designer_style_id)->url;
+						$links['Off-White官网链接'] = route('offwhite.show', ['product' => \App\OffWhiteProduct::find($this->designer_style_id),]);
 					}
 				}
 				return $links;
