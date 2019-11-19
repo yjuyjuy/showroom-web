@@ -111,7 +111,7 @@ class FarfetchController extends Controller
 	{
 		$retailer_id = 1467053076;
 		$product = Product::create([
-			'brand_id' => $farfetch_product->designer->brand_id,
+			'brand_id' => $farfetch_product->designer->mapped_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
 			'name_cn' => $farfetch_product->short_description,
 			'name' => $farfetch_product->short_description,
@@ -143,7 +143,7 @@ class FarfetchController extends Controller
 	{
 		$retailer_id = 1467053076;
 		foreach([
-			'brand_id' => $farfetch_product->designer->brand_id,
+			'brand_id' => $farfetch_product->designer->mapped_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
 			'name_cn' => $farfetch_product->short_description,
 			'name' => $farfetch_product->short_description,
