@@ -122,7 +122,7 @@ class Product extends Model
 				$links = [];
 				// Farfetch
 				foreach(\App\FarfetchProduct::where('designer_style_id', $this->designer_style_id)
-				->whereIn('brand_id', \App\FarfetchDesigner::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
+				->whereIn('designer_id', \App\FarfetchDesigner::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
 				->get() as $index => $product) {
 					$links['Farfetch链接'.$index] = $product->url;
 				}
