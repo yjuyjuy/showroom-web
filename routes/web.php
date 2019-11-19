@@ -89,10 +89,9 @@ Route::middleware('auth')->group(function () {
 });
 
 # Websites
-Route::middleware(['auth', 'vendor'])->group(function () {
-	# list of websites
+Route::middleware('auth')->group(function () {
 	Route::get('websites', 'WebsiteController@index')->name('websites.index');
-	# farfetch
+	# boutique sites
 	Route::get('farfetch', 'FarfetchController@index')->name('farfetch.index');
 	Route::get('farfetch/designers', 'FarfetchController@designers')->name('farfetch.designers');
 	Route::get('farfetch/categories', 'FarfetchController@categories')->name('farfetch.categories');
@@ -113,7 +112,7 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('end/{end_product}/unlink', 'EndController@unlink')->name('end.unlink')->middleware('can:create,App\Product');
 	Route::get('end/{end_product}/merge/{product}', 'EndController@merge')->name('end.merge')->middleware('can:create,App\Product');
 
-	# off---white
+	# official sites
 	Route::get('off-white', 'OffWhiteController@index')->name('offwhite.index');
 	Route::get('off-white/categories', 'OffWhiteController@categories')->name('offwhite.categories');
 	Route::get('off-white/categories/{category}', 'OffWhiteController@index')->name('offwhite.categories.index');
