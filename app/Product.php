@@ -138,19 +138,19 @@ class Product extends Model
 				}
 				if ($this->brand_id == 182426) { // Louis Vuitton
 					foreach(\App\LouisVuittonProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Louis Vuitton官网链接'] = route('louisvuitton.show', ['product' => urlencode($product->id),]);
+						$links['Louis Vuitton链接'] = route('louisvuitton.show', ['product' => urlencode($product->id),]);
 					}
 				} elseif ($this->brand_id == 355854) { // Dior
 					foreach(\App\DiorProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Dior官网链接'] = route('dior.show', ['product' => $product,]);
+						$links['Dior链接'] = route('dior.show', ['product' => $product,]);
 					}
 				} elseif ($this->brand_id == 421758) { // Gucci
 					foreach(\App\GucciProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Gucci官网链接'] = route('gucci.show', ['product' => $product,]);
+						$links['Gucci链接'] = route('gucci.show', ['product' => $product,]);
 					}
 				} elseif ($this->brand_id == 885468) { // Off-White
 					foreach(\App\OffWhiteProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Off-White官网链接'] = route('offwhite.show', ['product' => $product,]);
+						$links['Off-White链接'] = route('offwhite.show', ['product' => $product,]);
 					}
 				}
 				return $links;
