@@ -72,7 +72,7 @@ class RetailerController extends Controller
 			$search = $request->validate([
 				'search' => ['sometimes', 'string', 'max:255'],
 			])['search'];
-			$valid_tokens = []
+			$valid_tokens = [];
 			foreach(Retailer::all() as $retailer) {
 				$valid_tokens[$retailer->name] = $retailer->id;
 			}
