@@ -7,7 +7,7 @@
 
 	<form class="my-5 d-flex justify-content-center align-items-center">
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" name="retailer_name" class="mdc-text-field__input" aria-label="Label" autofocus
+			<input type="text" name="search" class="mdc-text-field__input" aria-label="Label" autofocus
 			placeholder="{{ __('Search retailer') }}" autocomplete="off">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
@@ -20,7 +20,7 @@
 	</form>
 
 	@if($not_found)
-		<div class="my-5 text-center">{{ __('retailer not found') }}"{{ old('retailer_name') }}"</div>
+		<div class="my-5 text-center">{{ __('retailer not found') }}"{{ old('search') }}"</div>
 	@endif
 
 	<div class="my-3 d-flex justify-content-center flex-wrap">
