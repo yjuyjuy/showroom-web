@@ -128,7 +128,7 @@ class Product extends Model
 				}
 				// End
 				foreach(\App\EndProduct::where('sku', $this->designer_style_id)
-				->whereIn('brand_name', \App\EndBrand::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
+				->whereIn('brand_name', \App\EndBrand::where('mapped_id', $this->brand_id)->pluck('name')->toArray())
 				->get() as $product) {
 					$links['End链接'] = $product->url;
 				}
