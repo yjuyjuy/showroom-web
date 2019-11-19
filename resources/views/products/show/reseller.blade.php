@@ -25,8 +25,8 @@
 		</button>
 		<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-				@foreach($product->links as $link)
-					<a href="{{ $link->url }}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">{{ $link->description }}</a>
+				@foreach($product->links as $description => $url)
+					<a href="{{ $url }}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">{{ $description }}</a>
 				@endforeach
 			</ul>
 		</div>
