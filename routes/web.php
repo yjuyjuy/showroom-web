@@ -154,6 +154,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 	Route::post('requests/agree/{user}', 'RequestController@agree')->name('requests.agree');
 	Route::post('requests/reject/{user}', 'RequestController@reject')->name('requests.reject');
 	Route::get('logs', 'LogController@index')->name('logs.index');
+	Route::view('users', 'admin.users')->name('admin.users');
 });
 
 Route::get('{slug}', function() { abort(404); })->middleware(['auth', 'throttle:10,1']);
