@@ -115,14 +115,14 @@ class Product extends Model
 		})->toArray());
 		return $this->displayName().' '.$string;
 	}
-	public function getLinkAttribute()
+	public function getLinksAttribute()
 	{
 		if ($this->brand && $this->designer_style_id) {
 			return Cache::remember('product-'.$this->id.'-links', 12 * 60 * 60, function() {
 				$links = [];
 				// Farfetch
 				foreach(\App\FarfetchProduct::where('designer_style_id', $this->designer_style_id)
-				->whereIn('brand_id', \App\FarfetchDesigners::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
+				->whereIn('brand_id', \App\FarfetchDesigner::where('mapped_id', $this->brand_id)->pluck('id')->toArray())
 				->get() as $index => $product) {
 					$links['Farfetch链接'.$index] = $product->url;
 				}
