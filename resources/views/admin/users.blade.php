@@ -10,6 +10,5 @@
 			<span class="mdc-typography--headline5">{{ $user->username }} - {{ $user->email }} - {{ $user->created_at }}</span>
 		</div>
 	@endforeach
-	@include('layouts.pages')
 </div>
 @endsection
