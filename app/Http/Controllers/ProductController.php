@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Color;
 use App\Product;
-use App\Season;
-use App\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Arr;
@@ -106,7 +102,7 @@ class ProductController extends Controller
 				if ($farfetch_product = \App\FarfetchProduct::find($results[1])) {
 					(new FarfetchController())->merge($farfetch_product, $product);
 				} else {
-					FarfetchProduct::create(['id' => $results[1]]);
+					\App\FarfetchProduct::create(['id' => $results[1]]);
 				}
 			} else {
 			}
