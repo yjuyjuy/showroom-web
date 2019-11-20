@@ -1,13 +1,23 @@
 <div class="">
-	@if($user && $user->following_products->contains($product))
-	<button type="button" class="mdc-button mdc-button--error" onclick="follow('products',{{ $product->id }},false)">
-		<span class="mdc-button__label">{{ __('following') }}</span>
-	</button>
-	@else
-	<button type="button" class="mdc-button mdc-button--unelevated" onclick="follow('products',{{ $product->id }})">
+	@auth
+		@if($user->following_products->contains($product))
+		<button type="button" class="mdc-button mdc-button--error" onclick="follow('products',{{ $product->id }},false)">
+			<span class="mdc-button__label">{{ __('following') }}</span>
+		</button>
+		@else
+		<button type="button" class="mdc-button mdc-button--unelevated" onclick="follow('products',{{ $product->id }})">
+			<span class="mdc-button__label">{{ __('follow') }}</span>
+		</button>
+		@endif
+	@endauth
+
+	@guest
+	<button type="submit" class="ml-4 mdc-button mdc-button--outlined" form="follow-product-form">
 		<span class="mdc-button__label">{{ __('follow') }}</span>
 	</button>
-	@endif
+	<form id="follow-product-form" action="{{ route('follow.product', ['product' => $product,]) }}" method="post" style="display: none;">@csrf</form>
+	@endguest
+
 	@if(Route::currentRouteName() != 'vendor.products.show')
 		@if($product->retails->count() > 1)
 		<div class="mdc-menu-surface--anchor d-inline-block">
