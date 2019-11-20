@@ -21,11 +21,9 @@ class PriceController extends Controller
 		}
 		$products = $vendor->products;
 		$products->loadMissing([
-			'brand',
-			'prices' => function ($query) use ($vendor) {
+			'images', 'brand', 'prices' => function ($query) use ($vendor) {
 				$query->where('vendor_id', $vendor->id);
-			},
-			'images']);
+			},]);
 		return view('prices.index', compact('vendor','products'));
 	}
 
