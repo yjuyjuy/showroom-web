@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Arr;
-use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
 	public function index(Request $request, $query=false)
 	{
 		$user = auth()->user();
-		$admin = ($user) ? $user->isSuperAdmin() : false;
 		$vendor = $user->vendor ?? false;
 		if (!$query) {
 			# vendor filters
