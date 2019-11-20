@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
-class RetailerController extends Controller
+class RetailerController extends ProductController
 {
 	public function index(Request $request, Retailer $retailer)
 	{
@@ -94,30 +94,5 @@ class RetailerController extends Controller
 		$user = auth()->user();
 		$retailers = $user->following_retailers;
 		return view('retailer.following', compact('retailers', 'not_found'));
-	}
-
-	public function validateFilters()
-	{
-		return request()->validate([
-			'category.*' => 'sometimes|exists:categories,id',
-			'season.*' => 'sometimes|exists:seasons,id',
-			'color.*' => 'sometimes|exists:colors,id',
-			'brand.*' => 'sometimes|exists:brands,id',
-		]);
-	}
-
-	public function sortOptions()
-	{
-		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest'];
-	}
-
-	public function filterOptions()
-	{
-		return [
-			"brand" => \App\Brand::orderBy('name')->get(),
-			"category" => \App\Category::all(),
-			"color" => \App\Color::all(),
-			"season" => \App\Season::all(),
-		];
 	}
 }
