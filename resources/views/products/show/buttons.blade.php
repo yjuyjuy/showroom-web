@@ -12,7 +12,7 @@
 	@endauth
 
 	@guest
-	<button type="submit" class="ml-4 mdc-button mdc-button--outlined" form="follow-product-form">
+	<button type="submit" class="ml-4 mdc-button mdc-button--unelevated" form="follow-product-form">
 		<span class="mdc-button__label">{{ __('follow') }}</span>
 	</button>
 	<form id="follow-product-form" action="{{ route('follow.product', ['product' => $product,]) }}" method="post" style="display: none;">@csrf</form>
