@@ -118,7 +118,7 @@ class Product extends Model
 	public function getLinksAttribute()
 	{
 		if ($this->brand && $this->designer_style_id) {
-			return Cache::remember('product-'.$this->id.'-links', 12 * 60 * 60, function() {
+			return Cache::remember('product-'.$this->id.'-links', 10 * 60, function() {
 				$links = [];
 				// Farfetch
 				foreach(\App\FarfetchProduct::where('product_id', $this->id)
