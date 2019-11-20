@@ -16,7 +16,7 @@
 	<button type="submit" class="ml-4 mdc-button mdc-button--outlined" form="follow-retailer-form">
 		<span class="mdc-button__label">{{ __('follow') }}</span>
 	</button>
-	<form id="follow-retailer-form" action="{{ route('follow.retailer', ['retailer' => $retailer,]) }}" method="post" style="display: none;"></form>
+	<form id="follow-retailer-form" action="{{ route('follow.retailer', ['retailer' => $retailer,]) }}" method="post" style="display: none;">@csrf</form>
 	@endguest
 </div>
 <div class="m-3">
