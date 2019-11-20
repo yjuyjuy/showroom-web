@@ -19,7 +19,7 @@ class PriceObserver
 
 		$retailers = $vendor->partner_retailers;
 		if($retailer = $vendor->retailer){
-			$retailers->push($retailer);
+			$retailers->prepend($retailer);
 		}
 		foreach($retailers as $retailer) {
 			$prices = array();
