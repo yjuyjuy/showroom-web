@@ -44,8 +44,8 @@ class ProductController extends Controller
 		} elseif ($sort == 'category') {
 			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		}
-
 		$products = $query->get();
+
 		if ($user) {
 			$retailer_ids = $user->following_retailers()->pluck('retailer_id');
 		} else {
@@ -57,7 +57,7 @@ class ProductController extends Controller
 				$query->whereIn('retailer_id', $retailer_ids);
 			},
 		]);
-		if (!$user || $request->input('show_available_only')) {
+		if ($request->input('show_available_only')) {
 			$products = $products->filter(function ($item) {
 				return $item->retails->isNotEmpty();
 			});
@@ -76,6 +76,7 @@ class ProductController extends Controller
 		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $products->forPage($page, 48);
 		$products->load(['brand', 'image']);
+
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
