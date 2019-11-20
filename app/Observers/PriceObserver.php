@@ -37,7 +37,12 @@ class PriceObserver
 					$profit_rate = $vendor->pivot->profit_rate;
 					foreach($offer_price->prices as $size => $price) {
 						$calc_price = ceil($price * (1 + $profit_rate / 100.0) / 10.0) * 10;
-						$prices[$size] = min($calc_price, $prices[$size] ?? INF);
+						if ($vendor->retailer) {
+							$min_price = \App\RetailPrice::firstWhere(['product_id' => $product->id, 'retailer_id' => $vendor->retailer_id,])->prices[$size] + 1;
+						} else {
+							$min_price = 0;
+						}
+						$prices[$size] = min(max($calc_price, $min_price), $prices[$size] ?? INF);
 					}
 				}
 			}
