@@ -14,6 +14,7 @@ class RetailerController extends ProductController
 	{
 		$user = auth()->user();
 		$query = $retailer->products();
+
 		$filters = $this->validateFilters();
 		foreach ($filters as $field => $values) {
 			$query->whereIn("{$field}_id", $values);
@@ -23,18 +24,22 @@ class RetailerController extends ProductController
 			$sort = 'default';
 		}
 		if ($sort == 'default') {
-			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
+			$query->orderBy('created_at', 'desc')->orderBy('id');
 		} elseif ($sort == 'newest') {
 			$query->orderBy('season_id', 'desc')->orderBy('id');
 		} elseif ($sort == 'oldest') {
 			$query->orderBy('season_id')->orderBy('id');
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
+		} elseif ($sort == 'created_at') {
+			$query->orderBy('created_at', 'desc')->orderBy('id');
+		} elseif ($sort == 'category') {
+			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		}
 		$products = $query->get();
 
 		$products->load([
-			'image', 'brand', 'retails' => function ($query) use ($retailer) {
+			'retails' => function ($query) use ($retailer) {
 				$query->where('retailer_id', $retailer->id);
 			},
 		]);
@@ -47,9 +52,11 @@ class RetailerController extends ProductController
 				return $item->getMinPrice(INF);
 			})->values();
 		}
-		$total_pages = ceil($products->count() / 24.0);
+		$total_pages = ceil($products->count() / 48.0);
 		$page = min(max($request->query('page',1), 1), $total_pages);
-		$products = $products->forPage($page, 24);
+		$products = $products->forPage($page, 48);
+		$products->load(['brand', 'image']);
+
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
