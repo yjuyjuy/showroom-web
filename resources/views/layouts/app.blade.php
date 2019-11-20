@@ -50,7 +50,7 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
 						<span class="mdc-list-item__text">{{ __('All products') }}</span>
 					</a>
-					<a class="mdc-list-item" href="{{ route('products.random') }}">
+					<a class="mdc-list-item" href="{{ route('products.index', ['sort' => 'random']) }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">casino</i>
 						<span class="mdc-list-item__text">{{ __('Random product') }}</span>
 					</a>
