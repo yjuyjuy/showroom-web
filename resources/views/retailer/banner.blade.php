@@ -9,7 +9,7 @@
 		<span class="mdc-button__label">{{ __('follow') }}</span>
 	</button>
 	@else
-	<a href="{{ route('follow.retailer', ['retailer' => $retailer,]) }}" class="ml-4 mdc-button mdc-button--outlined">
+	<a href="{{ route('login') }}" class="ml-4 mdc-button mdc-button--outlined">
 		<span class="mdc-button__label">{{ __('follow') }}</span>
 	</a>
 	@endif
