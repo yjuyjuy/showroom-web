@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use Illuminate\Http\Request;
 
 class ResellerController extends Controller
@@ -10,6 +11,7 @@ class ResellerController extends Controller
 	{
 		$user = auth()->user();
 		$query = \App\Product::query();
+
 		$filters = $this->validateFilters();
 		foreach ($filters as $field => $values) {
 			$query->whereIn("{$field}_id", $values);
@@ -19,18 +21,22 @@ class ResellerController extends Controller
 			$sort = 'default';
 		}
 		if ($sort == 'default') {
-			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
+			$query->orderBy('created_at', 'desc')->orderBy('id');
 		} elseif ($sort == 'newest') {
 			$query->orderBy('season_id', 'desc')->orderBy('id');
 		} elseif ($sort == 'oldest') {
 			$query->orderBy('season_id')->orderBy('id');
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
+		} elseif ($sort == 'created_at') {
+			$query->orderBy('created_at', 'desc')->orderBy('id');
+		} elseif ($sort == 'category') {
+			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		}
 		$products = $query->get();
 
 		$products->load([
-			'image', 'brand', 'offers' => function ($query) use ($user) {
+			'offers' => function ($query) use ($user) {
 				$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 			},
 		]);
@@ -46,9 +52,11 @@ class ResellerController extends Controller
 				return $item->getMinOffer(INF);
 			})->values();
 		}
-		$total_pages = ceil($products->count() / 24.0);
+		$total_pages = ceil($products->count() / 48.0);
 		$page = min(max($request->query('page',1), 1), $total_pages);
-		$products = $products->forPage($page, 24);
+		$products = $products->forPage($page, 48);
+		$products->load(['brand', 'image']);
+
 		$sortOptions = $this->sortOptions();
 		$filters = $this->filterOptions();
 		$request->flash();
