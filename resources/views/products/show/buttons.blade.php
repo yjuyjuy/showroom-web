@@ -1,5 +1,5 @@
 <div class="">
-	@if(auth()->user()->following_products->contains($product))
+	@if(auth()->user() && auth()->user()->following_products->contains($product))
 	<button type="button" class="mdc-button mdc-button--error" onclick="follow('products',{{ $product->id }},false)">
 		<span class="mdc-button__label">{{ __('following') }}</span>
 	</button>
