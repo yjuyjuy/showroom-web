@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
-class RetailerController extends ProductController
+class RetailerController extends Controller
 {
 	public function index(Request $request, Retailer $retailer)
 	{
@@ -101,5 +101,20 @@ class RetailerController extends ProductController
 		$user = auth()->user();
 		$retailers = $user->following_retailers;
 		return view('retailer.following', compact('retailers', 'not_found'));
+	}
+
+	public function validateFilters()
+	{
+		return (new ProductController())->validateFilters();
+	}
+
+	public function sortOptions()
+	{
+		return (new ProductController())->sortOptions();
+	}
+
+	public function filterOptions()
+	{
+		return (new ProductController())->filterOptions();
 	}
 }
