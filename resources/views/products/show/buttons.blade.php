@@ -1,5 +1,5 @@
 <div class="">
-	@if(auth()->user() && auth()->user()->following_products->contains($product))
+	@if($user && $user->following_products->contains($product))
 	<button type="button" class="mdc-button mdc-button--error" onclick="follow('products',{{ $product->id }},false)">
 		<span class="mdc-button__label">{{ __('following') }}</span>
 	</button>
@@ -38,7 +38,7 @@
 			</a>
 		@endif
 	@endif
-	@if($user->is_reseller)
+	@if($user && $user->is_reseller)
 		@if($product->offers->count() > 1)
 		<div class="mdc-menu-surface--anchor d-inline-block">
 			<button type="button" class="ml-2 mdc-button open-menu-button mdc-button--unelevated">
