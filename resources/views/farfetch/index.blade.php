@@ -43,7 +43,7 @@
 					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->url ?? '' }}">
 				</div>
 				<div class="mdc-image-list__supporting">
-					<span class="mdc-image-list__label brand">{{ $product->designer->description }}</span>
+					<span class="mdc-image-list__label brand">{{ $product->designer->description ?? '' }}</span>
 					<span class="mdc-image-list__label product-name">{{ $product->short_description }}</span>
 					@if($product->price)
 					<span class="mdc-image-list__label">
