@@ -120,18 +120,28 @@ class VendorController extends Controller
 		$user = auth()->user();
 		$message = false;
 
-		if ($request->input('wechat_id')) {
-			$wechat_id = $request->validate([
-					'wechat_id' => ['sometimes', 'string', 'max:255'],
-				])['wechat_id'];
-			$vendor = \App\Vendor::where('wechat_id', $wechat_id)->first();
-			if (!$vendor) {
-				$message = '没有找到微信号是"'.$wechat_id.'"的同行';
-			} elseif ($user->following_vendors->contains($vendor)) {
-				$message = '已经关注"'.$vendor->name.'"了';
+		if ($request->input('search')) {
+			$search = $request->validate([
+				'search' => ['sometimes', 'string', 'max:255'],
+				])['search'];
+			$valid_tokens = [];
+			foreach(User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
+				$valid_tokens[$user->wechat_id] = $user->vendor_id;
+			}
+			foreach(Vendor::whereNotNull('wechat_id')->get() as $vendor) {
+				$valid_tokens[$vendor->wechat_id] = $vendor->id;
+			}
+			if (array_key_exists($search, $valid_tokens)) {
+				$vendor = \App\Vendor::find($valid_tokens[$search]);
+				$user = auth()->user();
+				if ($user->following_vendors->contains($vendor)) {
+					$message = '已经关注"'.$vendor->name.'"了';
+				} else {
+					$user->following_vendors()->attach($vendor);
+					$message = '成功添加关注"'.$vendor->name.'"';
+				}
 			} else {
-				$user->following_vendors()->attach($vendor);
-				$message = '成功添加关注"'.$vendor->name.'"';
+				$message = '没有找到微信号是"'.$search.'"的同行';
 			}
 		}
 		$vendors = $user->fresh()->following_vendors;

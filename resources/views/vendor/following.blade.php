@@ -7,7 +7,7 @@
 
 	<form class="my-5 d-flex justify-content-center align-items-center">
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" name="wechat_id" class="mdc-text-field__input" aria-label="Label" autofocus
+			<input type="text" name="search" class="mdc-text-field__input" aria-label="Label" autofocus
 			placeholder="输入微信号搜索" autocomplete="off">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
