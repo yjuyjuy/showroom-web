@@ -125,7 +125,7 @@ class VendorController extends Controller
 				'search' => ['sometimes', 'string', 'max:255'],
 				])['search'];
 			$valid_tokens = [];
-			foreach(User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
+			foreach(\App\User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
 				$valid_tokens[$user->wechat_id] = $user->vendor_id;
 			}
 			foreach(Vendor::whereNotNull('wechat_id')->get() as $vendor) {

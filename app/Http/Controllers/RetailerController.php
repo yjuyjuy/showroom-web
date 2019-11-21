@@ -81,11 +81,11 @@ class RetailerController extends Controller
 			foreach(Retailer::all() as $retailer) {
 				$valid_tokens[$retailer->name] = $retailer->id;
 			}
-			foreach(User::has('vendor.retailer')->get() as $user) {
+			foreach(\App\User::has('vendor.retailer')->get() as $user) {
 				$valid_tokens[$user->wechat_id] = $user->vendor->retailer->id;
 				$valid_tokens[$user->name] = $user->vendor->retailer->id;
 			}
-			foreach(Vendor::has('retailer')->get() as $vendor) {
+			foreach(\App\Vendor::has('retailer')->get() as $vendor) {
 				$valid_tokens[$vendor->wechat_id] = $vendor->retailer->id;
 				$valid_tokens[$vendor->name] = $vendor->retailer->id;
 			}
