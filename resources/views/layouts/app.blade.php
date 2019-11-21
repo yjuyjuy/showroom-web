@@ -76,7 +76,7 @@
 					@elseif(!$user->is_rejected)
 					<a class="mdc-list-item" href="{{ route('account.status') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">verified_user</i>
-						<span class="mdc-list-item__text">申请卖家账户</span>
+						<span class="mdc-list-item__text">申请同行账户</span>
 					</a>
 					@endif
 					@if($user->vendor)
