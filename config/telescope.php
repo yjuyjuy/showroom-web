@@ -91,7 +91,7 @@ return [
     */
 
     'ignore_paths' => [
-			'/products',
+			'products',
     ],
 
     'ignore_commands' => [
