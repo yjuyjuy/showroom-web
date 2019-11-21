@@ -10,6 +10,9 @@ class FollowVendorController extends Controller
 	public function unfollow(Vendor $vendor)
 	{
 		$user = auth()->user();
-		return $user->following_vendors()->detach($vendor);
+		return [
+			'redirect' => route('following.vendors'),
+			'success' => $user->following_vendors()->detach($vendor),
+		];
 	}
 }
