@@ -27,7 +27,7 @@ class Retailer extends Model
 	{
 	    return 'name';
 	}
-	
+
   /**
    * Scope a query to only include public retailers.
    *
@@ -37,7 +37,7 @@ class Retailer extends Model
   public function scopePublic($query)
   {
     return $query->whereIn('id', [
-			2471873538, // Dopebxtch
+			// 2471873538, // Dopebxtch
 			1467053076, // Farfetch
 			3548857028, // EndClothing
 			8373593846, // Dior
