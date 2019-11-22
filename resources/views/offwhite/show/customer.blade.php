@@ -6,7 +6,7 @@
 	@endif
 </div>
 <div>
-	<a href="{{ $product->url }}" class="ml-2 mdc-button mdc-button--unelevated" target="_blank">
+	<a href="{{ $product->url }}" class="ml-2 mdc-button mdc-button--unelevated" target="_blank" rel="noreferrer">
 		<span class="mdc-button__label">{{ __('Link to page') }}</span>
 	</a>
 	@if(auth()->user()->isSuperAdmin())
