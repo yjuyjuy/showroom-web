@@ -36,7 +36,7 @@
 
 			<div class="mdc-form-field mdc-card__action">
 				<div class="mdc-checkbox">
-					<input class="mdc-checkbox__native-control" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+					<input class="mdc-checkbox__native-control" type="checkbox" name="remember" id="remember" checked>
 					<div class="mdc-checkbox__background">
 						<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 							<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
