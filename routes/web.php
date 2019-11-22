@@ -6,7 +6,7 @@ Route::redirect('', 'products');
 
 # User model
 Route::middleware('auth')->group(function () {
-	Route::get('home', 'HomeController@index')->name('home')->middleware('verified');
+	Route::get('home', 'HomeController@index')->name('home');
 	Route::get('suggestion/create', 'SuggestionController@create')->name('suggestion.create');
 	Route::post('suggestion', 'SuggestionController@store')->name('suggestion.store');
 	Route::get('account/status', 'AccountController@status')->name('account.status');
