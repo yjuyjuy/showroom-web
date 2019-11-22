@@ -22,10 +22,10 @@ Route::middleware('auth')->group(function () {
 
 # Product model
 Route::get('products', 'ProductController@index')->name('products.index');
+Route::get('products/random', 'ProductController@random')->name('products.random');
 Route::middleware('auth')->group(function () {
 	Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
 	Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
-	Route::get('products/random', 'ProductController@random')->name('products.random');
 	Route::get('products/{product}', 'ProductController@show')->name('products.show');
 	Route::patch('products/{product}', 'ProductController@update')->name('products.update')->middleware('admin');
 	Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy')->middleware('admin');
