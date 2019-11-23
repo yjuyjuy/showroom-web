@@ -18,7 +18,7 @@ class Vendor extends Model
 	{
 		return $this->hasMany(VendorPrice::class);
 	}
-	public function offer()
+	public function offers()
 	{
 		return $this->hasMany(OfferPrice::class);
 	}
