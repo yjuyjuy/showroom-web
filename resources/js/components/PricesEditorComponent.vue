@@ -9,21 +9,21 @@
 			</div>
 		</div>
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.cost">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.offer">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
 			</div>
 		</div>
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" @dblclick="apply_computed" v-model="price.offer" :placeholder="computed_offer(index)">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.retail" :placeholder="computed_retail(index)">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
 			</div>
 		</div>
-		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" @dblclick="apply_computed" v-model="price.retail" :placeholder="computed_retail(index)">
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label flex-shrink-1">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.stock">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
@@ -35,7 +35,7 @@
 			</button>
 		</div>
 	</div>
-	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.cost&&price.offer&&price.retail)))">
+	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.offer&&price.retail&&price.stock)))">
 </div>
 </template>
 
@@ -64,16 +64,13 @@ export default {
 		update: function(index) {
 			this.clear_empty();
 			for (let i in this.prices) {
-				if (!this.prices[i].size || !this.prices[i].cost || !this.prices[i].offer || !this.prices[i].retail) {
+				if (!this.prices[i].size || !this.prices[i].offer || !this.prices[i].retail || !this.prices[i].stock) {
 					continue;
 				}
 				this.prices[i].size = String(this.prices[i].size).toUpperCase().replace(/，/g,',');
-				let cost = this.prices[i].cost;
 				let offer = this.prices[i].offer;
 				let retail = this.prices[i].retail;
-				if(/^[0-9]+%$/.test(offer)){
-					offer = this.prices[i].offer = Math.ceil((parseFloat(offer) / 100.0 + 1.0) * cost / 10.0) * 10;
-				}
+				let stock = this.prices[i].stock;
 				if(/^[0-9]+%$/.test(retail)){
 					retail = this.prices[i].retail = Math.ceil((parseFloat(retail) / 100.0 + 1.0) * offer / 10.0) * 10;
 				}
@@ -88,9 +85,9 @@ export default {
 						}
 						this.prices.push({
 							'size': j,
-							'cost': cost,
 							'offer': offer,
 							'retail': retail,
+							'stock': stock,
 						});
 					}
 				} else if (/^[X]*[SML]+[-][X]*[SML]+$/.test(this.prices[i].size)) {
@@ -108,9 +105,9 @@ export default {
 							}
 							this.prices.push({
 								'size': sizes[j],
-								'cost': cost,
 								'offer': offer,
 								'retail': retail,
+								'stock': stock,
 							});
 						}
 					}
@@ -120,9 +117,9 @@ export default {
 					for (let size of sizes) {
 						this.prices.push({
 							'size': size,
-							'cost': cost,
 							'offer': offer,
 							'retail': retail,
+							'stock': stock,
 						});
 					}
 				} else {
@@ -137,7 +134,7 @@ export default {
 		},
 		check_empty: function() {
 			for (let price of this.prices) {
-				if (!price.size && !price.cost && !price.offer && !price.retail) {
+				if (!price.size && !price.offer && !price.retail && !price.stock) {
 					return;
 				}
 			}
@@ -145,49 +142,17 @@ export default {
 		},
 		clear_empty: function() {
 			for (let index in this.prices) {
-				if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].offer && !this.prices[index].retail) {
+				if (!this.prices[index].size && !this.prices[index].offer && !this.prices[index].retail && !this.prices[index].stock) {
 					this.prices.splice(index, 1);
 				}
-			}
-		},
-		computed_offer: function(index) {
-			if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 1.15 / 10) * 10;
-			} else {
-				return '';
 			}
 		},
 		computed_retail: function(index) {
 			if (this.prices[index].offer) {
 				return Math.ceil(this.prices[index].offer * 1.15 / 10) * 10;
-			} else if (this.prices[index].cost) {
-				return Math.ceil(this.prices[index].cost * 1.30 / 10) * 10;
 			} else {
 				return '';
 			}
-		},
-		apply_computed: function(event) {
-			event.target.value = event.target.placeholder;
-		},
-		prepare: function(evt) {
-			evt.preventDefault();
-			for (let index in this.prices) {
-				if (!this.prices[index].size && !this.prices[index].cost && !this.prices[index].offer && !this.prices[index].retail) {
-					this.prices.splice(index, 1);
-				} else if (this.prices[index].size && this.prices[index].cost && this.prices[index].offer && this.prices[index].retail) {
-					continue;
-				} else if (this.prices[index].size && this.prices[index].cost) {
-					if (!this.prices[index].offer) {
-						this.prices[index].offer = computed_offer(index);
-					}
-					if (!this.prices[index].retail) {
-						this.prices[index].retail = computed_retail(index);
-					}
-				} else {
-					this.prices.splice(index, 1);
-				}
-			}
-			this.json_prices = JSON.stringify(this.prices);
 		},
 	},
 	updated: function() {

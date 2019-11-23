@@ -6,16 +6,20 @@
 		</div>
 		<div class="price-grid__row">
 			<span class="price-grid__col">{{ __('size') }}</span>
-			<span class="price-grid__col">{{ __('cost') }}</span>
 			<span class="price-grid__col">{{ __('offer') }}</span>
 			<span class="price-grid__col">{{ __('retail') }}</span>
+			<span class="price-grid__col">{{ __('stock') }}</span>
 		</div>
 		@foreach($price->data as $row)
 			<div class="price-grid__row">
 				<span class="price-grid__col">{{ $row['size'] }}</span>
-				<span class="price-grid__col">&yen;{{$row['cost']}}</span>
 				<span class="price-grid__col">&yen;{{$row['offer']}}</span>
 				<span class="price-grid__col">&yen;{{$row['retail']}}</span>
+				<div class="price-grid__col d-flex justify-content-between align-items-center" style="margin: -12px;">
+					<button type="button" class="mdc-icon-button material-icons" onclick="axios.post('{{ route('prices.subtract', ['price' => $price, 'size' => $row['size']]) }}').then(response=>window.location.reload()).catch(error=>window.alert('action failed'))">remove</button>
+					<span>{{ $row['stock'] ?? 999 }}</span>
+					<button type="button" class="mdc-icon-button material-icons" onclick="axios.post('{{ route('prices.add', ['price' => $price, 'size' => $row['size']]) }}').then(response=>window.location.reload()).catch(error=>window.alert('action failed'))">add</button>
+				</div>
 			</div>
 		@endforeach
 		<div class="price-grid__footer text-right">

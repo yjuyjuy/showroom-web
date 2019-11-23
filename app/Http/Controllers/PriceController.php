@@ -85,6 +85,39 @@ class PriceController extends Controller
 		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
 
+	public function subtract(Request $request, VendorPrice $price, $size)
+	{
+		$this->authorize('update', $price);
+		$data = $price->data;
+		foreach($data as $index => &$row) {
+			if ($row['size'] == $size) {
+				$row['stock'] -= 1;
+				if($row['stock'] <= 0) {
+					unset($data[$index]);
+				}
+				break;
+			}
+		}
+		$price->data = $data;
+		$price->save();
+		return ['success'];
+	}
+
+	public function add(Request $request, VendorPrice $price, $size)
+	{
+		$this->authorize('update', $price);
+		$data = $price->data;
+		foreach($data as &$row) {
+			if ($row['size'] == $size) {
+				$row['stock'] += 1;
+				break;
+			}
+		}
+		$price->data = $data;
+		$price->save();
+		return ['success'];
+	}
+
 	public function destroy(VendorPrice $price)
 	{
 		$this->authorize('delete', $price);
@@ -101,9 +134,9 @@ class PriceController extends Controller
 		return request()->validate([
 			'data' => ['required','json'],
 			'data.*.size' => ['required','regex:/^([0-9.XSML]+)$/'],
-			'data.*.cost' => ['required','integer'],
 			'data.*.offer' => ['required','integer'],
 			'data.*.retail' => ['required','integer'],
+			'data.*.stock' => ['required','integer'],
 		]);
 	}
 }

@@ -21,7 +21,7 @@ import {MDCSelectHelperText} from '@material/select/helper-text';
 import {MDCSnackbar} from '@material/snackbar';
 
 // mdc components
-const drawer = MDCDrawer.attachTo(document.getElementById(	'nav-drawer'));
+const drawer = MDCDrawer.attachTo(document.getElementById('nav-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
 const topAppBar = MDCTopAppBar.attachTo(topAppBarElement);
 topAppBar.setScrollTarget(window);

@@ -40,6 +40,8 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::patch('prices/{price}', 'PriceController@update')->name('prices.update');
 	Route::delete('prices/{price}', 'PriceController@destroy')->name('prices.destroy');
 	Route::get('prices/{price}/edit', 'PriceController@edit')->name('prices.edit');
+	Route::post('prices/{price}/+/{size}', 'PriceController@add')->name('prices.add');
+	Route::post('prices/{price}/-/{size}', 'PriceController@subtract')->name('prices.subtract');
 	Route::post('products/{product}/prices', 'PriceController@store')->name('prices.store');
 	Route::get('products/{product}/prices/create', 'PriceController@create')->name('prices.create');
 });
