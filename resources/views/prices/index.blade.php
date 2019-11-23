@@ -30,7 +30,7 @@
 					<img class="lazy" data-src="{{$product->images[0]->small ?? secure_asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
 				<div class="mx-2 w-50">
-					<img class="lazy" data-src="{{$product->images[1]->small ?? secure_asset('storage/icons/ImagePlaceholder.svg')}}">
+					<img class="lazy" data-src="{{$product->images->where('order', 3)->first()->small ?? $product->images[1]->small ?? secure_asset('storage/icons/ImagePlaceholder.svg')}}">
 				</div>
 			</div>
 		</div>
