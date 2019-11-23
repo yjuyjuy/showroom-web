@@ -38,7 +38,7 @@ class PriceObserver
 					foreach($offer_price->prices as $size => $price) {
 						$calc_price = ceil($price * (1 + $profit_rate / 100.0) / 10.0) * 10;
 						if ($vendor->retailer) {
-							$min_price = \App\RetailPrice::where(['product_id' => $product->id, 'retailer_id' => $vendor->retailer_id,])->first()->prices[$size] + 1;
+							$min_price = (\App\RetailPrice::where(['product_id' => $product->id, 'retailer_id' => $vendor->retailer_id,])->first()->prices[$size] ?? -1) + 1;
 						} else {
 							$min_price = 0;
 						}
