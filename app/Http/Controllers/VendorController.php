@@ -117,7 +117,6 @@ class VendorController extends Controller
 
 	public function following(Request $request)
 	{
-		$user = auth()->user();
 		$message = false;
 
 		if ($request->input('search')) {
@@ -144,6 +143,7 @@ class VendorController extends Controller
 				$message = '没有找到微信号是"'.$search.'"的同行';
 			}
 		}
+		$user = auth()->user();
 		$vendors = $user->fresh()->following_vendors;
 		return view('vendor.following', compact('vendors', 'message'));
 	}
