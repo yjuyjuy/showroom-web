@@ -122,6 +122,13 @@ class FarfetchController extends Controller
 		$retail->retailer_id = $retailer_id;
 		$retail->product_id = $product->id;
 		$image_controller = new ImageController();
+		if (!empty($farfetch_product->size_price)) {
+			$retail->merge($farfetch_product->size_price);
+			$retail->link = $farfetch_product->url;
+		}
+		$image_controller->import($farfetch_product->images, $product);
+		$farfetch_product->product_id = $product->id;
+		$farfetch_product->save();
 		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get() as $p) {
 			if (!empty($p->size_price)) {
 				$retail->merge($p->size_price);
