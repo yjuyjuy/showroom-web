@@ -19,7 +19,7 @@
 		</button>
 	</form>
 
-	<div class="my-5">
+	<div class="my-5 text-center">
 		<span class="mdc-typography--headline6">搜索认识的卖家的名字或微信号关注卖家，成功关注后卖家报价才会在首页显示，默认只显示各品牌官网报价，取消关注后将不会显示</span>
 	</div>
 
