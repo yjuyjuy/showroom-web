@@ -13,8 +13,8 @@
 			</div>
 
 			<label class="mdc-text-field mdc-card__action">
-				<input type="text" class="mdc-text-field__input" name="wechat_id" autocomplete="off" placeholder="">
-				<span class="mdc-floating-label">{{ __('Wechat id') }}</span>
+				<input type="text" class="mdc-text-field__input" name="wechat_id" autocomplete="off" placeholder="请输入正确微信号(不是名字/昵称)">
+				<span class="mdc-floating-label">微信号</span>
 				<div class="mdc-line-ripple"></div>
 			</label>
 

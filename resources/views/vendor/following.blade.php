@@ -5,10 +5,10 @@
 @section('content')
 <div class="d-flex flex-column">
 
-	<form class="my-5 d-flex justify-content-center align-items-center">
+	<form class="my-3 d-flex justify-content-center align-items-center">
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
 			<input type="text" name="search" class="mdc-text-field__input" aria-label="Label" autofocus
-			placeholder="输入微信号搜索" autocomplete="off">
+			placeholder="搜索同行微信号" autocomplete="off">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
@@ -20,8 +20,12 @@
 	</form>
 
 	@if($message)
-		<div class="mb-5 text-center">{{ $message }}</div>
+		<div class="my-3 text-center">{{ $message }}</div>
 	@endif
+
+	<div class="m-3 text-center">
+		<span class="mdc-typography--headline6">注意: 成功关注后同行的调货价才会在页面显示，默认不关注任何人</span>
+	</div>
 
 	<div class="my-3 d-flex justify-content-center flex-wrap">
 		@if($vendors->isNotEmpty())
@@ -30,7 +34,7 @@
 				<a href="{{ route('vendor.products.index', compact('vendor')) }}" class="mdc-typography--headline6 my-1 mx-3">{{ $vendor->name }}</a>
 			@endforeach
 		@else
-			<span>没有关注的同行</span>
+			<span class="mdc-typography--headline6">没有关注的同行</span>
 		@endif
 
 	</div>

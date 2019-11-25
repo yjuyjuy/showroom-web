@@ -19,13 +19,13 @@
 		</button>
 	</form>
 
-	<div class="m-3 text-center">
-		<span class="mdc-typography--headline6">注意: 成功关注后卖家报价才会在首页显示，默认只显示各品牌官网报价，取消关注后将不会在其它页面显示卖家价格</span>
-	</div>
-
 	@if($not_found)
 		<div class="my-3 text-center">{{ __('retailer not found') }}"{{ old('search') }}"</div>
 	@endif
+
+	<div class="m-3 text-center">
+		<span class="mdc-typography--headline6">注意: 成功关注后卖家报价才会在首页显示，默认只显示各品牌官网报价，取消关注后将不会在其它页面显示卖家价格</span>
+	</div>
 
 	<div class="my-3 d-flex justify-content-center flex-wrap">
 		@if($retailers->isNotEmpty())
@@ -34,7 +34,7 @@
 				<a href="{{ route('retailer.products.index', ['retailer' => $retailer,]) }}" class="mdc-typography--headline6 my-1 mx-3">{{ $retailer->name }}</a>
 			@endforeach
 		@else
-			<span>没有关注的卖家</span>
+			<span class="mdc-typography--headline6">没有关注的卖家</span>
 		@endif
 	</div>
 </div>
