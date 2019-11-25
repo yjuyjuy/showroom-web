@@ -57,6 +57,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 # Retailer
+Route::redirect('/retailer/Dior', '/dior');
+Route::redirect('/retailer/Gucci', '/gucci');
+Route::redirect('/retailer/EndClothing', '/end');
+Route::redirect('/retailer/Farfetch', '/farfetch');
+Route::redirect('/retailer/Louis Vuitton', '/louis-vuitton');
+
 Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
 Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
 Route::middleware('auth')->group(function () {
