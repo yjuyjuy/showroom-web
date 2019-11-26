@@ -66,6 +66,12 @@ class RetailerController extends Controller
 		$user = auth()->user();
 		$product->load(['images', 'retails' => function ($query) use ($retailer) {
 			$query->where('retailer_id', $retailer->id);
+		}, 'offers' => function ($query) use ($user) {
+			if ($user->is_reseller) {
+				$query->whereIn('vendor_id', $user->following_vendors->pluck('id')->toArray());
+			} else {
+				$query->whereNull('vendor_id');
+			}
 		}]);
 		return view('retailer.products.show', compact('product', 'retailer', 'user'));
 	}
