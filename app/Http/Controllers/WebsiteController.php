@@ -15,6 +15,7 @@ class WebsiteController extends Controller
 			'dior' => 'Dior',
 			'gucci' => 'Gucci',
 			'offwhite' => 'OFF-WHITE',
+			'balenciaga' => 'Balenciaga',
 		];
 		return view('websites.index', compact('websites'));
 	}
