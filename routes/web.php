@@ -149,6 +149,13 @@ Route::middleware('auth')->group(function () {
 	Route::get('gucci/{gucci_product}/export', 'GucciController@export')->name('gucci.export')->middleware('can:create,App\Product');
 	Route::get('gucci/{gucci_product}/unlink', 'GucciController@unlink')->name('gucci.unlink')->middleware('can:create,App\Product');
 	Route::get('gucci/{gucci_product}/merge/{product}', 'GucciController@merge')->name('gucci.merge')->middleware('can:create,App\Product');
+
+	Route::get('balenciaga', 'BalenciagaController@index')->name('balenciaga.index');
+	Route::get('balenciaga/departments/{department}', 'BalenciagaController@index')->name('balenciaga.departments.index');
+	Route::get('balenciaga/{product}', 'BalenciagaController@show')->name('balenciaga.show');
+	Route::get('balenciaga/{balenciaga_product}/export', 'BalenciagaController@export')->name('balenciaga.export')->middleware('can:create,App\Product');
+	Route::get('balenciaga/{balenciaga_product}/unlink', 'BalenciagaController@unlink')->name('balenciaga.unlink')->middleware('can:create,App\Product');
+	Route::get('balenciaga/{balenciaga_product}/merge/{product}', 'BalenciagaController@merge')->name('balenciaga.merge')->middleware('can:create,App\Product');
 });
 
 # admin helper routes
