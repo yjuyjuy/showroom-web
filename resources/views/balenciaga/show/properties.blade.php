@@ -3,7 +3,7 @@
 		<span class="mdc-typography--headline6" style="text-transform: uppercase;">
 			Balenciaga&nbsp;-&nbsp;
 		</span>
-		<a href="{{ route('balenciaga.categories.index',['department' => Str::slug($product->department)]) }}"
+		<a href="{{ route('balenciaga.departments.index',['department' => Str::slug($product->department)]) }}"
 			 class="mdc-typography--headline6">
 			 {{ __($product->department) }}
 		</a>
