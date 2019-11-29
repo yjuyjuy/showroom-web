@@ -61,6 +61,7 @@ Route::redirect('/retailer/Dior', '/dior');
 Route::redirect('/retailer/Gucci', '/gucci');
 Route::redirect('/retailer/EndClothing', '/end');
 Route::redirect('/retailer/Farfetch', '/farfetch');
+Route::redirect('/retailer/Balenciaga', '/balenciaga');
 Route::redirect('/retailer/Louis Vuitton', '/louis-vuitton');
 
 Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
