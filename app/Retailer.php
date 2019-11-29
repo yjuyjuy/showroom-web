@@ -43,6 +43,7 @@ class Retailer extends Model
 			8373593846, // Dior
 			2294995609, // Gucci
 			4354186782, // LouisVuitton
+			3978029761, // Balenciaga
 		]);
   }
 
