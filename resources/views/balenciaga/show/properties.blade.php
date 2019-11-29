@@ -27,6 +27,8 @@
 	</div>
 
 	<div class="my-1">
-		{{ $product->detail }}
+		@foreach(explode('\n', $product->detail) as $row)
+		<span>{{ $row }}</span><br>
+		@endforeach
 	</div>
 </div>
