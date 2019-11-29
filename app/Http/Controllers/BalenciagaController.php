@@ -39,7 +39,7 @@ class BalenciagaController extends Controller
 	public function getDepartments()
 	{
 		return Cache::remember('balenciaga-departments', 60 * 60, function () {
-			return BalenciagaProduct::pluck('department')->unique() as $department;
+			return BalenciagaProduct::pluck('department')->unique();
 		});
 	}
 
