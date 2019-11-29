@@ -24,7 +24,7 @@ class DiorController extends Controller
 		}
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
-		$products = $query->skip(($page - 1) * 48)->take(48)->get();
+		$products = $query->forPage($page, 48)->get();
 
 		$request->flash();
 		return view('dior.index', compact('products', 'category', 'categories', 'page', 'total_pages'));
@@ -55,7 +55,6 @@ class DiorController extends Controller
 			'designer_style_id' => $dior_product->id,
 			'name_cn' => $dior_product->name_cn,
 			'name' => $dior_product->name,
-			'category_id' => NULL,
 			'id' => \App\Product::generate_id(),
 		]);
 		$dior_product->product_id = $product->id;

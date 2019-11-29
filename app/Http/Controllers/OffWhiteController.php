@@ -48,7 +48,7 @@ class OffWhiteController extends Controller
 
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
-		$products = $query->skip(($page - 1) * 48)->take(48)->get();
+		$products = $query->forPage($page, 48)->get();
 
 		$sortOptions = $this->getSortOptions();
 		$request->flash();
