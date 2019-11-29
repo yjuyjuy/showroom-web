@@ -7,6 +7,8 @@
 
 @section('content')
 <div id="products-index" class="">
+	@php $retailer = \App\Retailer::find(3978029761); @endphp
+	@include('retailer.banner')
 	<div class="d-flex">
 		<div class="mdc-menu-surface--anchor">
 			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('department') }}</span></button>
