@@ -122,6 +122,10 @@
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_comment</i>
 						<span class="mdc-list-item__text">功能建议</span>
 					</a>
+					<a class="mdc-list-item" href="{{ route('account.edit') }}">
+						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+						<span class="mdc-list-item__text">修改账户信息</span>
+					</a>
 					<a class="mdc-list-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
 						<span class="mdc-list-item__text">{{ __('Logout') }}</span>
