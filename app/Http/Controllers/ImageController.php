@@ -13,6 +13,7 @@ class ImageController extends Controller
 {
 	public function store()
 	{
+		umask(0);
 		request()->validate([
 			'product_id' => ['required','exists:products,id'],
 			'image' => ['required_without:images','file','mimetypes:image/*','max:10000'],
@@ -57,6 +58,7 @@ class ImageController extends Controller
 
 	public function update(Image $image)
 	{
+		umask(0);
 		request()->validate([
 			'image' => ['required','file','mimetypes:image/*','max:10000'],
 		]);
@@ -115,6 +117,7 @@ class ImageController extends Controller
 
 	public function import($images, $product)
 	{
+		umask(0);
 		$order = $product->images()->max('order');
 		foreach ($images as $image) {
 			$original_filename = explode('?', array_reverse(explode('/', $image->url))[0])[0];
