@@ -9,7 +9,7 @@
 			@method('PATCH')
 			@csrf
 			<div class="mdc-card__content-header">
-				<h3>{{ __('Edit') }}</h3>
+				<h3>{{ __('edit account') }}</h3>
 			</div>
 
 			<label class="mdc-text-field mdc-card__action">
