@@ -127,5 +127,5 @@ window.open_wechat = (name) => {
 window.axios_submit = function(button) {
 	var data = {};
 	[].map.call(button.form.elements,(el)=>(el.name)&&(data[el.name]=el.value));
-	axios.patch(button.form.action, data).then(response=>window.location.reload());
+	axios.patch(button.form.action, data).then(response=>window.location.reload()).catch(error=>button.form.submit());
 };
