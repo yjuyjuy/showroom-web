@@ -25,8 +25,7 @@ class ImageController extends Controller
 			foreach (request('images') as $uploadedFile) {
 				$order += 1;
 				$path = $uploadedFile->store('images/'.request('product_id'), 'public');
-				\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(400, 565)->save(public_path('storage/'.$path.'_400.jpeg'), 80);
-				\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(800, 1130)->save(public_path('storage/'.$path.'_800.jpeg'), 80);
+				\App\Jobs\OptimizeImage::dispatch($path);
 				\App\Image::create([
 					'path' => $path,
 					'source' => $uploadedFile->getClientOriginalName(),
@@ -36,8 +35,7 @@ class ImageController extends Controller
 			}
 		} else {
 			$path = request('image')->store('images/'.request('product_id'), 'public');
-			\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(400, 565)->save(public_path('storage/'.$path.'_400.jpeg'), 80);
-			\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(800, 1130)->save(public_path('storage/'.$path.'_800.jpeg'), 80);
+			\App\Jobs\OptimizeImage::dispatch($path);
 			\App\Image::create([
 				'path' => $path,
 				'source' => request('image')->getClientOriginalName(),
@@ -64,8 +62,7 @@ class ImageController extends Controller
 			Storage::delete('public/'.$image->path);
 		}
 		$path = request('image')->store("images/{$image->product_id}", 'public');
-		\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(400, 565)->save(public_path('storage/'.$path.'_400.jpeg'), 80);
-		\Intervention\Image\Facades\Image::make(public_path('storage/'.$path))->fit(800, 1130)->save(public_path('storage/'.$path.'_800.jpeg'), 80);
+		\App\Jobs\OptimizeImage::dispatch($path);
 		\App\Image::create([
 			'path' => $path,
 			'source' => request('image')->getClientOriginalName(),
@@ -140,8 +137,7 @@ class ImageController extends Controller
 						return;
 					}
 				}
-				\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(400, 565)->save('storage/'.$path.'_400.jpeg', 80);
-				\Intervention\Image\Facades\Image::make('storage/'.$path)->fit(800, 1130)->save('storage/'.$path.'_800.jpeg', 80);
+				\App\Jobs\OptimizeImage::dispatch($path);
 				\App\Image::create([
 					'path' => $path,
 					'source' => $original_filename,
