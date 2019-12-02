@@ -30,6 +30,6 @@ class VerifyEmail implements ShouldQueue
      */
     public function handle()
     {
-      $this->user->notify(new Notifications\VerifyEmail);
+      $this->user->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
     }
 }
