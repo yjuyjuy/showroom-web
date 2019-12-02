@@ -103,8 +103,10 @@ class ImageController extends Controller
 
 	public function destroy(Image $image)
 	{
-		if (Storage::exists('public/'.$image->path)) {
-			Storage::delete('public/'.$image->path);
+		foreach([$image->path, $image->path.'_400.jpeg', $image->path.'_800.jpeg'] as $path) {
+			if (Storage::exists('public/'.$path)) {
+				Storage::delete('public/'.$path);
+			}
 		}
 		$image->delete();
 	}
