@@ -40,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	 * @var array
 	 */
 	protected $attributes = [];
+
 	public function vendor()
 	{
 		return $this->belongsTo(Vendor::class);
@@ -84,5 +85,14 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function isSuperAdmin()
 	{
 		return in_array($this->id, [1111111111, 4021500970, 8888888888]);
+	}
+	/**
+	 * Send the email verification notification.
+	 *
+	 * @return void
+	 */
+	public function sendEmailVerificationNotification()
+	{
+		\App\Jobs\VerifyEmail::dispatch($this);
 	}
 }
