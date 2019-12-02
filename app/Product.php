@@ -108,12 +108,11 @@ class Product extends Model
 	// Accessors
 	public function getOffersToStringAttribute()
 	{
-		$string = implode(' ', collect($this->getSizePrice('offer'))->mapToGroups(function ($item, $key) {
-			return [$item['price'] => $key];
-		})->map(function ($sizes, $price) {
-			return str_replace('OS','',implode('/', $sizes->toArray()))." 售价\u{00a5}".(ceil($price * 0.115)*10)." 调货\u{00a5}".$price;
-		})->toArray());
-		return $this->displayName().' '.$string;
+		if ($this->offers->isNotEmpty()) {
+			return $this->displayName().str_replace(' OS', '', ' '.implode('/', array_keys($this->getSizePrice('offer'))));
+		} else {
+			return $this->displayName();
+		}
 	}
 	public function getLinksAttribute()
 	{
