@@ -152,6 +152,10 @@ class Product extends Model
 					foreach(\App\OffWhiteProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
 						$links['Off-White详情'] = route('offwhite.show', ['product' => $product,]);
 					}
+				} elseif ($this->brand_id == 181957) { // Balenciaga
+					foreach(\App\BalenciagaProduct::where('designer_style_id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
+						$links['Balenciaga详情'] = route('balenciaga.show', ['product' => $product,]);
+					}
 				}
 				return $links;
 			});
