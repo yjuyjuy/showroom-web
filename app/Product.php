@@ -239,7 +239,7 @@ class Product extends Model
 			$parts[] = $this->name;
 		}
 		if ($this->color) {
-			$parts[] = $this->color->name;
+			$parts[] = __($this->color->name);
 		}
 		return implode(' ', $parts);
 	}
