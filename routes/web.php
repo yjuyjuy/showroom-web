@@ -1,11 +1,11 @@
 <?php
 
 Auth::routes(['verify' => true]);
-
 Route::redirect('', 'products');
 
 # User model
 Route::middleware('auth')->group(function () {
+	Route::view('registered', 'auth.registered')->name('registered');
 	Route::get('home', 'HomeController@index')->name('home');
 	Route::get('suggestion/create', 'SuggestionController@create')->name('suggestion.create');
 	Route::post('suggestion', 'SuggestionController@store')->name('suggestion.store');
