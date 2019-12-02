@@ -239,6 +239,9 @@ class Product extends Model
 		} else if ($this->name) {
 			$parts[] = $this->name;
 		}
+		if ($this->color) {
+			$parts[] = $this->color->name;
+		}
 		return implode(' ', $parts);
 	}
 	public static function generate_id()
