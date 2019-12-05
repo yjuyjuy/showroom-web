@@ -1,30 +1,31 @@
 <?php
 
 Auth::routes(['verify' => true]);
-Route::redirect('', 'products');
+Route::redirect('/', 'products');
 
 # User model
 Route::middleware('auth')->group(function () {
 	Route::view('registered', 'auth.registered')->name('registered');
-	Route::get('home', 'HomeController@index')->name('home');
+
 	Route::get('suggestion/create', 'SuggestionController@create')->name('suggestion.create');
 	Route::post('suggestion', 'SuggestionController@store')->name('suggestion.store');
-	Route::get('account/edit', 'AccountController@edit')->name('account.edit');
+
 	Route::patch('account', 'AccountController@update')->name('account.update');
+	Route::get('account/edit', 'AccountController@edit')->name('account.edit');
 	Route::get('account/status', 'AccountController@status')->name('account.status');
 	Route::post('account/status/request', 'AccountController@request')->name('account.request');
+
 	Route::get('following/products', 'ProductController@following')->name('following.products');
-	Route::get('following/retailers', 'RetailerController@following')->name('following.retailers');
 	Route::get('following/vendors', 'VendorController@following')->name('following.vendors')->middleware('reseller');
-	// Route::get('following/vendors/{vendor}', 'VendorController@edit')->name('following.vendors.edit')->middleware('reseller');
-	// Route::patch('following/vendors/{vendor}', 'VendorController@update')->name('following.vendors.edit')->middleware('reseller');
 });
 
 # Product model
 Route::get('products', 'ProductController@index')->name('products.index');
 Route::get('products/random', 'ProductController@random')->name('products.random');
 Route::middleware('auth')->group(function () {
+	Route::get('products', 'ProductController@index')->name('products.index');
 	Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
+	Route::get('products/random', 'ProductController@random')->name('products.random');
 	Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
 	Route::get('products/{product}', 'ProductController@show')->name('products.show');
 	Route::patch('products/{product}', 'ProductController@update')->name('products.update')->middleware('admin');
@@ -66,6 +67,7 @@ Route::redirect('/retailer/Louis Vuitton', '/louis-vuitton');
 
 Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
 Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
+
 Route::middleware('auth')->group(function () {
 	Route::post('retailer/{retailer}/follow', 'FollowRetailerController@follow')->name('follow.retailer');
 	Route::post('retailer/{retailer}/unfollow', 'FollowRetailerController@unfollow')->name('unfollow.retailer');
@@ -162,15 +164,17 @@ Route::middleware('auth')->group(function () {
 # admin helper routes
 Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('admin', 'AdminController@index')->name('admin.index');
-	Route::view('admin/inbox', 'admin.inbox')->name('admin.inbox');
-	Route::get('requests', 'RequestController@index')->name('requests.index');
-	Route::get('suggestions', 'SuggestionController@index')->name('suggestions.index');
 	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
+
+	Route::get('suggestions', 'SuggestionController@index')->name('suggestions.index');
 	Route::post('suggestions/archive/{suggestion}', 'SuggestionController@archive')->name('suggestion.archive');
+
+	Route::get('requests', 'RequestController@index')->name('requests.index');
 	Route::post('requests/agree/{user}', 'RequestController@agree')->name('requests.agree');
 	Route::post('requests/reject/{user}', 'RequestController@reject')->name('requests.reject');
+
 	Route::get('logs', 'LogController@index')->name('logs.index');
 	Route::view('users', 'admin.users')->name('admin.users');
 });
 
-Route::get('{slug}', function() { abort(404); })->middleware(['auth', 'throttle:10,1']);
+Route::get('{slug}', function() { abort(404); })->middleware(['auth', 'throttle:10,1'])->where(['slug' => '.*']);
