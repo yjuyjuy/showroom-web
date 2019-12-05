@@ -22,8 +22,11 @@ class PriceController extends Controller
 		$products = $vendor->products;
 		$products->loadMissing([
 			'images', 'brand', 'prices' => function ($query) use ($vendor) {
-				$query->where('vendor_id', $vendor->id);
+				$query->where('vendor_id', $vendor->id)->orderBy('created_at', 'desc');
 			},]);
+		$products = $products->sortBy(function($product) {
+			return $product->prices->first()->created_at;
+		})->values();
 		return view('prices.index', compact('vendor','products'));
 	}
 
