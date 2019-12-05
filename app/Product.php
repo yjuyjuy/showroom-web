@@ -135,7 +135,7 @@ class Product extends Model
 				})->get() as $product) {
 					$links['End详情'] = route('end.show', ['product' => $product,]);
 				}
-				if ($this->brand_id == 182426) { // Louis Vuitton
+				if ($this->brand_id == 700854) { // Louis Vuitton
 					foreach(\App\LouisVuittonProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
 						$links['Louis Vuitton详情'] = route('louisvuitton.show', ['product' => urlencode($product->id),]);
 					}
