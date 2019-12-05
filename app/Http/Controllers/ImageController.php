@@ -58,9 +58,7 @@ class ImageController extends Controller
 		request()->validate([
 			'image' => ['required','file','mimetypes:image/*','max:10000'],
 		]);
-		if (Storage::exists('public/'.$image->path)) {
-			Storage::delete('public/'.$image->path);
-		}
+		$this->destroy($image);
 		$path = request('image')->store("images/{$image->product_id}", 'public');
 		\App\Jobs\OptimizeImage::dispatch($path);
 		\App\Image::create([
@@ -103,7 +101,7 @@ class ImageController extends Controller
 
 	public function destroy(Image $image)
 	{
-		foreach([$image->path, $image->path.'_400.jpeg', $image->path.'_800.jpeg'] as $path) {
+		foreach([$image->path, $image->path.'_upsized.jpeg', $image->path, $image->path.'_400.jpeg', $image->path.'_800.jpeg'] as $path) {
 			if (Storage::exists('public/'.$path)) {
 				Storage::delete('public/'.$path);
 			}
