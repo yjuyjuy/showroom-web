@@ -84,7 +84,7 @@
 					@endif
 					<a class="mdc-list-item" href="{{ route('websites.index') }}">
 						<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
-						<span class="mdc-list-item__text">所有网站</span>
+						<span class="mdc-list-item__text">网站数据库</span>
 					</a>
 					@if($user->isSuperAdmin())
 					<hr class="mdc-list-divider">
@@ -140,7 +140,7 @@
 						<a href="/" class="mdc-top-app-bar__title">{{config('app.name','app.name')}}@yield('header','')</a>
 					</section>
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-						<a href="{{ route('products.random') }}"
+						<a href="{{ route('products.index', ['sort' => 'random']) }}"
 							 class="material-icons mdc-top-app-bar__action-item" aria-label="surprise">casino</a>
 					</section>
 				</div>
