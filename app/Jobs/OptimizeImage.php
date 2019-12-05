@@ -37,7 +37,7 @@ class OptimizeImage implements ShouldQueue
 			$image = \Intervention\Image\Facades\Image::make($path);
 			$w = $image->width();
 			$h = $image->height();
-			if ( $h / $w < 1.2 ) {
+			if ( $h / $w < 1.413 ) {
 				$x1 = ceil(($w - $h / 1.413) / 2);
 				$x2 = ceil($w - $x1);
 				$y1 = ceil($h / 3);
