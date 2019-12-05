@@ -103,7 +103,7 @@ class RetailerController extends Controller
 			$request->flash();
 		}
 		$user = auth()->user();
-		$retailers = $user->following_retailers;
+		$retailers = $user->following_retailers ?? collect();
 		return view('retailer.following', compact('retailers', 'not_found'));
 	}
 
