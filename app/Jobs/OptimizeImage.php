@@ -30,6 +30,9 @@ class OptimizeImage implements ShouldQueue
      */
     public function handle()
     {
+			$size_limit1 = 15 * 1024;
+			$size_limit2 = 50 * 1024;
+
 			$path = public_path('storage/'.$this->path);
 			$image = \Intervention\Image\Facades\Image::make($path);
 			$w = $image->width();
@@ -54,7 +57,7 @@ class OptimizeImage implements ShouldQueue
 			do {
 				$quality = $quality - 10;
 				$image = \Intervention\Image\Facades\Image::make($path)->fit(400, 565)->save(public_path('storage/'.$this->path).'_400.jpeg', $quality);
-			} while ($image->fileSize() > 15 * 1024 && $quality > 20);
+			} while ($image->fileSize() > $size_limit1 && $quality > 20);
 
 			$quality = 100;
 			$image = \Intervention\Image\Facades\Image::make($path);
@@ -68,6 +71,6 @@ class OptimizeImage implements ShouldQueue
 			do {
 				$quality = $quality - 10;
 				$image = \Intervention\Image\Facades\Image::make($path)->fit($width, $height)->save(public_path('storage/'.$this->path).'_800.jpeg', $quality);
-			} while ($image->fileSize() > 30 * 1024 && $quality > 20);
+			} while ($image->fileSize() > $size_limit2 && $quality > 20);
     }
 }
