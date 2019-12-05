@@ -45,7 +45,6 @@ class OptimizeImage implements ShouldQueue
 				$color3 = $image->pickColor($x2, $y1);
 				$color4 = $image->pickColor($x2, $y2);
 				$avg_diff = (array_sum([255,255,255]) * 4 - (array_sum($color1) + array_sum($color2) + array_sum($color3) + array_sum($color4))) / 4;
-				dump('avg_diff = '.$avg_diff);
 				if ($avg_diff >= 100) {
 					$path = $path.'_upsized.jpeg';
 					\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path, 100, 'jpeg');
@@ -56,7 +55,6 @@ class OptimizeImage implements ShouldQueue
 				$quality = $quality - 10;
 				$image = \Intervention\Image\Facades\Image::make($path)->fit(400, 565)->save(public_path('storage/'.$this->path).'_400.jpeg', $quality);
 			} while ($image->fileSize() > 15 * 1024 && $quality > 20);
-			dump('quality1 = '.$quality);
 
 			$quality = 100;
 			$image = \Intervention\Image\Facades\Image::make($path);
@@ -71,6 +69,5 @@ class OptimizeImage implements ShouldQueue
 				$quality = $quality - 10;
 				$image = \Intervention\Image\Facades\Image::make($path)->fit($width, $height)->save(public_path('storage/'.$this->path).'_800.jpeg', $quality);
 			} while ($image->fileSize() > 30 * 1024 && $quality > 20);
-			dump('quality2 = '.$quality);
     }
 }
