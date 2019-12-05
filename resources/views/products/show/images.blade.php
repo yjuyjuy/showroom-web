@@ -3,7 +3,8 @@
 <div class="w-100 text-center">
 	@can('update',\App\Image::class)
 		<a href="{{route('images.edit',['product'=>$product])}}">管理图片</a>
-	@elsecan('create', \App\Image::class)
+	@endcan
+	@can('create', \App\Image::class)
 		<a href="#" onclick="event.preventDefault(); document.getElementById('images-input').click();">上传图片</a>
 		<form id="upload-image-form" class="" action="{{ route('images.store') }}" method="post" style="display:none;">
 			@csrf
