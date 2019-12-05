@@ -125,7 +125,17 @@ window.open_wechat = (name) => {
 	window.location = 'weixin://';
 };
 window.axios_submit = function(button) {
-	var data = {};
-	[].map.call(button.form.elements,(el)=>(el.name)&&(data[el.name]=el.value));
-	axios.patch(button.form.action, data).then(response=>window.location.reload()).catch(error=>button.form.submit());
+	var formData = new FormData();
+	for(let el of button.form.elements) {
+		if (el.name) {
+			if (el.files) {
+				for (let file of el.files) {
+					formData.append(el.name + '[]', file)
+				}
+			} else {
+				formData.append(el.name, el.value);
+			}
+		}
+	}
+	axios.post(button.form.action, formData).then(response=>window.location.reload()).catch(error=>button.form.submit());
 };

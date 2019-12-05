@@ -3,7 +3,7 @@
 Auth::routes(['verify' => true]);
 Route::get('/', function() {
 	if (auth()->user()) {
-		return redirect('products');
+		return redirect('/products');
 	} else {
 		return redirect('following/retailers');
 	}
@@ -53,13 +53,13 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 });
 
 # Image model
-Route::middleware(['auth', 'admin'])->group(function () {
-	Route::post('images', 'ImageController@store')->name('images.store');
-	Route::patch('images/swap', 'ImageController@swap')->name('images.swap');
-	Route::patch('images/{image}', 'ImageController@update')->name('images.update');
-	Route::delete('images/{image}', 'ImageController@destroy')->name('images.destroy');
-	Route::patch('images/{image}/move', 'ImageController@move')->name('images.move');
-	Route::get('products/{product}/images', 'ImageController@edit')->name('images.edit');
+Route::middleware('auth')->group(function () {
+	Route::post('images', 'ImageController@store')->name('images.store')->middleware('can:create,App\Image');
+	Route::patch('images/swap', 'ImageController@swap')->name('images.swap')->middleware('can:update,App\Image');
+	Route::patch('images/{image}', 'ImageController@update')->name('images.update')->middleware('can:update,App\Image');
+	Route::delete('images/{image}', 'ImageController@destroy')->name('images.destroy')->middleware('can:update,App\Image');
+	Route::patch('images/{image}/move', 'ImageController@move')->name('images.move')->middleware('can:update,App\Image');
+	Route::get('products/{product}/images', 'ImageController@edit')->name('images.edit')->middleware('can:update,App\Image');
 });
 
 # Retailer

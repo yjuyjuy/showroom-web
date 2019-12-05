@@ -9,8 +9,14 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class ImagePolicy
 {
 	use HandlesAuthorization;
+
 	public function update(User $user)
 	{
 		return $user->isSuperAdmin();
+	}
+
+	public function create(User $user)
+	{
+		return $user->isSuperAdmin() || $user->vendor;
 	}
 }
