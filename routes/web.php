@@ -18,10 +18,9 @@ Route::middleware('auth')->group(function () {
 	Route::get('following/products', 'ProductController@following')->name('following.products');
 	Route::get('following/vendors', 'VendorController@following')->name('following.vendors')->middleware('reseller');
 });
+Route::get('following/retailers', 'RetailerController@following')->name('following.retailers');
 
 # Product model
-Route::get('products', 'ProductController@index')->name('products.index');
-Route::get('products/random', 'ProductController@random')->name('products.random');
 Route::middleware('auth')->group(function () {
 	Route::get('products', 'ProductController@index')->name('products.index');
 	Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
