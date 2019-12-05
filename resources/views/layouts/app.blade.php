@@ -4,9 +4,6 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="preconnect" href="https://www.notdopebxtch.com/" crossorigin>
-		<link rel="preconnect" href="https://cdn.notdopebxtch.com/" crossorigin>
-		<link rel="dns-prefetch" href="https://www.notdopebxtch.com/">
 		<link rel="dns-prefetch" href="https://cdn.notdopebxtch.com/">
 		<link href="{{ secure_asset('css/fonts.css') }}" rel="stylesheet">
 		<!-- CSRF Token -->
