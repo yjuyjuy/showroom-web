@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 
 class LouisVuittonController extends Controller
 {
+	public $retailer_id = 4354186782;
+
 	public function index(Request $request, $category=null)
 	{
 		$categories = $this->getCategories();
@@ -55,7 +57,14 @@ class LouisVuittonController extends Controller
 		$lv_product->product_id = $product->id;
 		$lv_product->save();
 		(new ImageController())->import($lv_product->images, $product);
-
+		if ($lv_product->sizes && $lv_product->price) {
+			\App\RetailPrice::create([
+				'retailer_id' => $this->retailer_id,
+				'product_id' => $product->id,
+				'prices' => $lv_product->size_price,
+				'link' => $lv_product->url,
+			]);
+		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
@@ -75,7 +84,17 @@ class LouisVuittonController extends Controller
 		$lv_product->product_id = $product->id;
 		$lv_product->save();
 		(new ImageController())->import($lv_product->images, $product);
-
+		if ($lv_product->sizes && $lv_product->price) {
+			\App\RetailPrice::updateOrCreate([
+				'retailer_id' => $this->retailer_id,
+				'product_id' => $product->id,
+			],[
+				'prices' => $lv_product->size_price,
+				'link' => $lv_product->url,
+			]);
+		} else {
+			\App\RetailPrice::where('retailer_id', $this->retailer_id)->where('product_id', $product->id)->delete();
+		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
