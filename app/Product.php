@@ -204,7 +204,11 @@ class Product extends Model
 			}
 		}
 		$data = Arr::sort($data, function ($value, $key) {
-			return array_search($key, ['XXS','XS','S','M','L','XL','XXL']);
+			if (in_array($key, ['XXS','XS','S','M','L','XL','XXL','XXXL','XXXXL'])) {
+				return array_search($key, ['XXS','XS','S','M','L','XL','XXL','XXXL','XXXXL']);
+			} else {
+				return $key;
+			}
 		});
 		return $data;
 	}
