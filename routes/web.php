@@ -3,9 +3,9 @@
 Auth::routes(['verify' => true]);
 Route::get('/', function() {
 	if (auth()->user()) {
-		return redirect(route('products.index'));
+		return redirect('products');
 	} else {
-		return redirect(route('following.retailers'));
+		return redirect('following/retailers');
 	}
 });
 
@@ -27,8 +27,8 @@ Route::middleware('auth')->group(function () {
 Route::get('following/retailers', 'RetailerController@following')->name('following.retailers');
 
 # Product model
+Route::get('products', 'ProductController@index')->name('products.index');
 Route::middleware('auth')->group(function () {
-	Route::get('products', 'ProductController@index')->name('products.index');
 	Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
 	Route::get('products/random', 'ProductController@random')->name('products.random');
 	Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
