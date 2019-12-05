@@ -51,4 +51,17 @@ class LouisVuittonProduct extends Model
 	{
 		return 700854;
 	}
+
+	public function getSizePriceAttribute()
+	{
+		if ($this->sizes && $this->price) {
+			$data = [];
+			foreach(explode(',', $this->sizes) as $size) {
+				$data[$size] = (int)($this->price);
+			}
+			return $data;
+		} else {
+			return [];
+		}
+	}
 }
