@@ -24,7 +24,7 @@
 	@endif
 
 	<div class="m-3 text-center">
-		<span class="mdc-typography--headline6">注意: 成功关注后卖家报价才会在首页显示，默认只显示各品牌官网报价，取消关注后将不会在其它页面显示卖家价格</span>
+		<span class="mdc-typography--headline6">注意: 成功关注后卖家报价才会在首页显示，默认只显示各品牌官网报价，取消关注后将不会在其它页面显示卖家价格<br><br>点击下方名字查看卖家的所有商品</span>
 	</div>
 
 	<div class="my-3 d-flex justify-content-center flex-wrap">
