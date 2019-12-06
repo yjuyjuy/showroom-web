@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	 * @var array
 	 */
 	protected $fillable = [
-		'id', 'email', 'password','username'
+		'id', 'email', 'password','username','type'
 	];
 	/**
 	 * The attributes that should be hidden for arrays.
@@ -82,6 +82,23 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function setIsRejectedAttribute($value)
 	{
 		if($value) $this->type = 'rejected';
+	}
+	public function getIsInvitedAttribute()
+	{
+		if (strpos($this->type, 'invited:') !== false && \App\Vendor::find(explode(':', $this->type)[1])) {
+			return true;
+		}
+		return false;
+	}
+	public function setIsInvitedAttribute(\App\Vendor $vendor)
+	{
+		if ($vendor) $this->type = 'invited:'.$vendor->id;
+	}
+	public function getInvitedByAttribute()
+	{
+		if ($this->is_invited) {
+			return \App\Vendor::find(explode(':', $this->type)[1]);
+		}
 	}
 	public function isSuperAdmin()
 	{

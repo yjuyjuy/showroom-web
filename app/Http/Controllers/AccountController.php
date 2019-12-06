@@ -15,15 +15,24 @@ class AccountController extends Controller
 	public function request(Request $request)
 	{
 		$user = auth()->user();
-		if (!$user->type) {
+		if (!$user->is_rejected && !$user->is_reseller) {
 			$wechat_id = $request->validate([
 				'wechat_id' => ['required', 'string', 'max:255', 'unique:users'],
 			])['wechat_id'];
 			$user->wechat_id = $wechat_id;
-			$user->is_pending = true;
+			if ($user->is_invited) {
+				$user->following_vendors()->syncWithoutDetaching($user->invited_by);
+				$user->is_reseller = true;
+			} else {
+				$user->is_pending = true;
+			}
 			$user->save();
 		}
-		return redirect(route('account.status'));
+		if ($user->is_reseller) {
+			return redirect(route('following.vendors'));
+		} else {
+			return redirect(route('account.status'));
+		}
 	}
 
 	public function edit()

@@ -3,7 +3,7 @@
 @section('title', __('account status'))
 
 @section('content')
-@if(!$user->type)
+@if(!$user->type || $user->is_invited)
 <div class="d-flex justify-content-center auth">
 	<div class="mdc-card mdc-card--outlined">
 		<form id="request-form" method="POST" action="{{ route('account.request') }}" class="mdc-card__content d-flex flex-column auth-form">

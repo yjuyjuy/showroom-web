@@ -52,6 +52,7 @@ class RegisterController extends Controller
 			'username' => ['required', 'string', 'max:255', 'unique:users'],
 			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
 			'password' => ['required', 'string', 'min:8', 'confirmed'],
+			'invite_code' => ['sometimes', 'required', 'string', 'size:10', 'exists:invite_codes,id'],
 		]);
 	}
 
@@ -66,11 +67,18 @@ class RegisterController extends Controller
 		do {
 			$id = random_int(1000000000, 9999999999);
 		} while(\App\User::find($id));
+		if ($data['invite_code']) {
+			$vendor = \App\InviteCode::find($data['invite_code'])->vendor;
+			$type = 'invited:'.$vendor->id;
+		} else {
+			$type = NULL;
+		}
 		return User::create([
 			'id' => $id,
 			'email' => $data['email'],
 			'username' => $data['username'],
 			'password' => Hash::make($data['password']),
+			'type' => $type,
 		]);
 	}
 }
