@@ -109,7 +109,8 @@ class Product extends Model
 	public function getOffersToStringAttribute()
 	{
 		if ($this->offers->isNotEmpty()) {
-			return $this->displayName().str_replace(' OS', '', ' '.implode('/', array_keys($this->getSizePrice('offer'))));
+			$max_offer = max(array_map('max', $this->offers->pluck('prices')->toArray()));
+			return $this->displayName().str_replace(' OS', '', ' '.implode('/', array_keys($this->getSizePrice('offer'))))." \u{00A5}".(ceil( $max_offer * 1.15 / 10 ) * 10);
 		} else {
 			return $this->displayName();
 		}
