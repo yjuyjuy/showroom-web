@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('List of websites'))
+@section('title', '网站数据库')
 
 @section('content')
 <div class="fullscreen-center">
