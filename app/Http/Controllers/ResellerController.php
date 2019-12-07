@@ -21,7 +21,7 @@ class ResellerController extends Controller
 			$sort = 'default';
 		}
 		if ($sort == 'default') {
-			$query->orderBy('created_at', 'desc')->orderBy('id');
+			$query->orderBy('updated', 'desc');
 		} elseif ($sort == 'newest') {
 			$query->orderBy('season_id', 'desc')->orderBy('id');
 		} elseif ($sort == 'oldest') {
