@@ -12,6 +12,8 @@ use Illuminate\Validation\Rule;
 
 class FarfetchController extends Controller
 {
+	public $retailer_id = 1467053076;
+
 	public function index(Request $request, $token=null)
 	{
 		$categories = $this->getCategories();
@@ -109,7 +111,6 @@ class FarfetchController extends Controller
 
 	public function export(FarfetchProduct $farfetch_product)
 	{
-		$retailer_id = 1467053076;
 		$product = Product::create([
 			'brand_id' => $farfetch_product->designer->mapped_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
@@ -119,7 +120,7 @@ class FarfetchController extends Controller
 			'id' => \App\Product::generate_id(),
 		]);
 		$retail = new \App\RetailPrice();
-		$retail->retailer_id = $retailer_id;
+		$retail->retailer_id = $this->retailer_id;
 		$retail->product_id = $product->id;
 		$image_controller = new ImageController();
 		if (!empty($farfetch_product->size_price)) {
@@ -148,7 +149,6 @@ class FarfetchController extends Controller
 
 	public function merge(FarfetchProduct $farfetch_product, Product $product)
 	{
-		$retailer_id = 1467053076;
 		foreach([
 			'brand_id' => $farfetch_product->designer->mapped_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
@@ -164,7 +164,7 @@ class FarfetchController extends Controller
 		$farfetch_product->save();
 		(new ImageController())->import($farfetch_product->images, $product);
 		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $retailer_id,
+			'retailer_id' => $this->retailer_id,
 			'product_id' => $product->id,
 		]);
 		$retail->prices = [];
@@ -181,12 +181,12 @@ class FarfetchController extends Controller
 
 	public function unlink(FarfetchProduct $farfetch_product)
 	{
-		$retailer_id = 1467053076;
 		$product = $farfetch_product->product;
 		$farfetch_product->product_id = NULL;
 		$farfetch_product->save();
+
 		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $retailer_id,
+			'retailer_id' => $this->retailer_id,
 			'product_id' => $product->id,
 		]);
 		$retail->prices = [];
