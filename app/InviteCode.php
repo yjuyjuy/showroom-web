@@ -25,6 +25,8 @@ class InviteCode extends Model
    */
   public $timestamps = false;
 
+	protected $guarded = [];
+
   public function vendor()
 	{
 		return $this->belongsTo(\App\Vendor::class);
