@@ -54,11 +54,11 @@ class PriceController extends Controller
 			$price->data = $data;
 			$price->vendor_id = $vendor->id;
 			$price->save();
+			Log::create([
+				'content' => auth()->user()->username.'新增了'.$price->vendor->name.'的'.$product->displayName().'的价格',
+				'url' => route('products.show', ['product' => $product]),
+			]);
 		}
-		Log::create([
-			'content' => auth()->user()->username.'新增了'.$price->vendor->name.'的'.$product->displayName().'的价格',
-			'url' => route('products.show', ['product' => $product]),
-		]);
 		return ['redirect' => route('products.show', ['product' => $product])];
 	}
 
