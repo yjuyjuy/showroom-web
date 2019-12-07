@@ -42,15 +42,19 @@ class OptimizeImage implements ShouldQueue
 				$x2 = ceil($w - $x1);
 				$y1 = ceil($h / 3);
 				$y2 = ceil($h / 2);
-				$y2 = ceil($h / 3 * 2);
-				$color1 = $image->pickColor($x1, $y1);
-				$color2 = $image->pickColor($x1, $y2);
-				$color3 = $image->pickColor($x2, $y1);
-				$color4 = $image->pickColor($x2, $y2);
-				$avg_diff = (array_sum([255,255,255]) * 4 - (array_sum($color1) + array_sum($color2) + array_sum($color3) + array_sum($color4))) / 4;
+				$y3 = ceil($h / 3 * 2);
+				foreach ([$x1, $x2] as $x) {
+					foreach ([$y1, $y2, $y3] as $y) {
+						$samples[] = array_sum($image->pickColor($x, $y));
+					}
+				}
+				$avg = array_sum($samples) / sizeof($samples);
+				$avg_diff = array_sum(array_map(function ($sample) use ($avg) {
+					return ($sample - $avg) ** 2;
+				}, $samples)) / sizeof($samples);
+				\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
 				if ($avg_diff >= 100) {
 					$path = $path.'_upsized.jpeg';
-					\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path, 100, 'jpeg');
 				}
 			}
 			$quality = 100;
