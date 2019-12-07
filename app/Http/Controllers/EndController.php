@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 
 class EndController extends Controller
 {
+	public $retailer_id = 3548857028;
+
 	public function index(Request $request, $token=null)
 	{
 		$departments = $this->getDepartments();
@@ -121,7 +123,6 @@ class EndController extends Controller
 
 	public function export(EndProduct $end_product)
 	{
-		$retailer_id = 3548857028;
 		$product = Product::create([
 			'brand_id' => $end_product->brand->mapped_id,
 			'designer_style_id' => $end_product->sku,
@@ -134,7 +135,7 @@ class EndController extends Controller
 		$end_product->save();
 
 		$retail = new \App\RetailPrice();
-		$retail->retailer_id = $retailer_id;
+		$retail->retailer_id = $this->retailer_id;
 		$retail->product_id = $product->id;
 		$image_controller = (new ImageController());
 		foreach(\App\EndProduct::where('sku', $end_product->sku)->where('brand_name', $end_product->brand_name)->where('color', $end_product->color)->get() as $p){
@@ -152,7 +153,6 @@ class EndController extends Controller
 
 	public function merge(EndProduct $end_product, Product $product)
 	{
-		$retailer_id = 3548857028;
 		foreach ([
 			'brand_id' => $end_product->brand->mapped_id,
 			'designer_style_id' => $end_product->sku,
@@ -169,7 +169,7 @@ class EndController extends Controller
 		$end_product->save();
 
 		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $retailer_id,
+			'retailer_id' => $this->retailer_id,
 			'product_id' => $product->id,
 		]);
 		(new ImageController())->import($end_product->images, $product);
@@ -186,8 +186,23 @@ class EndController extends Controller
 
 	public function unlink(EndProduct $end_product)
 	{
+		$product = $end_product->product;
 		$end_product->product_id = NULL;
 		$end_product->save();
+
+		$retail = \App\RetailPrice::firstOrNew([
+			'retailer_id' => $this->retailer_id,
+			'product_id' => $product->id,
+		]);
+		$retail->prices = [];
+		foreach($product->end_products as $p) {
+			$retail->merge($p->size_price);
+		}
+		if(!empty($retail->prices)) {
+			$retail->save();
+		} else {
+			$retail->delete();
+		}
 		return redirect(route('end.show', ['product' => $end_product]));
 	}
 }

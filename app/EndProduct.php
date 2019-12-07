@@ -58,12 +58,14 @@ class EndProduct extends Model
 			'One Size' => 'OS',
 		];
 		$size_price = [];
-		foreach(explode(',',$this->sizes) as $size) {
-			if(array_key_exists($size, $size_map)) {
-				$size = $size_map[$size];
-			}
-			if (!array_key_exists($size, $size_price) || $size_price[$size] > $this->price) {
-				$size_price[$size] = $this->price;
+		if(!empty($this->sizes)) {
+			foreach(explode(',',$this->sizes) as $size) {
+				if(array_key_exists($size, $size_map)) {
+					$size = $size_map[$size];
+				}
+				if (!array_key_exists($size, $size_price) || $size_price[$size] > $this->price) {
+					$size_price[$size] = $this->price;
+				}
 			}
 		}
 		return $size_price;
