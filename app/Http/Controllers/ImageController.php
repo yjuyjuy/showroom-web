@@ -125,15 +125,15 @@ class ImageController extends Controller
 				if ($image->path && Storage::exists('public/'.$image->path)) {
 					try {
 						Storage::copy('public/'.$image->path, 'public/'.$path);
-					} catch (Exception | ErrorException $e) {
+					} catch (\Throwable $e) {
 						return;
 					}
-				} else {
+				} elseif ($image->url) {
 					try {
 						$f = fopen($image->url, 'r');
 						file_put_contents('storage/'.$path, $f);
 						fclose($f);
-					} catch (Exception | ErrorException $e) {
+					} catch (\Throwable $e) {
 						return;
 					}
 				}

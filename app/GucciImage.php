@@ -29,7 +29,7 @@ class GucciImage extends Model
 		if ($this->path) {
 			return secure_asset('storage/'.$this->path);
 		} else {
-			return '';
+			return $this->attributes['url'];
 		}
 	}
 }
