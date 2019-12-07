@@ -24,7 +24,7 @@
 	@endif
 
 	<div class="m-3 text-center">
-		<span class="mdc-typography--headline6">注意: 成功关注后同行的调货价才会在页面显示，默认不关注任何人<br><br>点击下方名字查看对方所有库存调货价，在【菜单 - 所有报价】页面合并查看所有已关注同行的库存调货价</span>
+		<span class="mdc-typography--headline6">注意: 成功关注后同行的调货价才会在页面显示，默认不关注任何人<br><br>点击下方名字查看对方所有库存，在【菜单 - 所有报价】页面合并查看所有已关注同行的库存</span>
 	</div>
 
 	<div class="my-3 d-flex justify-content-center flex-wrap">
