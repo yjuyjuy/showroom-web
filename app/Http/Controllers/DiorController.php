@@ -17,8 +17,8 @@ class DiorController extends Controller
 		$categories = $this->getCategories();
 		$query = DiorProduct::orderBy('id', 'desc');
 		if (array_key_exists($token, $categories)) {
-			$category = $categories[$token];
-			$query->where('category', $category);
+			$query->where('category', $categories[$token]);
+			$category = $token;
 		} else {
 			$category = NULL;
 		}
