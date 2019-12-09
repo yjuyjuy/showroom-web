@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $vendor->name.'的所有商品')
+@section('title', $vendor->name.'的所有库存')
 
 @section('content')
 <div id="products-index" class="">
