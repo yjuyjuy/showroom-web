@@ -18,6 +18,9 @@ class FarfetchDesigner extends Model
 	 * @var string
 	 */
 	protected $table = 'designers';
+
+	public $timestamps = false;
+
 	/**
 	 * Get the route key for the model.
 	 *
