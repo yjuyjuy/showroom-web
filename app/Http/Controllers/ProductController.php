@@ -45,7 +45,7 @@ class ProductController extends Controller
 		if ($user) {
 			$retailer_ids = $user->following_retailers()->pluck('retailer_id');
 		} else {
-			$retailer_ids = \App\Retailer::public()->pluck('id');
+			$retailer_ids = [];
 		}
 
 		$products->load([

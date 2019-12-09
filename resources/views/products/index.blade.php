@@ -42,28 +42,47 @@
 		</div>
 	@else
 	<ul class="mdc-image-list main-image-list">
-		@foreach($products as $product)
-		<li class="mdc-image-list__item">
-			<a href="{{ route('products.show',['product' => $product ]) }}">
-				<div class="">
-					<img class="mdc-image-list__image lazy" data-src="{{ $product->image->small ?? '' }}">
-				</div>
-				<div class="mdc-image-list__supporting">
-					<span class="mdc-image-list__label brand">{{ $product->brand->name ?? '' }}</span>
-					<span class="mdc-image-list__label product-name">{{ $product->name_cn }}</span>
-					@if($product->price)
-					<span class="mdc-image-list__label">
-						{{ "\u{00a5}".$product->price }}
-					</span>
-					@else
-					<span class="mdc-image-list__label mdc-theme--primary">
-						{{ __('not available') }}
-					</span>
-					@endif
-				</div>
-			</a>
-		</li>
-		@endforeach
+		@guest
+			@foreach($products as $product)
+			<li class="mdc-image-list__item">
+				<a href="{{ route('products.show',['product' => $product ]) }}">
+					<div class="">
+						<img class="mdc-image-list__image lazy" data-src="{{ $product->image->small ?? '' }}">
+					</div>
+					<div class="mdc-image-list__supporting">
+						<span class="mdc-image-list__label brand">{{ $product->brand->name ?? '' }}</span>
+						<span class="mdc-image-list__label product-name">{{ $product->name_cn ?? ''}}</span>
+						<span class="mdc-image-list__label mdc-theme--primary">
+							登陆后查看价格
+						</span>
+					</div>
+				</a>
+			</li>
+			@endforeach
+		@else
+			@foreach($products as $product)
+			<li class="mdc-image-list__item">
+				<a href="{{ route('products.show',['product' => $product ]) }}">
+					<div class="">
+						<img class="mdc-image-list__image lazy" data-src="{{ $product->image->small ?? '' }}">
+					</div>
+					<div class="mdc-image-list__supporting">
+						<span class="mdc-image-list__label brand">{{ $product->brand->name ?? '' }}</span>
+						<span class="mdc-image-list__label product-name">{{ $product->name_cn }}</span>
+						@if($product->price)
+						<span class="mdc-image-list__label">
+							{{ "\u{00a5}".$product->price }}
+						</span>
+						@else
+						<span class="mdc-image-list__label mdc-theme--primary">
+							{{ __('not available') }}
+						</span>
+						@endif
+					</div>
+				</a>
+			</li>
+			@endforeach
+		@endguest
 	</ul>
 	@include('layouts.pages')
 	@endif
