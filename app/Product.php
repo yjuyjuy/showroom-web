@@ -130,7 +130,7 @@ class Product extends Model
 					$query->where('designer_style_id', $this->designer_style_id)
 					->whereIn('designer_id', \App\FarfetchDesigner::where('mapped_id', $this->brand_id)->pluck('id')->toArray());
 				})->get() as $index => $product) {
-					$links['Farfetch详情'.($index + 1)] = route('farfetch.show', ['product' => $product,]);
+					$links['Farfetch详情'.($index + 1).'-'.$product->colors] = route('farfetch.show', ['product' => $product,]);
 				}
 				// End
 				foreach(\App\EndProduct::where('product_id', $this->id)
