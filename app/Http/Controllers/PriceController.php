@@ -95,29 +95,36 @@ class PriceController extends Controller
 	{
 		$this->authorize('update', $price);
 		$data = $price->data;
+		$should_log = false;
 		foreach($data as $index => &$row) {
 			if ($row['size'] == $size) {
 				$row['stock'] -= 1;
 				if($row['stock'] <= 0) {
 					unset($data[$index]);
-					if (empty($data)) {
-						$price->delete();
-						Log::create([
-							'content' => auth()->user()->username.'删除了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
-							'url' => route('products.show', ['product' => $price->product]),
-						]);
-					} else {
-						Log::create([
-							'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
-							'url' => route('products.show', ['product' => $price->product]),
-						]);
-					}
+					$should_log = true;
 				}
 				break;
 			}
 		}
-		$price->data = $data;
-		$price->save();
+		if ($should_log) {
+			if (empty($data)) {
+				Log::create([
+					'content' => auth()->user()->username.'删除了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+					'url' => route('products.show', ['product' => $price->product]),
+				]);
+			} else {
+				Log::create([
+					'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+					'url' => route('products.show', ['product' => $price->product]),
+				]);
+			}
+		}
+		if (empty($data)) {
+			$price->delete();
+		} else {
+			$price->data = $data;
+			$price->save();
+		}
 		return ['success'];
 	}
 
