@@ -20,16 +20,37 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $this->hideSensitiveRequestDetails();
 
-        Telescope::filter(function (IncomingEntry $entry) {
-						return true;
-            if ($this->app->isLocal()) {
-                return true;
-            }
+				Telescope::tag(function (IncomingEntry $entry) {
+					$tags = [];
+	        if ($entry->type === 'request') {
+	          $tags[] = 'status:'.$entry->content['response_status'];
+						if (in_array($entry->content['uri'], ['/register', '/login', '/logout'])) {
+							$tags[] = 'auth';
+						}
+						$tags[] = 'method:'.$entry->content['method'];
+						if ($user = auth()->user()) {
+							if ($user->isSuperAdmin()) {
+								$tags[] = 'user:admin';
+							} elseif ($user->vendor) {
+								$tags[] = 'user:vendor';
+							} elseif ($user->is_reseller) {
+								$tags[] = 'user:reseller';
+							} else {
+								$tags[] = 'user:customer';
+							}
+						} else {
+							$tags[] = 'user:guest';
+						}
+	        }
+	        return $tags;
+		    });
 
-            return $entry->isReportableException() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
+        Telescope::filter(function (IncomingEntry $entry) {
+					if ($entry->type === 'request' && $entry->content['uri'] === '/products') {
+						return false;
+					} else {
+						return true;
+					}
         });
     }
 
