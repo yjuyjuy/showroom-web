@@ -23,9 +23,9 @@ class VendorController extends Controller
 			$sort = 'default';
 		}
 		if ($sort == 'default') {
-			$query->orderBy('created_at', 'desc')->orderBy('id');
+			$query->orderBy('updated_at', 'desc');
 		} elseif ($sort == 'newest') {
-			$query->orderBy('season_id', 'desc')->orderBy('id');
+			$query->orderBy('season_id', 'desc');
 		} elseif ($sort == 'oldest') {
 			$query->orderBy('season_id')->orderBy('id');
 		} elseif ($sort == 'random') {

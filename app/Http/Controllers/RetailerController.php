@@ -22,7 +22,7 @@ class RetailerController extends Controller
 			$sort = 'default';
 		}
 		if ($sort == 'default') {
-			$query->orderBy('created_at', 'desc')->orderBy('id');
+			$query->orderBy('updated_at', 'desc');
 		} elseif ($sort == 'newest') {
 			$query->orderBy('season_id', 'desc')->orderBy('id');
 		} elseif ($sort == 'oldest') {
@@ -30,7 +30,7 @@ class RetailerController extends Controller
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
 		} elseif ($sort == 'created_at') {
-			$query->orderBy('created_at', 'desc')->orderBy('id');
+			$query->orderBy('created_at', 'desc');
 		} elseif ($sort == 'category') {
 			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		}
