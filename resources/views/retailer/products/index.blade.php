@@ -5,38 +5,7 @@
 @section('content')
 <div id="products-index" class="">
 	@include('retailer.banner')
-	<div class="d-flex">
-		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('category') }}</span></button>
-			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
-			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($filters['category'] as $value)
-						<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-category-{{$value->id}}-checkbox" onclick="
-							event.preventDefault();
-							var target = document.querySelector(this.dataset.target);
-							[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
-							target.checked = true;
-							target.form.submit();">{{ __($value->name) }}</a>
-					@endforeach
-			  </ul>
-			</div>
-		</div>
-		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('brand') }}</span></button>
-			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
-			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($filters['brand'] as $value)
-						<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-brand-{{$value->id}}-checkbox" onclick="
-							event.preventDefault();
-							var target = document.querySelector(this.dataset.target);
-							[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
-							target.checked = true;
-							target.form.submit();">{{ __($value->name) }}</a>
-					@endforeach
-			  </ul>
-			</div>
-		</div>
-	</div>
+	@include('products.index.express_filters')
 	@if($products->isEmpty())
 		<div class="my-5 text-center">
 			没有搜索到相关商品
@@ -67,6 +36,7 @@
 		@endforeach
 	</ul>
 	@include('layouts.pages')
+	@endif
 	<button id="display-options-fab" class="mdc-fab" aria-label="display options">
 	  <span class="mdc-fab__icon material-icons">filter_list</span>
 	</button>
@@ -103,6 +73,5 @@
 	  </div>
 	  <div class="mdc-dialog__scrim"></div>
 	</div>
-	@endif
 </div>
 @endsection

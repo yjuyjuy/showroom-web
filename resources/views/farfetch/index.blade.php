@@ -12,24 +12,59 @@
 	@include('retailer.banner')
 	<div class="d-flex">
 		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('category') }}</span></button>
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('designer') }}</span></button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($categories as $value)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('farfetch.categories.index', ['category' => $value,]) }}">{{ __($value->description) }}</a>
+					@if(old('designer'))
+					<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="input[name='designer[]']" onclick="
+						event.preventDefault();
+						var target = document.querySelector(this.dataset.target);
+						[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
+						target.form.submit();">所有设计师</a>
+					@endif
+					@foreach($filters['designer'] as $value)
+						<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-designer-{{$value->url_token}}-checkbox" onclick="
+							event.preventDefault();
+							var target = document.querySelector(this.dataset.target);
+							[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
+							target.checked = true;
+							target.form.submit();">{{ __($value->description) }}</a>
 					@endforeach
 			  </ul>
 			</div>
 		</div>
 		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('designer') }}</span></button>
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('category') }}</span></button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($designers as $value)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('farfetch.designers.index', ['designer' => $value,]) }}">{{ __($value->description) }}</a>
+					@if(old('category'))
+					<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="input[name='category[]']" onclick="
+						event.preventDefault();
+						var target = document.querySelector(this.dataset.target);
+						[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
+						target.form.submit();">所有分类</a>
+					@endif
+					@foreach($filters['category'] as $value)
+						<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-category-{{$value->url_token}}-checkbox" onclick="
+							event.preventDefault();
+							var target = document.querySelector(this.dataset.target);
+							[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
+							target.checked = true;
+							target.form.submit();">{{ __($value->description) }}</a>
 					@endforeach
 			  </ul>
 			</div>
+		</div>
+		<div class="my-auto" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+			@if(old('designer') || old('category'))
+			<span>已选:</span>&nbsp;
+				@if(old('designer'))
+				<span>{{ implode(', ',$filters['designer']->whereIn('id', old('designer'))->pluck('description')->toArray()) }}</span>&nbsp;
+				@endif
+				@if(old('category'))
+				<span>{{ implode(', ', array_map('__', $filters['category']->whereIn('id', old('category'))->pluck('description')->toArray())) }}</span>&nbsp;
+				@endif
+			@endif
 		</div>
 	</div>
 	@if($products->isEmpty())

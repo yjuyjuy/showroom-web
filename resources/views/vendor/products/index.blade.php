@@ -5,6 +5,7 @@
 @section('content')
 <div id="products-index" class="">
 	@include('vendor.banner')
+	@include('products.index.express_filters')
 	@if($products->isEmpty())
 		<div class="my-5 text-center">
 			没有搜索到相关商品
