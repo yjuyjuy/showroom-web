@@ -1,5 +1,40 @@
 <template>
 <div class="price-editor">
+	<div class="d-flex price-editor__row mb-2">
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" placeholder="尺码" disabled>
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
+		</div>
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" v-model="fill_offer" placeholder="调货价">
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
+		</div>
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" v-model="fill_retail" :placeholder="computed_retail(fill_offer) || '零售价'">
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
+		</div>
+		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label flex-shrink-1">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" v-model="fill_stock" placeholder="库存">
+			<div class="mdc-notched-outline">
+				<div class="mdc-notched-outline__leading"></div>
+				<div class="mdc-notched-outline__trailing"></div>
+			</div>
+		</div>
+		<div class="flex-shrink-1">
+			<button @click.prevent="fill" type="button" class="mdc-button mdc-button--unelevated" tabindex="-1">
+				<span class="mdc-button__label">填充</span>
+			</button>
+		</div>
+	</div>
 	<div v-for="(price,index) in prices" class="d-flex price-editor__row">
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
 			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.size" :autofocus="index == 0" spellcheck="false">
@@ -16,7 +51,7 @@
 			</div>
 		</div>
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.retail" :placeholder="computed_retail(index)">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.retail" :placeholder="computed_retail(price.offer)">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
@@ -35,7 +70,7 @@
 			</button>
 		</div>
 	</div>
-	<input type="hidden" name="data" :value="JSON.stringify(prices.filter(price=>(price.size&&price.offer&&price.retail&&price.stock)))">
+	<input type="hidden" name="data" :value="JSON.stringify(prices.filter((price)=>(price.size&&price.offer&&price.retail&&price.stock)))">
 </div>
 </template>
 
@@ -51,8 +86,11 @@ export default {
 	data: function() {
 		return {
 			prices: this.input,
-			json_prices: '',
+			json_prices: null,
 			mdcTextField: undefined,
+			fill_offer: null,
+			fill_retail: null,
+			fill_stock: null,
 		};
 	},
 	mounted() {
@@ -147,13 +185,35 @@ export default {
 				}
 			}
 		},
-		computed_retail: function(index) {
-			if (this.prices[index].offer) {
-				return Math.ceil(this.prices[index].offer * 1.15 / 10) * 10;
+		computed_retail: function(offer) {
+			if (offer && offer > 0) {
+				return Math.ceil(offer * 1.15 / 10) * 10;
 			} else {
 				return '';
 			}
 		},
+		fill: function() {
+			this.clear_empty();
+			if (this.fill_offer && this.fill_offer > 0) {
+				for (let price of this.prices) {
+						price.offer = this.fill_offer;
+				}
+				this.fill_offer = null;
+			}
+			if (this.fill_retail && this.fill_retail > 0) {
+				for (let price of this.prices) {
+						price.retail = this.fill_retail;
+				}
+				this.fill_retail = null;
+			}
+			if (this.fill_stock && this.fill_stock > 0) {
+				for (let price of this.prices) {
+						price.stock = this.fill_stock;
+				}
+				this.fill_stock = null;
+			}
+			this.check_empty();
+		}
 	},
 	updated: function() {
 		this.$nextTick(function() {

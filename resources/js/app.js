@@ -42,7 +42,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 	const menu = new MDCMenu(menuElement);
 	menu.setAnchorCorner(3);
 	const button = menuElement.parentElement.querySelector('.open-menu-button');
-	button.onclick = () => menu.open = !menu.open;
+	button.onclick = (event) => {event.preventDefault(); menu.open = !menu.open;};
 });
 [].forEach.call(document.querySelectorAll('.mdc-text-field-helper-text'), (el) => new MDCTextFieldHelperText(el));
 [].forEach.call(document.querySelectorAll('.mdc-select-helper-text'), (el) => new MDCSelectHelperText(el));
