@@ -36,6 +36,7 @@
 		@endforeach
 	</ul>
 	@include('layouts.pages')
+	@endif
 	<button id="display-options-fab" class="mdc-fab" aria-label="display options">
 	  <span class="mdc-fab__icon material-icons">filter_list</span>
 	</button>
@@ -72,6 +73,5 @@
 	  </div>
 	  <div class="mdc-dialog__scrim"></div>
 	</div>
-	@endif
 </div>
 @endsection
