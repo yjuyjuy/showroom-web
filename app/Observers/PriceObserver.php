@@ -50,6 +50,16 @@ class PriceObserver
 			if(empty($prices)) {
 				$retail->delete();
 			} else {
+				uksort($prices, function($a, $b) {
+					$sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+					if (in_array($a, $sizes)) {
+						$a = array_search($a, $sizes);
+					}
+					if (in_array($b, $sizes)) {
+						$b = array_search($b, $sizes);
+					}
+					return $a > $b;
+				});
 				$retail->prices = $prices;
 				$retail->save();
 			}
@@ -65,6 +75,18 @@ class PriceObserver
 		foreach($vendor_price->data as $data) {
 			$prices[$data['size']] = $data['offer'];
 		}
+
+		uksort($prices, function($a, $b) {
+			$sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+			if (in_array($a, $sizes)) {
+				$a = array_search($a, $sizes);
+			}
+			if (in_array($b, $sizes)) {
+				$b = array_search($b, $sizes);
+			}
+			return $a > $b;
+		});
+
 		$offer->prices = $prices;
 		$offer->save();
 	}
