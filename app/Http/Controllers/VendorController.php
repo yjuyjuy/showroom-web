@@ -66,9 +66,30 @@ class VendorController extends Controller
 	{
 		$this->authorize('view', $vendor);
 		$user = auth()->user();
-		$product->load(['images', 'offers' => function ($query) use ($vendor) {
-			$query->where('vendor_id', $vendor->id);
-		}]);
+		if ($user) {
+			if ($user->isSuperAdmin()) {
+				$product->load(['prices', 'prices.vendor']);
+			}
+			if ($user->is_reseller) {
+				$product->load([
+					'offers' => function ($query) use ($user) {
+						$query->where('vendor_id', $vendor->id);
+					}, 'offers.vendor'
+				]);
+			}
+			$product->load([
+				'retails' => function ($query) use ($user) {
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+				}, 'retails.retailer'
+			]);
+		} else {
+			$product->load([
+				'retails' => function ($query) use ($user) {
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+				}, 'retails.retailer'
+			]);
+			$product->offers = collect();
+		}
 		return view('vendor.products.show', compact('product', 'vendor', 'user'));
 	}
 

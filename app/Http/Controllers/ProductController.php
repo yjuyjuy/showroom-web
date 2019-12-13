@@ -138,20 +138,31 @@ class ProductController extends Controller
 	public function show(Product $product)
 	{
 		$user = auth()->user();
-		if ($user->isSuperAdmin()) {
-			$product->load(['prices.vendor']);
-		}
-		if ($user->is_reseller) {
+		if ($user) {
+			if ($user->isSuperAdmin()) {
+				$product->load(['prices', 'prices.vendor']);
+			}
+			if ($user->is_reseller) {
+				$product->load([
+					'offers' => function ($query) use ($user) {
+						$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
+					}, 'offers.vendor'
+				]);
+			}
 			$product->load([
-				'offers' => function ($query) use ($user) {
-					$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
-				}, 'offers.vendor', ]);
+				'retails' => function ($query) use ($user) {
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+				}, 'retails.retailer'
+			]);
+		} else {
+			$product->load([
+				'retails' => function ($query) use ($user) {
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+				}, 'retails.retailer'
+			]);
+			$product->offers = collect();
 		}
-		$product->loadMissing([
-			'retails' => function ($query) use ($user) {
-				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-			}, 'retails.retailer', 'images', 'brand','season','color'
-		]);
+		$product->load(['images', 'brand','season','color']);
 		return view('products.show', compact('product', 'user'));
 	}
 

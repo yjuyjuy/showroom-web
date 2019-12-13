@@ -64,15 +64,31 @@ class RetailerController extends Controller
 	public function show(Retailer $retailer, Product $product)
 	{
 		$user = auth()->user();
-		$product->load(['images', 'retails' => function ($query) use ($retailer) {
-			$query->where('retailer_id', $retailer->id);
-		}, 'offers' => function ($query) use ($user) {
-			if ($user && $user->is_reseller) {
-				$query->whereIn('vendor_id', $user->following_vendors->pluck('id')->toArray());
-			} else {
-				$query->whereNull('vendor_id');
+		if ($user) {
+			if ($user->isSuperAdmin()) {
+				$product->load(['prices', 'prices.vendor']);
 			}
-		}]);
+			if ($user->is_reseller) {
+				$product->load([
+					'offers' => function ($query) use ($user) {
+						$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
+					}, 'offers.vendor'
+				]);
+			}
+			$product->load([
+				'retails' => function ($query) use ($retailer) {
+					$query->where('retailer_id', $retailer->id);
+				}, 'retails.retailer'
+			]);
+		} else {
+			$product->load([
+				'retails' => function ($query) use ($retailer) {
+					$query->where('retailer_id', $retailer->id);
+				}, 'retails.retailer'
+			]);
+			$product->offers = collect();
+		}
+		$product->load(['images', 'brand','season','color']);
 		return view('retailer.products.show', compact('product', 'retailer', 'user'));
 	}
 
