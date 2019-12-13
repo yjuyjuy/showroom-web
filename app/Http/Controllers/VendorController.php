@@ -71,9 +71,13 @@ class VendorController extends Controller
 				$product->load(['prices', 'prices.vendor']);
 			}
 			if ($user->is_reseller) {
+				$vendor_ids = $user->following_vendors->pluck('id');
+				if (!$vendor_ids->contains($vendor->id)) {
+					$vendor_ids->prepend($vendor->id);
+				}
 				$product->load([
-					'offers' => function ($query) use ($user) {
-						$query->where('vendor_id', $vendor->id);
+					'offers' => function ($query) use ($vendor_ids) {
+						$query->whereIn('vendor_id', $vendor_ids);
 					}, 'offers.vendor'
 				]);
 			}

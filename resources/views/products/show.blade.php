@@ -14,18 +14,20 @@
 
 		@include('products.show.customer')
 
-		@if($user->is_reseller)
-			@include('products.show.reseller')
-		@endif
-
 		@include('products.show.buttons')
 
-		@if($user->isSuperAdmin())
-			@include('products.show.admin')
+		@auth
+			@if($user->isSuperAdmin())
+				@include('products.show.admin')
 
-		@elseif($vendor = $user->vendor)
-			@include('products.show.vendor')
-		@endif
+			@elseif($user->vendor)
+				@include('products.show.vendor')
+
+			@elseif($user->is_reseller)
+				@include('products.show.reseller')
+
+			@endif
+		@endauth
 	</div>
 </div>
 @include('layouts.back_fab')

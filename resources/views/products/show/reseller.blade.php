@@ -1,17 +1,28 @@
 <div class="d-flex flex-column products-show__info--vendor">
 	@if($product->offers->isNotEmpty())
-		<div class="">
-			<span class="">{{ __('Order price') }}</span>
+
+		@foreach($product->offers as $offer)
+		<div class="price-grid my-3">
+			<div class="font-weight-bold price-grid__header">
+				<span class="price-grid__title">
+					{{$offer->vendor->name.' - '.__($offer->vendor->city)}}
+				</span>
+			</div>
+			@foreach($offer->prices as $size => $price)
+			<div class="price-grid__row">
+				<span class="price-grid__col">{{ $size }}</span>
+				<span class="price-grid__col">&yen;{{ $price }}</span>
+				<span class="price-grid__col text-center">-</span>
+				<div class="price-grid__col d-flex justify-content-between align-items-center" style="margin: -12px;">
+					<button type="button" class="mdc-icon-button material-icons" style="color: grey;">remove</button>
+					<span>-</span>
+					<button type="button" class="mdc-icon-button material-icons" style="color: grey;">add</button>
+				</div>
+			</div>
+			@endforeach
 		</div>
-		@foreach($product->getSizePrice('offer') as $size => $data)
-		<span>{{$size}} - &yen;{{$data['price']}} - {{$data['vendor']}}</span>
 		@endforeach
-		<div class="mt-2">
-			<input type="text" value="{{ $product->offers_to_string }}" style="opacity:0;position:absolute;left:-100%;">
-			<button type="button" class="mdc-button" onclick="var input = this.parentElement.firstChild;input.focus();input.setSelectionRange(0,input.value.length);document.execCommand('copy');input.blur();">
-				<span class="mdc-button__label">复制尺码价格</span>
-			</button>
-		</div>
+
 	@else
 	<span>{{ __('no offer') }}</span>
 	@endif
