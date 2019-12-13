@@ -64,8 +64,11 @@ class VendorController extends Controller
 
 	public function show(Vendor $vendor, Product $product)
 	{
-		$this->authorize('view', $vendor);
 		$user = auth()->user();
+
+		if (!$user || !$user->can('view', $vendor)) {
+			return redirect(route('following.vendors'));
+		}
 		if ($user) {
 			if ($user->isSuperAdmin()) {
 				$product->load(['prices', 'prices.vendor']);
