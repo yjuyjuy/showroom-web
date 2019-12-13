@@ -18,7 +18,7 @@ class ResellerMiddleware
 			if (auth()->user()->is_reseller) {
 				return $next($request);
 			} else {
-				abort(403);
+				return redirect(route('account.status'));
 			}
     }
 }
