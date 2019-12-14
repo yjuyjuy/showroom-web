@@ -130,6 +130,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+				'invite_code' => [
+					'size' => ':attribute包含:size个字符，请重新核对后输入',
+					'exists' => '无效的:attribute，请重新核对后输入',
+				],
     ],
 
     /*
@@ -173,5 +177,6 @@ return [
         'time'                  => '时间',
         'available'             => '可用的',
         'size'                  => '大小',
+				'invite_code'						=> '邀请码',
     ],
 ];
