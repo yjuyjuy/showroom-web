@@ -12,7 +12,7 @@
 			</div>
 
 			<label class="mdc-text-field mdc-card__action">
-				<input type="text" class="mdc-text-field__input" name="username" autocomplete="username" required>
+				<input type="text" class="mdc-text-field__input" name="username" autocomplete="username" value="{{ old('username') }}" required>
 				<span class="mdc-floating-label">{{ __('Username') }}</span>
 				<div class="mdc-line-ripple"></div>
 			</label>
@@ -23,7 +23,7 @@
 			@enderror
 
 			<label class="mdc-text-field mdc-card__action">
-				<input type="email" class="mdc-text-field__input" name="email" autocomplete="email" required>
+				<input type="email" class="mdc-text-field__input" name="email" autocomplete="email" value="{{ old('email') }}" required>
 				<span class="mdc-floating-label">{{ __('E-Mail Address') }}</span>
 				<div class="mdc-line-ripple"></div>
 			</label>
@@ -53,7 +53,7 @@
 			</label>
 
 			<label class="mdc-text-field mdc-card__action optional-form-field">
-				<input type="text" class="mdc-text-field__input" name="invite_code" autocomplete="invite_code">
+				<input type="text" class="mdc-text-field__input" name="invite_code" value="{{ old('invite_code') }}" autocomplete="invite_code">
 				<span class="mdc-floating-label">同行邀请码</span>
 				<div class="mdc-line-ripple"></div>
 			</label>
