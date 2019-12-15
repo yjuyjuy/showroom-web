@@ -57,11 +57,11 @@
 		@endforeach
 
 	@else
-	<span>{{ __('no offer') }}</span>
+	<div class="my-3">{{ __('no offer') }}</div>
 	@endforelse
 
 	@if($product->prices->where('vendor_id',$vendor->id)->isEmpty())
-	<div class="d-flex justify-content-end mb-3">
+	<div class="d-flex justify-content-end my-3">
 		<a href="{{route('prices.create',['product' => $product])}}" class="mdc-button mdc-button--unelevated">
 			<span class="mdc-button__label">{{ __('add price') }}</span>
 		</a>
