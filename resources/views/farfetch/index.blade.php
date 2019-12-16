@@ -6,20 +6,28 @@
 <div id="products-index" class="">
 	@php $retailer = \App\Retailer::find(1467053076); @endphp
 	@include('retailer.banner')
-	<div class="d-flex">
+	<div id="express-filter-menus" class="d-flex">
+		@foreach($filters as $key => $values)
 		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('designer') }}</span></button>
+			<button type="button" class="mdc-button open-menu-button">
+				<span class='mdc-button__label'>
+					@if(old($key)&&sizeof(old($key)) == 1)
+						{{ __($values->firstWhere('id', old($key)[0])->description) }}
+					@else
+						{{ __($key) }}
+					@endif</span>
+			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@if(old('designer'))
-					<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="input[name='designer[]']" onclick="
+					@if(old($key))
+					<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="input[name='{{$key}}[]']" onclick="
 						event.preventDefault();
 						var target = document.querySelector(this.dataset.target);
 						[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
-						target.form.submit();">所有设计师</a>
+						target.form.submit();">{{ __('All').__($key) }}</a>
 					@endif
-					@foreach($filters['designer'] as $value)
-						<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-designer-{{$value->url_token}}-checkbox" onclick="
+					@foreach($values as $value)
+						<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-{{$key}}-{{$value->url_token}}-checkbox" onclick="
 							event.preventDefault();
 							var target = document.querySelector(this.dataset.target);
 							[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
@@ -29,39 +37,7 @@
 			  </ul>
 			</div>
 		</div>
-		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('category') }}</span></button>
-			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
-			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@if(old('category'))
-					<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="input[name='category[]']" onclick="
-						event.preventDefault();
-						var target = document.querySelector(this.dataset.target);
-						[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
-						target.form.submit();">所有分类</a>
-					@endif
-					@foreach($filters['category'] as $value)
-						<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-category-{{$value->url_token}}-checkbox" onclick="
-							event.preventDefault();
-							var target = document.querySelector(this.dataset.target);
-							[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
-							target.checked = true;
-							target.form.submit();">{{ __($value->description) }}</a>
-					@endforeach
-			  </ul>
-			</div>
-		</div>
-		<div class="my-auto" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-			@if(old('designer') || old('category'))
-			<span>已选:</span>&nbsp;
-				@if(old('designer'))
-				<span>{{ implode(', ',$filters['designer']->whereIn('id', old('designer'))->pluck('description')->toArray()) }}</span>&nbsp;
-				@endif
-				@if(old('category'))
-				<span>{{ implode(', ', array_map('__', $filters['category']->whereIn('id', old('category'))->pluck('description')->toArray())) }}</span>&nbsp;
-				@endif
-			@endif
-		</div>
+		@endforeach
 	</div>
 	@if($products->isEmpty())
 		<div class="my-5 text-center">

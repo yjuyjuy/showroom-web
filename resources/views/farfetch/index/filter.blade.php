@@ -12,7 +12,7 @@
 		    <input type="checkbox"
 		           class="mdc-checkbox__native-control"
 							 value="{{$value->id}}"
-							 name="{{ $key }}[]"
+							 name="{{$key}}[]"
 		           id="filter-{{$key}}-{{$value->url_token}}-checkbox" {{ $checked ? 'checked' : '' }}>
 		    <div class="mdc-checkbox__background">
 		      <svg class="mdc-checkbox__checkmark"
