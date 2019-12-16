@@ -113,7 +113,13 @@ Route::middleware('auth')->group(function () {
 	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export')->middleware('can:create,App\Product');
 	Route::get('farfetch/{farfetch_product}/merge/{product}', 'FarfetchController@merge')->name('farfetch.merge')->middleware('can:create,App\Product');
 	Route::get('farfetch/{farfetch_product}/unlink', 'FarfetchController@unlink')->name('farfetch.unlink')->middleware('can:create,App\Product');
-	# end clothing
+
+	Route::get('ssense', 'SsenseController@index')->name('ssense.index');
+	Route::get('ssense/{product}', 'SsenseController@show')->name('ssense.show');
+	Route::get('ssense/{ssense_product}/export', 'SsenseController@export')->name('ssense.export')->middleware('can:create,App\Product');
+	Route::get('ssense/{ssense_product}/merge/{product}', 'SsenseController@merge')->name('ssense.merge')->middleware('can:create,App\Product');
+	Route::get('ssense/{ssense_product}/unlink', 'SsenseController@unlink')->name('ssense.unlink')->middleware('can:create,App\Product');
+
 	Route::get('end', 'EndController@index')->name('end.index');
 	Route::get('end/brands', 'EndController@brands')->name('end.brands');
 	Route::get('end/departments', 'EndController@departments')->name('end.departments');
