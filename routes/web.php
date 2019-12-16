@@ -109,10 +109,6 @@ Route::middleware('auth')->group(function () {
 	Route::get('websites', 'WebsiteController@index')->name('websites.index');
 	# boutique sites
 	Route::get('farfetch', 'FarfetchController@index')->name('farfetch.index');
-	Route::get('farfetch/designers', 'FarfetchController@designers')->name('farfetch.designers');
-	Route::get('farfetch/categories', 'FarfetchController@categories')->name('farfetch.categories');
-	Route::get('farfetch/designers/{designer}', 'FarfetchController@index')->name('farfetch.designers.index');
-	Route::get('farfetch/categories/{category}', 'FarfetchController@index')->name('farfetch.categories.index');
 	Route::get('farfetch/{product}', 'FarfetchController@show')->name('farfetch.show');
 	Route::get('farfetch/{farfetch_product}/export', 'FarfetchController@export')->name('farfetch.export')->middleware('can:create,App\Product');
 	Route::get('farfetch/{farfetch_product}/merge/{product}', 'FarfetchController@merge')->name('farfetch.merge')->middleware('can:create,App\Product');
