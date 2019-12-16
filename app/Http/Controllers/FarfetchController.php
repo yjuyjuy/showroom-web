@@ -30,18 +30,10 @@ class FarfetchController extends Controller
 		];
 		$query = FarfetchProduct::query();
 		if (!empty($data['designer'])) {
-			$query->where(function ($query) use ($data) {
-				foreach ($data['designer'] as $designer_id) {
-					$query->orWhere('designer_id', $designer_id);
-				}
-			});
+			$query->whereIn('designer_id', $data['designer']);
 		}
 		if (!empty($data['category'])) {
-			$query->where(function ($query) use ($data) {
-				foreach ($data['category'] as $category_id) {
-					$query->orWhere('category_id', $category_id);
-				}
-			});
+			$query->orWhere('category_id', $data['category']);
 		}
 		if (!empty($data['sort'])) {
 			if ($data['sort'] == 'price-low-to-high') {
