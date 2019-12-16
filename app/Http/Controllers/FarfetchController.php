@@ -16,18 +16,16 @@ class FarfetchController extends Controller
 
 	public function index(Request $request)
 	{
-		$categories = $this->getCategories();
-		$designers = $this->getDesigners();
+		$filters = [
+			'designer' => $this->getDesigners(),
+			'category' => $this->getCategories(),
+		];
 		$sortOptions = $this->getSortOptions();
 		$data = $request->validate([
-			'designer.*' => ['sometimes', Rule::in($designers->pluck('id'))],
-			'category.*' => ['sometimes', Rule::in($categories->pluck('id'))],
+			'designer.*' => ['sometimes', Rule::in($filters['designer']->pluck('id'))],
+			'category.*' => ['sometimes', Rule::in($filters['category']->pluck('id'))],
 			'sort' => ['sometimes', Rule::in($sortOptions)],
 		]);
-		$filters = [
-			'designer' => $designers,
-			'category' => $categories,
-		];
 		$query = FarfetchProduct::query();
 		if (!empty($data['designer'])) {
 			$query->whereIn('designer_id', $data['designer']);
@@ -52,7 +50,7 @@ class FarfetchController extends Controller
 		$products = $query->forPage($page, 48)->with('designer', 'category')->get();
 
 		$request->flash();
-		return view('farfetch.index', compact('products', 'designers', 'categories', 'sortOptions', 'filters', 'page', 'total_pages'));
+		return view('farfetch.index', compact('products', 'sortOptions', 'filters', 'page', 'total_pages'));
 	}
 
 	public function show(FarfetchProduct $product)
