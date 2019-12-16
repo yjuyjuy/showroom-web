@@ -30,7 +30,7 @@ class OptimizeImage implements ShouldQueue
      */
     public function handle()
     {
-			$size_limit1 = 15 * 1024;
+			$size_limit1 = 20 * 1024;
 			$size_limit2 = 50 * 1024;
 
 			$path = public_path('storage/'.$this->path);
@@ -56,12 +56,31 @@ class OptimizeImage implements ShouldQueue
 				if ($avg_diff >= 100) {
 					$path = $path.'_upsized.jpeg';
 				}
+			} elseif ( $h / $w > 1.413) {
+				$y1 = ceil(($h - $w * 1.413) / 2);
+				$y2 = ceil($h - $y1);
+				$x1 = ceil($w / 3);
+				$x2 = ceil($w / 2);
+				$x3 = ceil($w / 3 * 2);
+				foreach ([$y1, $y2] as $y) {
+					foreach ([$x1, $x2, $x3] as $x) {
+						$samples[] = array_sum($image->pickColor($x, $y));
+					}
+				}
+				$avg = array_sum($samples) / sizeof($samples);
+				$avg_diff = array_sum(array_map(function ($sample) use ($avg) {
+					return ($sample - $avg) ** 2;
+				}, $samples)) / sizeof($samples);
+				\Intervention\Image\Facades\Image::canvas($h / 1.413, $h, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
+				if ($avg_diff >= 100) {
+					$path = $path.'_upsized.jpeg';
+				}
 			}
 			$quality = 100;
 			do {
 				$quality = $quality - 10;
 				$image = \Intervention\Image\Facades\Image::make($path)->fit(400, 565)->save(public_path('storage/'.$this->path).'_400.jpeg', $quality);
-			} while ($image->fileSize() > $size_limit1 && $quality > 20);
+			} while ($image->fileSize() > $size_limit1 && $quality > 30);
 
 			$quality = 100;
 			$image = \Intervention\Image\Facades\Image::make($path);
@@ -75,6 +94,6 @@ class OptimizeImage implements ShouldQueue
 			do {
 				$quality = $quality - 10;
 				$image = \Intervention\Image\Facades\Image::make($path)->fit($width, $height)->save(public_path('storage/'.$this->path).'_800.jpeg', $quality);
-			} while ($image->fileSize() > $size_limit2 && $quality > 20);
+			} while ($image->fileSize() > $size_limit2 && $quality > 30);
     }
 }
