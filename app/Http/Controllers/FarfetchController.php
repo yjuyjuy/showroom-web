@@ -47,7 +47,7 @@ class FarfetchController extends Controller
 
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
-		$products = $query->forPage($page, 48)->with('designer', 'category')->get();
+		$products = $query->forPage($page, 48)->with('designer')->get();
 
 		$request->flash();
 		return view('farfetch.index', compact('products', 'sortOptions', 'filters', 'page', 'total_pages'));
