@@ -100,24 +100,6 @@ class VendorController extends Controller
 		return view('vendor.products.show', compact('product', 'vendor', 'user'));
 	}
 
-	// public function edit(Vendor $vendor)
-	// {
-	// 	$this->authorize('view', $vendor);
-	// 	$vendor = $user->vendors()->find($vendor->id);
-	// 	return view('vendor.following.edit', compact('vendor'));
-	// }
-	//
-	// public function update(Vendor $vendor)
-	// {
-	// 	$this->authorize('view', $vendor);
-	// 	$user = auth()->user();
-	// 	$profit_rate = $this->validate([
-	// 		'profit_rate' => ['required', 'number', 'min:'.($vendor->min_profit_rate ?? 5.0), 'max:100'],
-	// 	])['profit_rate'];
-	// 	$user->following_vendors()->updateExistingPivot($vendor->id, compact('profit_rate'));
-	// 	return redirect(route('vendor.products.index', compact('vendor')));
-	// }
-
 	public function validateFilters()
 	{
 		return request()->validate([
