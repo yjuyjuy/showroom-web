@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
-@if ($designer) {{ $designer->description.' - Farfetch' }}
-@elseif ($category) {{ $category->description.' - Farfetch' }}
-@else {{ 'Farfetch' }} @endif
-@endsection
+@section('title', '所有商品 - Farfetch')
 
 @section('content')
 <div id="products-index" class="">

@@ -1,11 +1,11 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="my-1">
-		<a href="{{ route('farfetch.designers.index',['designer' => $product->designer]) }}"
+		<a href="{{ route('farfetch.index',['designer' => [$product->designer->id]]) }}"
 			 class="mdc-typography--headline6" style="text-transform: uppercase;">
 			{{ $product->designer->description }}
 		</a>
 
-		<a href="{{ route('farfetch.categories.index',['category' => $product->category]) }}"
+		<a href="{{ route('farfetch.index',['category' => [$product->category->id]]) }}"
 			 class="mdc-typography--headline6">
 			{{ $product->category->description }}
 		</a>
