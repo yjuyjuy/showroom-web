@@ -363,8 +363,13 @@ a.mdc-list-item__text:hover {
     @include mdc-image-list-aspect(0.75);
     .mdc-image-list__image-aspect-container {
       overflow: hidden;
+			background: white;
       .mdc-image-list__image {
-        height: auto;
+				 width:auto;
+				 height:auto;
+				 max-width: 100%;
+				 max-height: 100%;
+				 margin: auto;
       }
     }
 		.mdc-image-list__item:hover {
@@ -390,6 +395,7 @@ a.mdc-list-item__text:hover {
 
 				.mdc-image-list__label.brand {
 					margin-top: -1.75rem;
+					z-index: 999;
 				}
 
 				.mdc-image-list__label.product-name::first-letter {
