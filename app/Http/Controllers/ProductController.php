@@ -229,9 +229,9 @@ class ProductController extends Controller
 	{
 		return [
 			"brand" => \App\Brand::orderBy('name')->get(),
+			"season" => \App\Season::all(),
 			"category" => \App\Category::all(),
 			"color" => \App\Color::all(),
-			"season" => \App\Season::all(),
 		];
 	}
 }
