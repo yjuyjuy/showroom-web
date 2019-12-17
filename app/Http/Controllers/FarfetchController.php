@@ -31,7 +31,7 @@ class FarfetchController extends Controller
 			$query->whereIn('designer_id', $data['designer']);
 		}
 		if (!empty($data['category'])) {
-			$query->orWhere('category_id', $data['category']);
+			$query->whereIn('category_id', $data['category']);
 		}
 		if (!empty($data['sort'])) {
 			if ($data['sort'] == 'price-low-to-high') {
