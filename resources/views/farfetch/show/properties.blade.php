@@ -40,4 +40,9 @@
 		<span>模特资料: {{ $product->model_measurements }}</span>
 	</div>
 	@endif
+	@if($product->product_measurements)
+	<div class="my-1">
+		<span>尺寸: {{ $product->product_measurements }}</span>
+	</div>
+	@endif
 </div>
