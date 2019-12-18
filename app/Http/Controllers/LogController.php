@@ -16,10 +16,10 @@ class LogController extends Controller
     {
       $query = Log::orderBy('created_at', 'desc');
 
-			$total_pages = ceil($query->count() / 100.0);
+			$total_pages = ceil($query->count() / 1000.0);
 			$page = min(max($request->query('page', 1), 1), $total_pages);
 
-			$logs = $query->forPage($page, 100)->get();
+			$logs = $query->forPage($page, 1000)->get();
 
 			return view('admin.logs', compact('logs', 'total_pages', 'page'));
     }
