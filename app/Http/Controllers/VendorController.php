@@ -10,8 +10,11 @@ class VendorController extends Controller
 {
 	public function index(Request $request, Vendor $vendor)
 	{
-		$this->authorize('view', $vendor);
 		$user = auth()->user();
+		if (!$user->following_vendors->contains($vendor)) {
+			$user->following_vendors()->syncWithoutDetaching($vendor);
+			$user->refresh();
+		}
 		$query = $vendor->products();
 
 		$filters = $this->validateFilters();
