@@ -42,7 +42,10 @@
 	@endif
 	@if($product->product_measurements)
 	<div class="my-1">
-		<span>尺寸: {{ $product->product_measurements }}</span>
+		<span>尺寸:</span><br><br>
+		@foreach(explode("\n", $product->product_measurements) as $line)
+			<span>{{ $line }}</span><br><br>
+		@endforeach
 	</div>
 	@endif
 </div>
