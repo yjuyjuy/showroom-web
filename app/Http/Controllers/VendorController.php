@@ -133,18 +133,21 @@ class VendorController extends Controller
 		$message = false;
 
 		if ($request->input('search')) {
-			$search = strtolower($request->validate([
+			$search = $request->validate([
 				'search' => ['sometimes', 'string', 'max:255'],
-				])['search']);
+				])['search'];
 			$valid_tokens = [];
 			foreach(\App\User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
 				$valid_tokens[strtolower($user->wechat_id)] = $user->vendor_id;
 			}
-			foreach(Vendor::whereNotNull('wechat_id')->get() as $vendor) {
+			foreach(\App\Vendor::whereNotNull('wechat_id')->get() as $vendor) {
 				$valid_tokens[strtolower($vendor->wechat_id)] = $vendor->id;
 			}
-			if (array_key_exists($search, $valid_tokens)) {
-				$vendor = \App\Vendor::find($valid_tokens[$search]);
+			foreach(\App\InviteCode::has('vendor')->get() as $code) {
+				$valid_tokens[$code->id] = $code->vendor_id;
+			}
+			if (array_key_exists(strtolower($search), $valid_tokens)) {
+				$vendor = \App\Vendor::find($valid_tokens[strtolower($search)]);
 				$user = auth()->user();
 				if ($user->following_vendors->contains($vendor)) {
 					$message = '已经关注"'.$vendor->name.'"了';
