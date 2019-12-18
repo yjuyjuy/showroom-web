@@ -133,15 +133,15 @@ class VendorController extends Controller
 		$message = false;
 
 		if ($request->input('search')) {
-			$search = $request->validate([
+			$search = strtolower($request->validate([
 				'search' => ['sometimes', 'string', 'max:255'],
-				])['search'];
+				])['search']);
 			$valid_tokens = [];
 			foreach(\App\User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
-				$valid_tokens[$user->wechat_id] = $user->vendor_id;
+				$valid_tokens[strtolower($user->wechat_id)] = $user->vendor_id;
 			}
 			foreach(Vendor::whereNotNull('wechat_id')->get() as $vendor) {
-				$valid_tokens[$vendor->wechat_id] = $vendor->id;
+				$valid_tokens[strtolower($vendor->wechat_id)] = $vendor->id;
 			}
 			if (array_key_exists($search, $valid_tokens)) {
 				$vendor = \App\Vendor::find($valid_tokens[$search]);
