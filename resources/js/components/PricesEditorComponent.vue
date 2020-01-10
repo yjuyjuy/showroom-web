@@ -110,7 +110,7 @@ export default {
 				let retail = this.prices[i].retail;
 				let stock = this.prices[i].stock;
 				if(/^[0-9]+%$/.test(retail)){
-					retail = this.prices[i].retail = Math.ceil((parseFloat(retail) / 100.0 + 1.0) * offer / 10.0) * 10;
+					retail = this.prices[i].retail = Math.ceil((parseFloat(retail) + 100) * parseFloat(offer) / 1000.0) * 10;
 				}
 				if (/^[0-9]+[-][0-9]+$/.test(this.prices[i].size)) {
 					let [start, end] = this.prices[i].size.split('-');
@@ -187,7 +187,7 @@ export default {
 		},
 		computed_retail: function(offer) {
 			if (offer && offer > 0) {
-				return Math.ceil(offer * 1.15 / 10) * 10;
+				return Math.ceil(offer * 115 / 1000) * 10;
 			} else {
 				return '';
 			}
