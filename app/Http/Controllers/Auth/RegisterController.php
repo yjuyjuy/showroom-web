@@ -67,12 +67,12 @@ class RegisterController extends Controller
 		do {
 			$id = random_int(1000000000, 9999999999);
 		} while(\App\User::find($id));
+		$type = NULL;
 		if ($data['invite_code']) {
-			$code = request()->validate(['invite_code' => ['string', 'exists:invite_codes,id']])['invite_code'];
-			$vendor = \App\InviteCode::find($code)->vendor;
-			$type = 'invited:'.$vendor->id;
-		} else {
-			$type = NULL;
+			$code = \App\InviteCode::find($data['invite_code']);
+			if ($code) {
+				$type = 'invited:'.$code->vendor->id;
+			}
 		}
 		return User::create([
 			'id' => $id,
