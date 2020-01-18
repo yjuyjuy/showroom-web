@@ -118,7 +118,7 @@ class Product extends Model
 	{
 		if ($this->offers->isNotEmpty()) {
 			$max_offer = max(array_map('max', $this->offers->pluck('prices')->toArray()));
-			return $this->displayName().str_replace(' OS', '', ' '.implode('/', array_keys($this->getSizePrice('offer'))))." \u{00A5}".(ceil( $max_offer * 1.15 / 10 ) * 10)." 调货".$max_offer;
+			return $this->displayName().str_replace(' OS', '', ' '.implode('/', array_keys($this->getSizePrice('offer'))))." 调货".$max_offer;
 		} else {
 			return $this->displayName();
 		}
