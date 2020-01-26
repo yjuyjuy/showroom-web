@@ -162,7 +162,7 @@ class ProductController extends Controller
 			]);
 			$product->offers = collect();
 		}
-		$product->load(['images', 'brand','season','color']);
+		$product->load(['images', 'brand','season','color', 'category']);
 		return view('products.show', compact('product', 'user'));
 	}
 
