@@ -128,12 +128,6 @@ class Product extends Model
 		if ($this->brand && $this->designer_style_id) {
 			return Cache::remember('product-'.$this->id.'-links', 10 * 60, function() {
 				$links = [];
-				foreach(['Farfetch', 'End', 'Ssense',] as $retailer_name) {
-					$cls = '\\App\\'.$retailer_name.'Product';
-					foreach($cls::like($this) as $index => $product) {
-						$links[$retailer_name.'页面'.($index + 1).($product->colors ?? $product->color ?? '')] = route(strtolower($retailer_name).'.show', ['product' => $product]);
-					}
-				}
 				foreach(['LouisVuitton', 'Dior', 'Gucci', 'OffWhite', 'Balenciaga',] as $brand_name) {
 					$cls = '\\App\\'.$brand_name.'Product';
 					if ($cls::brand_id == $this->brand_id) {
@@ -141,6 +135,12 @@ class Product extends Model
 							$links['官网页面'.($index + 1)] = route(strtolower($brand_name).'.show', ['product' => $product]);
 						}
 						return $links;
+					}
+				}
+				foreach(['Farfetch', 'End', 'Ssense',] as $retailer_name) {
+					$cls = '\\App\\'.$retailer_name.'Product';
+					foreach($cls::like($this) as $index => $product) {
+						$links[$retailer_name.'页面'.($index + 1).($product->colors ?? $product->color ?? '')] = route(strtolower($retailer_name).'.show', ['product' => $product]);
 					}
 				}
 				return $links;
