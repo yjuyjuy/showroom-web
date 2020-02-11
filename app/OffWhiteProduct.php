@@ -32,6 +32,8 @@ class OffWhiteProduct extends Model
 		*/
 	protected $keyType = 'string';
 
+	public const brand_id = 885468;
+
 	public function image()
 	{
 		return $this->hasOne(\App\OffWhiteImage::class, 'product_id', 'id');
@@ -40,8 +42,8 @@ class OffWhiteProduct extends Model
 	{
 		return $this->hasMany(\App\OffWhiteImage::class, 'product_id', 'id');
 	}
-	public function getBrandIdAttribute()
-	{
-		return 885468;
+
+	public static function like(Product $product) {
+		return self::where('id', $product->designer_style_id)->orWhere('product_id', $product->id)->get();
 	}
 }

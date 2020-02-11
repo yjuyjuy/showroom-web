@@ -65,4 +65,8 @@ class SsenseProduct extends Model
 		}
 		return $size_price;
 	}
+
+	public static function like(Product $product) {
+		return self::where('product_id', $product->id)->get();
+	}
 }

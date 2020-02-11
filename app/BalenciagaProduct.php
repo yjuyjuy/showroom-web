@@ -32,7 +32,7 @@ class BalenciagaProduct extends Model
 		*/
 	protected $keyType = 'string';
 
-	public static $brand_id = 181957;
+	public const brand_id = 181957;
 
 	public function image()
 	{
@@ -49,8 +49,13 @@ class BalenciagaProduct extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public function getBrandIdAttribute()
-	{
-		return self::$brand_id;
+	public static function like(Product $product) {
+		$query = self::query();
+		if (strlen($product->designer_style_id) > 11) {
+			$query->where('designer_style_id', $product->designer_style_id);
+		} else {
+			$query->where('designer_style_id', 'like', $product->designer_style_id.'%');
+		}
+		return $query->orWhere('product_id', $product->id)->get();
 	}
 }

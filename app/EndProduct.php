@@ -75,4 +75,15 @@ class EndProduct extends Model
 	{
 		return $this->belongsTo(Product::class);
 	}
+
+	public static function like(Product $product) {
+		return self::where(function($query) use ($product) {
+			if (strlen($product->designer_style_id) > 11) {
+				$query->where('sku', 'like', substr($product->designer_style_id, 0, -4).'%');
+			} else {
+				$query->where('sku', $product->designer_style_id);
+			}
+			$query->whereIn('brand_name', \App\EndBrand::where('mapped_id', $product->brand_id)->pluck('name')->toArray());
+		})->orWhere('product_id', $product->id)->get();
+	}
 }

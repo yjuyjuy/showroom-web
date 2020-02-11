@@ -32,6 +32,8 @@ class GucciProduct extends Model
 		*/
 	protected $keyType = 'string';
 
+	public const brand_id = 421758;
+
 	public function image()
 	{
 		return $this->hasOne(GucciImage::class, 'product_id');
@@ -47,11 +49,6 @@ class GucciProduct extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public function getBrandIdAttribute()
-	{
-		return 421758;
-	}
-
 	public function getCategoryTranslationAttribute()
 	{
 		if ($this->category) {
@@ -59,5 +56,15 @@ class GucciProduct extends Model
 		} else {
 			return '';
 		};
+	}
+
+	public static function like(Product $product) {
+		$query = self::query();
+		if (strlen($product->designer_style_id) > 11) {
+			$query->where('id', $product->designer_style_id);
+		} else {
+			$query->where('id', 'like', $product->designer_style_id.'%');
+		}
+		return $query->orWhere('product_id', $product->id)->get();
 	}
 }

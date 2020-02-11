@@ -32,6 +32,8 @@ class LouisVuittonProduct extends Model
 		*/
 	protected $keyType = 'string';
 
+	public const brand_id = 700854;
+
 	public function image()
 	{
 		return $this->hasOne(LouisVuittonImage::class, 'product_id');
@@ -47,11 +49,6 @@ class LouisVuittonProduct extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public function getBrandIdAttribute()
-	{
-		return 700854;
-	}
-
 	public function getSizePriceAttribute()
 	{
 		if ($this->sizes && $this->price) {
@@ -63,5 +60,9 @@ class LouisVuittonProduct extends Model
 		} else {
 			return [];
 		}
+	}
+
+	public static function like(Product $product) {
+		return self::where('id', $product->designer_style_id)->orWhere('product_id', $product->id)->get();
 	}
 }

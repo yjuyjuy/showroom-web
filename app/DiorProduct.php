@@ -32,6 +32,8 @@ class DiorProduct extends Model
 		*/
 	protected $keyType = 'string';
 
+	public const brand_id = 355854;
+
 	public function image()
 	{
 		return $this->hasOne(DiorImage::class, 'product_id');
@@ -47,8 +49,7 @@ class DiorProduct extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public function getBrandIdAttribute()
-	{
-		return 355854;
+	public static function like(Product $product) {
+		return self::where('id', $product->designer_style_id)->orWhere('product_id', $product->id)->get();
 	}
 }

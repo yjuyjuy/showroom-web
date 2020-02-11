@@ -82,15 +82,15 @@ class Product extends Model
 	}
 	public function farfetch_products()
 	{
-		return $this->hasMany(\App\FarfetchProduct::class);
+		return $this->hasMany(FarfetchProduct::class);
 	}
 	public function end_products()
 	{
-		return $this->hasMany(\App\EndProduct::class);
+		return $this->hasMany(EndProduct::class);
 	}
 	public function ssense_products()
 	{
-		return $this->hasMany(\App\SsenseProduct::class);
+		return $this->hasMany(SsenseProduct::class);
 	}
 	public function followers()
 	{
@@ -128,41 +128,19 @@ class Product extends Model
 		if ($this->brand && $this->designer_style_id) {
 			return Cache::remember('product-'.$this->id.'-links', 10 * 60, function() {
 				$links = [];
-				// Farfetch
-				foreach(\App\FarfetchProduct::where('product_id', $this->id)
-				->orWhere(function($query) {
-					$query->where('designer_style_id', $this->designer_style_id)
-					->whereIn('designer_id', \App\FarfetchDesigner::where('mapped_id', $this->brand_id)->pluck('id')->toArray());
-				})->get() as $index => $product) {
-					$links['Farfetch详情'.($index + 1).'-'.$product->colors] = route('farfetch.show', ['product' => $product,]);
+				foreach(['Farfetch', 'End', 'Ssense',] as $retailer_name) {
+					$cls = '\\App\\'.$retailer_name.'Product';
+					foreach($cls::like($this) as $index => $product) {
+						$links[$retailer_name.'页面'.($index + 1).($product->colors ?? $product->color ?? '')] = route(strtolower($retailer_name).'.show', ['product' => $product]);
+					}
 				}
-				// End
-				foreach(\App\EndProduct::where('product_id', $this->id)
-				->orWhere(function($query) {
-					$query->where('sku', $this->designer_style_id)
-					->whereIn('brand_name', \App\EndBrand::where('mapped_id', $this->brand_id)->pluck('name')->toArray());
-				})->get() as $product) {
-					$links['End详情'] = route('end.show', ['product' => $product,]);
-				}
-				if ($this->brand_id == 700854) { // Louis Vuitton
-					foreach(\App\LouisVuittonProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Louis Vuitton详情'] = route('louisvuitton.show', ['product' => urlencode($product->id),]);
-					}
-				} elseif ($this->brand_id == 355854) { // Dior
-					foreach(\App\DiorProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Dior详情'] = route('dior.show', ['product' => $product,]);
-					}
-				} elseif ($this->brand_id == 421758) { // Gucci
-					foreach(\App\GucciProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Gucci详情'] = route('gucci.show', ['product' => $product,]);
-					}
-				} elseif ($this->brand_id == 885468) { // Off-White
-					foreach(\App\OffWhiteProduct::where('id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Off-White详情'] = route('offwhite.show', ['product' => $product,]);
-					}
-				} elseif ($this->brand_id == 181957) { // Balenciaga
-					foreach(\App\BalenciagaProduct::where('designer_style_id', $this->designer_style_id)->orWhere('product_id', $this->id)->get() as $product) {
-						$links['Balenciaga详情'] = route('balenciaga.show', ['product' => $product,]);
+				foreach(['LouisVuitton', 'Dior', 'Gucci', 'OffWhite', 'Balenciaga',] as $brand_name) {
+					$cls = '\\App\\'.$brand_name.'Product';
+					if ($cls::brand_id == $this->brand_id) {
+						foreach($cls::like($this) as $index => $product) {
+							$links['官网页面'.($index + 1)] = route(strtolower($brand_name).'.show', ['product' => $product]);
+						}
+						return $links;
 					}
 				}
 				return $links;
