@@ -20,6 +20,10 @@
 		</span>
 	</div>
 
+	<div class="my-1">
+		货号: {{ $product->designer_style_id }}
+	</div>
+
 	<div class="my-2"></div>
 
 	<div class="my-1">
@@ -28,7 +32,9 @@
 
 	<div class="my-1">
 		@foreach(explode("\n", $product->detail) as $row)
+		@if(trim($row))
 		<span>{{ $row }}</span><br>
+		@endif
 		@endforeach
 	</div>
 </div>
