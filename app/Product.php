@@ -134,7 +134,7 @@ class Product extends Model
 						foreach($cls::like($this) as $index => $product) {
 							$links['官网页面'.($index + 1)] = route(strtolower($brand_name).'.show', ['product' => $product]);
 						}
-						return $links;
+						break;
 					}
 				}
 				foreach(['Farfetch', 'End', 'Ssense',] as $retailer_name) {
