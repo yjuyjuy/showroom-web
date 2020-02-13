@@ -149,6 +149,10 @@ class Product extends Model
 			return [];
 		}
 	}
+	public function getDesignerStyleIdsAttribute()
+	{
+		return explode('|', $this->designer_style_id);
+	}
 	// Helpers
 	public function getMinPrice($default = false)
 	{

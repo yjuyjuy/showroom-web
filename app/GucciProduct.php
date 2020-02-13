@@ -59,12 +59,14 @@ class GucciProduct extends Model
 	}
 
 	public static function like(Product $product) {
-		$query = self::query();
-		if (strlen($product->designer_style_id) > 11) {
-			$query->where('id', $product->designer_style_id);
-		} else {
-			$query->where('id', 'like', $product->designer_style_id.'%');
+		$query = self::where('product_id', $product->id);
+		foreach($product->designer_style_ids as $id) {
+			if (strlen($id) > 11) {
+				$query->orWhere('id', $id);
+			} else {
+				$query->orWhere('id', 'like', $id.'%');
+			}
 		}
-		return $query->orWhere('product_id', $product->id)->get();
+		return $query->get();
 	}
 }

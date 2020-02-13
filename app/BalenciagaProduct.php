@@ -50,12 +50,14 @@ class BalenciagaProduct extends Model
 	}
 
 	public static function like(Product $product) {
-		$query = self::query();
-		if (strlen($product->designer_style_id) > 11) {
-			$query->where('designer_style_id', $product->designer_style_id);
-		} else {
-			$query->where('designer_style_id', 'like', $product->designer_style_id.'%');
+		$query = self::where('product_id', $product->id);
+		foreach($product->designer_style_ids as $id) {
+			if (strlen($id) > 11) {
+				$query->orWhere('designer_style_id', $id);
+			} else {
+				$query->orWhere('designer_style_id', 'like', $id.'%');
+			}
 		}
-		return $query->orWhere('product_id', $product->id)->get();
+		return $query->get();
 	}
 }

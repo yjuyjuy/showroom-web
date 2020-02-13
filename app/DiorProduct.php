@@ -50,6 +50,10 @@ class DiorProduct extends Model
 	}
 
 	public static function like(Product $product) {
-		return self::where('id', $product->designer_style_id)->orWhere('product_id', $product->id)->get();
+		$query = self::where('product_id', $product->id);
+		foreach($product->designer_style_ids as $id) {
+			$query->orWhere('id', $id);
+		}
+		return $query->get();
 	}
 }
