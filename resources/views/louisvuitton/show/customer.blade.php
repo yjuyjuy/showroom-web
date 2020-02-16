@@ -9,11 +9,11 @@
 
 <div>
 	<a href="{{ $product->url }}" class="ml-2 mdc-button mdc-button--unelevated" target="_blank" rel="noreferrer">
-		<span class="mdc-button__label">{{ __('Link to page') }}</span>
+		<span class="mdc-button__label">打开官网</span>
 	</a>
 	@if($product->product)
 	<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="mdc-button mdc-button--unelevated ml-2">
-		<span class="mdc-button__label">打开官网</span>
+		<span class="mdc-button__label">查看报价</span>
 	</a>
 	@endif
 	@can('create', \App\Product::class)

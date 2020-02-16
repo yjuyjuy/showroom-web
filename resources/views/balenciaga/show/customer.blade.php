@@ -1,10 +1,10 @@
 <div>
 	<a href="{{ $product->url }}" class="ml-2 mdc-button mdc-button--unelevated" target="_blank" rel="noreferrer">
-		<span class="mdc-button__label">{{ __('Link to page') }}</span>
+		<span class="mdc-button__label">打开官网</span>
 	</a>
 	@if($product->product)
 	<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="mdc-button mdc-button--unelevated ml-2">
-		<span class="mdc-button__label">打开官网</span>
+		<span class="mdc-button__label">查看报价</span>
 	</a>
 	@endif
 	@can('create', \App\Product::class)
@@ -25,7 +25,7 @@
 				<a href="{{ route('balenciaga.export', ['balenciaga_product' => $product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">上架新商品</span>
 				</a>
-				@foreach(\App\Product::where('designer_style_id', $product->id)->where('brand_id', $product->brand_id)->get() as $guess)
+				@foreach(\App\Product::where('designer_style_id', $product->designer_style_id)->where('brand_id', $product->brand_id)->get() as $guess)
 				<a href="{{ route('balenciaga.merge', ['balenciaga_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 					<span class="mdc-list-item__text">合并至{{ __($guess->color->name ?? '-') }}</span>
 				</a>

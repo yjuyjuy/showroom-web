@@ -86,31 +86,45 @@ class OffWhiteController extends Controller
 
 	public function export(OffWhiteProduct $offwhite_product, Product $product=null)
 	{
-		if ($product) {
-			foreach ([
-					'brand_id' => $offwhite_product->brand_id,
-					'designer_style_id' => $offwhite_product->id,
-					'name_cn' => $offwhite_product->name,
-					'name' => $offwhite_product->name,
-				] as $key => $value) {
-				if (empty($product[$key])) {
-					$product[$key] = $value;
-				}
-			}
-			$product->save();
-		} else {
-			$product = Product::firstOrCreate([
-					'brand_id' => $offwhite_product->brand_id,
-					'designer_style_id' => $offwhite_product->id,
-				], [
-					'name_cn' => $offwhite_product->name,
-					'name' => $offwhite_product->name,
-					'id' => \App\Product::generate_id(),
-				]);
-		}
-		// if ($offwhite_product->images->isNotEmpty()) {
-		// 	(new ImageController())->import($offwhite_product->images, $product, 1);
-		// }
+		$product = Product::create([
+			'brand_id' => $offwhite_product->brand_id,
+			'designer_style_id' => $offwhite_product->id,
+			'name_cn' => $offwhite_product->name,
+			'name' => $offwhite_product->name,
+			'id' => \App\Product::generate_id(),
+		]);
+		$offwhite_product->product_id = $product->id;
+		$offwhite_product->save();
+		(new ImageController())->import($offwhite_product->images, $product);
+
 		return redirect(route('products.show', ['product' => $product,]));
+	}
+
+	public function merge(OffWhiteProduct $offwhite_product, Product $product)
+	{
+		foreach ([
+			'brand_id' => $offwhite_product->brand_id,
+			'designer_style_id' => $offwhite_product->id,
+			'name_cn' => $offwhite_product->name,
+			'name' => $offwhite_product->name,
+		] as $key => $value) {
+			if (empty($product[$key])) {
+				$product[$key] = $value;
+			}
+		}
+		$product->save();
+		$offwhite_product->product_id = $product->id;
+		$offwhite_product->save();
+		(new ImageController())->import($offwhite_product->images, $product);
+
+		return redirect(route('products.show', ['product' => $product,]));
+	}
+
+	public function unlink(BalenciagaProduct $offwhite_product)
+	{
+		$offwhite_product->product_id = NULL;
+		$offwhite_product->save();
+
+		return redirect(route('offwhite.show', ['product' => $offwhite_product]));
 	}
 }

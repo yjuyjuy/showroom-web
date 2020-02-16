@@ -68,7 +68,7 @@
 			</a>
 			@if($product->product)
 			<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="ml-2 mdc-button mdc-button--unelevated">
-				<span class="mdc-button__label">打开Farfetch</span>
+				<span class="mdc-button__label">查看报价</span>
 			</a>
 			@endif
 			@can('create', \App\Product::class)

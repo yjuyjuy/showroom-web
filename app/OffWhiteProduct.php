@@ -43,6 +43,11 @@ class OffWhiteProduct extends Model
 		return $this->hasMany(\App\OffWhiteImage::class, 'product_id', 'id');
 	}
 
+	public function product()
+	{
+		return $this->belongsTo(\App\Product::class);
+	}
+
 	public static function like(Product $product) {
 		$query = self::where('product_id', $product->id);
 		foreach($product->designer_style_ids as $id) {
