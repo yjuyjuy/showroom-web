@@ -19,6 +19,6 @@ class TaobaoPolicy
      */
     public function update(User $user, TaobaoShop $taobaoShop)
     {
-      return $user->isSuperAdmin();
+      return $user->is_admin;
     }
 }

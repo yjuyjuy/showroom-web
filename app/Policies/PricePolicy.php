@@ -41,7 +41,7 @@ class PricePolicy
      */
     public function create(User $user)
     {
-			return $user->isSuperAdmin() || $user->vendor;
+			return $user->is_admin || $user->vendor;
     }
 
     /**
@@ -53,7 +53,7 @@ class PricePolicy
      */
     public function update(User $user, VendorPrice $price)
     {
-			return $user->isSuperAdmin() || in_array($user->id, $price->vendor->users->pluck('id')->toArray());
+			return $user->is_admin || in_array($user->id, $price->vendor->users->pluck('id')->toArray());
     }
 
     /**
@@ -65,7 +65,7 @@ class PricePolicy
      */
     public function delete(User $user, VendorPrice $price)
     {
-			return $user->isSuperAdmin() || in_array($user->id, $price->vendor->users->pluck('id')->toArray());
+			return $user->is_admin || in_array($user->id, $price->vendor->users->pluck('id')->toArray());
     }
 
     /**

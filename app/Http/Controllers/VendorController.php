@@ -73,7 +73,7 @@ class VendorController extends Controller
 			return redirect(route('following.vendors'));
 		}
 		if ($user) {
-			if ($user->isSuperAdmin()) {
+			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
 			}
 			if ($user->is_reseller) {

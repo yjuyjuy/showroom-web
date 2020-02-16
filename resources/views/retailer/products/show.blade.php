@@ -18,7 +18,7 @@
 		@include('products.show.buttons')
 
 		@auth
-			@if($user->isSuperAdmin())
+			@if($user->is_admin)
 				@include('products.show.admin')
 
 			@elseif($user->vendor)

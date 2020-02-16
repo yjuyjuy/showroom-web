@@ -78,7 +78,7 @@
 							<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
 							<span class="mdc-list-item__text">网站数据库</span>
 						</a>
-						@if($user->isSuperAdmin())
+						@if($user->is_admin)
 							<hr class="mdc-list-divider">
 							<h6 class="mdc-list-group__subheader">管理员功能</h6>
 							<a class="mdc-list-item" href="{{ route('products.create') }}">

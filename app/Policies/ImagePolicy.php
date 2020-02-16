@@ -12,11 +12,11 @@ class ImagePolicy
 
 	public function update(User $user)
 	{
-		return $user->isSuperAdmin();
+		return $user->is_admin;
 	}
 
 	public function create(User $user)
 	{
-		return $user->isSuperAdmin() || $user->vendor;
+		return $user->is_admin || $user->vendor;
 	}
 }

@@ -139,7 +139,7 @@ class ProductController extends Controller
 	{
 		$user = auth()->user();
 		if ($user) {
-			if ($user->isSuperAdmin()) {
+			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
 			}
 			if ($user->is_reseller) {

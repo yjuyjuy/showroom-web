@@ -29,7 +29,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 						}
 						$tags[] = 'method:'.$entry->content['method'];
 						if ($user = auth()->user()) {
-							if ($user->isSuperAdmin()) {
+							if ($user->is_admin) {
 								$tags[] = 'user:admin';
 							} elseif ($user->vendor) {
 								$tags[] = 'user:vendor';

@@ -15,7 +15,7 @@ class AdminMiddleware
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (auth()->user()->isSuperAdmin()) {
+		if (auth()->user()->is_admin) {
 			return $next($request);
 		} else {
 			abort(403);

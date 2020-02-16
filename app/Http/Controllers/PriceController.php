@@ -13,7 +13,7 @@ class PriceController extends Controller
 	public function index()
 	{
 		$user = auth()->user();
-		if ($user->isSuperAdmin() && ($vendor = request()->input('vendor'))) {
+		if ($user->is_admin && ($vendor = request()->input('vendor'))) {
 			$vendor = Vendor::find($vendor);
 			request()->flash();
 		} else {
@@ -32,7 +32,7 @@ class PriceController extends Controller
 
 	public function create(Product $product)
 	{
-		if (auth()->user()->isSuperAdmin() && ($vendor = request()->input('vendor'))) {
+		if (auth()->user()->is_admin && ($vendor = request()->input('vendor'))) {
 			$vendor = \App\Vendor::where('name', $vendor)->first();
 		} else {
 			$vendor = auth()->user()->vendor;
@@ -43,7 +43,7 @@ class PriceController extends Controller
 	public function store(Request $request, Product $product)
 	{
 		$this->authorize('create', VendorPrice::class);
-		if (auth()->user()->isSuperAdmin()) {
+		if (auth()->user()->is_admin) {
 			$vendor = \App\Vendor::find($request->input('vendor'));
 		} else {
 			$vendor = auth()->user()->vendor;

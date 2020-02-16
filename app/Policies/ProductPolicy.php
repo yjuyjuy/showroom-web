@@ -41,7 +41,7 @@ class ProductPolicy
 	 */
 	public function create(User $user)
 	{
-		return $user->isSuperAdmin();
+		return $user->is_admin;
 	}
 
 	/**
@@ -53,7 +53,7 @@ class ProductPolicy
 	 */
 	public function update(User $user, Product $product)
 	{
-		return $user->isSuperAdmin();
+		return $user->is_admin;
 	}
 
 	/**
@@ -65,7 +65,7 @@ class ProductPolicy
 	 */
 	public function delete(User $user, Product $product)
 	{
-		return $user->isSuperAdmin();
+		return $user->is_admin;
 	}
 
 	/**
@@ -77,7 +77,7 @@ class ProductPolicy
 	 */
 	public function restore(User $user, Product $product)
 	{
-		return $user->isSuperAdmin();
+		return $user->is_admin;
 	}
 
 	/**

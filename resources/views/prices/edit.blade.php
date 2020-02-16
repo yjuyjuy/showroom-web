@@ -8,7 +8,7 @@
 		@include('products.show.images')
 	</div>
 	<div class="container__content">
-		@if(auth()->user()->isSuperAdmin())
+		@if(auth()->user()->is_admin)
 		<div class="w-100">
 			<div class="font-weight-bold text-left">
 				{{$price->vendor->name.' - '.$price->vendor->city}}
