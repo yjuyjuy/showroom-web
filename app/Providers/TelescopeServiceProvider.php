@@ -46,11 +46,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 		    });
 
         Telescope::filter(function (IncomingEntry $entry) {
-					if ($entry->type === 'request' && $entry->content['uri'] === '/products') {
-						return false;
-					} else {
-						return true;
-					}
+					return true;
         });
     }
 

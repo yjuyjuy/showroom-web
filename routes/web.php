@@ -184,4 +184,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 	Route::view('users', 'admin.users')->name('admin.users');
 });
 
+// Google cloud health check
+Route::get('health', function() { return 'good'; });
+
 Route::get('{slug}', function() { abort(404); })->middleware(['auth', 'throttle:10,1'])->where(['slug' => '.*']);
