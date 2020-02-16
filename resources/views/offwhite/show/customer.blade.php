@@ -7,7 +7,7 @@
 </div>
 <div>
 	<a href="{{ $product->url }}" class="ml-2 mdc-button mdc-button--unelevated" target="_blank" rel="noreferrer">
-		<span class="mdc-button__label">{{ __('Link to page') }}</span>
+		<span class="mdc-button__label">打开官网</span>
 	</a>
 	@if(auth()->user()->isSuperAdmin())
 		<a href="{{ route('offwhite.export', ['offwhite_product' => $product,]) }}" class="ml-2 mdc-button mdc-button--unelevated">

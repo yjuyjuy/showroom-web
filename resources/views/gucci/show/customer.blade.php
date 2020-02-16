@@ -13,7 +13,7 @@
 	</a>
 	@if($product->product)
 	<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="mdc-button mdc-button--unelevated ml-2">
-		<span class="mdc-button__label">打开商品页面</span>
+		<span class="mdc-button__label">打开官网</span>
 	</a>
 	@endif
 	@can('create', \App\Product::class)
