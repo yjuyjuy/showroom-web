@@ -42,6 +42,8 @@ class User extends Authenticatable implements MustVerifyEmail
 	 */
 	protected $attributes = [];
 
+	private const admin_user_ids = [1111111111, 4021500970, 8888888888];
+
 	public function vendor()
 	{
 		return $this->belongsTo(Vendor::class);
@@ -59,6 +61,10 @@ class User extends Authenticatable implements MustVerifyEmail
 		return $this->belongsToMany(Product::class, 'user_product', 'user_id', 'product_id');
 	}
 	# accessors, mutators
+	public function getIsAdminAttribute()
+	{
+		return in_array($this->id, self::admin_user_ids);
+	}
 	public function getIsResellerAttribute()
 	{
 		return $this->type == 'reseller';
@@ -102,7 +108,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function isSuperAdmin()
 	{
-		return in_array($this->id, [1111111111, 4021500970, 8888888888]);
+		return in_array($this->id, self::admin_user_ids);
 	}
 	/**
 	 * Send the email verification notification.
