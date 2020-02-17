@@ -132,7 +132,7 @@ class Product extends Model
 					$cls = '\\App\\'.$brand_name.'Product';
 					if ($cls::brand_id == $this->brand_id) {
 						foreach($cls::like($this) as $index => $product) {
-							$links['官网页面'.($index + 1)] = route(strtolower($brand_name).'.show', ['product' => $product]);
+							$links['官网页面'.($index + 1)] = route(strtolower($brand_name).'.show', ['product' => urlencode($product->id)]);
 						}
 						break;
 					}
