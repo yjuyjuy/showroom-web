@@ -33,6 +33,7 @@ class OffWhiteProduct extends Model
 	protected $keyType = 'string';
 
 	public const brand_id = 885468;
+	public $brand_id = self::brand_id;
 
 	public function image()
 	{

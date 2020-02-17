@@ -33,6 +33,7 @@ class DiorProduct extends Model
 	protected $keyType = 'string';
 
 	public const brand_id = 355854;
+	public $brand_id = self::brand_id;
 
 	public function image()
 	{
@@ -45,7 +46,7 @@ class DiorProduct extends Model
 	}
 
 	public function product()
-	{
+		{
 		return $this->belongsTo(Product::class);
 	}
 

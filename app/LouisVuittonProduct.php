@@ -33,6 +33,7 @@ class LouisVuittonProduct extends Model
 	protected $keyType = 'string';
 
 	public const brand_id = 700854;
+	public $brand_id = self::brand_id;
 
 	public function image()
 	{

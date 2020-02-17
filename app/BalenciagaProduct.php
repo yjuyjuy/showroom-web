@@ -33,6 +33,7 @@ class BalenciagaProduct extends Model
 	protected $keyType = 'string';
 
 	public const brand_id = 181957;
+	public $brand_id = self::brand_id;
 
 	public function image()
 	{
