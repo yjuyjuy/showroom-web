@@ -30,7 +30,7 @@
 	<div class="d-flex justify-content-end">
 		<div class="mdc-menu-surface--anchor">
 			<button type="button" class="mdc-button open-menu-button">
-				<span class="mdc-button__label">更多详情</span>
+				<span class="mdc-button__label">官网页面</span>
 				<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
