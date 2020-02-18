@@ -28,32 +28,6 @@ class Retailer extends Model
 	    return 'name';
 	}
 
-	public const public_retailer_ids = [
-		// 2471873538, // Dopebxtch
-		1467053076, // Farfetch
-		3548857028, // EndClothing
-		8373593846, // Dior
-		2294995609, // Gucci
-		4354186782, // LouisVuitton
-		3978029761, // Balenciaga
-	];
-
-  /**
-   * Scope a query to only include public retailers.
-   *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
-   * @return \Illuminate\Database\Eloquent\Builder
-   */
-  public function scopePublic($query)
-  {
-    return $query->whereIn('id', self::public_retailer_ids);
-  }
-
-	public function getIsPublicAttribute()
-	{
-		return in_array($this->id, self::public_retailer_ids);
-	}
-
 	# relationships
 	public function retails()
 	{
