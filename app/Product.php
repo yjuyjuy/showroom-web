@@ -153,6 +153,10 @@ class Product extends Model
 	{
 		return explode('|', $this->designer_style_id);
 	}
+	public function getPriceAttribute()
+	{
+		return $this->getMinPrice();
+	}
 	// Helpers
 	public function getMinPrice($default = false)
 	{
@@ -165,10 +169,6 @@ class Product extends Model
 		return ($this->offers->isEmpty())? $default : (int)$this->offers->map(function ($offer) {
 			return min($offer->prices);
 		})->min();
-	}
-	public function getPriceAttribute()
-	{
-		return $this->getMinPrice();
 	}
 	public function getSizePrice($type = 'retail')
 	{
