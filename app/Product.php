@@ -180,21 +180,27 @@ class Product extends Model
 			foreach ($this->offers as $offer) {
 				foreach ($offer->prices as $size => $price) {
 					if (!array_key_exists($size, $data) || $price < $data[$size]['price']) {
-						$data[$size] = ['price' => $price, 'vendor' => $offer->vendor->name, 'link' => $offer->vendor->link];
+						$data[$size] = ['price' => $price, 'vendor' => [$offer->vendor->name,],];
 					} elseif ($price == $data[$size]['price']) {
-						$data[$size]['vendor'] = $data[$size]['vendor'].' / '.$offer->vendor->name;
+						$data[$size]['vendor'][] = $offer->vendor->name;
 					}
 				}
+			}
+			foreach(array_keys($data) as $size) {
+				$data[$size]['vendor'] = implode('/', array_unique($data[$size]['vendor']));
 			}
 		} elseif ($type == 'retail') {
 			foreach ($this->retails as $retail) {
 				foreach ($retail->prices as $size => $price) {
 					if (!array_key_exists($size, $data) || $price < $data[$size]['price']) {
-						$data[$size] = ['price' => $price, 'retailer' => $retail->retailer->name, 'link' => $retail->link];
+						$data[$size] = ['price' => $price, 'retailer' => [$retail->retailer->name,],];
 					} elseif ($price == $data[$size]['price']) {
-						$data[$size]['retailer'] = $data[$size]['retailer'].' / '.$retail->retailer->name;
+						$data[$size]['retailer'][] = $retail->retailer->name;
 					}
 				}
+			}
+			foreach(array_keys($data) as $size) {
+				$data[$size]['retailer'] = implode('/', array_unique($data[$size]['retailer']));
 			}
 		}
 		$data = Arr::sort($data, function ($value, $key) {
