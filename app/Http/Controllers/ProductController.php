@@ -40,34 +40,23 @@ class ProductController extends Controller
 		} elseif ($sort == 'category') {
 			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		}
+		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
+			$query = $query->has('retails');
+		}
 		$products = $query->get();
 
-		if ($user) {
-			$retailer_ids = $user->following_retailers()->pluck('retailer_id');
-		} else {
-			$retailer_ids = [];
-		}
-
-		$products->load([
-			'retails' => function ($query) use ($retailer_ids) {
-				$query->whereIn('retailer_id', $retailer_ids);
-			},
-		]);
-		if ($request->input('show_available_only')) {
-			$products = $products->filter(function ($item) {
-				return $item->retails->isNotEmpty();
-			});
-		}
+		$products->load('retails');
 		if ($sort == 'price-high-to-low') {
 			$products = $products->sortByDesc(function ($item) {
-				return $item->getMinPrice(0);
+				return $item->getMinPrice();
 			})->values();
 		}
 		if ($sort == 'price-low-to-high') {
 			$products = $products->sortBy(function ($item) {
-				return $item->getMinPrice(INF);
+				return $item->getMinPrice();
 			})->values();
 		}
+
 		$total_pages = ceil($products->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $products->forPage($page, 48);
