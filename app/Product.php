@@ -155,7 +155,10 @@ class Product extends Model
 	}
 	public function getPriceAttribute()
 	{
-		return $this->getMinPrice();
+		if (!array_key_exists('price', $this->attributes)) {
+			$this->attributes['price'] = $this->getMinPrice();
+		}
+		return $this->attributes['price'];
 	}
 	// Helpers
 	public function getMinPrice($default = false)
