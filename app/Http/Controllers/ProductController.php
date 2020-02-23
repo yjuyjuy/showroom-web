@@ -127,7 +127,13 @@ class ProductController extends Controller
 	public function show(Product $product)
 	{
 		$user = auth()->user();
+		$product->load('retails', 'retails.retailer');
 		if ($user) {
+			$product->retails->map(function($retail) use ($user) {
+				if (!$user->following_retailers->contains($retail->retailer)) {
+					$retail->hide();
+				}
+			});
 			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
 			}
@@ -138,18 +144,8 @@ class ProductController extends Controller
 					}, 'offers.vendor'
 				]);
 			}
-			$product->load([
-				'retails' => function ($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-				}, 'retails.retailer'
-			]);
 		} else {
-			$product->load([
-				'retails' => function ($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-				}, 'retails.retailer'
-			]);
-			$product->offers = collect();
+			$product->retails->map(function($retail) { $retail->hide(); });
 		}
 		$product->load(['images', 'brand','season','color', 'category']);
 		return view('products.show', compact('product', 'user'));
