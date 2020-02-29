@@ -42,24 +42,44 @@ class ProductController extends Controller
 		}
 		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
 			$query = $query->has('retails');
-		}
-		$products = $query->get();
+			$products = $query->get();
+			$products->load('retails');
+			if (!$user || !$user->is_admin) {
+				$products->map(function($product) {
+					$product->retails->map(function($retail) {
+						$retail->hide();
+					});
+				});
+			}
 
-		$products->load('retails');
-		if ($sort == 'price-high-to-low') {
-			$products = $products->sortByDesc(function ($item) {
-				return $item->getMinPrice();
-			})->values();
-		}
-		if ($sort == 'price-low-to-high') {
-			$products = $products->sortBy(function ($item) {
-				return $item->getMinPrice();
-			})->values();
-		}
+			if ($sort == 'price-high-to-low') {
+				$products = $products->sortByDesc(function ($product) {
+					return $product->price;
+				})->values();
+			}
+			if ($sort == 'price-low-to-high') {
+				$products = $products->sortBy(function ($product) {
+					return $product->price;
+				})->values();
+			}
 
-		$total_pages = ceil($products->count() / 48.0);
-		$page = min(max($request->query('page', 1), 1), $total_pages);
-		$products = $products->forPage($page, 48);
+			$total_pages = ceil($products->count() / 48.0);
+			$page = min(max($request->query('page', 1), 1), $total_pages);
+			$products = $products->forPage($page, 48);
+		} else {
+			$products = $query->get();
+			$total_pages = ceil($products->count() / 48.0);
+			$page = min(max($request->query('page', 1), 1), $total_pages);
+			$products = $products->forPage($page, 48);
+			$products->load('retails');
+			if (!$user || !$user->is_admin) {
+				$products->map(function($product) {
+					$product->retails->map(function($retail) {
+						$retail->hide();
+					});
+				});
+			}
+		}
 		$products->load(['brand', 'image']);
 
 		$sortOptions = $this->sortOptions();
@@ -141,7 +161,9 @@ class ProductController extends Controller
 				$product->load([
 					'offers' => function ($query) use ($user) {
 						$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
-					}, 'offers.vendor'
+					}, 'offers.vendor', 'prices' => function ($query) use ($user) {
+						$query->where('vendor_id', $user->vendor_id);
+					},
 				]);
 			}
 		} else {
