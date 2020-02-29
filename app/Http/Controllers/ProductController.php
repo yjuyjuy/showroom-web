@@ -156,14 +156,17 @@ class ProductController extends Controller
 			});
 			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
-			}
-			if ($user->is_reseller) {
+			} else if ($user->vendor) {
+				$product->load([
+					'prices' => function ($query) use ($user) {
+						$query->where('vendor_id', $user->vendor_id);
+					},
+				]);
+			} else if ($user->is_reseller) {
 				$product->load([
 					'offers' => function ($query) use ($user) {
 						$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
-					}, 'offers.vendor', 'prices' => function ($query) use ($user) {
-						$query->where('vendor_id', $user->vendor_id);
-					},
+					}, 'offers.vendor'
 				]);
 			}
 		} else {
