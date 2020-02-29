@@ -24,6 +24,6 @@
 		@endforeach
 
 	@else
-	<span>{{ __('no offer') }}</span>
+	<span>暂无调货报价</span>
 	@endif
 </div>
