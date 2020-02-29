@@ -1,6 +1,6 @@
 <?php $vendor = auth()->user()->vendor; ?>
 <div class="d-flex flex-column products-show__info--vendor">
-	@foreach($product->prices->where('vendor_id',$vendor->id) as $price)
+	@foreach($product->prices as $price)
 	<div class="price-grid my-3">
 		<div class="price-grid__header">
 			<span class="price-grid__title">{{ __('My offer') }}</span>
@@ -57,13 +57,13 @@
 		@endforeach
 
 	@else
-	<div class="my-3">{{ __('no offer') }}</div>
+	<div class="my-3">暂无调货报价</div>
 	@endforelse
 
 	@if($product->prices->where('vendor_id',$vendor->id)->isEmpty())
 	<div class="d-flex justify-content-end my-3">
 		<a href="{{route('prices.create',['product' => $product])}}" class="mdc-button mdc-button--unelevated">
-			<span class="mdc-button__label">{{ __('add price') }}</span>
+			<span class="mdc-button__label">添加报价</span>
 		</a>
 	</div>
 	@endif

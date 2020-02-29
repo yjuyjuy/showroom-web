@@ -1,5 +1,4 @@
 <div class="d-flex flex-column products-show__info--admin">
-	<?php $product->prices->loadMissing('vendor'); ?>
 	@foreach($product->prices as $price)
 	<div class="price-grid my-3">
 		<div class="font-weight-bold price-grid__header">
@@ -35,7 +34,7 @@
 			</button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach(\App\Vendor::whereNotIn('id',$product->prices->pluck('vendor_id')->toArray())->get() as $vendor)
+					@foreach(\App\Vendor::whereNotIn('id', $product->prices->pluck('vendor_id'))->get() as $vendor)
 					<a href="{{route('prices.create',['product' => $product, 'vendor' => $vendor])}}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">{{$vendor->name}}</a>
 					@endforeach
 			  </ul>
