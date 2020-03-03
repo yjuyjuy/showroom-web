@@ -162,7 +162,8 @@ class ProductController extends Controller
 						$query->where('vendor_id', $user->vendor_id);
 					},
 				]);
-			} else if ($user->is_reseller) {
+			}
+			if ($user->is_reseller) {
 				$product->load([
 					'offers' => function ($query) use ($user) {
 						$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
