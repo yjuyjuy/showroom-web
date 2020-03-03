@@ -43,7 +43,7 @@ class ProductController extends Controller
 		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
 			$query = $query->has('retails');
 			$products = $query->get();
-			$products->load('retails');
+			$products->load(['retails', 'retails.retailer']);
 			if (!$user || !$user->is_admin) {
 				$products->map(function($product) {
 					$product->retails->map(function($retail) {
@@ -71,7 +71,7 @@ class ProductController extends Controller
 			$total_pages = ceil($products->count() / 48.0);
 			$page = min(max($request->query('page', 1), 1), $total_pages);
 			$products = $products->forPage($page, 48);
-			$products->load('retails');
+			$products->load(['retails', 'retails.retailer']);
 			if (!$user || !$user->is_admin) {
 				$products->map(function($product) {
 					$product->retails->map(function($retail) {
