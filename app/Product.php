@@ -160,6 +160,13 @@ class Product extends Model
 		}
 		return $this->attributes['price'];
 	}
+	public function getOfferAttribute()
+	{
+		if (!array_key_exists('offer', $this->attributes)) {
+			$this->attributes['offer'] = $this->getMinOffer();
+		}
+		return $this->attributes['offer'];
+	}
 	// Helpers
 	public function getMinPrice($default = false)
 	{
