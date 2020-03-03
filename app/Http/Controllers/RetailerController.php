@@ -43,13 +43,14 @@ class RetailerController extends Controller
 		]);
 		if ($sort == 'price-high-to-low') {
 			$products = $products->sortByDesc(function ($item) {
-				return $item->getMinPrice(0);
+				return $item->price;
 			})->values();
 		} elseif ($sort == 'price-low-to-high') {
 			$products = $products->sortBy(function ($item) {
-				return $item->getMinPrice(INF);
+				return $item->price;
 			})->values();
 		}
+
 		$total_pages = ceil($products->count() / 48.0);
 		$page = min(max($request->query('page',1), 1), $total_pages);
 		$products = $products->forPage($page, 48);
@@ -64,29 +65,25 @@ class RetailerController extends Controller
 	public function show(Retailer $retailer, Product $product)
 	{
 		$user = auth()->user();
+		$product->load(['retails' => function($query) use ($retailer) {
+			$query->where('retailer_id', $retailer->id);
+		}]);
 		if ($user) {
 			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
-			}
-			if ($user->is_reseller) {
+			} else if ($user->vendor) {
+				$product->load([
+					'prices' => function ($query) use ($user) {
+						$query->where('vendor_id', $user->vendor_id);
+					},
+				]);
+			} else if ($user->is_reseller) {
 				$product->load([
 					'offers' => function ($query) use ($user) {
 						$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 					}, 'offers.vendor'
 				]);
 			}
-			$product->load([
-				'retails' => function ($query) use ($retailer) {
-					$query->where('retailer_id', $retailer->id);
-				}, 'retails.retailer'
-			]);
-		} else {
-			$product->load([
-				'retails' => function ($query) use ($retailer) {
-					$query->where('retailer_id', $retailer->id);
-				}, 'retails.retailer'
-			]);
-			$product->offers = collect();
 		}
 		$product->load(['images', 'brand','season','color']);
 		return view('retailer.products.show', compact('product', 'retailer', 'user'));
@@ -99,18 +96,21 @@ class RetailerController extends Controller
 			$search = strtolower($request->validate([
 				'search' => ['sometimes', 'string', 'max:255'],
 			])['search']);
-			$valid_tokens = [];
-			foreach(Retailer::all() as $retailer) {
-				$valid_tokens[strtolower($retailer->name)] = $retailer->id;
-			}
-			foreach(\App\User::has('vendor.retailer')->get() as $user) {
-				$valid_tokens[strtolower($user->wechat_id)] = $user->vendor->retailer->id;
-				$valid_tokens[strtolower($user->name)] = $user->vendor->retailer->id;
-			}
-			foreach(\App\Vendor::has('retailer')->get() as $vendor) {
-				$valid_tokens[strtolower($vendor->wechat_id)] = $vendor->retailer->id;
-				$valid_tokens[strtolower($vendor->name)] = $vendor->retailer->id;
-			}
+			$valid_tokens = \Illuminate\Support\Facades\Cache::remember('retailer-tokens', 60 * 60, function () {
+				$tokens = [];
+				foreach(\App\Retailer::all() as $retailer) {
+					$tokens[strtolower($retailer->name)] = $retailer->id;
+				}
+				foreach(\App\User::has('vendor.retailer')->get() as $user) {
+					$tokens[strtolower($user->wechat_id)] = $user->vendor->retailer->id;
+					$tokens[strtolower($user->name)] = $user->vendor->retailer->id;
+				}
+				foreach(\App\Vendor::has('retailer')->get() as $vendor) {
+					$tokens[strtolower($vendor->wechat_id)] = $vendor->retailer->id;
+					$tokens[strtolower($vendor->name)] = $vendor->retailer->id;
+				}
+				return $tokens;
+			});
 			if (array_key_exists($search, $valid_tokens)) {
 				return redirect(route('retailer.products.index', ['retailer' => Retailer::find($valid_tokens[$search]),]));
 			} else {

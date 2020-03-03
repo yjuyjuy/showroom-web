@@ -10,7 +10,9 @@ class ResellerController extends Controller
 	public function index(Request $request)
 	{
 		$user = auth()->user();
-		$query = \App\Product::query();
+		$query = \App\Product::has(['offers' => function($query) {
+			$query->whereIn('vendor_id', $user->following_resellers->pluck('id'));
+		}]);
 
 		$filters = $this->validateFilters();
 		foreach ($filters as $field => $values) {
@@ -40,16 +42,13 @@ class ResellerController extends Controller
 				$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 			},
 		]);
-		$products = $products->filter(function($item) {
-			return $item->offers->isNotEmpty();
-		});
 		if ($sort == 'price-high-to-low') {
 			$products = $products->sortByDesc(function ($item) {
-				return $item->getMinOffer(0);
+				return $item->offer;
 			})->values();
 		} elseif ($sort == 'price-low-to-high') {
 			$products = $products->sortBy(function ($item) {
-				return $item->getMinOffer(INF);
+				return $item->offer;
 			})->values();
 		}
 		$total_pages = ceil($products->count() / 48.0);

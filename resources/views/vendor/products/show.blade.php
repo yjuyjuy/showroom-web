@@ -15,18 +15,16 @@
 
 		@include('products.show.buttons')
 
-		@auth
-			@if($user->is_admin)
-				@include('products.show.admin')
+		@if($user->is_admin)
+			@include('products.show.admin')
 
-			@elseif($user->vendor)
-				@include('products.show.vendor')
+		@elseif($user->vendor)
+			@include('products.show.vendor')
 
-			@elseif($user->is_reseller)
-				@include('products.show.reseller')
+		@else
+			@include('products.show.reseller')
 
-			@endif
-		@endauth
+		@endif
 	</div>
 </div>
 @include('layouts.back_fab')

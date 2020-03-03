@@ -47,11 +47,11 @@ class VendorController extends Controller
 		]);
 		if ($sort == 'price-high-to-low') {
 			$products = $products->sortByDesc(function ($item) {
-				return $item->getMinPrice(0);
+				return $item->offer;
 			})->values();
 		} elseif ($sort == 'price-low-to-high') {
 			$products = $products->sortBy(function ($item) {
-				return $item->getMinPrice(INF);
+				return $item->offer;
 			})->values();
 		}
 		$total_pages = ceil($products->count() / 48.0);
@@ -68,38 +68,21 @@ class VendorController extends Controller
 	public function show(Vendor $vendor, Product $product)
 	{
 		$user = auth()->user();
-
-		if (!$user || !$user->can('view', $vendor)) {
-			return redirect(route('following.vendors'));
-		}
-		if ($user) {
-			if ($user->is_admin) {
-				$product->load(['prices', 'prices.vendor']);
-			}
-			if ($user->is_reseller) {
-				$vendor_ids = $user->following_vendors->pluck('id');
-				if (!$vendor_ids->contains($vendor->id)) {
-					$vendor_ids->prepend($vendor->id);
-				}
-				$product->load([
-					'offers' => function ($query) use ($vendor_ids) {
-						$query->whereIn('vendor_id', $vendor_ids);
-					}, 'offers.vendor'
-				]);
-			}
+		$product->load([
+			'offers' => function ($query) use ($vendor) {
+				$query->where('vendor_id', $vendor->id);
+			}, 'offers.vendor'
+		]);
+		if ($user->is_admin) {
+			$product->load(['prices', 'prices.vendor']);
+		} else if ($user->vendor) {
 			$product->load([
-				'retails' => function ($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-				}, 'retails.retailer'
+				'prices' => function ($query) use ($user) {
+					$query->where('vendor_id', $user->vendor_id);
+				},
 			]);
-		} else {
-			$product->load([
-				'retails' => function ($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
-				}, 'retails.retailer'
-			]);
-			$product->offers = collect();
 		}
+		$product->load(['images', 'brand','season','color', 'category']);
 		return view('vendor.products.show', compact('product', 'vendor', 'user'));
 	}
 
@@ -162,5 +145,26 @@ class VendorController extends Controller
 		$user = auth()->user();
 		$vendors = $user->fresh()->following_vendors;
 		return view('vendor.following', compact('vendors', 'message'));
+	}
+
+	public function create()
+	{
+		$name = 'Donkeys';
+		$city = '上海';
+		$wechat_id = 'mel_donkeys';
+
+		$retailer = new App\Retailer();
+		$retailer->id = random_int(1000000000, 10000000000);
+		$retailer->name = $name;
+		$retailer->homepage = null;
+		$retailer->save();
+
+		$vendor = new App\Vendor();
+		$vendor->id = random_int(1000000000, 10000000000);
+		$vendor->name = $name;
+		$vendor->wechat_id = $wechat_id;
+		$vendor->city = $city;
+		$vendor->retailer_id = $retailer->id;
+		$vendor->save();
 	}
 }
