@@ -137,4 +137,15 @@ class RetailerController extends Controller
 	{
 		return (new ProductController())->filterOptions();
 	}
+	public function follow(Retailer $retailer)
+	{
+		$user = auth()->user();
+		return $user->following_retailers()->syncWithoutDetaching($retailer);
+	}
+
+	public function unfollow(Retailer $retailer)
+	{
+		$user = auth()->user();
+		return $user->following_retailers()->detach($retailer);
+	}
 }
