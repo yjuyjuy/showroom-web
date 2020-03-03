@@ -1,13 +1,7 @@
 <?php
 
 Auth::routes(['verify' => true]);
-Route::get('/', function() {
-	if (auth()->user()) {
-		return redirect('/products');
-	} else {
-		return redirect('following/retailers');
-	}
-});
+Route::redirect('/', '/products');
 
 # User model
 Route::middleware('auth')->group(function () {
