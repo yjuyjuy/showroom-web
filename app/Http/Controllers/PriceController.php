@@ -78,9 +78,11 @@ class PriceController extends Controller
 			$price->delete();
 		} elseif ($price->data == $data) {
 			$price->touch();
+			$price->product->touch();
 		} else {
 			$price->data = $data;
 			$price->save();
+			$price->product->touch();
 			Log::create([
 				'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
 				'url' => route('products.show', ['product' => $price->product]),
