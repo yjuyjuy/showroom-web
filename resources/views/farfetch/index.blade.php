@@ -4,8 +4,6 @@
 
 @section('content')
 <div id="products-index" class="">
-	@php $retailer = \App\Retailer::find(1467053076); @endphp
-	@include('retailer.banner')
 	<div id="express-filter-menus" class="d-flex">
 		@foreach($filters as $key => $values)
 		<div class="mdc-menu-surface--anchor">
