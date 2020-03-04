@@ -74,6 +74,7 @@ class PriceController extends Controller
 	{
 		$this->authorize('update', $price);
 		$data = json_decode($this->validateRequest()['data']);
+		$data = array_map(function($item) { return (array)$item; }, $data);
 		if (empty($data)) {
 			$price->delete();
 		} elseif ($price->data == $data) {
@@ -158,7 +159,7 @@ class PriceController extends Controller
 	{
 		return request()->validate([
 			'data' => ['required','json'],
-			'data.*.size' => ['required','regex:/^([0-9.XSML]+)$/'],
+			'data.*.size' => ['required','string'],
 			'data.*.offer' => ['required','integer'],
 			'data.*.retail' => ['required','integer'],
 			'data.*.stock' => ['required','integer'],
