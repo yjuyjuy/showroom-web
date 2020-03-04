@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Cache;
 
 class FarfetchController extends Controller
 {
-	public $retailer_id = 1467053076;
-
 	public function index(Request $request)
 	{
 		$filters = [
@@ -88,30 +86,14 @@ class FarfetchController extends Controller
 			'category_id' => $farfetch_product->category->mapped_id,
 			'id' => \App\Product::generate_id(),
 		]);
-		$retail = new \App\RetailPrice();
-		$retail->retailer_id = $this->retailer_id;
-		$retail->product_id = $product->id;
 		$image_controller = new ImageController();
-		if (!empty($farfetch_product->size_price)) {
-			$retail->merge($farfetch_product->size_price);
-			$retail->link = $farfetch_product->url;
-		}
 		$image_controller->import($farfetch_product->images, $product);
 		$farfetch_product->product_id = $product->id;
 		$farfetch_product->save();
 		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get() as $p) {
-			if (!empty($p->size_price)) {
-				$retail->merge($p->size_price);
-				$retail->link = $p->url;
-			}
 			$image_controller->import($p->images, $product);
 			$p->product_id = $product->id;
 			$p->save();
-		}
-		if (!empty($retail->prices)) {
-			$retail->save();
-		} else {
-			$retail->delete();
 		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
@@ -132,19 +114,6 @@ class FarfetchController extends Controller
 		$farfetch_product->product_id = $product->id;
 		$farfetch_product->save();
 		(new ImageController())->import($farfetch_product->images, $product);
-		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $this->retailer_id,
-			'product_id' => $product->id,
-		]);
-		$retail->prices = [];
-		foreach($product->farfetch_products as $p) {
-			$retail->merge($p->size_price);
-		}
-		if(!empty($retail->prices)) {
-			$retail->save();
-		} else {
-			$retail->delete();
-		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
@@ -153,20 +122,6 @@ class FarfetchController extends Controller
 		$product = $farfetch_product->product;
 		$farfetch_product->product_id = NULL;
 		$farfetch_product->save();
-
-		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $this->retailer_id,
-			'product_id' => $product->id,
-		]);
-		$retail->prices = [];
-		foreach($product->farfetch_products as $p) {
-			$retail->merge($p->size_price);
-		}
-		if(!empty($retail->prices)) {
-			$retail->save();
-		} else {
-			$retail->delete();
-		}
 		return redirect(route('farfetch.show', ['product' => $farfetch_product]));
 	}
 }

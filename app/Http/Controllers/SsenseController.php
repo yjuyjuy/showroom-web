@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Cache;
 
 class SsenseController extends Controller
 {
-	public $retailer_id = 7359488750;
-
 	public function index(Request $request)
 	{
 		$filters = [
@@ -90,18 +88,6 @@ class SsenseController extends Controller
 		$ssense_product->product_id = $product->id;
 		$ssense_product->save();
 		(new ImageController())->import($ssense_product->images, $product);
-		$retail = new \App\RetailPrice();
-		$retail->retailer_id = $this->retailer_id;
-		$retail->product_id = $product->id;
-		if (!empty($retail->prices)) {
-			$retail->save();
-		} else {
-			$retail->delete();
-		}
-		if (!empty($ssense_product->size_price)) {
-			$retail->merge($ssense_product->size_price);
-			$retail->link = $ssense_product->url;
-		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
@@ -119,19 +105,6 @@ class SsenseController extends Controller
 		$ssense_product->product_id = $product->id;
 		$ssense_product->save();
 		(new ImageController())->import($ssense_product->images, $product);
-		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $this->retailer_id,
-			'product_id' => $product->id,
-		]);
-		$retail->prices = [];
-		foreach($product->ssense_products as $p) {
-			$retail->merge($p->size_price);
-		}
-		if(!empty($retail->prices)) {
-			$retail->save();
-		} else {
-			$retail->delete();
-		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
@@ -140,20 +113,6 @@ class SsenseController extends Controller
 		$product = $ssense_product->product;
 		$ssense_product->product_id = NULL;
 		$ssense_product->save();
-
-		$retail = \App\RetailPrice::firstOrNew([
-			'retailer_id' => $this->retailer_id,
-			'product_id' => $product->id,
-		]);
-		$retail->prices = [];
-		foreach($product->ssense_products as $p) {
-			$retail->merge($p->size_price);
-		}
-		if(!empty($retail->prices)) {
-			$retail->save();
-		} else {
-			$retail->delete();
-		}
 		return redirect(route('ssense.show', ['product' => $ssense_product]));
 	}
 }
