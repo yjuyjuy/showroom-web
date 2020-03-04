@@ -42,7 +42,6 @@ class PriceController extends Controller
 
 	public function store(Request $request, Product $product)
 	{
-		$this->authorize('create', VendorPrice::class);
 		if (auth()->user()->is_admin) {
 			$vendor = \App\Vendor::find($request->input('vendor'));
 		} else {
@@ -52,7 +51,7 @@ class PriceController extends Controller
 		if (!empty($data)) {
 			$price = $product->prices()->firstOrNew(['vendor_id' => $vendor->id]);
 			$price->data = $data;
-			$price->vendor_id = $vendor->id;
+			$price->updated_at = NOW();
 			$price->save();
 			if ($product->updated_at < NOW()->subday(1)) {
 				$product->touch();
@@ -79,7 +78,6 @@ class PriceController extends Controller
 			$price->delete();
 		} elseif ($price->data == $data) {
 			$price->touch();
-			$price->save();
 		} else {
 			$price->data = $data;
 			$price->save();
