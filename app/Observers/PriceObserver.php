@@ -73,7 +73,7 @@ class PriceObserver
 		$offer = OfferPrice::firstOrNew(['product_id' => $product->id, 'vendor_id' => $vendor->id]);
 		$prices = array();
 		foreach($vendor_price->data as $data) {
-			$prices[$data['size']] = $data['offer'];
+			$prices[(string)$data['size']] = $data['offer'];
 		}
 
 		uksort($prices, function($a, $b) {
