@@ -131,6 +131,7 @@ class EndController extends Controller
 		]);
 		$end_product->product_id = $product->id;
 		$end_product->save();
+		(new ImageController())->import($end_product->images, $product);
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
@@ -150,6 +151,7 @@ class EndController extends Controller
 		$product->save();
 		$end_product->product_id = $product->id;
 		$end_product->save();
+		(new ImageController())->import($end_product->images, $product);
 		return redirect(route('products.show', ['product' => $product,]));
 	}
 
