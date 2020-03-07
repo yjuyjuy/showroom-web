@@ -89,7 +89,7 @@
 						<a href="{{ route('farfetch.export', ['farfetch_product' => $product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 							<span class="mdc-list-item__text">上架新商品</span>
 						</a>
-						@foreach(\App\Product::where('designer_style_id', 'like', $product->designer_style_id.'%')->where('brand_id', $product->designer->mapped_id)->get() as $guess)
+						@foreach(\App\Product::where('designer_style_id', 'like', '%'.$product->designer_style_id.'%')->where('brand_id', $product->designer->mapped_id)->get() as $guess)
 						<a href="{{ route('farfetch.merge', ['farfetch_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
 							<span class="mdc-list-item__text">合并至{{ __($guess->color->name ?? '-') }}</span>
 						</a>
