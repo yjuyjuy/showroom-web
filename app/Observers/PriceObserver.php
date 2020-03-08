@@ -16,41 +16,50 @@ class PriceObserver
 	{
 		$product = $vendor_price->product;
 		$vendor = $vendor_price->vendor;
+		$retails = RetailPrice::where('product_id', $product->id)->get();
+		$offers = OfferPrice::where('product_id', $product->id)->get();
+		$prices = VendorPrice::where('product_id', $product->id)->get();
 
-		$retailers = $vendor->partner_retailers;
+		$retailers = Retailer::all();
 		if($retailer = $vendor->retailer){
-			$retailers->prepend($retailer);
+			$retailers = $retailers->prepend($retailer)->unique();
 		}
+		$retailers->load(['vendors', 'partner_vendors', 'vendors.partner_retailers']);
+
 		foreach($retailers as $retailer) {
-			$prices = array();
-			$retail = RetailPrice::firstOrNew(['product_id' => $product->id, 'retailer_id' => $retailer->id]);
+			$data = array();
+
+			$retail = $retails->firstWhere('retailer_id', $retailer->id);
+			if (!$retail) {
+				$retail = new RetailPrice();
+				$retail->product_id = $product->id;
+				$retail->retailer_id = $retailer->id;
+			}
+
+
 			foreach($retailer->vendors as $vendor) {
-				if ($vendor_price = VendorPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
-					foreach($vendor_price->data as $data) {
-						$prices[$data['size']] = min($data['retail'], $prices[$data['size']] ?? INF);
+				if ($vendor_price = $prices->firstWhere('vendor_id', $vendor->id)) {
+					foreach($vendor_price->data as $row) {
+						$data[$row['size']] = min($row['retail'], $data[$row['size']] ?? INF);
 					}
 				}
 			}
 
 			foreach($retailer->partner_vendors->whereNotIn('id', $retailer->vendors->pluck('id')) as $vendor) {
-				if ($offer_price = OfferPrice::where(['product_id' => $product->id, 'vendor_id' => $vendor->id])->first()) {
+				if ($offer_price = $offers->firstWhere('vendor_id', $vendor->id)) {
 					$profit_rate = $vendor->pivot->profit_rate;
 					foreach($offer_price->prices as $size => $price) {
-						$calc_price = ceil($price * (1 + $profit_rate / 100.0) / 10.0) * 10;
-						if ($vendor->retailer) {
-							$min_price = (\App\RetailPrice::where(['product_id' => $product->id, 'retailer_id' => $vendor->retailer_id,])->first()->prices[$size] ?? -1) + 1;
-						} else {
-							$min_price = 0;
-						}
-						$prices[$size] = min(max($calc_price, $min_price), $prices[$size] ?? INF);
+						$calc_price = ceil($price * (1 + $profit_rate / 100.0) / 10.0) * 10 + 60;
+						$min_price = 0;
+						$data[$size] = min(max($calc_price, $min_price), $data[$size] ?? INF);
 					}
 				}
 			}
 
-			if(empty($prices)) {
+			if(empty($data)) {
 				$retail->delete();
 			} else {
-				uksort($prices, function($a, $b) {
+				uksort($data, function($a, $b) {
 					$sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 					if (in_array($a, $sizes)) {
 						$a = array_search($a, $sizes);
@@ -60,7 +69,7 @@ class PriceObserver
 					}
 					return $a > $b;
 				});
-				$retail->prices = $prices;
+				$retail->prices = $data;
 				$retail->save();
 			}
 		}
@@ -73,7 +82,7 @@ class PriceObserver
 		$offer = OfferPrice::firstOrNew(['product_id' => $product->id, 'vendor_id' => $vendor->id]);
 		$prices = array();
 		foreach($vendor_price->data as $data) {
-			$prices[(string)$data['size']] = $data['offer'];
+			$prices[$data['size']] = $data['offer'];
 		}
 
 		uksort($prices, function($a, $b) {
