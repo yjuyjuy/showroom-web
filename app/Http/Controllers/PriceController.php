@@ -47,7 +47,7 @@ class PriceController extends Controller
 		} else {
 			$vendor = auth()->user()->vendor;
 		}
-		$data = json_decode($this->validateRequest()['data']);
+		$data = json_decode($this->validateRequest()['data'], true);
 		if (!empty($data)) {
 			$price = $product->prices()->firstOrNew(['vendor_id' => $vendor->id]);
 			$price->data = $data;
@@ -73,7 +73,7 @@ class PriceController extends Controller
 	public function update(Request $request, VendorPrice $price)
 	{
 		$this->authorize('update', $price);
-		$data = json_decode($this->validateRequest()['data']);
+		$data = json_decode($this->validateRequest()['data'], true);
 		$data = array_map(function($item) { return (array)$item; }, $data);
 		if (empty($data)) {
 			$price->delete();
