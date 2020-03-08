@@ -91,6 +91,7 @@ export default {
 			fill_offer: null,
 			fill_retail: null,
 			fill_stock: null,
+			profit_rate: 10,
 		};
 	},
 	mounted() {
@@ -187,7 +188,7 @@ export default {
 		},
 		computed_retail: function(offer) {
 			if (offer && offer > 0) {
-				return Math.ceil(offer * 115 / 1000) * 10;
+				return Math.ceil(offer * ( 100 + this.profit_rate ) / 1000) * 10;
 			} else {
 				return '';
 			}
@@ -200,7 +201,7 @@ export default {
 				}
 				this.fill_offer = null;
 			}
-			if (this.fill_retail && this.fill_retail > 0) {
+			if (this.fill_retail) {
 				for (let price of this.prices) {
 						price.retail = this.fill_retail;
 				}
