@@ -67,10 +67,9 @@ class ProductController extends Controller
 			$page = min(max($request->query('page', 1), 1), $total_pages);
 			$products = $products->forPage($page, 48);
 		} else {
-			$products = $query->get();
-			$total_pages = ceil($products->count() / 48.0);
+			$total_pages = ceil($query->count() / 48.0);
 			$page = min(max($request->query('page', 1), 1), $total_pages);
-			$products = $products->forPage($page, 48);
+			$products = $query->forPage($page, 48)->get();
 			$products->load(['retails', 'retails.retailer']);
 			if (!$user || !$user->is_admin) {
 				$products->map(function($product) {
