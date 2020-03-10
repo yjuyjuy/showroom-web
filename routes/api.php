@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use \Illuminate\Support\Facades\Cache;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,11 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/products', function() {
-	return \Illuminate\Support\Facades\Cache::remember('api-products-page'.request()->query('page', 1), 5 * 60, function() {
-		$products = \App\Product::orderBy('updated_at', 'desc')->get();
-		$total_pages = ceil($products->count() / 24.0);
+	return Cache::remember('api-products-page'.request()->query('page', 1), 5 * 60, function() {
+		$query = \App\Product::orderBy('updated_at', 'desc');
+		$total_pages = ceil($query->count() / 24.0);
 		$page = min(max(request()->query('page', 1), 1), $total_pages);
-		$products = $products->forPage($page, 24);
+		$products = $query->forPage($page, 24)->get();
 		$products->load(['brand', 'images', 'season', 'retails', 'retails.retailer', 'offers', 'offers.vendor']);
 		return [
 			'page' => $page,
@@ -39,4 +39,18 @@ Route::get('/products/{product}', function(\App\Product $product) {
 			$query->orderBy('order', 'asc');
 		},
 	]);
+});
+Route::get('/posts', function() {
+	return Cache::remember('posts-page'.request()->query('page', 1), 2 * 60, function() {
+		$query = \App\VendorPrice::orderBy('updated_at', 'desc');
+		$total_pages = ceil($query->count() / 24.0);
+		$page = min(max(request()->query('page', 1), 1), $total_pages);
+		$prices = $query->forPage($page, 24)->get();
+		$prices->load(['vendor', 'product', 'product.brand', 'product.season', 'product.images', 'product.retails', 'product.offers']);
+		return [
+			'page' => $page,
+			'total_pages' => $total_pages,
+			'prices' => $prices->values(),
+		];
+	});
 });
