@@ -53,8 +53,8 @@ class OptimizeImage implements ShouldQueue
 			}
 			// too tall
 		} elseif ( $h / $w > 1.413) {
-			$diff = $this->diff($h, $w, $image);
-			if ($avg_diff >= 100) {
+			$diff = $this->diff($w, $h, $image);
+			if ($diff >= 100) {
 				\Intervention\Image\Facades\Image::canvas($h / 1.413, $h, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
 				$path = $path.'_upsized.jpeg';
 			}
@@ -80,19 +80,34 @@ class OptimizeImage implements ShouldQueue
 		// } while ($image->fileSize() > $size_limit2 && $quality > 30);
   }
 
-	public function diff($a, $b, $image, $ratio = 1.413) {
-		$a1 = ceil(($a - $b / $ratio) / 2);
-		$a2 = ceil($a - $a1);
-		$b1 = ceil($b / 3);
-		$b2 = ceil($b / 2);
-		$b3 = ceil($b / 3 * 2);
-		foreach ([$a1, $a2] as $a) {
-			foreach ([$b1, $b2, $b3] as $b) {
-				$samples[] = array_sum($image->pickColor($a, $b));
+	public function diff($w, $h, $image, $ratio = 1.413) {
+		if ($h / $w < $ratio) {
+			$x1 = ceil(($w - $h / $ratio) / 2);
+			$x2 = ceil($w - $x1);
+			$y1 = ceil($h * 1 / 5);
+			$y2 = ceil($h * 2 / 5);
+			$y3 = ceil($h * 3 / 5);
+			$y4 = ceil($h * 4 / 5);
+			$samples = [];
+			foreach ([$x1, $x2] as $x) {
+				foreach ([$y1, $y2, $y3, $y4] as $y) {
+					$samples[] = array_sum($image->pickColor($x, $y));
+				}
+			}
+		} else {
+			$y1 = ceil(($h - $w * $ratio) / 2);
+			$y2 = ceil($h - $y1);
+			$x1 = ceil($w / 3);
+			$x2 = ceil($w / 2);
+			$x3 = ceil($w / 3 * 2);
+			foreach ([$y1, $y2] as $y) {
+				foreach ([$x1, $x2, $x3] as $x) {
+					$samples[] = array_sum($image->pickColor($x, $y));
+				}
 			}
 		}
 		$avg = array_sum($samples) / sizeof($samples);
-		$avg_diff = array_sum(array_map(function ($sample) use ($avg) {
+		return array_sum(array_map(function ($sample) use ($avg) {
 			return ($sample - $avg) ** 2;
 		}, $samples)) / sizeof($samples);
 	}
