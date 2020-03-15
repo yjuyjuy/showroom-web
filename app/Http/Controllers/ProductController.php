@@ -29,16 +29,10 @@ class ProductController extends Controller
 		}
 		if ($sort == 'default') {
 			$query->orderBy('updated_at', 'desc');
-		} elseif ($sort == 'newest') {
-			$query->orderBy('season_id', 'desc')->orderBy('id');
-		} elseif ($sort == 'oldest') {
-			$query->orderBy('season_id')->orderBy('id');
 		} elseif ($sort == 'random') {
 			$query->inRandomOrder();
 		} elseif ($sort == 'created_at') {
 			$query->orderBy('created_at', 'desc');
-		} elseif ($sort == 'category') {
-			$query->orderBy('category_id')->orderBy('season_id', 'desc')->orderBy('id');
 		}
 		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
 			$query = $query->has('retails');
@@ -232,7 +226,9 @@ class ProductController extends Controller
 
 	public function sortOptions()
 	{
-		return ['default', 'random','price-high-to-low','price-low-to-high','newest','oldest','created_at','category'];
+		return [
+			'default', 'random', 'price-high-to-low', 'price-low-to-high', 'created_at',
+		];
 	}
 
 	public function filterOptions()
