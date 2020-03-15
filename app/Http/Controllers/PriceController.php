@@ -74,16 +74,15 @@ class PriceController extends Controller
 	{
 		$this->authorize('update', $price);
 		$data = json_decode($this->validateRequest()['data'], true);
-		$data = array_map(function($item) { return (array)$item; }, $data);
 		if (empty($data)) {
 			$price->delete();
 		} elseif ($price->data == $data) {
-			$price->touch();
-			$price->product->touch();
+			if ($price->updated_at < NOW()->subday(1)) {
+				$price->touch();
+			}
 		} else {
 			$price->data = $data;
 			$price->save();
-			$price->product->touch();
 			Log::create([
 				'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
 				'url' => route('products.show', ['product' => $price->product]),
