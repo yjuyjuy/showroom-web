@@ -42,14 +42,19 @@ class OptimizeImage implements ShouldQueue
 		if ( $h / $w < 1.35 ) {
 			$diff = $this->diff($w, $h, $image);
 			if ($diff >= 100) {
+				$isCropped = false;
 				if ($h / $w < 1.0) {
 					$diff = $this->diff($w, $h, $image, 1.0);
 					if ($diff < 100) {
-						$image->crop($h, $h);
+						\Intervention\Image\Facades\Image::canvas($h, $h * 1.413, '#ffffff')->insert($image->crop($h, $h), 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
+						$path = $path.'_upsized.jpeg';
+						$isCropped = true;
 					}
 				}
-				\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
-				$path = $path.'_upsized.jpeg';
+				if(!$isCropped) {
+					\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
+					$path = $path.'_upsized.jpeg';
+				}
 			}
 			// too tall
 		} elseif ( $h / $w > 1.413) {
