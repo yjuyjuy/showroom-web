@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Http\Request;
-use \Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cache;
+use App\Product;
+use App\Vendor;
+use App\VendorPrice;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,12 +21,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/products', function() {
-	return Cache::remember('api-products-page'.request()->query('page', 1), 5 * 60, function() {
-		$query = \App\Product::orderBy('updated_at', 'desc');
+	$request = request();
+	return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
+		if ($request->query('vendor')) {
+			$query = Vendor::findOrFail($request->query('vendor'))->products();
+		} else {
+			$query = Product::query();
+		}
+		$query->orderBy('updated_at', 'desc');
 		$total_pages = ceil($query->count() / 24.0);
 		$page = min(max(request()->query('page', 1), 1), $total_pages);
 		$products = $query->forPage($page, 24)->get();
-		$products->load(['brand', 'images', 'season', 'retails', 'retails.retailer', 'offers', 'offers.vendor']);
+		$products->load(['brand', 'images', 'season', 'offers', 'offers.vendor']);
 		return [
 			'page' => $page,
 			'total_pages' => $total_pages,
@@ -32,25 +41,36 @@ Route::get('/products', function() {
 		];
 	});
 });
-Route::get('/products/{product}', function(\App\Product $product) {
+Route::get('/products/{product}', function(Product $product) {
 	return $product->load([
-		'brand', 'season', 'color', 'category', 'prices', 'prices.vendor', 'retails', 'retails.retailer', 'offers', 'offers.vendor',
+		'brand', 'season', 'color', 'category', 'prices', 'prices.vendor', 'offers', 'offers.vendor',
 		'images' => function($query) {
 			$query->orderBy('order', 'asc');
 		},
 	]);
 });
-Route::get('/posts', function() {
-	return Cache::remember('posts-page'.request()->query('page', 1), 2 * 60, function() {
-		$query = \App\VendorPrice::orderBy('updated_at', 'desc');
+Route::get('/prices', function() {
+	$request = request();
+	return Cache::remember($request->fullUrl(), 1 * 60, function() use ($request) {
+		if ($request->query('vendor')) {
+			$query = Vendor::findOrFail($request->query('vendor'))->prices();
+		} else {
+			$query = VendorPrice::query();
+		}
+		$query->orderBy('updated_at', 'desc');
 		$total_pages = ceil($query->count() / 24.0);
 		$page = min(max(request()->query('page', 1), 1), $total_pages);
 		$prices = $query->forPage($page, 24)->get();
-		$prices->load(['vendor', 'product', 'product.brand', 'product.season', 'product.images', 'product.retails', 'product.offers']);
+		$prices->load(['vendor', 'product', 'product.brand', 'product.season', 'product.images', 'product.offers']);
 		return [
 			'page' => $page,
 			'total_pages' => $total_pages,
 			'prices' => $prices->values(),
 		];
 	});
+});
+Route::get('/vendors', function() {
+	return [
+		'vendors' => Vendor::all(),
+	];
 });
