@@ -4,6 +4,9 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Product;
+use App\Vendor;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {

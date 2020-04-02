@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\User;
+use App\InviteCode;
 
 class RegisterController extends Controller
 {
@@ -17,10 +19,10 @@ class RegisterController extends Controller
 			]);
 			do {
 				$id = random_int(1000000000, 9999999999);
-			} while(\App\User::find($id));
+			} while(User::find($id));
 			$type = NULL;
 			if ($data['invite_code']) {
-				$code = \App\InviteCode::find($data['invite_code']);
+				$code = InviteCode::find($data['invite_code']);
 				if ($code) {
 					$type = 'invited:'.$code->vendor->id;
 				}

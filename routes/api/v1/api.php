@@ -1,10 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use App\Product;
-use App\Vendor;
-use App\VendorPrice;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
