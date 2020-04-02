@@ -8,7 +8,13 @@
 		<div class="my-4 mdc-typography--headline5">{{ __('Verify Your Email Address') }}</div>
 		<div class="mdc-typography--headline6">
 			{{ __('Before proceeding, please check your email for a verification link.') }}
-			{{ __('If you did not receive the email') }}, <a href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
+			{{ __('If you did not receive the email') }},
+			<form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+		    @csrf
+		    <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+	        {{ __('click here to request another') }}
+		    </button>.
+			</form>
 		</div>
 	</div>
 </div>
