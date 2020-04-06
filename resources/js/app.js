@@ -19,14 +19,18 @@ import {MDCTextField} from '@material/textfield';
 import {MDCSelect} from '@material/select';
 import {MDCSelectHelperText} from '@material/select/helper-text';
 import {MDCSnackbar} from '@material/snackbar';
-
+import {MDCDataTable} from '@material/data-table';
 // mdc components
 const drawer = MDCDrawer.attachTo(document.getElementById('nav-drawer'));
 const topAppBarElement = document.getElementById('my-top-app-bar');
+
 const topAppBar = MDCTopAppBar.attachTo(topAppBarElement);
 topAppBar.setScrollTarget(window);
 topAppBar.listen('MDCTopAppBar:nav', () => {
 	drawer.open = !drawer.open;
+});
+[].forEach.call(document.querySelectorAll('.mdc-data-table'), (el) => {
+	const dataTable = new MDCDataTable(el);
 });
 [].forEach.call(document.querySelectorAll('.mdc-select'), (el) => {
 	const select = new MDCSelect(el);
