@@ -85,7 +85,11 @@
 			<table class="mdc-data-table__table">
 				<thead>
 					<tr class="mdc-data-table__header-row">
-						<th class="mdc-data-table__header-cell" role="columnheader" scope="col"><a href="{{ route('measurements.edit', ['product' => $product,]) }}">{{ __('edit') }}</a></th>
+						@if($user && $user->vendor)
+							<th class="mdc-data-table__header-cell" role="columnheader" scope="col"><a href="{{ route('measurements.edit', ['product' => $product,]) }}">{{ __('edit') }}</a></th>
+						@else
+							<th class="mdc-data-table__header-cell" role="columnheader" scope="col"></th>
+						@endif
 						@foreach($fields as $field)
 							<th class="mdc-data-table__header-cell" role="columnheader" scope="col">
 								{{ $field }}</th>
