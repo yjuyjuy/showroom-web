@@ -1,8 +1,8 @@
 <template>
-<div class="price-editor">
-	<div class="d-flex price-editor__row mb-2">
+<div class="data-editor">
+	<div class="d-flex data-editor__row mb-2">
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" class="mdc-text-field__input" aria-label="Label" placeholder="尺码" disabled>
+			<input type="text" class="mdc-text-field__input" aria-label="Label" disabled>
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
@@ -35,9 +35,9 @@
 			</button>
 		</div>
 	</div>
-	<div v-for="(price,index) in prices" class="d-flex price-editor__row">
+	<div v-for="(price,index) in prices" class="d-flex data-editor__row">
 		<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.size" :autofocus="index == 0" spellcheck="false">
+			<input type="text" class="mdc-text-field__input" aria-label="Label" @input="check_empty" @change="update(index)" v-model="price.size" :autofocus="index == 0" spellcheck="false" placeholder="+尺码">
 			<div class="mdc-notched-outline">
 				<div class="mdc-notched-outline__leading"></div>
 				<div class="mdc-notched-outline__trailing"></div>
@@ -70,7 +70,7 @@
 			</button>
 		</div>
 	</div>
-	<input type="hidden" name="data" :value="JSON.stringify(prices.filter((price)=>(price.size&&price.offer&&price.retail&&price.stock)))">
+	<input type="hidden" name="data" :value="json_price">
 </div>
 </template>
 
@@ -86,8 +86,6 @@ export default {
 	data: function() {
 		return {
 			prices: this.input,
-			json_prices: null,
-			mdcTextField: undefined,
 			fill_offer: null,
 			fill_retail: null,
 			fill_stock: null,
@@ -97,7 +95,11 @@ export default {
 	mounted() {
 		this.prices.push({});
 	},
-	computed: {},
+	computed: {
+		json_price: function() {
+			return JSON.stringify(prices.filter((price)=>(price.size&&price.offer&&price.retail&&price.stock)));
+		}
+	},
 	watch: {},
 	methods: {
 		update: function(index) {

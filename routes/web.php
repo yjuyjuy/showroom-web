@@ -23,15 +23,18 @@ Route::get('following/retailers', 'RetailerController@following')->name('followi
 # Product model
 Route::get('products', 'ProductController@index')->name('products.index');
 Route::middleware('auth')->group(function () {
-	Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
 	Route::get('products/random', 'ProductController@random')->name('products.random');
-	Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
 	Route::get('products/{product}', 'ProductController@show')->name('products.show');
-	Route::patch('products/{product}', 'ProductController@update')->name('products.update')->middleware('admin');
-	Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy')->middleware('admin');
-	Route::get('products/{product}/edit', 'ProductController@edit')->name('products.edit')->middleware('admin');
 	Route::post('products/{product}/follow', 'ProductController@follow')->name('follow.product');
 	Route::post('products/{product}/unfollow', 'ProductController@unfollow')->name('unfollow.product');
+
+	Route::middleware('admin')->group(function() {
+		Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
+		Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
+		Route::patch('products/{product}', 'ProductController@update')->name('products.update')->middleware('admin');
+		Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy')->middleware('admin');
+		Route::get('products/{product}/edit', 'ProductController@edit')->name('products.edit')->middleware('admin');
+	});
 });
 
 # Price model
@@ -47,22 +50,15 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 });
 
 # Image model
-Route::middleware('auth')->group(function () {
-	Route::post('images', 'ImageController@store')->name('images.store')->middleware('can:create,App\Image');
-	Route::patch('images/swap', 'ImageController@swap')->name('images.swap')->middleware('can:update,App\Image');
-	Route::patch('images/{image}', 'ImageController@update')->name('images.update')->middleware('can:update,App\Image');
-	Route::delete('images/{image}', 'ImageController@destroy')->name('images.destroy')->middleware('can:update,App\Image');
-	Route::patch('images/{image}/move', 'ImageController@move')->name('images.move')->middleware('can:update,App\Image');
-	Route::get('products/{product}/images', 'ImageController@edit')->name('images.edit')->middleware('can:update,App\Image');
+Route::middleware(['auth', 'admin'])->group(function () {
+	Route::post('images', 'ImageController@store')->name('images.store');
+	Route::patch('images/swap', 'ImageController@swap')->name('images.swap');
+	Route::patch('images/{image}', 'ImageController@update')->name('images.update');
+	Route::delete('images/{image}', 'ImageController@destroy')->name('images.destroy');
+	Route::patch('images/{image}/move', 'ImageController@move')->name('images.move');
+	Route::get('products/{product}/images', 'ImageController@edit')->name('images.edit');
 });
 
-# Retailer
-Route::redirect('/retailer/Dior', '/dior');
-Route::redirect('/retailer/Gucci', '/gucci');
-Route::redirect('/retailer/EndClothing', '/end');
-Route::redirect('/retailer/Farfetch', '/farfetch');
-Route::redirect('/retailer/Balenciaga', '/balenciaga');
-Route::redirect('/retailer/Louis Vuitton', '/louis-vuitton');
 # Measurement model
 Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::get('products/{product}/measurement', 'MeasurementController@create')->name('measurements.create');
@@ -72,6 +68,7 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 	Route::delete('products/{product}/measurement', 'MeasurementController@destroy')->name('measurements.destroy');
 });
 
+# Retailer
 Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
 Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');
 Route::middleware('auth')->group(function () {
@@ -188,4 +185,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // Google cloud health check
 Route::get('health', function() { return 'good'; });
 
-Route::get('{slug}', function() { abort(404); })->middleware(['auth', 'throttle:10,1'])->where(['slug' => '.*']);
+Route::get('{slug}', function() { abort(404); })->where(['slug' => '.*']);

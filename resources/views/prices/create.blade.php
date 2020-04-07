@@ -17,7 +17,7 @@
 		</div>
 		@endif
 
-		<form action="{{route('prices.store',['product'=>$product])}}" method="post" id="create-form">
+		<form method="post" id="create-form">
 			@csrf
 			<prices-editor v-bind:input="[]"></prices-editor>
 		</form>

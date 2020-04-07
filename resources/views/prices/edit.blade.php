@@ -16,7 +16,7 @@
 		</div>
 		@endif
 
-		<form action="{{route('prices.update',['price' => $price])}}" method="post" id="update-form">
+		<form method="post" id="update-form">
 			@csrf
 			@method('PATCH')
 			<prices-editor v-bind:input='@json(array_values($price->data))'></prices-editor>
