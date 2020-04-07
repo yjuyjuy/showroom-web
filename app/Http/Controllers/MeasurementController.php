@@ -41,6 +41,12 @@ class MeasurementController extends Controller
 		return ['redirect' => route('products.show', ['product' => $product])];
   }
 
+	public function destroy(Request $request, Product $product)
+	{
+		if ($product->measurement) $product->measurement->delete();
+		return ['redirect' => route('products.show', ['product' => $product])];
+	}
+
 
 	public function validateData()
 	{

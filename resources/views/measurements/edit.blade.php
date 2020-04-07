@@ -24,6 +24,11 @@
 							.then(response=>{ window.location.replace(response.data.redirect) })">
 				<span class="mdc-button__label">{{ __('submit') }}</span>
 			</button>
+			<button type="button" class="mdc-button mdc-button--outlined mdc-button--error ml-2" onclick="axios.delete('{{ route('measurements.destroy', ['product' => $product,]) }}')
+				.then(response => window.location.replace(response.data.redirect))
+				.catch(error => window.alert('action failed'));">
+				<span class="mdc-button__label">{{ __('delete') }}</span>
+			</button>
 		</div>
 	</div>
 </div>
