@@ -63,6 +63,14 @@ Route::redirect('/retailer/EndClothing', '/end');
 Route::redirect('/retailer/Farfetch', '/farfetch');
 Route::redirect('/retailer/Balenciaga', '/balenciaga');
 Route::redirect('/retailer/Louis Vuitton', '/louis-vuitton');
+# Measurement model
+Route::middleware(['auth', 'vendor'])->group(function () {
+	Route::get('products/{product}/measurement', 'MeasurementController@create')->name('measurements.create');
+	Route::post('products/{product}/measurement', 'MeasurementController@store')->name('measurements.store');
+	Route::get('products/{product}/measurement/edit', 'MeasurementController@edit')->name('measurements.edit');
+	Route::patch('products/{product}/measurement', 'MeasurementController@update')->name('measurements.update');
+	Route::delete('products/{product}/measurement', 'MeasurementController@destroy')->name('measurements.destroy');
+});
 
 Route::get('retailer/{retailer}', 'RetailerController@index')->name('retailer.products.index');
 Route::get('retailer/{retailer}/products/{product}', 'RetailerController@show')->name('retailer.products.show');

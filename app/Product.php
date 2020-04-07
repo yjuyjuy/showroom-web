@@ -96,6 +96,10 @@ class Product extends Model
 	{
 		return $this->belongsToMany(User::class, 'user_product', 'product_id', 'user_id');
 	}
+	public function measurement()
+	{
+		return $this->hasOne(Measurement::class);
+	}
 	// Mutators
 	public function setCategoryAttribute($value)
 	{

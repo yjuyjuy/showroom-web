@@ -26,20 +26,87 @@
 		@endcan
 	</div>
 
-	@if(!empty($product->links))
 	<div class="d-flex justify-content-end">
-		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button">
-				<span class="mdc-button__label">官网页面</span>
+		@if($product->measurement)
+			<button type="button" class="mdc-button" data-target="size-chart" onclick="
+				event.preventDefault()
+				var el = document.getElementById(this.dataset.target);
+				if (el.style.display != 'none') el.style.display = 'none';
+				else el.style.display = 'block';">
+				<span class="mdc-button__label">{{ __('Size Chart') }}</span>
 				<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
 			</button>
-			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
-				<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($product->links as $description => $url)
-						<a href="{{ $url }}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">{{ $description }}</a>
-					@endforeach
-				</ul>
+		@elseif($user && $user->vendor)
+			<a href="{{ route('measurements.create', ['product' => $product,]) }}" class="mdc-button">
+				<span class="mdc-button__label">{{ __('Add Size Chart') }}</span>
+			</a>
+		@endif
+
+		@if(!empty($product->links))
+			<div class="mdc-menu-surface--anchor ml-3">
+				<button type="button" class="mdc-button open-menu-button">
+					<span class="mdc-button__label">官网页面</span>
+					<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
+				</button>
+				<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+					<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+						@foreach($product->links as $description => $url)
+							<a href="{{ $url }}" class="mdc-list-item mdc-list-item__text text-left" role="menuitem">{{ $description }}</a>
+						@endforeach
+					</ul>
+				</div>
 			</div>
+		@endif
+	</div>
+
+	@if($product->measurement)
+	<div class="d-flex justify-content-end">
+		<?php
+			$data = $product->measurement->data;
+			$fields = array_keys($data);
+			$sizes = [];
+			foreach($data as $field => $values){
+				foreach($values as $size => $value) {
+					if (!in_array($size, $sizes)) $sizes[] = (String)$size;
+				}
+			}
+			$SML = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+			usort($sizes, function($a, $b) use ($SML) {
+				if (in_array($a, $SML)) {
+					$a = array_search($a, $SML);
+				}
+				if (in_array($b, $SML)) {
+					$b = array_search($b, $SML);
+				}
+				return ($a < $b) ? -1 : 1;
+			});
+		?>
+		<div class="mdc-data-table my-3" id="size-chart" style="display:none;">
+			<table class="mdc-data-table__table">
+				<thead>
+					<tr class="mdc-data-table__header-row">
+						<th class="mdc-data-table__header-cell" role="columnheader" scope="col"><a href="{{ route('measurements.edit', ['product' => $product,]) }}">修改</a></th>
+						@foreach($fields as $field)
+							<th class="mdc-data-table__header-cell" role="columnheader" scope="col">
+								{{ $field }}</th>
+						@endforeach
+					</tr>
+				</thead>
+				<tbody class="mdc-data-table__content">
+					@foreach($sizes as $size)
+						<tr class="mdc-data-table__row">
+							<td class="mdc-data-table__cell">{{ $size }}</td>
+							@foreach($fields as $field)
+								<td class="mdc-data-table__cell">
+									@if(array_key_exists($size, $data[$field]))
+										{{ $data[$field][$size] }}
+									@endif
+								</td>
+							@endforeach
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
 		</div>
 	</div>
 	@endif

@@ -2,6 +2,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 Vue.component('prices-editor', require('./components/PricesEditorComponent.vue').default);
+Vue.component('measurements-editor', require('./components/MeasurementsEditorComponent.vue').default);
 Vue.component('carousel', require('./components/CarouselComponent.vue').default);
 Vue.component('image-item', require('./components/ImageItemComponent.vue').default);
 Vue.component('empty-image', require('./components/EmptyImageComponent.vue').default);
