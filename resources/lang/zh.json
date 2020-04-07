@@ -1,8 +1,10 @@
 {
 	"accessories": "配件",
 	"account status": "账户状态",
+	"add": "添加",
 	"add price": "添加报价",
 	"Add price": "添加报价",
+	"Add size chart": "添加尺码表",
 	"A fresh verification link has been sent to your email address.": "新的验证链接已发送到您的 E-mail。",
 	"All rights reserved.": "版本所有。",
 	"All products": "所有商品",
@@ -147,6 +149,7 @@
 	"Request for an account upgrade": "申请升级同行账户",
 	"red": "红色",
 	"side": "侧面",
+	"Size chart": "尺码表",
 	"small leather goods": "小皮具",
 	"Send Password Reset Link": "发送重设密码链接",
 	"Service Unavailable": "暂时不提供服务",

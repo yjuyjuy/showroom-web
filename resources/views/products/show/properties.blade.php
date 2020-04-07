@@ -33,12 +33,12 @@
 				var el = document.getElementById(this.dataset.target);
 				if (el.style.display != 'none') el.style.display = 'none';
 				else el.style.display = 'block';">
-				<span class="mdc-button__label">{{ __('Size Chart') }}</span>
+				<span class="mdc-button__label">{{ __('Size chart') }}</span>
 				<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
 			</button>
 		@elseif($user && $user->vendor)
 			<a href="{{ route('measurements.create', ['product' => $product,]) }}" class="mdc-button">
-				<span class="mdc-button__label">{{ __('Add Size Chart') }}</span>
+				<span class="mdc-button__label">{{ __('Add size chart') }}</span>
 			</a>
 		@endif
 
@@ -85,7 +85,7 @@
 			<table class="mdc-data-table__table">
 				<thead>
 					<tr class="mdc-data-table__header-row">
-						<th class="mdc-data-table__header-cell" role="columnheader" scope="col"><a href="{{ route('measurements.edit', ['product' => $product,]) }}">修改</a></th>
+						<th class="mdc-data-table__header-cell" role="columnheader" scope="col"><a href="{{ route('measurements.edit', ['product' => $product,]) }}">{{ __('edit') }}</a></th>
 						@foreach($fields as $field)
 							<th class="mdc-data-table__header-cell" role="columnheader" scope="col">
 								{{ $field }}</th>
