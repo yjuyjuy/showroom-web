@@ -48,8 +48,9 @@ class ImageController extends Controller
 
 	public function edit(Product $product)
 	{
+		$user = auth()->user();
 		$images = $product->images()->get();
-		return view('images.edit', compact('product', 'images'));
+		return view('images.edit', compact('product', 'images', 'user'));
 	}
 
 	public function update(Image $image)
