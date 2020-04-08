@@ -97,7 +97,7 @@ export default {
 	},
 	computed: {
 		json_price: function() {
-			return JSON.stringify(prices.filter((price)=>(price.size&&price.offer&&price.retail&&price.stock)));
+			return JSON.stringify(this.prices.filter((price)=>(price.size&&price.offer&&price.retail&&price.stock)));
 		}
 	},
 	watch: {},
