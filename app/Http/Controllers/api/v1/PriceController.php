@@ -41,6 +41,18 @@ class PriceController extends Controller
 		return (new \App\Http\Controllers\ProductController())->validateFilters();
 	}
 
+	public function store(VendorPrice $price) {
+		return (new \App\Http\Controllers\PriceController())->store($price);
+	}
+
+	public function update(VendorPrice $price) {
+		return (new \App\Http\Controllers\PriceController())->update($price);
+	}
+
+	public function destroy(VendorPrice $price) {
+		return (new \App\Http\Controllers\PriceController())->destroy($price);
+	}
+
 	public function filterOptions($value='')
 	{
 		return (new \App\Http\Controllers\ProductController())->filterOptions();

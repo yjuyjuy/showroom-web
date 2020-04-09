@@ -16,21 +16,22 @@ use Illuminate\Support\Facades\Auth;
 Route::post('/register', 'api\v1\RegisterController@handle');
 
 Route::middleware('auth:api')->group(function() {
-	Route::get('/products', 'api\v1\ProductController@index');
-	Route::get('/products/{product}', 'api\v1\ProductController@show');
-	Route::get('/prices', 'api\v1\PriceController@index');
-	Route::get('/vendors', 'api\v1\VendorController@index');
-
 	Route::get('/user', function() {
 		return [
 			'user' => auth()->user(),
 			'token' => auth()->user()->token(),
 		];
 	});
-	Route::get('/options', function() {
-		return [
-			'sort_options' => (new App\Http\Controllers\ProductController())->sortOptions(),
-			'filter_options' => (new App\Http\Controllers\ProductController())->filterOptions(),
-		];
+
+	Route::get('/products', 'api\v1\ProductController@index');
+	Route::get('/products/{product}', 'api\v1\ProductController@show');
+	Route::get('/prices', 'api\v1\PriceController@index');
+	Route::get('/vendors', 'api\v1\VendorController@index');
+
+	Route::middleware('vendor')->group(function() {
+		Route::post('/prices', 'api\v1\PriceController@store');
+		Route::patch('/prices/{price}', 'api\v1\PriceController@update');
+		Route::delete('/prices/{price}', 'api\v1\PriceController@destroy');
 	});
+
 });

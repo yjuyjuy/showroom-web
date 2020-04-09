@@ -70,7 +70,7 @@ class PriceController extends Controller
 		return view('prices.edit', compact('price', 'product'));
 	}
 
-	public function update(Request $request, VendorPrice $price)
+	public function update(VendorPrice $price)
 	{
 		$this->authorize('update', $price);
 		$data = json_decode($this->validateRequest()['data'], true);
