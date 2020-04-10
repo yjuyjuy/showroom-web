@@ -23,11 +23,6 @@ Route::get('following/retailers', 'RetailerController@following')->name('followi
 # Product model
 Route::get('products', 'ProductController@index')->name('products.index');
 Route::middleware('auth')->group(function () {
-	Route::get('products/random', 'ProductController@random')->name('products.random');
-	Route::get('products/{product}', 'ProductController@show')->name('products.show');
-	Route::post('products/{product}/follow', 'ProductController@follow')->name('follow.product');
-	Route::post('products/{product}/unfollow', 'ProductController@unfollow')->name('unfollow.product');
-
 	Route::middleware('admin')->group(function() {
 		Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
 		Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
@@ -35,6 +30,11 @@ Route::middleware('auth')->group(function () {
 		Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy')->middleware('admin');
 		Route::get('products/{product}/edit', 'ProductController@edit')->name('products.edit')->middleware('admin');
 	});
+
+	Route::get('products/random', 'ProductController@random')->name('products.random');
+	Route::get('products/{product}', 'ProductController@show')->name('products.show');
+	Route::post('products/{product}/follow', 'ProductController@follow')->name('follow.product');
+	Route::post('products/{product}/unfollow', 'ProductController@unfollow')->name('unfollow.product');
 });
 
 # Price model
