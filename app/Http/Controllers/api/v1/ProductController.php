@@ -69,7 +69,7 @@ class ProductController extends Controller
 
 	public function show(Product $product) {
 		return $product->load([
-			'brand', 'season', 'color', 'category', 'prices', 'prices.vendor', 'offers', 'offers.vendor',
+			'brand', 'season', 'color', 'category', 'measurement', 'prices', 'prices.vendor', 'offers', 'offers.vendor',
 			'images' => function($query) {
 				$query->orderBy('order', 'asc');
 			},
