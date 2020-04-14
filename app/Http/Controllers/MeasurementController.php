@@ -10,6 +10,8 @@ class MeasurementController extends Controller
 {
 	public function create(Request $request, Product $product)
 	{
+		if ($product->measurement)
+			return redirect(route('measurements.edit', ['product' => $product]));
 		return view('measurements.create', compact('product'));
 	}
 
