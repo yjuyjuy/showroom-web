@@ -32,6 +32,8 @@ Route::middleware(['auth:api', 'vendor'])->group(function() {
 	Route::post('/prices', 'api\v1\PriceController@store');
 	Route::patch('/prices/{price}', 'api\v1\PriceController@update');
 	Route::delete('/prices/{price}', 'api\v1\PriceController@destroy');
+	Route::post('prices/{price}/+/{size}', 'PriceController@add');
+	Route::post('prices/{price}/-/{size}', 'PriceController@subtract');
 
 	Route::post('/products/{product}/measurement', 'MeasurementController@store');
 	Route::patch('/products/{product}/measurement', 'MeasurementController@update');
