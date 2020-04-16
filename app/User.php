@@ -93,19 +93,19 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function getIsInvitedAttribute()
 	{
-		if (strpos($this->type, 'invited:') !== false && \App\Vendor::find(explode(':', $this->type)[1])) {
+		if (strpos($this->type, 'invited:') !== false && Vendor::find(explode(':', $this->type)[1])) {
 			return true;
 		}
 		return false;
 	}
-	public function setIsInvitedAttribute(\App\Vendor $vendor)
+	public function setIsInvitedAttribute(Vendor $vendor)
 	{
 		if ($vendor) $this->type = 'invited:'.$vendor->id;
 	}
 	public function getInvitedByAttribute()
 	{
 		if ($this->is_invited) {
-			return \App\Vendor::find(explode(':', $this->type)[1]);
+			return Vendor::find(explode(':', $this->type)[1]);
 		}
 	}
 	public function isSuperAdmin()
@@ -119,6 +119,6 @@ class User extends Authenticatable implements MustVerifyEmail
 	 */
 	public function sendEmailVerificationNotification()
 	{
-		\App\Jobs\VerifyEmail::dispatch($this);
+		Jobs\VerifyEmail::dispatch($this);
 	}
 }

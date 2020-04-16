@@ -240,6 +240,7 @@ class ProductController extends Controller
 			"color" => \App\Color::all(),
 		];
 	}
+
 	public function follow(Product $product)
 	{
 		$user = auth()->user();
