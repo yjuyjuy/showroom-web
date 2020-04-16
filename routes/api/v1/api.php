@@ -18,7 +18,7 @@ Route::post('register', 'api\v1\RegisterController@handle');
 Route::middleware(['auth:api', 'vendor'])->group(function() {
 	Route::get('user', function() {
 		return [
-			'user' => auth()->user(),
+			'user' => auth()->user()->load(['vendor']),
 			'token' => auth()->user()->token(),
 		];
 	});
