@@ -43,6 +43,14 @@ class User extends Authenticatable implements MustVerifyEmail
 	 * @var array
 	 */
 	protected $attributes = [];
+  /**
+   * The accessors to append to the model's array form.
+   *
+   * @var array
+   */
+  protected $appends = [
+		'is_admin',
+	];
 
 	private const admin_user_ids = [1111111111, 4021500970, 8888888888];
 
