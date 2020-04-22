@@ -3,7 +3,7 @@
 	<div class="price-grid my-3">
 		<div class="font-weight-bold price-grid__header">
 			<a href="{{route('prices.edit',['price'=>$price])}}" class="price-grid__title">
-				{{$price->vendor->name.' - '.__($price->vendor->city)}}
+				{{$price->vendor->name.' - '.$price->vendor->city}}
 			</a>
 		</div>
 		@foreach($price->data as $row)
@@ -19,6 +19,7 @@
 		</div>
 		@endforeach
 		<div class="price-grid__footer text-right">
+			<span>最后更新: {{ $price->updated_at }}</span>
 			<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('edit') }}</a>
 			<button type="button" class="mdc-button mdc-button--error" onclick="delete_price({{$price->id}})">
 				<span class="mdc-button__label">{{ __('delete') }}</span>
