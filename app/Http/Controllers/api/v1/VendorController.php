@@ -13,17 +13,17 @@ class VendorController extends Controller
 				'vendors' => Vendor::all(),
 			];
 		}
-		public function follow(Vendor $vendor) {
-			auth()->user()->following_vendors()->syncWithoutDetaching($vendor);
+		public function follow($vendorId) {
+			auth()->user()->following_vendors()->syncWithoutDetaching($vendorId);
 			return $this->following();
 		}
-		public function unfollow(Vendor $vendor) {
-			auth()->user()->following_vendors()->detach($vendor);
+		public function unfollow($vendorId) {
+			auth()->user()->following_vendors()->detach($vendorId);
 			return $this->following();
 		}
 		public function following() {
 			return [
-				'following_vendors' => auth()->user()->following_vendors()->pluck('id'),
+				'following_vendors' => auth()->user()->following_vendors()->pluck('vendor_id'),
 			];
 		}
 }
