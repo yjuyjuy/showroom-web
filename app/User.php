@@ -54,6 +54,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	private const admin_user_ids = [1111111111, 4021500970, 8888888888];
 
+	public function image()
+	{
+		return $this->hasOne(Image::class);
+	}
 	public function vendor()
 	{
 		return $this->belongsTo(Vendor::class);

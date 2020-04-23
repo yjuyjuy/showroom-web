@@ -16,12 +16,8 @@ use Illuminate\Support\Facades\Auth;
 Route::post('register', 'api\v1\RegisterController@handle');
 
 Route::middleware(['auth:api', 'vendor'])->group(function() {
-	Route::get('user', function() {
-		return [
-			'user' => auth()->user()->load(['vendor']),
-			'token' => auth()->user()->token(),
-		];
-	});
+	Route::get('user', 'api\v1\UserController@show');
+	Route::post('user', 'api\v1\UserController@update');
 
 	Route::get('products', 'api\v1\ProductController@index');
 	Route::get('products/{product}', 'api\v1\ProductController@show');
