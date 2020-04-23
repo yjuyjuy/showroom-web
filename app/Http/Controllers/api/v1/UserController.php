@@ -17,6 +17,7 @@ class UserController extends Controller
 	}
 
 	public function update(Request $request) {
+		$user = auth()->user();
 		$data = $request->validate([
 			'image' => ['sometimes', 'file','mimetypes:image/*','max:10000'],
 			'username' => ['sometimes', 'string', 'max:255', 'unique:users'],
@@ -25,27 +26,25 @@ class UserController extends Controller
 			'new_password' => ['sometimes', 'string', 'min:8', 'confirmed'],
 		]);
 		if (array_key_exists('image', $data)) {
+			if ($user->image) $user->image->delete();
 			$path = $data['image']->store('profiles', 'public');
 			\App\Jobs\OptimizeProfileImage::dispatch($path);
 			\App\Image::create([
 				'path' => $path,
 				'source' => $data['image']->getClientOriginalName(),
-				'user_id' => auth()->user()->id,
+				'user_id' => $user->id,
 				'order' => 1,
 			]);
 		}
 		if (array_key_exists('username', $data)) {
-			$user = auth()->user();
 			$user->username = $data['username'];
 			$user->save();
 		}
 		if (array_key_exists('email', $data)) {
-			$user = auth()->user();
 			$user->email = $data['email'];
 			$user->save();
 		}
 		if (array_key_exists('new_password', $data)) {
-			$user = auth()->user();
 			if (Hash::check($data['old_password'], $user->makeVisible(['password'])->password)) {
 				$user->password = Hash::make($data['new_password']);
 				$user->save();
