@@ -15,7 +15,7 @@ class PriceController extends Controller
 			if ($request->query('vendor')) {
 				$query = Vendor::findOrFail($request->query('vendor'))->prices();
 			} else {
-				$query = VendorPrice::query();
+				$query = VendorPrice::whereIn('vendor_id', auth()->user()->following_vendors()->pluck('vendor_id'));
 			}
 			$filters = $this->validateFilters();
 			foreach ($filters as $field => $values) {
