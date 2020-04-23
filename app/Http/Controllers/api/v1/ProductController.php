@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 class ProductController extends Controller
 {
 	public function index(Request $request) {
-		return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
+		// return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
 			$ITEMS_PER_PAGE = 24;
 			if ($request->query('vendor')) {
 				$query = Vendor::findOrFail($request->query('vendor'))->products();
@@ -64,7 +64,7 @@ class ProductController extends Controller
 				'sort_options' => $this->sortOptions(),
 				'filter_options' => $this->filterOptions(),
 			];
-		});
+		// });
 	}
 
 	public function show(Product $product) {

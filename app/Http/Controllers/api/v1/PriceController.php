@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 class PriceController extends Controller
 {
 	public function index(Request $request) {
-		return Cache::remember($request->fullUrl(), 1 * 60, function() use ($request) {
+		// return Cache::remember($request->fullUrl(), 1 * 60, function() use ($request) {
 			if ($request->query('vendor')) {
 				$query = Vendor::findOrFail($request->query('vendor'))->prices();
 			} else {
@@ -34,7 +34,7 @@ class PriceController extends Controller
 				'prices' => $prices->values(),
 				'filter_options' => $this->filterOptions(),
 			];
-		});
+		// });
 	}
 
 	public function validateFilters() {
