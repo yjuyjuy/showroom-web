@@ -10,9 +10,12 @@ use App\Image;
 class UserController extends Controller
 {
   public function show() {
+		$user = auth()->user()->load(['vendor', 'image']);
+		$user->following_products = $user->following_products()->pluck('id');
+		$user->following_vendors = $user->following_vendors()->pluck('id');
 		return [
-			'user' => auth()->user()->load(['vendor', 'image']),
-			'token' => auth()->user()->token(),
+			'user' => $user,
+			'token' => $user->token(),
 		];
 	}
 
