@@ -20,9 +20,10 @@ Route::middleware(['auth:api', 'vendor'])->group(function() {
 	Route::post('user', 'api\v1\UserController@update');
 
 	Route::get('products', 'api\v1\ProductController@index');
+	Route::get('products/following', 'api\v1\ProductController@following');
 	Route::get('products/{product}', 'api\v1\ProductController@show');
-	Route::post('products/{product}/follow', 'ProductController@follow');
-	Route::post('products/{product}/unfollow', 'ProductController@unfollow');
+	Route::post('products/{product}/follow', 'api\v1\ProductController@follow');
+	Route::post('products/{product}/unfollow', 'api\v1\ProductController@unfollow');
 
 	Route::get('prices', 'api\v1\PriceController@index');
 	Route::post('prices', 'api\v1\PriceController@store');

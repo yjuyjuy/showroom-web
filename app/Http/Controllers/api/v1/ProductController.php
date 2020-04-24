@@ -10,13 +10,15 @@ use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
-	public function index(Request $request) {
+	public function index(Request $request, $query=null) {
 		// return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
 			$ITEMS_PER_PAGE = 24;
-			if ($request->query('vendor')) {
-				$query = Vendor::findOrFail($request->query('vendor'))->products();
-			} else {
-				$query = Product::query();
+			if (!$query) {
+				if ($request->query('vendor')) {
+					$query = Vendor::findOrFail($request->query('vendor'))->products();
+				} else {
+					$query = Product::query();
+				}
 			}
 			$filters = $this->validateFilters();
 			foreach ($filters as $field => $values) {
@@ -66,6 +68,28 @@ class ProductController extends Controller
 			];
 		// });
 	}
+
+	public function follow(Request $request, Product $product) {
+		$user = auth()->user();
+		$user->following_products()->syncWithoutDetaching($product);
+		return [
+			'following_products' => $user->following_products()->pluck('product_id'),
+		];
+	}
+
+	public function unfollow(Request $request, Product $product) {
+		$user = auth()->user();
+		$user->following_products()->detach($product);
+		return [
+			'following_products' => $user->following_products()->pluck('product_id'),
+		];
+	}
+
+	public function following(Request $request) {
+		$user = auth()->user();
+		return $this->index($request, $user->following_products());
+	}
+
 
 	public function show(Product $product) {
 		return $product->load([
