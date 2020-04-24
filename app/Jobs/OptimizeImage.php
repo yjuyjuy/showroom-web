@@ -55,6 +55,8 @@ class OptimizeImage implements ShouldQueue
 					\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
 					$path = $path.'_upsized.jpeg';
 				}
+			} else {
+				\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
 			}
 			// too tall
 		} elseif ( $h / $w > 1.413) {
