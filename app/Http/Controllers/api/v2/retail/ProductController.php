@@ -12,12 +12,15 @@ class ProductController extends Controller
 {
 	public function index(Request $request, $query=null) {
 		// return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
+			$user = auth()->user();
 			$ITEMS_PER_PAGE = 24;
 			if (!$query) {
 				if ($request->query('retailer')) {
 					$query = Retailer::findOrFail($request->query('retailer'))->products();
 				} else {
-					$query = Product::query();
+					$query = Product::whereHas('retails', function($query) use ($user) {
+							$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
+					});
 				}
 			}
 			$filters = $this->validateFilters();
@@ -91,8 +94,13 @@ class ProductController extends Controller
 
 
 	public function show(Product $product) {
+		$user = auth()->user();
 		return $product->load([
-			'brand', 'season', 'color', 'category', 'measurement', 'retails', 'retails.retailer',
+			'brand', 'season', 'color', 'category', 'measurement',
+			'retails' =>  function($query) use ($user) {
+				$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
+			},
+			'retails.retailer',
 			'images' => function($query) {
 				$query->orderBy('order', 'asc');
 			},

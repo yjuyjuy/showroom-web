@@ -91,8 +91,13 @@ class ProductController extends Controller
 
 
 	public function show(Product $product) {
+		$user = auth()->user();
 		return $product->load([
-			'brand', 'season', 'color', 'category', 'measurement', 'prices', 'prices.vendor', 'offers', 'offers.vendor',
+			'brand', 'season', 'color', 'category', 'measurement', 'prices', 'prices.vendor',
+			'offers' => function($query) use ($user) {
+				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+			},
+			'offers.vendor',
 			'images' => function($query) {
 				$query->orderBy('order', 'asc');
 			},
