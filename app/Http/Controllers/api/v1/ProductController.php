@@ -57,11 +57,10 @@ class ProductController extends Controller
 				$page = min(max(request()->query('page', 1), 1), $total_pages);
 				$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 			}
-			$products->loadMissing(['brand', 'images', 'season', 'offers', 'offers.vendor']);
+			$products->loadMissing(['brand', 'images', 'season', 'offers']);
 			return [
 				'page' => $page,
 				'total_pages' => $total_pages,
-				'user' => auth()->user(),
 				'products' => $products->values(),
 				'sort_options' => $this->sortOptions(),
 				'filter_options' => $this->filterOptions(),
@@ -109,7 +108,7 @@ class ProductController extends Controller
 		return (new \App\Http\Controllers\ProductController())->sortOptions();
 	}
 
-	public function filterOptions($value='')
+	public function filterOptions()
 	{
 		return (new \App\Http\Controllers\ProductController())->filterOptions();
 	}
