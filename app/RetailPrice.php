@@ -46,6 +46,8 @@ class RetailPrice extends Model
 		$this->prices = array_map(function($price) {
 			return (int)ceil($price * 0.105) * 10;
 		}, $this->prices);
-		$this->retailer->name = '平台卖家';
+		$retailer = $this->retailer->replicate();
+		$retailer->name = '平台卖家';
+		$this->retailer = $retailer;
 	}
 }
