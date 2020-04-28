@@ -93,7 +93,11 @@ class ProductController extends Controller
 	public function show(Product $product) {
 		$user = auth()->user();
 		return $product->load([
-			'brand', 'season', 'color', 'category', 'measurement', 'prices', 'prices.vendor',
+			'brand', 'season', 'color', 'category', 'measurement',
+			'prices' => function($query) use ($user) {
+				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+			},
+			'prices.vendor',
 			'offers' => function($query) use ($user) {
 				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
 			},
