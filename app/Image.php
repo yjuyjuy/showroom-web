@@ -12,7 +12,7 @@ class Image extends Model
 	{
 		return $this->belongsTo(Product::class);
 	}
-	public function image()
+	public function user()
 	{
 		return $this->belongsTo(User::class);
 	}
