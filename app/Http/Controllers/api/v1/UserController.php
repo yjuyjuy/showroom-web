@@ -29,7 +29,9 @@ class UserController extends Controller
 			'new_password' => ['sometimes', 'string', 'min:8', 'confirmed'],
 		]);
 		if (array_key_exists('image', $data)) {
-			if ($user->image) $user->image->delete();
+			if ($user->image) {
+				(new \App\Http\Controllers\ImageController())->destroy($user->image);
+			}
 			$path = $data['image']->store('profiles', 'public');
 			\App\Jobs\OptimizeProfileImage::dispatch($path);
 			\App\Image::create([
