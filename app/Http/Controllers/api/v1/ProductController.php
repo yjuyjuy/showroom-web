@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
-	public function index(Request $request, $query=null) {
+	public function index(Request $request, $query=null)
+	{
 		// return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
 			$ITEMS_PER_PAGE = 24;
 			if (!$query) {
@@ -68,7 +69,8 @@ class ProductController extends Controller
 		// });
 	}
 
-	public function follow(Request $request, Product $product) {
+	public function follow(Request $request, Product $product)
+	{
 		$user = auth()->user();
 		$user->following_products()->syncWithoutDetaching($product);
 		return [
@@ -76,7 +78,8 @@ class ProductController extends Controller
 		];
 	}
 
-	public function unfollow(Request $request, Product $product) {
+	public function unfollow(Request $request, Product $product)
+	{
 		$user = auth()->user();
 		$user->following_products()->detach($product);
 		return [
@@ -84,13 +87,15 @@ class ProductController extends Controller
 		];
 	}
 
-	public function following(Request $request) {
+	public function following(Request $request)
+	{
 		$user = auth()->user();
 		return $this->index($request, $user->following_products());
 	}
 
 
-	public function show(Product $product) {
+	public function show(Product $product)
+	{
 		$user = auth()->user();
 		return $product->load([
 			'brand', 'season', 'color', 'category', 'measurement',
@@ -108,7 +113,8 @@ class ProductController extends Controller
 		]);
 	}
 
-	public function validateFilters() {
+	public function validateFilters()
+	{
 		return (new \App\Http\Controllers\ProductController())->validateFilters();
 	}
 
