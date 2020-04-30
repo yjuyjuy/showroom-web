@@ -26,7 +26,7 @@ Route::middleware(['auth:api', 'vendor'])->group(function() {
 	Route::post('products/{product}/unfollow', 'api\v1\ProductController@unfollow');
 
 	Route::get('prices', 'api\v1\PriceController@index');
-	Route::post('prices', 'api\v1\PriceController@store');
+	Route::post('/products/{product}/prices', 'api\v1\PriceController@store');
 	Route::patch('prices/{price}', 'api\v1\PriceController@update');
 	Route::delete('prices/{price}', 'api\v1\PriceController@destroy');
 	Route::post('prices/{price}/+/{size}', 'PriceController@add');
