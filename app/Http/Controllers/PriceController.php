@@ -40,10 +40,10 @@ class PriceController extends Controller
 		return view('prices.create', compact('product', 'vendor'));
 	}
 
-	public function store(Request $request, Product $product)
+	public function store(Product $product)
 	{
 		if (auth()->user()->is_admin) {
-			$vendor = \App\Vendor::find($request->input('vendor'));
+			$vendor = \App\Vendor::find(request()->input('vendor'));
 		} else {
 			$vendor = auth()->user()->vendor;
 		}
@@ -91,7 +91,7 @@ class PriceController extends Controller
 		return ['redirect' => route('products.show', ['product' => $price->product])];
 	}
 
-	public function subtract(Request $request, VendorPrice $price, $size)
+	public function subtract(VendorPrice $price, $size)
 	{
 		$this->authorize('update', $price);
 		$data = $price->data;
@@ -128,7 +128,7 @@ class PriceController extends Controller
 		return ['success'];
 	}
 
-	public function add(Request $request, VendorPrice $price, $size)
+	public function add(VendorPrice $price, $size)
 	{
 		$this->authorize('update', $price);
 		$data = $price->data;
