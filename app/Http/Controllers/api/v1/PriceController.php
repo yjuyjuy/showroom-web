@@ -37,23 +37,48 @@ class PriceController extends Controller
 		// });
 	}
 
-	public function validateFilters() {
+	public function validateFilters()
+	{
 		return (new \App\Http\Controllers\ProductController())->validateFilters();
 	}
 
-	public function store(VendorPrice $price) {
-		return (new \App\Http\Controllers\PriceController())->store($price);
+	public function store(Product $product)
+	{
+		if (auth()->user()->is_admin) {
+			$vendor = \App\Vendor::find(request()->input('vendor'));
+		} else {
+			$vendor = auth()->user()->vendor;
+		}
+		$data = json_decode($this->validateRequest()['data'], true);
+		if (!empty($data)) {
+			$price = $product->prices()->firstOrNew(['vendor_id' => $vendor->id]);
+			$price->data = $data;
+			$price->updated_at = NOW();
+			$price->save();
+			if ($product->updated_at < NOW()->subday(1)) {
+				$product->touch();
+			}
+			Log::create([
+				'content' => auth()->user()->username.'新增了'.$price->vendor->name.'的'.$product->displayName().'的价格',
+				'url' => route('products.show', ['product' => $product]),
+			]);
+			return ['price' => $price->load('vendor')];
+		}
+		return ['error' => 'Empty data'];
 	}
 
-	public function update(VendorPrice $price) {
-		return (new \App\Http\Controllers\PriceController())->update($price);
+	public function update(VendorPrice $price)
+	{
+		(new \App\Http\Controllers\PriceController())->update($price);
+		return ['price' => $price->load('vendor')];
 	}
 
-	public function destroy(VendorPrice $price) {
+	public function destroy(VendorPrice $price)
+	{
 		return (new \App\Http\Controllers\PriceController())->destroy($price);
 	}
 
-	public function filterOptions($value='')
+	public function filterOptions()
 	{
 		return (new \App\Http\Controllers\ProductController())->filterOptions();
 	}
