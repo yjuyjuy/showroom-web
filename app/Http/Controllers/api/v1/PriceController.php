@@ -84,4 +84,9 @@ class PriceController extends Controller
 	{
 		return (new \App\Http\Controllers\ProductController())->filterOptions();
 	}
+
+	public function validateRequest()
+	{
+		return (new \App\Http\Controllers\PriceController())->validateRequest();
+	}
 }
