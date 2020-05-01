@@ -4,8 +4,10 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Log;
 use App\Vendor;
 use App\VendorPrice;
+use App\Product;
 use Illuminate\Support\Facades\Cache;
 
 class PriceController extends Controller
@@ -45,7 +47,7 @@ class PriceController extends Controller
 	public function store(Product $product)
 	{
 		if (auth()->user()->is_admin) {
-			$vendor = \App\Vendor::find(request()->input('vendor'));
+			$vendor = Vendor::find(request()->input('vendor'));
 		} else {
 			$vendor = auth()->user()->vendor;
 		}
