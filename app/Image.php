@@ -12,9 +12,13 @@ class Image extends Model
 	{
 		return $this->belongsTo(Product::class);
 	}
-	public function user()
+	public function uploadedBy()
 	{
 		return $this->belongsTo(User::class);
+	}
+	public function users()
+	{
+		return $this->hasMany(User::class);
 	}
 	public function getSmallAttribute()
 	{

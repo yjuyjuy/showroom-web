@@ -56,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	public function image()
 	{
-		return $this->hasOne(Image::class);
+		return $this->belongsTo(Image::class);
 	}
 	public function vendor()
 	{
