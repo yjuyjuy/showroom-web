@@ -34,29 +34,28 @@ class UserController extends Controller
 			}
 			$path = $data['image']->store('profiles', 'public');
 			\App\Jobs\OptimizeProfileImage::dispatch($path);
-			\App\Image::create([
+			$image = Image::create([
 				'path' => $path,
 				'source' => $data['image']->getClientOriginalName(),
 				'user_id' => $user->id,
 				'order' => 1,
 			]);
+			$user->image_id = $image->id;
 		}
 		if (array_key_exists('username', $data)) {
 			$user->username = $data['username'];
-			$user->save();
 		}
 		if (array_key_exists('email', $data)) {
 			$user->email = $data['email'];
-			$user->save();
 		}
 		if (array_key_exists('new_password', $data)) {
 			if (Hash::check($data['old_password'], $user->makeVisible(['password'])->password)) {
 				$user->password = Hash::make($data['new_password']);
-				$user->save();
 			} else {
 				return ['old_password' => '密码验证失败'];
 			}
 		}
+		$user->save();
 		return $this->show();
 	}
 }
