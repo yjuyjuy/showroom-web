@@ -10,7 +10,7 @@ class RetailerController extends Controller
 {
 		public function index() {
 			return [
-				'retailers' => Retailer::all(),
+				'retailers' => Retailer::with('image')->get(),
 			];
 		}
 		public function follow($retailerId) {

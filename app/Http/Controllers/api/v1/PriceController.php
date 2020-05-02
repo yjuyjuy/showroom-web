@@ -29,7 +29,7 @@ class PriceController extends Controller
 			$total_pages = ceil($query->count() / 24.0);
 			$page = min(max(request()->query('page', 1), 1), $total_pages);
 			$prices = $query->forPage($page, 24)->get();
-			$prices->loadMissing(['vendor', 'product', 'product.brand', 'product.season', 'product.images', 'product.offers']);
+			$prices->loadMissing(['vendor', 'vendor.image', 'product', 'product.brand', 'product.season', 'product.images', 'product.offers']);
 			return [
 				'page' => $page,
 				'total_pages' => $total_pages,

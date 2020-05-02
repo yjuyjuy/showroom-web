@@ -28,7 +28,7 @@ class RetailController extends Controller
 			$total_pages = ceil($query->count() / $ITEMS_PER_PAGE);
 			$page = min(max(request()->query('page', 1), 1), $total_pages);
 			$retails = $query->forPage($page, $ITEMS_PER_PAGE)->get();
-			$retails->loadMissing(['retailer', 'product', 'product.brand', 'product.season', 'product.images', 'product.retails']);
+			$retails->loadMissing(['retailer', 'retailer.image', 'product', 'product.brand', 'product.season', 'product.images', 'product.retails']);
 			return [
 				'page' => $page,
 				'total_pages' => $total_pages,

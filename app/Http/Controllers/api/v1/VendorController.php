@@ -10,7 +10,7 @@ class VendorController extends Controller
 {
 		public function index() {
 			return [
-				'vendors' => Vendor::all(),
+				'vendors' => Vendor::with('image')->get(),
 			];
 		}
 		public function follow($vendorId) {
