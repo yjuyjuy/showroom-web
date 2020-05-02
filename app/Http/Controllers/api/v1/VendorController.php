@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Vendor;
+use App\Image;
+use App\Jobs\OptimizeProfileImage;
 
 class VendorController extends Controller
 {
@@ -26,10 +28,10 @@ class VendorController extends Controller
 				'following_vendors' => auth()->user()->following_vendors()->pluck('vendor_id'),
 			];
 		}
-		public function update() {
+		public function update(Request $request) {
 			$user = auth()->user();
-			if ($user->is_admin && request('vendor_id')) {
-				$vendor = Vendor::find(request('vendor_id'));
+			if ($user->is_admin && $request->input('vendor_id')) {
+				$vendor = Vendor::find($request->input('vendor_id'));
 			} else {
 				$vendor = $user->vendor;
 			}
@@ -45,7 +47,7 @@ class VendorController extends Controller
 					(new \App\Http\Controllers\ImageController())->destroy($vendor->image);
 				}
 				$path = $data['image']->store('profiles', 'public');
-				\App\Jobs\OptimizeProfileImage::dispatch($path);
+				OptimizeProfileImage::dispatch($path);
 				$image = Image::create([
 					'path' => $path,
 					'source' => $data['image']->getClientOriginalName(),

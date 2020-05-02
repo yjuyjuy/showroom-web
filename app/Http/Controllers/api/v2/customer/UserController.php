@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Image;
+use App\Jobs\OptimizeProfileImage;
 
 class UserController extends Controller
 {
@@ -33,7 +34,7 @@ class UserController extends Controller
 				(new \App\Http\Controllers\ImageController())->destroy($user->image);
 			}
 			$path = $data['image']->store('profiles', 'public');
-			\App\Jobs\OptimizeProfileImage::dispatch($path);
+			OptimizeProfileImage::dispatch($path);
 			$image = Image::create([
 				'path' => $path,
 				'source' => $data['image']->getClientOriginalName(),
