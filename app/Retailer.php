@@ -29,6 +29,10 @@ class Retailer extends Model
 	}
 
 	# relationships
+	public function image()
+	{
+		return $this->belongsTo(Image::class);
+	}
 	public function retails()
 	{
 		return $this->hasMany(RetailPrice::class);

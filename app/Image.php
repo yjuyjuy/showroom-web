@@ -20,6 +20,14 @@ class Image extends Model
 	{
 		return $this->hasMany(User::class);
 	}
+	public function vendors()
+	{
+		return $this->hasMany(Vendor::class);
+	}
+	public function retailers()
+	{
+		return $this->hasMany(Retailer::class);
+	}
 	public function getSmallAttribute()
 	{
 		return secure_asset('storage/'.$this->path.'_400.jpeg');

@@ -10,6 +10,10 @@ class Vendor extends Model
 	{
 	    return 'name';
 	}
+	public function image()
+	{
+		return $this->belongsTo(Image::class);
+	}
 	public function users()
 	{
 		return $this->hasMany(User::class);
