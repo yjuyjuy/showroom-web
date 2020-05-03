@@ -40,4 +40,6 @@ Route::middleware(['auth:api', 'vendor'])->group(function() {
 	Route::post('vendor', 'api\v1\VendorController@update');
 	Route::post('vendors/{vendor}/follow', 'api\v1\VendorController@follow');
 	Route::post('vendors/{vendor}/unfollow', 'api\v1\VendorController@unfollow');
+
+	Route::post('retailer', 'api\v1\RetailerController@update');
 });
