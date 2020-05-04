@@ -13,12 +13,15 @@ class ResellerMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $type)
     {
 			if (auth()->user()->is_reseller) {
 				return $next($request);
 			} else {
-				return redirect(route('account.status'));
+				if ($type == 'api') {
+					return ['error' => 'pending'];
+				}
+				return redirect()->route('account.status');
 			}
     }
 }

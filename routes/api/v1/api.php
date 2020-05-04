@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::post('register', 'api\v1\RegisterController@handle');
 
-Route::middleware(['auth:api', 'vendor'])->group(function() {
+Route::middleware(['auth:api', 'reseller:api'])->group(function() {
 	Route::get('user', 'api\v1\UserController@show');
 	Route::post('user', 'api\v1\UserController@update');
 
