@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::post('register', 'api\v1\RegisterController@handle');
+Route::post('register', 'api\v1\RegisterController@register');
 
 Route::middleware(['auth:api', 'reseller:api'])->group(function() {
 	Route::get('user', 'api\v1\UserController@show');
