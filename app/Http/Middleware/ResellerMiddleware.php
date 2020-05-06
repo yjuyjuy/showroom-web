@@ -13,7 +13,7 @@ class ResellerMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $type)
+    public function handle($request, Closure $next, $type=null)
     {
 			if (auth()->user()->is_reseller) {
 				return $next($request);
