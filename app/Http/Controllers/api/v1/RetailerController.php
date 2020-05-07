@@ -10,7 +10,8 @@ use App\Jobs\OptimizeProfileImage;
 
 class RetailerController extends Controller
 {
-	public function update(Request $request) {
+	public function update(Request $request)
+	{
 		$user = auth()->user();
 		if ($user->is_admin && $request->input('retailer_id')) {
 			$retailer = Retailer::find($request->input('retailer_id'));
@@ -19,7 +20,7 @@ class RetailerController extends Controller
 		}
 		if (!$retailer) return 'Unknown retailer';
 		$data = $request->validate([
-			'image' => ['sometimes', 'file','mimetypes:image/*','max:10000'],
+			'image' => ['sometimes', 'file', 'mimetypes:image/*', 'max:10000'],
 			'name' => ['sometimes', 'string', 'max:255', 'unique:retailers'],
 			'homepage' => ['sometimes', 'string', 'email', 'max:255', 'unique:retailers'],
 		]);

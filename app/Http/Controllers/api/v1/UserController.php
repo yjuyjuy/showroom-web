@@ -10,7 +10,8 @@ use App\Jobs\OptimizeProfileImage;
 
 class UserController extends Controller
 {
-  public function show() {
+	public function show()
+	{
 		$user = auth()->user()->load(['vendor', 'image']);
 		$user->following_products = $user->following_products()->pluck('product_id');
 		$user->following_vendors = $user->following_vendors()->pluck('vendor_id');
@@ -20,10 +21,11 @@ class UserController extends Controller
 		];
 	}
 
-	public function update(Request $request) {
+	public function update(Request $request)
+	{
 		$user = auth()->user();
 		$data = $request->validate([
-			'image' => ['sometimes', 'file','mimetypes:image/*','max:10000'],
+			'image' => ['sometimes', 'file', 'mimetypes:image/*', 'max:10000'],
 			'username' => ['sometimes', 'string', 'max:255', 'unique:users'],
 			'email' => ['sometimes', 'string', 'email', 'max:255', 'unique:users'],
 			'old_password' => ['sometimes', 'required_with:new_password', 'string'],
