@@ -16,12 +16,16 @@ class RetailerController extends Controller
 	}
 	public function follow($retailerId)
 	{
-		auth()->user()->following_retailers()->syncWithoutDetaching($retailerId);
+		if (Retailer::find($retailerId)) {
+			auth()->user()->following_retailers()->syncWithoutDetaching($retailerId);
+		}
 		return $this->following();
 	}
 	public function unfollow($retailerId)
 	{
-		auth()->user()->following_retailers()->detach($retailerId);
+		if (Retailer::find($retailerId)) {
+			auth()->user()->following_retailers()->detach($retailerId);
+		}
 		return $this->following();
 	}
 	public function following()

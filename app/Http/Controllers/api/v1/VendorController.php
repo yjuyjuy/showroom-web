@@ -18,12 +18,16 @@ class VendorController extends Controller
 	}
 	public function follow($vendorId)
 	{
-		auth()->user()->following_vendors()->syncWithoutDetaching($vendorId);
+		if (Vendor::find($vendorId)) {
+			auth()->user()->following_vendors()->syncWithoutDetaching($vendorId);
+		}
 		return $this->following();
 	}
 	public function unfollow($vendorId)
 	{
-		auth()->user()->following_vendors()->detach($vendorId);
+		if (Vendor::find($vendorId)) {
+			auth()->user()->following_vendors()->detach($vendorId);
+		}
 		return $this->following();
 	}
 	public function following()
