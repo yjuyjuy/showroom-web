@@ -21,12 +21,12 @@ class PriceObserver
 		$prices = VendorPrice::where('product_id', $product->id)->get();
 
 		$retailers = Retailer::all();
-		if($retailer = $vendor->retailer){
+		if ($retailer = $vendor->retailer) {
 			$retailers = $retailers->prepend($retailer)->unique();
 		}
 		$retailers->load(['vendors', 'partner_vendors', 'vendors.partner_retailers']);
 
-		foreach($retailers as $retailer) {
+		foreach ($retailers as $retailer) {
 			$data = array();
 
 			$retail = $retails->firstWhere('retailer_id', $retailer->id);
@@ -37,18 +37,18 @@ class PriceObserver
 			}
 
 
-			foreach($retailer->vendors as $vendor) {
+			foreach ($retailer->vendors as $vendor) {
 				if ($vendor_price = $prices->firstWhere('vendor_id', $vendor->id)) {
-					foreach($vendor_price->data as $row) {
+					foreach ($vendor_price->data as $row) {
 						$data[$row['size']] = min($row['retail'], $data[$row['size']] ?? INF);
 					}
 				}
 			}
 
-			foreach($retailer->partner_vendors->whereNotIn('id', $retailer->vendors->pluck('id')) as $vendor) {
+			foreach ($retailer->partner_vendors->whereNotIn('id', $retailer->vendors->pluck('id')) as $vendor) {
 				if ($offer_price = $offers->firstWhere('vendor_id', $vendor->id)) {
 					$profit_rate = $vendor->pivot->profit_rate;
-					foreach($offer_price->prices as $size => $price) {
+					foreach ($offer_price->prices as $size => $price) {
 						$calc_price = ceil($price * (100 + $profit_rate) / 1000) * 10 + 60;
 						$min_price = 0;
 						$data[$size] = min(max($calc_price, $min_price), $data[$size] ?? INF);
@@ -56,10 +56,10 @@ class PriceObserver
 				}
 			}
 
-			if(empty($data)) {
+			if (empty($data)) {
 				$retail->delete();
 			} else {
-				uksort($data, function($a, $b) {
+				uksort($data, function ($a, $b) {
 					$sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 					if (in_array($a, $sizes)) {
 						$a = array_search($a, $sizes);
@@ -81,11 +81,11 @@ class PriceObserver
 
 		$offer = OfferPrice::firstOrNew(['product_id' => $product->id, 'vendor_id' => $vendor->id]);
 		$prices = array();
-		foreach($vendor_price->data as $data) {
+		foreach ($vendor_price->data as $data) {
 			$prices[$data['size']] = $data['offer'];
 		}
 
-		uksort($prices, function($a, $b) {
+		uksort($prices, function ($a, $b) {
 			$sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 			if (in_array($a, $sizes)) {
 				$a = array_search($a, $sizes);

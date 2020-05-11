@@ -65,7 +65,7 @@ class RegisterController extends Controller
 	{
 		do {
 			$id = random_int(1000000000, 9999999999);
-		} while(\App\User::find($id));
+		} while (\App\User::find($id));
 		return User::create([
 			'id' => $id,
 			'email' => $data['email'],

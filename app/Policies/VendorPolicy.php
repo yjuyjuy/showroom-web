@@ -8,10 +8,10 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class VendorPolicy
 {
-    use HandlesAuthorization;
+	use HandlesAuthorization;
 
-    public function view(User $user, Vendor $vendor)
-    {
-      return $user->following_vendors->contains($vendor);
-    }
+	public function view(User $user, Vendor $vendor)
+	{
+		return $user->following_vendors->contains($vendor);
+	}
 }

@@ -53,15 +53,16 @@ class GucciProduct extends Model
 	public function getCategoryTranslationAttribute()
 	{
 		if ($this->category) {
-			return implode('-', array_map( '__', explode('-', $this->category) ) );
+			return implode('-', array_map('__', explode('-', $this->category)));
 		} else {
 			return '';
 		};
 	}
 
-	public static function like(Product $product) {
+	public static function like(Product $product)
+	{
 		$query = self::where('product_id', $product->id);
-		foreach($product->designer_style_ids as $id) {
+		foreach ($product->designer_style_ids as $id) {
 			if (strlen($id) > 11) {
 				$query->orWhere('id', $id);
 			} else {

@@ -18,7 +18,9 @@ class RetailerController extends Controller
 		} else {
 			$retailer = $user->vendor->retailer ?? null;
 		}
-		if (!$retailer) return 'Unknown retailer';
+		if (!$retailer) {
+			return 'Unknown retailer';
+		}
 		$data = $request->validate([
 			'image' => ['sometimes', 'file', 'mimetypes:image/*', 'max:10000'],
 			'name' => ['sometimes', 'string', 'max:255', 'unique:retailers'],

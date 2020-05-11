@@ -49,10 +49,11 @@ class OffWhiteProduct extends Model
 		return $this->belongsTo(\App\Product::class);
 	}
 
-	public static function like(Product $product) {
+	public static function like(Product $product)
+	{
 		$query = self::where('product_id', $product->id);
-		foreach($product->designer_style_ids as $id) {
-			$query->orWhere('id', 'like', substr($id, 0 ,-4).'%');
+		foreach ($product->designer_style_ids as $id) {
+			$query->orWhere('id', 'like', substr($id, 0, -4).'%');
 		}
 		return $query->get();
 	}

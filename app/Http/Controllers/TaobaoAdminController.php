@@ -120,7 +120,7 @@ class TaobaoAdminController extends Controller
 			]);
 			$prices = $price->prices;
 			if ($retail->prices) {
-				foreach($retail->prices as $size => $value) {
+				foreach ($retail->prices as $size => $value) {
 					if (!array_key_exists($size, $prices) || $value < $prices[$size]) {
 						$prices[$size] = $value;
 					}

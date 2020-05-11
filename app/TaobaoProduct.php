@@ -49,8 +49,8 @@ class TaobaoProduct extends Model
 	public function getPriceAttribute()
 	{
 		$min = null;
-		foreach($this->prices->where('prices', true) as $taobao_price){
-			if(!$min || min($taobao_price->prices) < $min){
+		foreach ($this->prices->where('prices', true) as $taobao_price) {
+			if (!$min || min($taobao_price->prices) < $min) {
 				$min = min($taobao_price->prices);
 			}
 		}

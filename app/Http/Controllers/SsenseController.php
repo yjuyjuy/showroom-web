@@ -27,7 +27,9 @@ class SsenseController extends Controller
 
 		$query = SsenseProduct::query();
 		if (!empty($data['brand'])) {
-			$query->whereIn('brand_name', array_map(function($brand) use ($filters){ return $filters['brand'][$brand]; }, $data['brand']));
+			$query->whereIn('brand_name', array_map(function ($brand) use ($filters) {
+				return $filters['brand'][$brand];
+			}, $data['brand']));
 		}
 		if (!empty($data['category'])) {
 			$query->whereIn('category', $data['category']);
@@ -93,7 +95,7 @@ class SsenseController extends Controller
 
 	public function merge(SsenseProduct $ssense_product, Product $product)
 	{
-		foreach([
+		foreach ([
 			'brand_id' => $ssense_product->brand->mapped_id,
 			'name_cn' => $ssense_product->name,
 			'name' => $ssense_product->name,
@@ -111,7 +113,7 @@ class SsenseController extends Controller
 	public function unlink(SsenseProduct $ssense_product)
 	{
 		$product = $ssense_product->product;
-		$ssense_product->product_id = NULL;
+		$ssense_product->product_id = null;
 		$ssense_product->save();
 		return redirect(route('ssense.show', ['product' => $ssense_product]));
 	}

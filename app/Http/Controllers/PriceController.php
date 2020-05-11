@@ -24,10 +24,10 @@ class PriceController extends Controller
 			'images', 'brand', 'prices' => function ($query) use ($vendor) {
 				$query->where('vendor_id', $vendor->id)->orderBy('created_at', 'desc');
 			},]);
-		$products = $products->sortBy(function($product) {
+		$products = $products->sortBy(function ($product) {
 			return $product->prices->first()->created_at;
 		})->values();
-		return view('prices.index', compact('vendor','products'));
+		return view('prices.index', compact('vendor', 'products'));
 	}
 
 	public function create(Product $product)
@@ -96,10 +96,10 @@ class PriceController extends Controller
 		$this->authorize('update', $price);
 		$data = $price->data;
 		$should_log = false;
-		foreach($data as $index => &$row) {
+		foreach ($data as $index => &$row) {
 			if ($row['size'] == $size) {
 				$row['stock'] -= 1;
-				if($row['stock'] <= 0) {
+				if ($row['stock'] <= 0) {
 					unset($data[$index]);
 					$should_log = true;
 				}
@@ -132,7 +132,7 @@ class PriceController extends Controller
 	{
 		$this->authorize('update', $price);
 		$data = $price->data;
-		foreach($data as &$row) {
+		foreach ($data as &$row) {
 			if ($row['size'] == $size) {
 				$row['stock'] += 1;
 				break;

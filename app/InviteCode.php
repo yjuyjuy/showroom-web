@@ -18,16 +18,16 @@ class InviteCode extends Model
 		* @var string
 		*/
 	protected $keyType = 'string';
-  /**
-   * Indicates if the model should be timestamped.
-   *
-   * @var bool
-   */
-  public $timestamps = false;
+	/**
+	 * Indicates if the model should be timestamped.
+	 *
+	 * @var bool
+	 */
+	public $timestamps = false;
 
 	protected $guarded = [];
 
-  public function vendor()
+	public function vendor()
 	{
 		return $this->belongsTo(\App\Vendor::class);
 	}

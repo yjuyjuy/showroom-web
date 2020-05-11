@@ -19,7 +19,7 @@ class GucciController extends Controller
 		if ($category && in_array($category, $categories)) {
 			$query->where('category', $category);
 		} else {
-			$category = NULL;
+			$category = null;
 		}
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
@@ -49,7 +49,7 @@ class GucciController extends Controller
 			'designer_style_id' => $gucci_product->id,
 			'name_cn' => $gucci_product->name,
 			'name' => $gucci_product->name,
-			'category_id' => NULL,
+			'category_id' => null,
 			'id' => \App\Product::generate_id(),
 		]);
 		$gucci_product->product_id = $product->id;
@@ -81,7 +81,7 @@ class GucciController extends Controller
 
 	public function unlink(GucciProduct $gucci_product)
 	{
-		$gucci_product->product_id = NULL;
+		$gucci_product->product_id = null;
 		$gucci_product->save();
 
 		return redirect(route('gucci.show', ['product' => $gucci_product]));

@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Notifications\VerifyEmail ;
+
 class UserObserver
 {
 	/**

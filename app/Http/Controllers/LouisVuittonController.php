@@ -19,7 +19,7 @@ class LouisVuittonController extends Controller
 		if ($category && in_array($category, $categories)) {
 			$query->where('category', $category);
 		} else {
-			$category = NULL;
+			$category = null;
 		}
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
@@ -49,7 +49,7 @@ class LouisVuittonController extends Controller
 			'designer_style_id' => $lv_product->id,
 			'name_cn' => $lv_product->name,
 			'name' => $lv_product->name,
-			'category_id' => NULL,
+			'category_id' => null,
 			'id' => \App\Product::generate_id(),
 		]);
 		$lv_product->product_id = $product->id;
@@ -79,7 +79,7 @@ class LouisVuittonController extends Controller
 
 	public function unlink(LouisVuittonProduct $lv_product)
 	{
-		$lv_product->product_id = NULL;
+		$lv_product->product_id = null;
 		$lv_product->save();
 
 		return redirect(route('louisvuitton.show', ['product' => $lv_product]));

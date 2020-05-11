@@ -50,9 +50,10 @@ class BalenciagaProduct extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public static function like(Product $product) {
+	public static function like(Product $product)
+	{
 		$query = self::where('product_id', $product->id);
-		foreach($product->designer_style_ids as $id) {
+		foreach ($product->designer_style_ids as $id) {
 			if (strlen($id) > 11) {
 				$query->orWhere('designer_style_id', $id);
 			} else {

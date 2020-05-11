@@ -8,17 +8,17 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TaobaoPolicy
 {
-    use HandlesAuthorization;
-    
-    /**
-     * Determine whether the user can update the taobao shop.
-     *
-     * @param  \App\User  $user
-     * @param  \App\TaobaoShop  $taobaoShop
-     * @return mixed
-     */
-    public function update(User $user, TaobaoShop $taobaoShop)
-    {
-      return $user->is_admin;
-    }
+	use HandlesAuthorization;
+	
+	/**
+	 * Determine whether the user can update the taobao shop.
+	 *
+	 * @param  \App\User  $user
+	 * @param  \App\TaobaoShop  $taobaoShop
+	 * @return mixed
+	 */
+	public function update(User $user, TaobaoShop $taobaoShop)
+	{
+		return $user->is_admin;
+	}
 }

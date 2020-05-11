@@ -58,9 +58,9 @@ class EndProduct extends Model
 			'One Size' => 'OS',
 		];
 		$size_price = [];
-		if(!empty($this->sizes)) {
-			foreach(explode(',',$this->sizes) as $size) {
-				if(array_key_exists($size, $size_map)) {
+		if (!empty($this->sizes)) {
+			foreach (explode(',', $this->sizes) as $size) {
+				if (array_key_exists($size, $size_map)) {
 					$size = $size_map[$size];
 				}
 				if (!array_key_exists($size, $size_price) || $size_price[$size] > $this->price) {
@@ -76,10 +76,11 @@ class EndProduct extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public static function like(Product $product) {
+	public static function like(Product $product)
+	{
 		$query = self::where('product_id', $product->id);
-		foreach($product->designer_style_ids as $id) {
-			$query->orWhere(function($query) use ($id, $product) {
+		foreach ($product->designer_style_ids as $id) {
+			$query->orWhere(function ($query) use ($id, $product) {
 				if (strlen($id) > 11) {
 					$query->where('sku', 'like', substr($id, 0, -4).'%');
 				} else {

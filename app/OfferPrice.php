@@ -28,6 +28,6 @@ class OfferPrice extends Model
 	}
 	public function logs()
 	{
-		 return $this->morphMany(Log::class, 'price');
+		return $this->morphMany(Log::class, 'price');
 	}
 }

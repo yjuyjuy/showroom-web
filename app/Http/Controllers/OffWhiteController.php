@@ -122,7 +122,7 @@ class OffWhiteController extends Controller
 
 	public function unlink(BalenciagaProduct $offwhite_product)
 	{
-		$offwhite_product->product_id = NULL;
+		$offwhite_product->product_id = null;
 		$offwhite_product->save();
 
 		return redirect(route('offwhite.show', ['product' => $offwhite_product]));

@@ -25,7 +25,7 @@ class Retailer extends Model
 	 */
 	public function getRouteKeyName()
 	{
-	    return 'name';
+		return 'name';
 	}
 
 	# relationships
@@ -53,8 +53,8 @@ class Retailer extends Model
 	{
 		return $this->belongsToMany(User::class, 'user_retailer', 'retailer_id', 'user_id');
 	}
-  public function taobao_shop()
-  {
-    return $this->hasOne(TaobaoShop::class, 'retailer_id', 'id');
-  }
+	public function taobao_shop()
+	{
+		return $this->hasOne(TaobaoShop::class, 'retailer_id', 'id');
+	}
 }

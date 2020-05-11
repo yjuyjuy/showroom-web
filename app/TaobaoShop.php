@@ -33,7 +33,7 @@ class TaobaoShop extends Model
 	 */
 	public function getRouteKeyName()
 	{
-	    return 'name';
+		return 'name';
 	}
 	public function products()
 	{

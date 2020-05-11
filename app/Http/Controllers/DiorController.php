@@ -20,7 +20,7 @@ class DiorController extends Controller
 			$query->where('category', $categories[$token]);
 			$category = $token;
 		} else {
-			$category = NULL;
+			$category = null;
 		}
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
@@ -86,7 +86,7 @@ class DiorController extends Controller
 
 	public function unlink(DiorProduct $dior_product)
 	{
-		$dior_product->product_id = NULL;
+		$dior_product->product_id = null;
 		$dior_product->save();
 
 		return redirect(route('dior.show', ['product' => $dior_product]));

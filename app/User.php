@@ -43,12 +43,12 @@ class User extends Authenticatable implements MustVerifyEmail
 	 * @var array
 	 */
 	protected $attributes = [];
-  /**
-   * The accessors to append to the model's array form.
-   *
-   * @var array
-   */
-  protected $appends = [
+	/**
+	 * The accessors to append to the model's array form.
+	 *
+	 * @var array
+	 */
+	protected $appends = [
 		'is_admin',
 	];
 
@@ -85,7 +85,9 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function setIsResellerAttribute($value)
 	{
-		if($value) $this->type = "reseller";
+		if ($value) {
+			$this->type = "reseller";
+		}
 	}
 	public function getIsPendingAttribute()
 	{
@@ -93,7 +95,9 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function setIsPendingAttribute($value)
 	{
-		if($value) $this->type = "pending";
+		if ($value) {
+			$this->type = "pending";
+		}
 	}
 	public function getIsRejectedAttribute()
 	{
@@ -101,7 +105,9 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function setIsRejectedAttribute($value)
 	{
-		if($value) $this->type = 'rejected';
+		if ($value) {
+			$this->type = 'rejected';
+		}
 	}
 	public function getIsInvitedAttribute()
 	{
@@ -112,7 +118,9 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function setIsInvitedAttribute(Vendor $vendor)
 	{
-		if ($vendor) $this->type = 'invited:'.$vendor->id;
+		if ($vendor) {
+			$this->type = 'invited:'.$vendor->id;
+		}
 	}
 	public function getInvitedByAttribute()
 	{

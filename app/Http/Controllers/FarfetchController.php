@@ -90,7 +90,7 @@ class FarfetchController extends Controller
 		$image_controller->import($farfetch_product->images, $product);
 		$farfetch_product->product_id = $product->id;
 		$farfetch_product->save();
-		foreach(\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get() as $p) {
+		foreach (\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get() as $p) {
 			$image_controller->import($p->images, $product);
 			$p->product_id = $product->id;
 			$p->save();
@@ -100,7 +100,7 @@ class FarfetchController extends Controller
 
 	public function merge(FarfetchProduct $farfetch_product, Product $product)
 	{
-		foreach([
+		foreach ([
 			'brand_id' => $farfetch_product->designer->mapped_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
 			'name_cn' => $farfetch_product->short_description,
@@ -120,7 +120,7 @@ class FarfetchController extends Controller
 	public function unlink(FarfetchProduct $farfetch_product)
 	{
 		$product = $farfetch_product->product;
-		$farfetch_product->product_id = NULL;
+		$farfetch_product->product_id = null;
 		$farfetch_product->save();
 		return redirect(route('farfetch.show', ['product' => $farfetch_product]));
 	}

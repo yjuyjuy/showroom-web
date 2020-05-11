@@ -10,7 +10,7 @@ class ResellerController extends Controller
 	public function index(Request $request)
 	{
 		$user = auth()->user();
-		$query = \App\Product::has(['offers' => function($query) {
+		$query = \App\Product::has(['offers' => function ($query) {
 			$query->whereIn('vendor_id', $user->following_resellers->pluck('id'));
 		}]);
 
@@ -52,7 +52,7 @@ class ResellerController extends Controller
 			})->values();
 		}
 		$total_pages = ceil($products->count() / 48.0);
-		$page = min(max($request->query('page',1), 1), $total_pages);
+		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $products->forPage($page, 48);
 		$products->load(['brand', 'image']);
 

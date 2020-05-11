@@ -66,8 +66,8 @@ class RegisterController extends Controller
 	{
 		do {
 			$id = random_int(1000000000, 9999999999);
-		} while(\App\User::find($id));
-		$type = NULL;
+		} while (\App\User::find($id));
+		$type = null;
 		if ($data['invite_code']) {
 			$code = \App\InviteCode::find($data['invite_code']);
 			if ($code) {

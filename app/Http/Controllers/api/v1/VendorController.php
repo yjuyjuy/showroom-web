@@ -44,7 +44,9 @@ class VendorController extends Controller
 		} else {
 			$vendor = $user->vendor;
 		}
-		if (!$vendor) return 'Unknown vendor';
+		if (!$vendor) {
+			return 'Unknown vendor';
+		}
 		$data = $request->validate([
 			'image' => ['sometimes', 'file', 'mimetypes:image/*', 'max:10000'],
 			'name' => ['sometimes', 'string', 'max:255', 'unique:vendors'],

@@ -54,7 +54,7 @@ class LouisVuittonProduct extends Model
 	{
 		if ($this->sizes && $this->price) {
 			$data = [];
-			foreach(explode(',', $this->sizes) as $size) {
+			foreach (explode(',', $this->sizes) as $size) {
 				$data[$size] = (int)($this->price);
 			}
 			return $data;
@@ -66,7 +66,7 @@ class LouisVuittonProduct extends Model
 	public static function like(Product $product)
 	{
 		$query = self::where('product_id', $product->id);
-		foreach($product->designer_style_ids as $id) {
+		foreach ($product->designer_style_ids as $id) {
 			$query->orWhere('id', $id);
 		}
 		return $query->get();

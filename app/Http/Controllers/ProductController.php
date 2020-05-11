@@ -39,8 +39,8 @@ class ProductController extends Controller
 			$products = $query->get();
 			$products->load(['retails', 'retails.retailer']);
 			if (!$user || !$user->is_admin) {
-				$products->map(function($product) {
-					$product->retails->map(function($retail) {
+				$products->map(function ($product) {
+					$product->retails->map(function ($retail) {
 						$retail->hide();
 					});
 				});
@@ -66,8 +66,8 @@ class ProductController extends Controller
 			$products = $query->forPage($page, 48)->get();
 			$products->load(['retails', 'retails.retailer']);
 			if (!$user || !$user->is_admin) {
-				$products->map(function($product) {
-					$product->retails->map(function($retail) {
+				$products->map(function ($product) {
+					$product->retails->map(function ($retail) {
 						$retail->hide();
 					});
 				});
@@ -142,14 +142,14 @@ class ProductController extends Controller
 		$user = auth()->user();
 		$product->load('retails', 'retails.retailer');
 		if ($user) {
-			$product->retails->map(function($retail) use ($user) {
+			$product->retails->map(function ($retail) use ($user) {
 				if (!$user->following_retailers->contains($retail->retailer)) {
 					$retail->hide();
 				}
 			});
 			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
-			} else if ($user->vendor) {
+			} elseif ($user->vendor) {
 				$product->load([
 					'prices' => function ($query) use ($user) {
 						$query->where('vendor_id', $user->vendor_id);
@@ -164,7 +164,9 @@ class ProductController extends Controller
 				]);
 			}
 		} else {
-			$product->retails->map(function($retail) { $retail->hide(); });
+			$product->retails->map(function ($retail) {
+				$retail->hide();
+			});
 		}
 		$product->load(['images', 'brand','season','color', 'category']);
 		return view('products.show', compact('product', 'user'));

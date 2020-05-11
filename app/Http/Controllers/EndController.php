@@ -158,7 +158,7 @@ class EndController extends Controller
 	public function unlink(EndProduct $end_product)
 	{
 		$product = $end_product->product;
-		$end_product->product_id = NULL;
+		$end_product->product_id = null;
 		$end_product->save();
 		return redirect(route('end.show', ['product' => $end_product]));
 	}

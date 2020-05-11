@@ -75,7 +75,7 @@ class VendorController extends Controller
 		]);
 		if ($user->is_admin) {
 			$product->load(['prices', 'prices.vendor']);
-		} else if ($user->vendor) {
+		} elseif ($user->vendor) {
 			$product->load([
 				'prices' => function ($query) use ($user) {
 					$query->where('vendor_id', $user->vendor_id);
@@ -120,13 +120,13 @@ class VendorController extends Controller
 				'search' => ['sometimes', 'string', 'max:255'],
 				])['search'];
 			$valid_tokens = [];
-			foreach(\App\User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
+			foreach (\App\User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
 				$valid_tokens[strtolower($user->wechat_id)] = $user->vendor_id;
 			}
-			foreach(\App\Vendor::whereNotNull('wechat_id')->get() as $vendor) {
+			foreach (\App\Vendor::whereNotNull('wechat_id')->get() as $vendor) {
 				$valid_tokens[strtolower($vendor->wechat_id)] = $vendor->id;
 			}
-			foreach(\App\InviteCode::has('vendor')->get() as $code) {
+			foreach (\App\InviteCode::has('vendor')->get() as $code) {
 				$valid_tokens[$code->id] = $code->vendor_id;
 			}
 			if (array_key_exists(strtolower($search), $valid_tokens)) {

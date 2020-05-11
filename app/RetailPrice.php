@@ -26,7 +26,7 @@ class RetailPrice extends Model
 	}
 	public function logs()
 	{
-		 return $this->morphMany(Log::class, 'price');
+		return $this->morphMany(Log::class, 'price');
 	}
 	public function merge($size_price)
 	{
@@ -34,7 +34,7 @@ class RetailPrice extends Model
 			return;
 		}
 		$prices = $this->prices ?? [];
-		foreach($size_price as $size => $price) {
+		foreach ($size_price as $size => $price) {
 			if (!array_key_exists($size, $prices) || $prices[$size] > $price) {
 				$prices[$size] = $price;
 			}
@@ -43,7 +43,7 @@ class RetailPrice extends Model
 	}
 	public function hide()
 	{
-		$this->prices = array_map(function($price) {
+		$this->prices = array_map(function ($price) {
 			return (int)ceil($price * 0.105) * 10;
 		}, $this->prices);
 		$retailer = $this->retailer->replicate();

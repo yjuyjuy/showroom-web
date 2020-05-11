@@ -8,7 +8,7 @@ class Vendor extends Model
 {
 	public function getRouteKeyName()
 	{
-	    return 'name';
+		return 'name';
 	}
 	public function image()
 	{

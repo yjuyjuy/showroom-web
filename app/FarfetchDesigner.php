@@ -28,7 +28,7 @@ class FarfetchDesigner extends Model
 	 */
 	public function getRouteKeyName()
 	{
-			return 'url_token';
+		return 'url_token';
 	}
 	public function products()
 	{

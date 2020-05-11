@@ -52,7 +52,7 @@ class RetailerController extends Controller
 		}
 
 		$total_pages = ceil($products->count() / 48.0);
-		$page = min(max($request->query('page',1), 1), $total_pages);
+		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $products->forPage($page, 48);
 		$products->load(['brand', 'image']);
 
@@ -65,19 +65,19 @@ class RetailerController extends Controller
 	public function show(Retailer $retailer, Product $product)
 	{
 		$user = auth()->user();
-		$product->load(['retails' => function($query) use ($retailer) {
+		$product->load(['retails' => function ($query) use ($retailer) {
 			$query->where('retailer_id', $retailer->id);
 		}]);
 		if ($user) {
 			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
-			} else if ($user->vendor) {
+			} elseif ($user->vendor) {
 				$product->load([
 					'prices' => function ($query) use ($user) {
 						$query->where('vendor_id', $user->vendor_id);
 					},
 				]);
-			} else if ($user->is_reseller) {
+			} elseif ($user->is_reseller) {
 				$product->load([
 					'offers' => function ($query) use ($user) {
 						$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
@@ -98,14 +98,14 @@ class RetailerController extends Controller
 			])['search']);
 			$valid_tokens = \Illuminate\Support\Facades\Cache::remember('retailer-tokens', 60 * 60, function () {
 				$tokens = [];
-				foreach(\App\Retailer::all() as $retailer) {
+				foreach (\App\Retailer::all() as $retailer) {
 					$tokens[strtolower($retailer->name)] = $retailer->id;
 				}
-				foreach(\App\User::has('vendor.retailer')->get() as $user) {
+				foreach (\App\User::has('vendor.retailer')->get() as $user) {
 					$tokens[strtolower($user->wechat_id)] = $user->vendor->retailer->id;
 					$tokens[strtolower($user->name)] = $user->vendor->retailer->id;
 				}
-				foreach(\App\Vendor::has('retailer')->get() as $vendor) {
+				foreach (\App\Vendor::has('retailer')->get() as $vendor) {
 					$tokens[strtolower($vendor->wechat_id)] = $vendor->retailer->id;
 					$tokens[strtolower($vendor->name)] = $vendor->retailer->id;
 				}

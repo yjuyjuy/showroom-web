@@ -20,7 +20,7 @@ class BalenciagaController extends Controller
 			$department = $token;
 			$query->where('department', $department);
 		} else {
-			$department = NULL;
+			$department = null;
 		}
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
@@ -81,7 +81,7 @@ class BalenciagaController extends Controller
 
 	public function unlink(BalenciagaProduct $balenciaga_product)
 	{
-		$balenciaga_product->product_id = NULL;
+		$balenciaga_product->product_id = null;
 		$balenciaga_product->save();
 
 		return redirect(route('balenciaga.show', ['product' => $balenciaga_product]));

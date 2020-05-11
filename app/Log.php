@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
-  /**
-   * Indicates if the model should be timestamped.
-   *
-   * @var bool
-   */
-  public $timestamps = false;
+	/**
+	 * Indicates if the model should be timestamped.
+	 *
+	 * @var bool
+	 */
+	public $timestamps = false;
 
 	protected $guarded = [];
 }

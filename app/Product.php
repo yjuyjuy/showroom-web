@@ -130,20 +130,20 @@ class Product extends Model
 	public function getLinksAttribute()
 	{
 		if ($this->brand && $this->designer_style_id) {
-			return Cache::remember('product-'.$this->id.'-links', 10 * 60, function() {
+			return Cache::remember('product-'.$this->id.'-links', 10 * 60, function () {
 				$links = [];
-				foreach(['LouisVuitton', 'Dior', 'Gucci', 'OffWhite', 'Balenciaga',] as $brand_name) {
+				foreach (['LouisVuitton', 'Dior', 'Gucci', 'OffWhite', 'Balenciaga',] as $brand_name) {
 					$cls = '\\App\\'.$brand_name.'Product';
 					if ($cls::brand_id == $this->brand_id) {
-						foreach($cls::like($this) as $index => $product) {
+						foreach ($cls::like($this) as $index => $product) {
 							$links['官网页面'.($index + 1)] = route(strtolower($brand_name).'.show', ['product' => urlencode($product->id)]);
 						}
 						break;
 					}
 				}
-				foreach(['Farfetch', 'End', 'Ssense',] as $retailer_name) {
+				foreach (['Farfetch', 'End', 'Ssense',] as $retailer_name) {
 					$cls = '\\App\\'.$retailer_name.'Product';
-					foreach($cls::like($this) as $index => $product) {
+					foreach ($cls::like($this) as $index => $product) {
 						$links[$retailer_name.'页面'.($index + 1).($product->colors ?? $product->color ?? '')] = route(strtolower($retailer_name).'.show', ['product' => $product]);
 					}
 				}
@@ -197,7 +197,7 @@ class Product extends Model
 					}
 				}
 			}
-			foreach(array_keys($data) as $size) {
+			foreach (array_keys($data) as $size) {
 				$data[$size]['vendor'] = implode('/', array_unique($data[$size]['vendor']));
 			}
 		} elseif ($type == 'retail') {
@@ -210,7 +210,7 @@ class Product extends Model
 					}
 				}
 			}
-			foreach(array_keys($data) as $size) {
+			foreach (array_keys($data) as $size) {
 				$data[$size]['retailer'] = implode('/', array_unique($data[$size]['retailer']));
 			}
 		}
@@ -250,7 +250,7 @@ class Product extends Model
 		}
 		if ($this->name_cn) {
 			$parts[] = $this->name_cn;
-		} else if ($this->name) {
+		} elseif ($this->name) {
 			$parts[] = $this->name;
 		}
 		if ($this->color) {

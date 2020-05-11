@@ -10,20 +10,21 @@ class MeasurementController extends Controller
 {
 	public function create(Request $request, Product $product)
 	{
-		if ($product->measurement)
+		if ($product->measurement) {
 			return redirect(route('measurements.edit', ['product' => $product]));
+		}
 		return view('measurements.create', compact('product'));
 	}
 
-  public function store(Request $request, Product $product)
-  {
+	public function store(Request $request, Product $product)
+	{
 		$data = json_decode($this->validateData()['data'], true);
 		$measurement = Measurement::firstOrNew(['product_id' => $product->id]);
 		$measurement->data = $data;
 		$measurement->save();
 		$product->loadMissing(['images']);
 		return ['redirect' => route('products.show', ['product' => $product])];
-  }
+	}
 
 	public function edit(Request $request, Product $product)
 	{
@@ -35,17 +36,19 @@ class MeasurementController extends Controller
 		return view('measurements.edit', compact('product', 'measurement'));
 	}
 
-  public function update(Request $request, Product $product)
-  {
+	public function update(Request $request, Product $product)
+	{
 		$data = json_decode($this->validateData()['data'], true);
 		$product->measurement->data = $data;
 		$product->measurement->save();
 		return ['redirect' => route('products.show', ['product' => $product])];
-  }
+	}
 
 	public function destroy(Request $request, Product $product)
 	{
-		if ($product->measurement) $product->measurement->delete();
+		if ($product->measurement) {
+			$product->measurement->delete();
+		}
 		return ['redirect' => route('products.show', ['product' => $product])];
 	}
 

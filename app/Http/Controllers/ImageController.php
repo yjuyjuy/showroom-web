@@ -102,7 +102,7 @@ class ImageController extends Controller
 
 	public function destroy(Image $image)
 	{
-		foreach(['', '_upsized.jpeg', '_400.jpeg', '_800.jpeg'] as $suffix) {
+		foreach (['', '_upsized.jpeg', '_400.jpeg', '_800.jpeg'] as $suffix) {
 			if (Storage::exists('public/'.$image->path.$suffix)) {
 				Storage::delete('public/'.$image->path.$suffix);
 			}

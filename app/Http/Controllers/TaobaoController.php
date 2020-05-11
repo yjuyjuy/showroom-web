@@ -13,7 +13,7 @@ class TaobaoController extends Controller
 	public function index(TaobaoShop $shop)
 	{
 		$products = $shop->taobao_products()->get();
-		$products = $products->load(['prices'])->filter(function($item) {
+		$products = $products->load(['prices'])->filter(function ($item) {
 			return $item->prices->where('prices')->isNotEmpty();
 		});
 		return view('taobao.index', compact('shop', 'products'));
@@ -23,7 +23,7 @@ class TaobaoController extends Controller
 		if ($shop != $product->shop->name) {
 			return redirect(route('taobao.show', ['shop' => $product->shop->name,]));
 		}
-		$product->load(['prices' => function($query) {
+		$product->load(['prices' => function ($query) {
 			$query->whereNotNull('prices');
 		},'shop']);
 		return view('taobao.show', compact('product'));

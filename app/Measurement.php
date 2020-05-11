@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Measurement extends Model
 {
-
 	protected $guarded = [];
 
 	public function getDataAttribute($value)
@@ -19,7 +18,7 @@ class Measurement extends Model
 		$this->attributes['data'] = json_encode($value, JSON_FORCE_OBJECT);
 	}
 
-  public function product()
+	public function product()
 	{
 		return $this->belongsTo(Product::class);
 	}

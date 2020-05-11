@@ -10,27 +10,27 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class OptimizeImage implements ShouldQueue
 {
-  use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 	protected $path;
 
-  /**
-   * Create a new job instance.
-   *
-   * @return void
-   */
-  public function __construct($path)
-  {
+	/**
+	 * Create a new job instance.
+	 *
+	 * @return void
+	 */
+	public function __construct($path)
+	{
 		$this->path = $path;
-  }
+	}
 
-  /**
-   * Execute the job.
-   *
-   * @return void
-   */
-  public function handle()
-  {
+	/**
+	 * Execute the job.
+	 *
+	 * @return void
+	 */
+	public function handle()
+	{
 		// $size_limit1 = 20 * 1024;
 		// $size_limit2 = 50 * 1024;
 
@@ -39,7 +39,7 @@ class OptimizeImage implements ShouldQueue
 		$w = $image->width();
 		$h = $image->height();
 		// too wide
-		if ( $h / $w < 1.35 ) {
+		if ($h / $w < 1.35) {
 			$diff = $this->diff($w, $h, $image);
 			if ($diff >= 100) {
 				$isCropped = false;
@@ -51,7 +51,7 @@ class OptimizeImage implements ShouldQueue
 						$isCropped = true;
 					}
 				}
-				if(!$isCropped) {
+				if (!$isCropped) {
 					\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
 					$path = $path.'_upsized.jpeg';
 				}
@@ -59,7 +59,7 @@ class OptimizeImage implements ShouldQueue
 				\Intervention\Image\Facades\Image::canvas($w, $w * 1.413, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
 			}
 			// too tall
-		} elseif ( $h / $w > 1.413) {
+		} elseif ($h / $w > 1.413) {
 			$diff = $this->diff($w, $h, $image);
 			if ($diff >= 100) {
 				\Intervention\Image\Facades\Image::canvas($h / 1.413, $h, '#ffffff')->insert($image, 'center')->save($path.'_upsized.jpeg', 100, 'jpeg');
@@ -82,12 +82,13 @@ class OptimizeImage implements ShouldQueue
 		// 	$height = ceil($width * 1.413);
 		// }
 		// do {
-			// $quality = $quality - 10;
+		// $quality = $quality - 10;
 		$image = \Intervention\Image\Facades\Image::make($path)->fit(800, 1130)->save(public_path('storage/'.$this->path).'_800.jpeg', 80);
 		// } while ($image->fileSize() > $size_limit2 && $quality > 30);
-  }
+	}
 
-	public function diff($w, $h, $image, $ratio = 1.413) {
+	public function diff($w, $h, $image, $ratio = 1.413)
+	{
 		if ($h / $w < $ratio) {
 			$x1 = ceil(($w - $h / $ratio) / 2);
 			$x2 = ceil($w - $x1);
