@@ -23,7 +23,7 @@ Route::get('following/retailers', 'RetailerController@following')->name('followi
 # Product model
 Route::get('products', 'ProductController@index')->name('products.index');
 Route::middleware('auth')->group(function () {
-	Route::middleware('admin')->group(function() {
+	Route::middleware('admin')->group(function () {
 		Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
 		Route::get('products/create', 'ProductController@create')->name('products.create')->middleware('admin');
 		Route::patch('products/{product}', 'ProductController@update')->name('products.update')->middleware('admin');
@@ -183,6 +183,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 // Google cloud health check
-Route::get('health', function() { return 'good'; });
+Route::get('health', function () {
+	return 'good';
+});
 
-Route::get('{slug}', function() { abort(404); })->where(['slug' => '.*']);
+Route::get('{slug}', function () {
+	abort(404);
+})->where(['slug' => '.*']);
