@@ -54,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	private const admin_user_ids = [1111111111, 4021500970, 8888888888];
 
+	// relationships
 	public function image()
 	{
 		return $this->belongsTo(Image::class);
@@ -61,6 +62,10 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function vendor()
 	{
 		return $this->belongsTo(Vendor::class);
+	}
+	public function addresses()
+	{
+		return $this->hasMany(Address::class);
 	}
 	public function following_vendors()
 	{

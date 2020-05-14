@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,9 +16,14 @@ use Illuminate\Support\Facades\Auth;
 
 Route::post('register', 'api\v1\RegisterController@register');
 
-Route::middleware(['auth:api', 'reseller:api'])->group(function() {
+Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::get('user', 'api\v1\UserController@show');
 	Route::post('user', 'api\v1\UserController@update');
+
+	Route::post('user/address', 'api\v1\AddressController@store');
+	Route::patch('user/address/{address}', 'api\v1\AddressController@update');
+	Route::delete('user/address/{address}', 'api\v1\AddressController@destroy');
+
 
 	Route::get('products', 'api\v1\ProductController@index');
 	Route::get('products/following', 'api\v1\ProductController@following');
