@@ -31,6 +31,8 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::post('products/{product}/follow', 'api\v1\ProductController@follow');
 	Route::post('products/{product}/unfollow', 'api\v1\ProductController@unfollow');
 
+	Route::post('orders', 'api\v1\OrderController@store');
+
 	Route::get('prices', 'api\v1\PriceController@index');
 	Route::post('/products/{product}/prices', 'api\v1\PriceController@store');
 	Route::patch('prices/{price}', 'api\v1\PriceController@update');
