@@ -37,8 +37,8 @@ class OrderController extends Controller
 	public function store(Request $request)
 	{
 		$data = $request->validate([
-			'productId' => 'required|exists:products,id',
-			'vendorId' => 'required|exists:vendors,id',
+			'product_id' => 'required|exists:products,id',
+			'vendor_id' => 'required|exists:vendors,id',
 			'size' => 'required|string',
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
