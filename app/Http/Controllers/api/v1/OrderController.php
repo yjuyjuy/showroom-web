@@ -41,15 +41,26 @@ class OrderController extends Controller
 			'vendorId' => 'required|exists:vendors,id',
 			'size' => 'required|string',
 			'is_direct' => 'required|boolean',
+			'address_id' => 'required|exists:addresses,id',
 		]);
+		$address = Address::find($data['address_id']);
+		unset($data['address_id']);
 		do {
 			$id = strtr(rtrim(base64_encode(random_bytes(3)), '='), '+/', '-_');
 		} while (Order::find($id));
-		$data = array_merge($data, (new AddressController())->validateRequest(), [
+		$data = array_merge([
 			'id' => $id,
 			'user_id' => auth()->user()->id,
+			'name' => $address->name,
+			'phone' => $address->phone,
+			'address1' => $address->address1,
+			'address2' => $address->address2,
+			'city' => $address->city,
+			'state' => $address->state,
+			'country' => $address->country,
+			'zip' => $address->zip,
 			'status' => 'created',
-		]);
+		], $data);
 		return Order::create($data)->load(['product', 'vendor']);
 	}
 
