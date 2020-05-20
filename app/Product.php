@@ -100,6 +100,10 @@ class Product extends Model
 	{
 		return $this->hasOne(Measurement::class);
 	}
+	public function orders()
+	{
+		return $this->hasMany(Order::class);
+	}
 	// Mutators
 	public function setCategoryAttribute($value)
 	{

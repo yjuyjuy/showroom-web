@@ -42,4 +42,8 @@ class Vendor extends Model
 	{
 		return $this->belongsToMany(User::class, 'reseller_vendor');
 	}
+	public function orders()
+	{
+		return $this->hasMany(Order::class);
+	}
 }
