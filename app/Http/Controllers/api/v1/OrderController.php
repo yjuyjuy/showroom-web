@@ -62,7 +62,9 @@ class OrderController extends Controller
 			'zip' => $address->zip,
 			'status' => 'created',
 		], $data);
-		return Order::create($data)->load(['product', 'product.images', 'vendor']);
+		return Order::create($data)->load([
+			'product', 'product.images', 'product.season', 'product.color', 'product.brand', 'vendor',
+		]);
 	}
 
 	/**
