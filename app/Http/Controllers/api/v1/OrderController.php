@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Order;
+use App\Product;
 use App\Address;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -41,17 +42,57 @@ class OrderController extends Controller
 			'product_id' => 'required|exists:products,id',
 			'vendor_id' => 'required|exists:vendors,id',
 			'size' => 'required|string',
+			'quantity' => 'required|integer|min:1',
+			'price' => 'required|number',
+			'shipping' => 'required|number',
+			'insurance' => 'required|number',
+			'total' => 'required|number',
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
 		]);
+		$price = Product::find($data['product_id'])->offers()->where('vendor_id', $data['vendor_id'])->first();
+		if (!array_key_exists($data['size'], $price)) {
+			return ['message' => $data['size']." size is not available"];
+		}
+		$price = $price[$data['size']];
+		if ($price != $data['price']) {
+			return ['message' => 'Prices don\'t match'];
+		}
+		
+		$shipping = 23;
+		if ($shipping != $data['shipping']) {
+			return ['message' => 'Shipping prices don\'t match'];
+		}
+
+		if ($price <= 500) {
+			$insurance = 1;
+		} elseif ($price <= 1000) {
+			$insurance = 2;
+		} else {
+			$insurance = round($price * 0.5) / 100;
+		}
+		if ($insurance != $data['insurance']) {
+			return ['message' => 'Insurance prices don\'t match'];
+		}
+
+		$total = round(($data['quantity'] * $price + $shipping + $insurance) * 100) / 100;
+		if ($total != $data['total']) {
+			return ['message' => 'Total prices don\'t match'];
+		}
+		
 		$address = Address::find($data['address_id']);
 		unset($data['address_id']);
+
 		do {
 			$id = strtr(rtrim(base64_encode(random_bytes(3)), '='), '+/', '-_');
 		} while (Order::find($id));
-		$data = array_merge([
+		
+		$data = array_merge($data, [
 			'id' => $id,
 			'user_id' => auth()->user()->id,
+			'shipping' => $shipping,
+			'insurance' => $insurance,
+			'total' => $total,
 			'name' => $address->name,
 			'phone' => $address->phone,
 			'address1' => $address->address1,
@@ -61,7 +102,7 @@ class OrderController extends Controller
 			'country' => $address->country,
 			'zip' => $address->zip,
 			'status' => 'created',
-		], $data);
+		]);
 		return $this->show(Order::create($data));
 	}
 
