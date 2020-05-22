@@ -84,7 +84,7 @@ class OrderController extends Controller
 		unset($data['address_id']);
 
 		do {
-			$id = strtr(rtrim(base64_encode(random_bytes(3)), '='), '+/', '-_');
+			$id = strtr(rtrim(base64_encode(random_bytes(6)), '='), '+/', '-_');
 		} while (Order::find($id));
 		
 		$data = array_merge($data, [
