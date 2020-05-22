@@ -117,6 +117,99 @@ class OrderController extends Controller
 		return $order->load(['product', 'product.brand', 'product.color', 'product.season', 'product.images', 'vendor',]);
 	}
 
+	public function confirm(Order $order)
+	{
+		$this->authorize('confirm', $order);
+		if ($order->status == 'created') {
+			$order->status = 'confirmed';
+			$order->confirmed_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
+	public function decline(Order $order)
+	{
+		$this->authorize('decline', $order);
+		if ($order->status == 'created') {
+			$order->status = 'closed';
+			$order->reason = 'out of stock';
+			$order->closed_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
+	public function receivePayment(Order $order)
+	{
+		$this->authorize('receivePayment', $order);
+		if ($order->status == 'confirmed') {
+			$order->status = 'paid';
+			$order->paid_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
+	public function pay(Order $order)
+	{
+		$this->authorize('pay', $order);
+		if ($order->status == 'confirmed') {
+			$order->status = 'paid';
+			$order->paid_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
+	public function ship(Order $order)
+	{
+		$this->authorize('ship', $order);
+		if ($order->status == 'paid') {
+			$order->status = 'shipped';
+			$order->tracking = request()->validate([
+				'tracking' => 'required|string',
+			])['tracking'];
+			$order->shipped_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
+	public function deliver(Order $order)
+	{
+		$this->authorize('deliver', $order);
+		if ($order->status == 'shipped') {
+			$order->status = 'delivered';
+			$order->delivered_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
+	public function complete(Order $order)
+	{
+		$this->authorize('complete', $order);
+		if ($order->status == 'delivered') {
+			$order->status = 'completed';
+			$order->completed_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
+	public function cancel(Order $order)
+	{
+		$this->authorize('cancel', $order);
+		if ($order->status == 'created' || $order->status == 'confirmed') {
+			$order->status = 'closed';
+			$order->reason = 'cancelled by customer';
+			$order->closed_at = now();
+			$order->save();
+		}
+		return $this->show($order);
+	}
+
 	/**
 	 * Show the form for editing the specified resource.
 	 *
