@@ -103,7 +103,7 @@ class OrderController extends Controller
 			'zip' => $address->zip,
 			'status' => 'created',
 		]);
-		return $this->show(Order::create($data));
+		return $this->show(Order::create($data)->refresh());
 	}
 
 	/**
