@@ -32,7 +32,7 @@ class CreateOrdersTable extends Migration
 			$table->string('state');
 			$table->string('country');
 			$table->string('zip');
-			$table->string('tracking');
+			$table->string('tracking')->nullable();
 			$table->boolean('is_direct');
 			$table->enum('status', ['created', 'confirmed', 'paid', 'shipped', 'delivered', 'completed', 'closed']);
 			$table->timestamp('confirmed_at')->nullable();
