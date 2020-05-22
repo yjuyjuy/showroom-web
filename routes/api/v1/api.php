@@ -32,6 +32,7 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::post('products/{product}/unfollow', 'api\v1\ProductController@unfollow');
 
 	Route::post('orders', 'api\v1\OrderController@store');
+	Route::get('orders/{order}', 'api\v1\OrderController@show');
 
 	Route::get('prices', 'api\v1\PriceController@index');
 	Route::post('/products/{product}/prices', 'api\v1\PriceController@store');

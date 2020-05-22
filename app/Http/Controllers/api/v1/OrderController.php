@@ -62,7 +62,7 @@ class OrderController extends Controller
 			'zip' => $address->zip,
 			'status' => 'created',
 		], $data);
-		return Order::create($data);
+		return $this->show(Order::create($data));
 	}
 
 	/**
@@ -73,7 +73,7 @@ class OrderController extends Controller
 	 */
 	public function show(Order $order)
 	{
-		//
+		return $order->load(['product', 'product.brand', 'product.color', 'product.season', 'product.images', 'vendor',]);
 	}
 
 	/**

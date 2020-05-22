@@ -19,6 +19,11 @@ class CreateOrdersTable extends Migration
 			$table->unsignedBigInteger('product_id');
 			$table->unsignedBigInteger('vendor_id');
 			$table->string('size');
+			$table->unsignedSmallInteger('quantity');
+			$table->unsignedDecimal('price', 10, 2);
+			$table->unsignedDecimal('shipping', 10, 2);
+			$table->unsignedDecimal('insurance', 10, 2);
+			$table->unsignedDecimal('total', 10, 2);
 			$table->string('name');
 			$table->string('phone');
 			$table->string('address1');
