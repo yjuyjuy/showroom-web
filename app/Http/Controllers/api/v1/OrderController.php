@@ -50,13 +50,11 @@ class OrderController extends Controller
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
 		]);
-		$price = Product::find($data['product_id'])->offers()->where('vendor_id', $data['vendor_id'])->first();
-		$data['size'] = (string)$data['size'];
-		if (!array_key_exists($data['size'], $price)) {
+		$offer = Product::find($data['product_id'])->offers()->where('vendor_id', $data['vendor_id'])->first();
+		if (!array_key_exists($data['size'], $offer->prices)) {
 			return ['message' => $data['size']." size is not available"];
 		}
-		$data['quantity'] = (int)$data['quantity'];
-		$price = $price[$data['size']];
+		$price = $offer->prices[$data['size']];
 		if ($price != $data['price']) {
 			return ['message' => 'Prices don\'t match'];
 		}
