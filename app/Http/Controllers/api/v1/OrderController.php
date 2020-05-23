@@ -103,7 +103,7 @@ class OrderController extends Controller
 			'zip' => $address->zip,
 			'status' => 'created',
 		]);
-		return $this->show(Order::create($data)->refresh());
+		return $this->show(Order::create($data));
 	}
 
 	/**
@@ -114,7 +114,7 @@ class OrderController extends Controller
 	 */
 	public function show(Order $order)
 	{
-		return $order->load(['product', 'product.brand', 'product.color', 'product.season', 'product.images', 'vendor',]);
+		return $order->fresh()->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.images', 'vendor',]);
 	}
 
 	public function confirm(Order $order)
@@ -131,11 +131,14 @@ class OrderController extends Controller
 	public function decline(Order $order)
 	{
 		$this->authorize('decline', $order);
-		if ($order->status == 'created') {
+		if ($order->status == 'created' || $order->status == 'confirmed') {
 			$order->status = 'closed';
 			$order->reason = 'out of stock';
 			$order->closed_at = now();
 			$order->save();
+		} elseif ($order->status == 'paid') {
+			// TODO: work out how to compensate customer
+			return ['message' => '请联系管理员',];
 		}
 		return $this->show($order);
 	}
@@ -143,17 +146,6 @@ class OrderController extends Controller
 	public function receivePayment(Order $order)
 	{
 		$this->authorize('receivePayment', $order);
-		if ($order->status == 'confirmed') {
-			$order->status = 'paid';
-			$order->paid_at = now();
-			$order->save();
-		}
-		return $this->show($order);
-	}
-
-	public function pay(Order $order)
-	{
-		$this->authorize('pay', $order);
 		if ($order->status == 'confirmed') {
 			$order->status = 'paid';
 			$order->paid_at = now();
