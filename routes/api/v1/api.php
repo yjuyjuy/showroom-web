@@ -33,6 +33,13 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 
 	Route::post('orders', 'api\v1\OrderController@store');
 	Route::get('orders/{order}', 'api\v1\OrderController@show');
+	Route::patch('orders/{order}/confirm', 'api\v1\OrderController@confirm');
+	Route::patch('orders/{order}/decline', 'api\v1\OrderController@decline');
+	Route::patch('orders/{order}/receivePayment', 'api\v1\OrderController@receivePayment');
+	Route::patch('orders/{order}/ship', 'api\v1\OrderController@ship');
+	Route::patch('orders/{order}/deliver', 'api\v1\OrderController@deliver');
+	Route::patch('orders/{order}/complete', 'api\v1\OrderController@complete');
+	Route::patch('orders/{order}/cancel', 'api\v1\OrderController@cancel');
 
 	Route::get('prices', 'api\v1\PriceController@index');
 	Route::post('/products/{product}/prices', 'api\v1\PriceController@store');
