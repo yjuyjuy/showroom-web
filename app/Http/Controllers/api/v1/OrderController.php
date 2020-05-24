@@ -10,6 +10,16 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+	const ADDRESS = [
+		'name' => 'Dope',
+		'phone' => '18077223344',
+		'address1' => '东区博爱四路优雅翠园',
+		'address2' => '',
+		'city' => '中山市',
+		'state' => '广东省',
+		'country' => '中国',
+		'zip' => '528400',
+	];
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -126,7 +136,18 @@ class OrderController extends Controller
 	 */
 	public function show(Order $order)
 	{
-		return $order->fresh()->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.image', 'vendor',]);
+		$order->refresh();
+		if (auth()->user()->vendor_id == $order->vendor_id && !$order->is_direct) {
+			$order->name = self::ADDRESS['name'];
+			$order->phone = self::ADDRESS['phone'];
+			$order->address1 = self::ADDRESS['address1'];
+			$order->address2 = self::ADDRESS['address2'];
+			$order->city = self::ADDRESS['city'];
+			$order->state = self::ADDRESS['state'];
+			$order->country = self::ADDRESS['country'];
+			$order->zip = self::ADDRESS['zip'];
+		}
+		return $order->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.image', 'vendor',]);
 	}
 
 	public function confirm(Order $order)
