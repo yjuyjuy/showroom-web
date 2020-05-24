@@ -18,14 +18,18 @@ class OrderController extends Controller
 	public function index()
 	{
 		$ITEMS_PER_PAGE = 12;
-		
+
 		$query = auth()->user()->orders();
 		
 		$total_pages = ceil($query->count() / $ITEMS_PER_PAGE);
 		$page = min(max(request()->query('page', 1), 1), $total_pages);
 		$orders = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 
-		return $orders->load(['product', 'product.brand', 'product.season', 'product.color', 'product.image', 'vendor']);
+		return [
+			'orders' => $orders->load(['product', 'product.brand', 'product.season', 'product.color', 'product.image', 'vendor']),
+			'page' => $page,
+			'total_pages' => $total_pages,
+		];
 	}
 
 	/**
