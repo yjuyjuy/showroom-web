@@ -114,7 +114,7 @@ class OrderController extends Controller
 	 */
 	public function show(Order $order)
 	{
-		return $order->fresh()->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.images', 'vendor',]);
+		return $order->fresh()->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.image', 'vendor',]);
 	}
 
 	public function confirm(Order $order)
