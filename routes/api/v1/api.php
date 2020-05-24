@@ -31,6 +31,7 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::post('products/{product}/follow', 'api\v1\ProductController@follow');
 	Route::post('products/{product}/unfollow', 'api\v1\ProductController@unfollow');
 
+	Route::get('orders', 'api\v1\OrderController@index');
 	Route::post('orders', 'api\v1\OrderController@store');
 	Route::get('orders/{order}', 'api\v1\OrderController@show');
 	Route::patch('orders/{order}/confirm', 'api\v1\OrderController@confirm');

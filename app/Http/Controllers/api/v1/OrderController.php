@@ -17,7 +17,7 @@ class OrderController extends Controller
 	 */
 	public function index()
 	{
-		//
+		return auth()->user()->orders->load(['product', 'product.brand', 'product.season', 'product.color', 'product.image', 'vendor']);
 	}
 
 	/**
