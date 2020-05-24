@@ -19,7 +19,7 @@ class OrderController extends Controller
 	{
 		$ITEMS_PER_PAGE = 12;
 
-		$query = auth()->user()->orders();
+		$query = auth()->user()->orders()->orderByDesc('created_at');
 		
 		$total_pages = ceil($query->count() / $ITEMS_PER_PAGE);
 		$page = min(max(request()->query('page', 1), 1), $total_pages);
