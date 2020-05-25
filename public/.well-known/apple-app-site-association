@@ -1,0 +1,24 @@
+{
+    "applinks": {
+        "details": [
+            {
+                "appIDs": [
+                    "com.yjuyjuy.showroomseller",
+                    "com.yjuyjuy.showroomcustomer"
+                ],
+                "components": [
+                    {
+                        "/": "*",
+                        "comment": "Matches any URL whose path starts with /buy/"
+                    }
+                ]
+            }
+        ]
+    },
+    "webcredentials": {
+        "apps": [
+            "com.yjuyjuy.showroomseller",
+            "com.yjuyjuy.showroomcustomer"
+        ]
+    }
+}
