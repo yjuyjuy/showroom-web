@@ -35,7 +35,7 @@ class OrderController extends Controller
 			$query = auth()->user()->orders()->orderByDesc('created_at');
 		}
 
-		if ($status = request()->input('status') && in_array($status, ['created', 'confirmed', 'paid', 'shipped'])) {
+		if (($status = request()->input('status')) && in_array($status, ['created', 'confirmed', 'paid', 'shipped'])) {
 			$query->where('status', $status);
 		}
 		
