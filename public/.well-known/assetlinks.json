@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.yjuyjuy.showroomseller",
+      "sha256_cert_fingerprints": [
+        "83:F2:8E:88:AC:AA:75:42:FE:97:B8:0B:33:3E:51:CE:7F:5C:F6:CC:C9:66:BB:C8:B4:CB:FF:4D:B4:D0:2B:F3"
+      ]
+    }
+  }
+]
