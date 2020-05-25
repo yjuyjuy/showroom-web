@@ -29,7 +29,7 @@ class OrderController extends Controller
 	{
 		$ITEMS_PER_PAGE = 12;
 
-		if (request()->input('as_vendor', false) && $vendor = auth()->user()->vendor) {
+		if (request()->input('as_vendor') && $vendor = auth()->user()->vendor) {
 			$query = $vendor->orders()->orderByDesc('created_at');
 		} else {
 			$query = auth()->user()->orders()->orderByDesc('created_at');
