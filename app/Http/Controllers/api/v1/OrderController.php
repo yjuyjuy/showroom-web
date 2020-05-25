@@ -29,7 +29,15 @@ class OrderController extends Controller
 	{
 		$ITEMS_PER_PAGE = 12;
 
-		$query = auth()->user()->orders()->orderByDesc('created_at');
+		if (request()->input('as_vendor', false) && $vendor = auth()->user()->vendor) {
+			$query = $vendor->orders()->orderByDesc('created_at');
+		} else {
+			$query = auth()->user()->orders()->orderByDesc('created_at');
+		}
+
+		if ($status = request()->input('status') && in_array($status, ['created', 'confirmed', 'paid', 'shipped'])) {
+			$query->where('status', $status);
+		}
 		
 		$total_pages = ceil($query->count() / $ITEMS_PER_PAGE);
 		$page = min(max(request()->query('page', 1), 1), $total_pages);
