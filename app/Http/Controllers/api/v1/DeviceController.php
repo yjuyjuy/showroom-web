@@ -44,7 +44,8 @@ class DeviceController extends Controller
 		]);
 		$data['user_id'] = $user->id;
 		$data['app'] = 'com.yjuyjuy.showroomseller';
-		$device = Device::create($data);
+		$data['updated_at'] = now();
+		$device = Device::updateOrCreate(['token'=> $data['token']], $data);
 		return ['success' => true,];
 	}
 
