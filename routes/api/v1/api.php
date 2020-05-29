@@ -31,6 +31,7 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::patch('user/address/{address}', 'api\v1\AddressController@update');
 	Route::delete('user/address/{address}', 'api\v1\AddressController@destroy');
 
+	Route::post('devices', 'api\v1\DeviceController@store');
 
 	Route::get('products', 'api\v1\ProductController@index');
 	Route::get('products/following', 'api\v1\ProductController@following');
