@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="d-flex flex-column align-items-center">
-	<div class="d-flex">
+	<div class="d-flex align-items-start">
 		<form id="filter-vendor-form" method="get" target="_self" class="d-none"></form>
 		
 		<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
@@ -21,6 +21,8 @@
 		<span class="mdc-floating-label">{{ __('brand') }}</span>
 		<div class="mdc-line-ripple"></div>
 		</div>
+
+		<div class="px-3"></div>
 
 		@if(auth()->user()->is_admin)
 			<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
