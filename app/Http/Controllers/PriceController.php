@@ -20,7 +20,7 @@ class PriceController extends Controller
 			$vendor = $user->vendor;
 		}
 		$brand = $request->validate([
-			'brand.*' => 'sometimes|exists:brands,id',
+			'brand' => 'sometimes|exists:brands,id',
 		])['brand'] ?? null;
 		if ($brand) {
 			$products = $vendor->products()->where('brand_id', $brand)->get();
