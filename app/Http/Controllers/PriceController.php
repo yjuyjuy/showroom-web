@@ -33,6 +33,7 @@ class PriceController extends Controller
 		$products = $products->sortBy(function ($product) {
 			return $product->prices->first()->created_at;
 		})->values();
+		$request->flash();
 		return view('prices.index', compact('vendor', 'products'));
 	}
 
