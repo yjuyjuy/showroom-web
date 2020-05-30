@@ -22,7 +22,7 @@
 		<div class="mdc-line-ripple"></div>
 		</div>
 
-		<div class="px-3"></div>
+		<div class="px-2"></div>
 
 		@if(auth()->user()->is_admin)
 			<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
