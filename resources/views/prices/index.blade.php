@@ -11,7 +11,7 @@
 	  <div class="mdc-select__selected-text"></div>
 	  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
 	    <ul class="mdc-list">
-			@foreach($products->pluck('brand')->unique() as $brand)
+			@foreach(\App\Brand::find($vendor->products()->pluck('brand_id')->unique()) as $brand)
 	      		<li class="mdc-list-item" data-value="{{ $brand->id }}">{{ $brand->name }}</li>
 			@endforeach
 	    </ul>
