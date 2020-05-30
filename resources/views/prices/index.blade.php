@@ -12,7 +12,7 @@
 	  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
 	    <ul class="mdc-list">
 			@foreach(\App\Brand::find($vendor->products()->pluck('brand_id')->unique()) as $brand)
-	      		<li class="mdc-list-item" data-value="{{ $brand->id }}">{{ $brand->name }}</li>
+	      		<li class="mdc-list-item {{ old('brand') == $brand->id ? 'mdc-list-item--selected' : '' }}" data-value="{{ $brand->id }}">{{ $brand->name }}</li>
 			@endforeach
 	    </ul>
 	  </div>
@@ -28,7 +28,7 @@
 		  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
 		    <ul class="mdc-list">
 					@foreach(\App\Vendor::all() as $v)
-		      <li class="mdc-list-item" data-value="{{ $v->id }}">{{ $v->name }}</li>
+		      <li class="mdc-list-item {{ old('vendor') == $v->id ? 'mdc-list-item--selected' : '' }}" data-value="{{ $v->id }}">{{ $v->name }}</li>
 		      @endforeach
 		    </ul>
 		  </div>

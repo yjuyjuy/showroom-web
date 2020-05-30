@@ -10,16 +10,15 @@ use Illuminate\Http\Request;
 
 class PriceController extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
 		$user = auth()->user();
-		if ($user->is_admin && ($vendor = request()->input('vendor'))) {
+		if ($user->is_admin && ($vendor = $request->input('vendor'))) {
 			$vendor = Vendor::find($vendor);
-			request()->flash();
 		} else {
 			$vendor = $user->vendor;
 		}
-		$brand = request()->validate([
+		$brand = $request->validate([
 			'brand' => 'nullable|exists:brands,id',
 		])['brand'] ?? null;
 		if ($brand) {
