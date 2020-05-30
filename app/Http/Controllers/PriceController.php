@@ -19,7 +19,14 @@ class PriceController extends Controller
 		} else {
 			$vendor = $user->vendor;
 		}
-		$products = $vendor->products;
+		$brand = $request->validate([
+			'brand.*' => 'sometimes|exists:brands,id',
+		])['brand'] ?? null;
+		if ($brand) {
+			$products = $vendor->products()->where('brand_id', $brand)->get();
+		} else {
+			$products = $vendor->products;
+		}
 		$products->loadMissing([
 			'images', 'brand', 'prices' => function ($query) use ($vendor) {
 				$query->where('vendor_id', $vendor->id)->orderBy('created_at', 'desc');
