@@ -19,7 +19,7 @@ class PriceController extends Controller
 		} else {
 			$vendor = $user->vendor;
 		}
-		$brand = $request->validate([
+		$brand = request()->validate([
 			'brand' => 'sometimes|exists:brands,id',
 		])['brand'] ?? null;
 		if ($brand) {
