@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="d-flex flex-column align-items-center">
-	<div class="d-flex align-items-start flex-wrap">
+	<div class="d-flex mx-2 align-items-start flex-wrap">
 		<form id="filter-vendor-form" method="get" target="_self" class="d-none"></form>
 		
 		<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
