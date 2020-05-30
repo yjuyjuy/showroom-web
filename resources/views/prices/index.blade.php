@@ -4,39 +4,41 @@
 
 @section('content')
 <div class="d-flex flex-column align-items-center">
-	<form id="filter-vendor-form" method="get" target="_self" class="d-none"></form>
-	<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
-	  <input type="hidden" name="brand" form="filter-vendor-form">
-	  <i class="mdc-select__dropdown-icon"></i>
-	  <div class="mdc-select__selected-text"></div>
-	  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-	    <ul class="mdc-list">
-			@foreach(\App\Brand::find($vendor->products()->pluck('brand_id')->unique()) as $brand)
-	      		<li class="mdc-list-item {{ old('brand') == $brand->id ? 'mdc-list-item--selected' : '' }}" data-value="{{ $brand->id }}">{{ $brand->name }}</li>
-			@endforeach
-	    </ul>
-	  </div>
-	  <span class="mdc-floating-label">{{ __('brand') }}</span>
-	  <div class="mdc-line-ripple"></div>
-	</div>
-
-	@if(auth()->user()->is_admin)
+	<div class="d-flex">
+		<form id="filter-vendor-form" method="get" target="_self" class="d-none"></form>
+		
 		<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
-		  <input type="hidden" name="vendor" form="filter-vendor-form">
-		  <i class="mdc-select__dropdown-icon"></i>
-		  <div class="mdc-select__selected-text"></div>
-		  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-		    <ul class="mdc-list">
-					@foreach(\App\Vendor::all() as $v)
-		      <li class="mdc-list-item {{ old('vendor') == $v->id ? 'mdc-list-item--selected' : '' }}" data-value="{{ $v->id }}">{{ $v->name }}</li>
-		      @endforeach
-		    </ul>
-		  </div>
-		  <span class="mdc-floating-label">{{ __('vendor') }}</span>
-		  <div class="mdc-line-ripple"></div>
+		<input type="hidden" name="brand" form="filter-vendor-form">
+		<i class="mdc-select__dropdown-icon"></i>
+		<div class="mdc-select__selected-text"></div>
+		<div class="mdc-select__menu mdc-menu mdc-menu-surface">
+			<ul class="mdc-list">
+				@foreach(\App\Brand::find($vendor->products()->pluck('brand_id')->unique()) as $brand)
+					<li class="mdc-list-item {{ old('brand') == $brand->id ? 'mdc-list-item--selected' : '' }}" data-value="{{ $brand->id }}">{{ $brand->name }}</li>
+				@endforeach
+			</ul>
 		</div>
-	@endif
+		<span class="mdc-floating-label">{{ __('brand') }}</span>
+		<div class="mdc-line-ripple"></div>
+		</div>
 
+		@if(auth()->user()->is_admin)
+			<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
+			<input type="hidden" name="vendor" form="filter-vendor-form">
+			<i class="mdc-select__dropdown-icon"></i>
+			<div class="mdc-select__selected-text"></div>
+			<div class="mdc-select__menu mdc-menu mdc-menu-surface">
+				<ul class="mdc-list">
+						@foreach(\App\Vendor::all() as $v)
+				<li class="mdc-list-item {{ old('vendor') == $v->id ? 'mdc-list-item--selected' : '' }}" data-value="{{ $v->id }}">{{ $v->name }}</li>
+				@endforeach
+				</ul>
+			</div>
+			<span class="mdc-floating-label">{{ __('vendor') }}</span>
+			<div class="mdc-line-ripple"></div>
+			</div>
+		@endif
+	</div>
 	@foreach($products as $product)
 	<div class="container mb-4 w-100">
 		<div class="">
