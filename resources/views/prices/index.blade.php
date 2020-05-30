@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex flex-column align-items-center">
 	<form id="filter-vendor-form" method="get" target="_self" class="d-none"></form>
-	<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="change-vendor-form">
+	<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
 	  <input type="hidden" name="brand" form="filter-vendor-form">
 	  <i class="mdc-select__dropdown-icon"></i>
 	  <div class="mdc-select__selected-text"></div>
