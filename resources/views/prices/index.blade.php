@@ -4,9 +4,25 @@
 
 @section('content')
 <div class="d-flex flex-column align-items-center">
+	<form id="filter-vendor-form" method="get" target="_self" class="d-none"></form>
+	<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="change-vendor-form">
+	  <input type="hidden" name="brand" form="filter-vendor-form">
+	  <i class="mdc-select__dropdown-icon"></i>
+	  <div class="mdc-select__selected-text"></div>
+	  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+	    <ul class="mdc-list">
+			@foreach(\App\Brand::all() as $brand)
+	      		<li class="mdc-list-item" data-value="{{ $brand->id }}">{{ $brand->name }}</li>
+			@endforeach
+	    </ul>
+	  </div>
+	  <span class="mdc-floating-label">{{ __('brand') }}</span>
+	  <div class="mdc-line-ripple"></div>
+	</div>
+
 	@if(auth()->user()->is_admin)
-		<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="change-vendor-form">
-		  <input type="hidden" name="vendor" form="change-vendor-form">
+		<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
+		  <input type="hidden" name="vendor" form="filter-vendor-form">
 		  <i class="mdc-select__dropdown-icon"></i>
 		  <div class="mdc-select__selected-text"></div>
 		  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -19,7 +35,6 @@
 		  <span class="mdc-floating-label">{{ __('vendor') }}</span>
 		  <div class="mdc-line-ripple"></div>
 		</div>
-		<form id="change-vendor-form" method="get" target="_self" class="d-none"></form>
 	@endif
 
 	@foreach($products as $product)
