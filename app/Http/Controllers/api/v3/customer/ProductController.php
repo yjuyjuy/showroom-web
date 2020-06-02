@@ -104,11 +104,7 @@ class ProductController extends Controller
 			'brand', 'season', 'color', 'category', 'measurement',
 			'retails' =>  function ($query) use ($user) {
 				$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
-			},
-			'retails.retailer',
-			'images' => function ($query) {
-				$query->orderBy('order', 'asc');
-			},
+			}, 'retails.retailer', 'images',
 		]);
 	}
 

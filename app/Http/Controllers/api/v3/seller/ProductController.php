@@ -105,11 +105,7 @@ class ProductController extends Controller
 			'prices.vendor',
 			'offers' => function ($query) use ($user) {
 				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
-			},
-			'offers.vendor',
-			'images' => function ($query) {
-				$query->orderBy('order', 'asc');
-			},
+			}, 'offers.vendor', 'images',
 		]);
 	}
 
