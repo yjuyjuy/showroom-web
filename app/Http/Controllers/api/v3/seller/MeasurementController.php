@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\api\v3\seller;
 
 use Illuminate\Http\Request;
-use App\Product;
+use App\Http\Controllers\Controller;
 use App\Measurement;
+use App\Product;
 
 class MeasurementController extends Controller
 {
