@@ -12,12 +12,22 @@ use Illuminate\Support\Facades\Auth;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('version', function () {
+	return [
+		'min' => '0.3.1',
+		'current' => '0.3.1',
+	];
+});
+
 Route::post('register', 'api\v3\customer\RegisterController@register');
 
 Route::middleware(['auth:api'])->group(function() {
 	Route::get('user', 'api\v3\customer\UserController@show');
 	Route::post('user', 'api\v3\customer\UserController@update');
 
+	Route::post('devices', 'api\v3\customer\DeviceController@store');
+	
 	Route::get('products', 'api\v3\customer\ProductController@index');
 	Route::get('products/following', 'api\v3\customer\ProductController@following');
 	Route::get('products/{product}', 'api\v3\customer\ProductController@show');

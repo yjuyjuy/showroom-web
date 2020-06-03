@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\v3\seller;
+namespace App\Http\Controllers\api\v3\customer;
 
 use App\Device;
 use App\Http\Controllers\Controller;
@@ -89,7 +89,7 @@ class DeviceController extends Controller
 	 * @param  \App\Device  $device
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($token)
+	public function destroy(Device $device)
 	{
 		$device = Device::find($token);
 		if ($device) $device->delete();
