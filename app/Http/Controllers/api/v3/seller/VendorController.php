@@ -16,6 +16,10 @@ class VendorController extends Controller
 			'vendors' => Vendor::with('image')->get(),
 		];
 	}
+	public function show(Vendor $vendor)
+	{
+		return $vendor;
+	}
 	public function follow($vendorId)
 	{
 		if (Vendor::find($vendorId)) {
