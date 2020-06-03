@@ -34,6 +34,13 @@ Route::middleware(['auth:api'])->group(function() {
 	Route::post('products/{product}/follow', 'api\v3\customer\ProductController@follow');
 	Route::post('products/{product}/unfollow', 'api\v3\customer\ProductController@unfollow');
 
+	Route::get('orders', 'api\v3\customer\OrderController@index');
+	Route::post('orders', 'api\v3\customer\OrderController@store');
+	Route::get('orders/{order}', 'api\v3\customer\OrderController@show');
+	Route::patch('orders/{order}/deliver', 'api\v3\customer\OrderController@deliver');
+	Route::patch('orders/{order}/complete', 'api\v3\customer\OrderController@complete');
+	Route::patch('orders/{order}/cancel', 'api\v3\customer\OrderController@cancel');
+
 	Route::get('prices', 'api\v3\customer\RetailController@index');
 
 	Route::get('retailers', 'api\v3\customer\RetailerController@index');
