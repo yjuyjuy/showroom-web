@@ -57,4 +57,8 @@ class Retailer extends Model
 	{
 		return $this->hasOne(TaobaoShop::class, 'retailer_id', 'id');
 	}
+	public function orders()
+	{
+		return $this->morphMany(Order::class, 'seller');
+	}
 }

@@ -23,9 +23,9 @@ class Order extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	public function vendor()
+	public function seller()
 	{
-		return $this->belongsTo(Vendor::class);
+		return $this->morphTo();
 	}
 
 	public function product()
