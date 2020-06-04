@@ -48,7 +48,7 @@ class OrderController extends Controller
 	{
 		$data = $request->validate([
 			'product_id' => 'required|exists:products,id',
-			'retailer_id' => 'required|exists:retailers,id',
+			'seller_id' => 'required|exists:retailers,id',
 			'size' => 'required|string',
 			'quantity' => 'required|integer|min:1',
 			'price' => 'required|numeric',
@@ -58,8 +58,8 @@ class OrderController extends Controller
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
 		]);
-		$retailer = Retailer::find($data['retailer_id']);
-		unset($data['retailer_id']);
+		$retailer = Retailer::find($data['seller_id']);
+		unset($data['seller_id']);
 		$data['seller_type'] = Retailer::class;
 		$data['seller_id'] = $retailer->id;
 

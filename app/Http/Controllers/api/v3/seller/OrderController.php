@@ -69,7 +69,7 @@ class OrderController extends Controller
 	{
 		$data = $request->validate([
 			'product_id' => 'required|exists:products,id',
-			'vendor_id' => 'required|exists:vendors,id',
+			'seller_id' => 'required|exists:vendors,id',
 			'size' => 'required|string',
 			'quantity' => 'required|integer|min:1',
 			'price' => 'required|numeric',
@@ -79,8 +79,8 @@ class OrderController extends Controller
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
 		]);
-		$vendor = Vendor::find($data['vendor_id']);
-		unset($data['vendor_id']);
+		$vendor = Vendor::find($data['seller_id']);
+		unset($data['seller_id']);
 		$data['seller_type'] = Vendor::class;
 		$data['seller_id'] = $vendor->id;
 
