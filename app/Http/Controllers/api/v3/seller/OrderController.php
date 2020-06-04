@@ -200,12 +200,12 @@ class OrderController extends Controller
 	public function ship(Order $order)
 	{
 		$this->authorize('ship', $order);
-		if ($order->status == 'paid') {
+		if ($order->status == 'paid' || $order->status == 'shipped') {
 			$order->status = 'shipped';
 			$order->tracking = request()->validate([
 				'tracking' => 'required|string',
 			])['tracking'];
-			$order->shipped_at = now();
+			$order->shipped_at = $order->shipped_at ?? now();
 			$order->save();
 		}
 		return $this->show($order);
