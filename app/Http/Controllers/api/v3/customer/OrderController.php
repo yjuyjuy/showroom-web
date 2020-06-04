@@ -60,7 +60,7 @@ class OrderController extends Controller
 		]);
 		$data['seller_type'] = Retailer::class;
 
-		$retail = Product::find($data['product_id'])->retails()->where('retailer_id', $retailer->id)->first();
+		$retail = Product::find($data['product_id'])->retails()->where('retailer_id', $data['seller_id'])->first();
 		if (!array_key_exists($data['size'], $retail->prices)) {
 			return ['message' => $data['size']." size is not available"];
 		}

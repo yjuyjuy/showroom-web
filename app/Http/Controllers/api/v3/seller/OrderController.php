@@ -81,7 +81,7 @@ class OrderController extends Controller
 		]);
 		$data['seller_type'] = Vendor::class;
 
-		$offer = Product::find($data['product_id'])->offers()->where('vendor_id', $vendor->id)->first();
+		$offer = Product::find($data['product_id'])->offers()->where('vendor_id', $data['seller_id'])->first();
 		if (!array_key_exists($data['size'], $offer->prices)) {
 			return ['message' => $data['size']." size is not available"];
 		}
