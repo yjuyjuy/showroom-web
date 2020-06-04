@@ -27,6 +27,7 @@ Route::middleware(['auth:api'])->group(function() {
 	Route::post('user', 'api\v3\customer\UserController@update');
 
 	Route::post('devices', 'api\v3\customer\DeviceController@store');
+	Route::delete('devices/{token}', 'api\v3\customer\DeviceController@destroy');
 	
 	Route::get('products', 'api\v3\customer\ProductController@index');
 	Route::get('products/following', 'api\v3\customer\ProductController@following');

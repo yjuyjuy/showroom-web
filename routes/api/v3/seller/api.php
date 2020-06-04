@@ -32,6 +32,7 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::delete('user/address/{address}', 'api\v3\seller\AddressController@destroy');
 
 	Route::post('devices', 'api\v3\seller\DeviceController@store');
+	Route::delete('devices/{token}', 'api\v3\seller\DeviceController@destroy');
 
 	Route::get('products', 'api\v3\seller\ProductController@index');
 	Route::get('products/following', 'api\v3\seller\ProductController@following');
