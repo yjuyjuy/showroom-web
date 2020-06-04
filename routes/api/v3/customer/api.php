@@ -26,6 +26,10 @@ Route::middleware(['auth:api'])->group(function() {
 	Route::get('user', 'api\v3\customer\UserController@show');
 	Route::post('user', 'api\v3\customer\UserController@update');
 
+	Route::post('user/address', 'api\v3\seller\AddressController@store');
+	Route::patch('user/address/{address}', 'api\v3\seller\AddressController@update');
+	Route::delete('user/address/{address}', 'api\v3\seller\AddressController@destroy');
+
 	Route::post('devices', 'api\v3\customer\DeviceController@store');
 	Route::delete('devices/{token}', 'api\v3\customer\DeviceController@destroy');
 	
