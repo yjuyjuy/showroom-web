@@ -58,10 +58,7 @@ class OrderController extends Controller
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
 		]);
-		$retailer = Retailer::find($data['seller_id']);
-		unset($data['seller_id']);
 		$data['seller_type'] = Retailer::class;
-		$data['seller_id'] = $retailer->id;
 
 		$retail = Product::find($data['product_id'])->retails()->where('retailer_id', $retailer->id)->first();
 		if (!array_key_exists($data['size'], $retail->prices)) {

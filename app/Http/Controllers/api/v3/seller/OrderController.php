@@ -79,10 +79,7 @@ class OrderController extends Controller
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
 		]);
-		$vendor = Vendor::find($data['seller_id']);
-		unset($data['seller_id']);
 		$data['seller_type'] = Vendor::class;
-		$data['seller_id'] = $vendor->id;
 
 		$offer = Product::find($data['product_id'])->offers()->where('vendor_id', $vendor->id)->first();
 		if (!array_key_exists($data['size'], $offer->prices)) {
