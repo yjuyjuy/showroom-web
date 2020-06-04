@@ -89,7 +89,7 @@ class DeviceController extends Controller
 	 * @param  \App\Device  $device
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Device $device)
+	public function destroy($token)
 	{
 		$device = Device::find($token);
 		if ($device) $device->delete();
