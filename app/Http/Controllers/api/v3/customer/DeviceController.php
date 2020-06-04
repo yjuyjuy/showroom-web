@@ -43,7 +43,7 @@ class DeviceController extends Controller
 			'os' => ['required', 'string', Rule::in(['ios', 'android']) ],
 		]);
 		$data['user_id'] = $user->id;
-		$data['app'] = 'com.yjuyjuy.showroomseller';
+		$data['app'] = 'com.yjuyjuy.showroomcustomer';
 		$data['updated_at'] = now();
 		$device = Device::updateOrCreate(['token'=> $data['token']], $data);
 		return ['success' => true,];
