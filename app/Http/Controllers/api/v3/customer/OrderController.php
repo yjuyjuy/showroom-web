@@ -3,23 +3,15 @@
 namespace App\Http\Controllers\api\v3\customer;
 
 use App\Order;
+use App\Vendor;
 use App\Product;
 use App\Address;
+use App\Retailer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-	const ADDRESS = [
-		'name' => 'Dope',
-		'phone' => '18077223344',
-		'address1' => '东区博爱四路优雅翠园',
-		'address2' => '',
-		'city' => '中山市',
-		'state' => '广东省',
-		'country' => '中国',
-		'zip' => '528400',
-	];
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -29,11 +21,7 @@ class OrderController extends Controller
 	{
 		$ITEMS_PER_PAGE = 12;
 
-		if (request()->input('as_vendor') && $vendor = auth()->user()->vendor) {
-			$query = $vendor->orders()->orderByDesc('created_at');
-		} else {
-			$query = auth()->user()->orders()->orderByDesc('created_at');
-		}
+		$query = auth()->user()->orders()->orderByDesc('created_at');
 
 		if (($status = request()->input('status')) && in_array($status, ['created', 'confirmed', 'paid', 'shipped'])) {
 			$query->where('status', $status);
@@ -44,20 +32,10 @@ class OrderController extends Controller
 		$orders = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 
 		return [
-			'orders' => $orders->load(['product', 'product.brand', 'product.season', 'product.color', 'product.image', 'vendor']),
+			'orders' => $orders->load(['product', 'product.brand', 'product.season', 'product.color', 'product.image', 'seller']),
 			'page' => $page,
 			'total_pages' => $total_pages,
 		];
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create()
-	{
-		//
 	}
 
 	/**
@@ -70,7 +48,7 @@ class OrderController extends Controller
 	{
 		$data = $request->validate([
 			'product_id' => 'required|exists:products,id',
-			'vendor_id' => 'required|exists:vendors,id',
+			'retailer_id' => 'required|exists:retailers,id',
 			'size' => 'required|string',
 			'quantity' => 'required|integer|min:1',
 			'price' => 'required|numeric',
@@ -80,11 +58,16 @@ class OrderController extends Controller
 			'is_direct' => 'required|boolean',
 			'address_id' => 'required|exists:addresses,id',
 		]);
-		$offer = Product::find($data['product_id'])->offers()->where('vendor_id', $data['vendor_id'])->first();
-		if (!array_key_exists($data['size'], $offer->prices)) {
+		$retailer = Retailer::find($data['retailer_id']);
+		unset($data['retailer_id']);
+		$data['seller_type'] = Retailer::class;
+		$data['seller_id'] = $retailer->id;
+
+		$retail = Product::find($data['product_id'])->retails()->where('retailer_id', $retailer->id)->first();
+		if (!array_key_exists($data['size'], $retail->prices)) {
 			return ['message' => $data['size']." size is not available"];
 		}
-		$price = $offer->prices[$data['size']];
+		$price = $retail->prices[$data['size']];
 		if ($price != $data['price']) {
 			return ['message' => 'Prices don\'t match'];
 		}
@@ -145,17 +128,8 @@ class OrderController extends Controller
 	public function show(Order $order)
 	{
 		$order->refresh();
-		if (auth()->user()->vendor_id == $order->vendor_id && !$order->is_direct) {
-			$order->name = self::ADDRESS['name'];
-			$order->phone = self::ADDRESS['phone'];
-			$order->address1 = self::ADDRESS['address1'];
-			$order->address2 = self::ADDRESS['address2'];
-			$order->city = self::ADDRESS['city'];
-			$order->state = self::ADDRESS['state'];
-			$order->country = self::ADDRESS['country'];
-			$order->zip = self::ADDRESS['zip'];
-		}
-		return $order->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.image', 'vendor',]);
+		$user = auth()->user();
+		return $order->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.image', 'seller',]);
 	}
 
 	public function deliver(Order $order)
@@ -190,39 +164,5 @@ class OrderController extends Controller
 			$order->save();
 		}
 		return $this->show($order);
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  \App\Order  $order
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit(Order $order)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Order  $order
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, Order $order)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  \App\Order  $order
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy(Order $order)
-	{
-		//
 	}
 }

@@ -17,7 +17,8 @@ class CreateOrdersTable extends Migration
 			$table->string('id');
 			$table->unsignedBigInteger('user_id');
 			$table->unsignedBigInteger('product_id');
-			$table->unsignedBigInteger('vendor_id');
+			$table->unsignedBigInteger('seller_id');
+			$table->string('seller_type');
 			$table->string('size');
 			$table->unsignedSmallInteger('quantity');
 			$table->unsignedDecimal('price', 10, 2);

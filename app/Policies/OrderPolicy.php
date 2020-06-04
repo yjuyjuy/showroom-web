@@ -10,6 +10,13 @@ class OrderPolicy
 {
 	use HandlesAuthorization;
 
+	public function before($user, $ability)
+	{
+    	if ($user->is_admin) {
+        	return true;
+    	}
+	}
+
 	/**
 	 * Determine whether the user can view any orders.
 	 *
@@ -58,42 +65,42 @@ class OrderPolicy
 
 	public function confirm(User $user, Order $order)
 	{
-		return $user->vendor_id == $order->vendor_id || $user->is_admin;
+		return $user->vendor == $order->seller || $user->vendor->retailer == $order->seller;
 	}
 
 	public function decline(User $user, Order $order)
 	{
-		return $user->vendor_id == $order->vendor_id || $user->is_admin;
+		return $user->vendor == $order->seller || $user->vendor->retailer == $order->seller;
 	}
 
 	public function receivePayment(User $user, Order $order)
 	{
-		return $user->vendor_id == $order->vendor_id || $user->is_admin;
+		return $user->vendor == $order->seller || $user->vendor->retailer == $order->seller;
 	}
 
 	public function pay(User $user, Order $order)
 	{
-		return $user->id == $order->user_id|| $user->is_admin;
+		return $user->id == $order->user_id;
 	}
 
 	public function ship(User $user, Order $order)
 	{
-		return $user->vendor_id == $order->vendor_id || $user->is_admin;
+		return $user->vendor == $order->seller || $user->vendor->retailer == $order->seller;
 	}
 	
 	public function deliver(User $user, Order $order)
 	{
-		return $user->id == $order->user_id || $user->is_admin;
+		return $user->id == $order->user_id;
 	}
 	
 	public function complete(User $user, Order $order)
 	{
-		return $user->id == $order->user_id || $user->is_admin;
+		return $user->id == $order->user_id;
 	}
 
 	public function cancel(User $user, Order $order)
 	{
-		return $user->id == $order->user_id || $user->is_admin;
+		return $user->id == $order->user_id;
 	}
 
 	/**
