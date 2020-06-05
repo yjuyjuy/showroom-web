@@ -61,7 +61,7 @@ class ProductController extends Controller
 			$page = min(max(request()->query('page', 1), 1), $total_pages);
 			$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 		}
-		$products->loadMissing(['brand', 'images', 'season', 'retails']);
+		$products->loadMissing(['brand', 'images', 'season', 'retails', 'retails.retailer']);
 		return [
 			'page' => $page,
 			'total_pages' => $total_pages,
