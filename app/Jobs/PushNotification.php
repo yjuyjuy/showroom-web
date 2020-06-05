@@ -16,17 +16,19 @@ class PushNotification implements ShouldQueue
 	protected $token;
 	protected $title;
 	protected $body;
+	protected $data;
 
 	/**
 	 * Create a new job instance.
 	 *
 	 * @return void
 	 */
-	public function __construct($token, $title = null, $body = null)
+	public function __construct($token, $title = null, $body = null, $data = null)
 	{
 		$this->token = $token;
 		$this->title = $title;
 		$this->body = $body;
+		$this->data = array_merge(['click_action' => 'FLUTTER_NOTIFICATION_CLICK'], $data ?? []);
 	}
 
 	/**
@@ -45,6 +47,7 @@ class PushNotification implements ShouldQueue
 				'title' => $this->title,
 				'body' => $this->body,
 			],
+			'data' => $this->data,
 			'priority'=>'high',
 		]);
 	}
