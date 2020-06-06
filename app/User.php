@@ -73,11 +73,11 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function following_vendors()
 	{
-		return $this->belongsToMany(Vendor::class, 'reseller_vendor');
+		return $this->belongsToMany(Vendor::class, 'reseller_vendor')->orderBy('vendor_id');
 	}
 	public function following_retailers()
 	{
-		return $this->belongsToMany(Retailer::class, 'user_retailer', 'user_id', 'retailer_id');
+		return $this->belongsToMany(Retailer::class, 'user_retailer')->orderBy('retailer_id');
 	}
 	public function following_products()
 	{
