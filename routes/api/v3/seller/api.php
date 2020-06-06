@@ -63,7 +63,7 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::delete('products/{product}/measurement', 'api\v3\seller\MeasurementController@destroy');
 
 	Route::get('vendors', 'api\v3\seller\VendorController@index');
-	Route::post('vendor', 'api\v3\seller\VendorController@update');
+	Route::post('vendors', 'api\v3\seller\VendorController@update');
 	Route::get('vendors/{vendor}', 'api\v3\seller\VendorController@show');
 	Route::post('vendors/{vendor}/follow', 'api\v3\seller\VendorController@follow');
 	Route::post('vendors/{vendor}/unfollow', 'api\v3\seller\VendorController@unfollow');
