@@ -12,9 +12,8 @@ class UserController extends Controller
 {
 	public function show()
 	{
-		$user = auth()->user()->load(['image']);
+		$user = auth()->user()->load(['image', 'addresses', 'following_retailers']);
 		$user->following_products = $user->following_products()->pluck('product_id');
-		$user->following_retailers = $user->following_retailers()->pluck('retailer_id');
 		return [
 			'user' => $user,
 			'token' => $user->token(),

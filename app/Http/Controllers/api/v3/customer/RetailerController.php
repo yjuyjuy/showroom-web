@@ -28,6 +28,6 @@ class RetailerController extends Controller
 	}
 	public function following()
 	{
-		return auth()->user()->following_retailers()->pluck('retailer_id');
+		return auth()->user()->following_retailers;
 	}
 }
