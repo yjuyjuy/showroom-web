@@ -16,22 +16,18 @@ class VendorController extends Controller
 			'vendors' => Vendor::with('image')->get(),
 		];
 	}
-	public function show($vendorId)
+	public function show(Vendor $vendor)
 	{
-		return Vendor::findOrFail($vendorId);
+		return $vendor;
 	}
-	public function follow($vendorId)
+	public function follow(Vendor $vendor)
 	{
-		if (Vendor::find($vendorId)) {
-			auth()->user()->following_vendors()->syncWithoutDetaching($vendorId);
-		}
+		auth()->user()->following_vendors()->syncWithoutDetaching($vendor);
 		return $this->following();
 	}
-	public function unfollow($vendorId)
+	public function unfollow(Vendor $vendor)
 	{
-		if (Vendor::find($vendorId)) {
-			auth()->user()->following_vendors()->detach($vendorId);
-		}
+		auth()->user()->following_vendors()->detach($vendor);
 		return $this->following();
 	}
 	public function following()

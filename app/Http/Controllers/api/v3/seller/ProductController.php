@@ -15,8 +15,8 @@ class ProductController extends Controller
 		// return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
 		$ITEMS_PER_PAGE = 24;
 		if (!$query) {
-			if ($request->query('vendor')) {
-				$query = Vendor::findOrFail($request->query('vendor'))->products();
+			if ($request->query('vendor') && $vendor = Vendor::where('name', $request->query('vendor'))->first()) {
+				$query = $vendor->products();
 			} else {
 				$query = Product::query();
 			}

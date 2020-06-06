@@ -15,8 +15,8 @@ class PriceController extends Controller
 	public function index(Request $request)
 	{
 		// return Cache::remember($request->fullUrl(), 1 * 60, function() use ($request) {
-		if ($request->query('vendor')) {
-			$query = Vendor::findOrFail($request->query('vendor'))->prices();
+		if ($request->query('vendor') && $vendor = Vendor::where('name', $request->query('vendor'))->first()) {
+			$query = $vendor->prices();
 		} else {
 			$query = VendorPrice::whereIn('vendor_id', auth()->user()->following_vendors()->pluck('vendor_id'));
 		}
