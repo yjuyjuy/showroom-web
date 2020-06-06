@@ -14,8 +14,8 @@ class RetailController extends Controller
 	{
 		// return Cache::remember($request->fullUrl(), 1 * 60, function() use ($request) {
 		$ITEMS_PER_PAGE = 24;
-		if ($request->query('retailer')) {
-			$query = Retailer::findOrFail($request->query('retailer'))->retails();
+		if ($request->query('retailer') && $retailer = Retailer::where('name', $request->query('retailer')->first())) {
+			$query = $retailer->retails();
 		} else {
 			$query = RetailPrice::whereIn('retailer_id', auth()->user()->following_retailers()->pluck('retailer_id'));
 		}

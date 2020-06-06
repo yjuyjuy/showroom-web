@@ -16,8 +16,8 @@ class ProductController extends Controller
 		$user = auth()->user();
 		$ITEMS_PER_PAGE = 24;
 		if (!$query) {
-			if ($request->query('retailer')) {
-				$query = Retailer::findOrFail($request->query('retailer'))->products();
+			if ($request->query('retailer') && $retailer = Retailer::where('name', $request->query('retailer')->first())) {
+				$query = $retailer->products();
 			} else {
 				$query = Product::whereHas('retails', function ($query) use ($user) {
 					$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
