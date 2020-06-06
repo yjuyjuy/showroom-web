@@ -26,4 +26,8 @@ class RetailerController extends Controller
 		auth()->user()->following_retailers()->detach($retailer);
 		return $this->following();
 	}
+	public function following()
+	{
+		return auth()->user()->following_retailers()->pluck('retailer_id');
+	}
 }

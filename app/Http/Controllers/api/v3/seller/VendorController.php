@@ -28,6 +28,10 @@ class VendorController extends Controller
 		auth()->user()->following_vendors()->detach($vendor);
 		return $this->following();
 	}
+	public function following()
+	{
+		return auth()->user()->following_vendors()->pluck('vendor_id');
+	}
 	public function update(Request $request)
 	{
 		$user = auth()->user();
