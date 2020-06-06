@@ -12,9 +12,7 @@ class VendorController extends Controller
 {
 	public function index()
 	{
-		return [
-			'vendors' => Vendor::with('image')->get(),
-		];
+		return auth()->user()->following_vendors()->with('image')->get();
 	}
 	public function show(Vendor $vendor)
 	{
@@ -32,9 +30,7 @@ class VendorController extends Controller
 	}
 	public function following()
 	{
-		return [
-			'following_vendors' => auth()->user()->following_vendors()->pluck('vendor_id'),
-		];
+		return auth()->user()->following_vendors()->pluck('vendor_id');
 	}
 	public function update(Request $request)
 	{
