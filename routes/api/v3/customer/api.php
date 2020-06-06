@@ -49,6 +49,7 @@ Route::middleware(['auth:api'])->group(function() {
 	Route::get('prices', 'api\v3\customer\RetailController@index');
 
 	Route::get('retailers', 'api\v3\customer\RetailerController@index');
+	Route::get('retailers/{retailer}', 'api\v3\customer\RetailerController@show');
 	Route::post('retailers/{retailer}/follow', 'api\v3\customer\RetailerController@follow');
 	Route::post('retailers/{retailer}/unfollow', 'api\v3\customer\RetailerController@unfollow');
 });

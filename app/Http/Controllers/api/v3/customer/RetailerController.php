@@ -10,28 +10,20 @@ class RetailerController extends Controller
 {
 	public function index()
 	{
-		return [
-			'retailers' => Retailer::with('image')->get(),
-		];
+		return auth()->user()->following_retailers()->with('image')->get();
 	}
-	public function follow($retailerId)
+	public function show(Retailer $retailer)
 	{
-		if (Retailer::find($retailerId)) {
-			auth()->user()->following_retailers()->syncWithoutDetaching($retailerId);
-		}
+		return $retailer;
+	}
+	public function follow(Retailer $retailer)
+	{
+		auth()->user()->following_retailers()->syncWithoutDetaching($retailer);
 		return $this->following();
 	}
-	public function unfollow($retailerId)
+	public function unfollow(Retailer $retailer)
 	{
-		if (Retailer::find($retailerId)) {
-			auth()->user()->following_retailers()->detach($retailerId);
-		}
+		auth()->user()->following_retailers()->detach($retailer);
 		return $this->following();
-	}
-	public function following()
-	{
-		return [
-			'following_retailers' => auth()->user()->following_retailers()->pluck('retailer_id'),
-		];
 	}
 }
