@@ -30,7 +30,7 @@ class VendorController extends Controller
 	}
 	public function following()
 	{
-		return auth()->user()->following_vendors()->pluck('vendor_id');
+		return auth()->user()->following_vendors;
 	}
 	public function update(Request $request)
 	{
