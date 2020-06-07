@@ -92,27 +92,10 @@ class RetailerController extends Controller
 	public function following(Request $request)
 	{
 		$not_found = false;
-		if ($request->input('search')) {
-			$search = strtolower($request->validate([
-				'search' => ['sometimes', 'string', 'max:255'],
-			])['search']);
-			$valid_tokens = \Illuminate\Support\Facades\Cache::remember('retailer-tokens', 60 * 60, function () {
-				$tokens = [];
-				foreach (\App\Retailer::all() as $retailer) {
-					$tokens[strtolower($retailer->name)] = $retailer->id;
-				}
-				foreach (\App\User::has('vendor.retailer')->get() as $user) {
-					$tokens[strtolower($user->wechat_id)] = $user->vendor->retailer->id;
-					$tokens[strtolower($user->name)] = $user->vendor->retailer->id;
-				}
-				foreach (\App\Vendor::has('retailer')->get() as $vendor) {
-					$tokens[strtolower($vendor->wechat_id)] = $vendor->retailer->id;
-					$tokens[strtolower($vendor->name)] = $vendor->retailer->id;
-				}
-				return $tokens;
-			});
-			if (array_key_exists($search, $valid_tokens)) {
-				return redirect(route('retailer.products.index', ['retailer' => Retailer::find($valid_tokens[$search]),]));
+		if ($name = $request->input('search')) {
+			$retailer = Retailer::where('name', $name)->first();
+			if ($retailer) {
+				return redirect()->route('retailer.products.index', ['retailer' => $retailer,]);
 			} else {
 				$not_found = true;
 			}

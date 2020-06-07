@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
 # Vendor
 Route::middleware(['auth', 'reseller'])->group(function () {
 	Route::get('reseller/products', 'ResellerController@index')->name('reseller.products.index');
+	Route::post('vendor/{vendor}/follow', 'VendorController@follow')->name('follow.vendor');
 	Route::post('vendor/{vendor}/unfollow', 'VendorController@unfollow')->name('unfollow.vendor');
 	Route::get('vendor/{vendor}', 'VendorController@index')->name('vendor.products.index');
 	Route::get('vendor/{vendor}/products/{product}', 'VendorController@show')->name('vendor.products.show');

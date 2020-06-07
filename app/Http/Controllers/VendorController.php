@@ -11,10 +11,6 @@ class VendorController extends Controller
 	public function index(Request $request, Vendor $vendor)
 	{
 		$user = auth()->user();
-		if (!$user->following_vendors->contains($vendor)) {
-			$user->following_vendors()->syncWithoutDetaching($vendor);
-			$user->refresh();
-		}
 		$query = $vendor->products();
 
 		$filters = $this->validateFilters();
@@ -115,29 +111,10 @@ class VendorController extends Controller
 	{
 		$message = false;
 
-		if ($request->input('search')) {
-			$search = $request->validate([
-				'search' => ['sometimes', 'string', 'max:255'],
-				])['search'];
-			$valid_tokens = [];
-			foreach (\App\User::has('vendor')->whereNotNull('wechat_id')->get() as $user) {
-				$valid_tokens[strtolower($user->wechat_id)] = $user->vendor_id;
-			}
-			foreach (\App\Vendor::whereNotNull('wechat_id')->get() as $vendor) {
-				$valid_tokens[strtolower($vendor->wechat_id)] = $vendor->id;
-			}
-			foreach (\App\InviteCode::has('vendor')->get() as $code) {
-				$valid_tokens[$code->id] = $code->vendor_id;
-			}
-			if (array_key_exists(strtolower($search), $valid_tokens)) {
-				$vendor = \App\Vendor::find($valid_tokens[strtolower($search)]);
-				$user = auth()->user();
-				if ($user->following_vendors->contains($vendor)) {
-					$message = '已经关注"'.$vendor->name.'"了';
-				} else {
-					$user->following_vendors()->attach($vendor);
-					$message = '成功添加关注"'.$vendor->name.'"';
-				}
+		if ($name = $request->input('search')) {
+			$vendor = Vendor::where('name', $name)->first();
+			if ($vendor) {
+				return redirect()->route('vendor.products.index', ['vendor' => $vendor,]);
 			} else {
 				$message = '没有找到微信号是"'.$search.'"的同行';
 			}
@@ -167,11 +144,17 @@ class VendorController extends Controller
 		$vendor->retailer_id = $retailer->id;
 		$vendor->save();
 	}
+	public function follow(Vendor $vendor)
+	{
+		$user = auth()->user();
+		return [
+			'success' => $user->following_vendors()->syncWithoutDetaching($vendor),
+		];
+	}
 	public function unfollow(Vendor $vendor)
 	{
 		$user = auth()->user();
 		return [
-			'redirect' => route('following.vendors'),
 			'success' => $user->following_vendors()->detach($vendor),
 		];
 	}
