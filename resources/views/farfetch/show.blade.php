@@ -11,10 +11,12 @@
 	<div class="container__content d-flex flex-column">
 		<div class="d-flex flex-column products-show__info--properties">
 			<div class="my-1">
-				<a href="{{ route('farfetch.index',['designer' => [$product->designer->id]]) }}"
-					 class="mdc-typography--headline6" style="text-transform: uppercase;">
-					{{ $product->designer->description }}
-				</a>
+				@if($product->designer)
+					<a href="{{ route('farfetch.index',['designer' => [$product->designer->id]]) }}"
+						class="mdc-typography--headline6" style="text-transform: uppercase;">
+						{{ $product->designer->description }}
+					</a>
+				@endif
 
 				<a href="{{ route('farfetch.index',['category' => [$product->category->id]]) }}"
 					 class="mdc-typography--headline6">
