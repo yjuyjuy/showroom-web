@@ -129,14 +129,14 @@ class ImageController extends Controller
 					} catch (\Throwable $e) {
 						return;
 					}
-				} elseif ($image->url) {
-					try {
-						$f = fopen($image->url, 'r');
-						file_put_contents('storage/'.$path, $f);
-						fclose($f);
-					} catch (\Throwable $e) {
-						return;
-					}
+				// } elseif ($image->url) {
+				// 	try {
+				// 		$f = fopen($image->url, 'r');
+				// 		file_put_contents('storage/'.$path, $f);
+				// 		fclose($f);
+				// 	} catch (\Throwable $e) {
+				// 		return;
+				// 	}
 				}
 				\App\Jobs\OptimizeImage::dispatch($path);
 				\App\Image::create([
