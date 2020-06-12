@@ -41,11 +41,17 @@ class ProductController extends Controller
 			$products = $query->get();
 
 			if ($sort == 'price-high-to-low') {
+				$products->load(['offers' => function($query) use ($user) {
+					$query->whereIn('vendor_id', $user->following_vendors()->pluck('id'));
+				}]);
 				$products = $products->sortByDesc(function ($product) {
 					return $product->offer;
 				})->values();
 			}
 			if ($sort == 'price-low-to-high') {
+				$products->load(['offers' => function($query) use ($user) {
+					$query->whereIn('vendor_id', $user->following_vendors()->pluck('id'));
+				}]);
 				$products = $products->sortBy(function ($product) {
 					return $product->offer;
 				})->values();
@@ -58,7 +64,9 @@ class ProductController extends Controller
 			$page = min(max(request()->query('page', 1), 1), $total_pages);
 			$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 		}
-		$products->loadMissing(['brand', 'images', 'season', 'offers', 'offers.vendor']);
+		$products->loadMissing(['brand', 'images', 'season', 'offers' => function($query) use ($user) {
+					$query->whereIn('vendor_id', $user->following_vendors()->pluck('id'));
+				}, 'offers.vendor']);
 		return [
 			'page' => $page,
 			'total_pages' => $total_pages,
