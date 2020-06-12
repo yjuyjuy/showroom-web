@@ -38,13 +38,13 @@ class ProductController extends Controller
 		}
 		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
 			$query = $query->whereHas('offers', function ($query) use ($user) {
-				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+				$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 			});
 			$products = $query->get();
 
 			if ($sort == 'price-high-to-low') {
 				$products->load(['offers' => function($query) use ($user) {
-					$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+					$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 				}]);
 				$products = $products->sortByDesc(function ($product) {
 					return $product->offer;
@@ -52,7 +52,7 @@ class ProductController extends Controller
 			}
 			if ($sort == 'price-low-to-high') {
 				$products->load(['offers' => function($query) use ($user) {
-					$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+					$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 				}]);
 				$products = $products->sortBy(function ($product) {
 					return $product->offer;
@@ -67,7 +67,7 @@ class ProductController extends Controller
 			$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 		}
 		$products->loadMissing(['brand', 'images', 'season', 'offers' => function($query) use ($user) {
-					$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+					$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 				}, 'offers.vendor']);
 		return [
 			'page' => $page,
@@ -110,11 +110,11 @@ class ProductController extends Controller
 		return $product->load([
 			'brand', 'season', 'color', 'category', 'measurement',
 			'prices' => function ($query) use ($user) {
-				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+				$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 			},
 			'prices.vendor',
 			'offers' => function ($query) use ($user) {
-				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+				$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
 			}, 'offers.vendor', 'images',
 		]);
 	}

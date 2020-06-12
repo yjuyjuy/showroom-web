@@ -20,7 +20,7 @@ class ProductController extends Controller
 				$query = $retailer->products();
 			} else {
 				$query = Product::whereHas('retails', function ($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 				});
 			}
 		}
@@ -70,7 +70,7 @@ class ProductController extends Controller
 			$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 		}
 		$products->loadMissing(['brand', 'images', 'season', 'retails' => function($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 				}, 'retails.retailer']);
 		return [
 			'page' => $page,
@@ -113,7 +113,7 @@ class ProductController extends Controller
 		return $product->load([
 			'brand', 'season', 'color', 'category', 'measurement',
 			'retails' =>  function ($query) use ($user) {
-				$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 			}, 'retails.retailer', 'images',
 		]);
 	}
