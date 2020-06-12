@@ -40,12 +40,14 @@ class ProductController extends Controller
 			$query->orderBy('created_at', 'desc');
 		}
 		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
-			$query = $query->has('retails');
+			$query = $query->whereHas('retails', function($query) use ($user) {
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+			});
 			$products = $query->get();
 
 			if ($sort == 'price-high-to-low') {
 				$products->load(['retails' => function($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 				}]);
 				$products = $products->sortByDesc(function ($product) {
 					return $product->retail;
@@ -53,7 +55,7 @@ class ProductController extends Controller
 			}
 			if ($sort == 'price-low-to-high') {
 				$products->load(['retails' => function($query) use ($user) {
-					$query->whereIn('retailer_id', $user->following_retailers()->pluck('retailer_id'));
+					$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 				}]);
 				$products = $products->sortBy(function ($product) {
 					return $product->retail;

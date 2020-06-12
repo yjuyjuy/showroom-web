@@ -37,7 +37,9 @@ class ProductController extends Controller
 			$query->orderBy('created_at', 'desc');
 		}
 		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
-			$query = $query->has('offers');
+			$query = $query->whereHas('offers', function ($query) use ($user) {
+				$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
+			});
 			$products = $query->get();
 
 			if ($sort == 'price-high-to-low') {
