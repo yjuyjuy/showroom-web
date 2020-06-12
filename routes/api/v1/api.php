@@ -14,12 +14,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('version', function () {
-	return [
-		'min' => '0.3.1',
-		'current' => '0.3.1',
-	];
-});
+Route::get('version', 'api\v1\VersionController');
 
 Route::post('register', 'api\v1\RegisterController@register');
 

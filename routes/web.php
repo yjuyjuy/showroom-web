@@ -184,10 +184,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 // Google cloud health check
-Route::get('health', function () {
-	return 'good';
-});
-
-Route::get('{slug}', function () {
-	abort(404);
-})->where(['slug' => '.*']);
+Route::get('health', 'HealthController');
