@@ -13,6 +13,7 @@ class ProductController extends Controller
 	public function index(Request $request, $query = null)
 	{
 		// return Cache::remember(request()->fullUrl(), 1 * 60, function() use ($request) {
+		$user = auth()->user();
 		$ITEMS_PER_PAGE = 24;
 		if (!$query) {
 			if ($request->query('vendor') && $vendor = Vendor::where('name', $request->query('vendor'))->first()) {
