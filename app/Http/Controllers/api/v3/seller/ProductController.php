@@ -42,7 +42,7 @@ class ProductController extends Controller
 
 			if ($sort == 'price-high-to-low') {
 				$products->load(['offers' => function($query) use ($user) {
-					$query->whereIn('vendor_id', $user->following_vendors()->pluck('id'));
+					$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
 				}]);
 				$products = $products->sortByDesc(function ($product) {
 					return $product->offer;
@@ -50,7 +50,7 @@ class ProductController extends Controller
 			}
 			if ($sort == 'price-low-to-high') {
 				$products->load(['offers' => function($query) use ($user) {
-					$query->whereIn('vendor_id', $user->following_vendors()->pluck('id'));
+					$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
 				}]);
 				$products = $products->sortBy(function ($product) {
 					return $product->offer;
@@ -65,7 +65,7 @@ class ProductController extends Controller
 			$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 		}
 		$products->loadMissing(['brand', 'images', 'season', 'offers' => function($query) use ($user) {
-					$query->whereIn('vendor_id', $user->following_vendors()->pluck('id'));
+					$query->whereIn('vendor_id', $user->following_vendors()->pluck('vendor_id'));
 				}, 'offers.vendor']);
 		return [
 			'page' => $page,
