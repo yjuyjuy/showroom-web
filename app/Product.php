@@ -161,12 +161,19 @@ class Product extends Model
 	{
 		return explode('|', $this->designer_style_id);
 	}
+	public function getRetailAttribute()
+	{
+		if (!array_key_exists('retail', $this->attributes)) {
+			$this->attributes['retail'] = $this->getMinPrice();
+		}
+		return $this->attributes['retail'];
+	}
 	public function getPriceAttribute()
 	{
-		if (!array_key_exists('price', $this->attributes)) {
-			$this->attributes['price'] = $this->getMinPrice();
+		if (!array_key_exists('retail', $this->attributes)) {
+			$this->attributes['retail'] = $this->getMinPrice();
 		}
-		return $this->attributes['price'];
+		return $this->attributes['retail'];
 	}
 	public function getOfferAttribute()
 	{
