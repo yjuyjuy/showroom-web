@@ -86,7 +86,7 @@ class Order extends Model
 			case 'paid':
 				return $this->product->displayName()." 尺码{$this->size}, 请尽快发货";
 			case 'shipped':
-				return $this->product->displayName()." 尺码{$this->size}, 请打开包裹检查后再签收";
+				return $this->product->displayName()." 尺码{$this->size}, 收货时请打开包裹仔细检查后再签收";
 			case 'delivered':
 				return $this->product->displayName()." 尺码{$this->size}";
 			case 'completed':
@@ -111,7 +111,7 @@ class Order extends Model
 				$device->token,
 				$this->notification_title,
 				$this->notification_body, 
-				['link' => 'https://www.notdopebxtch.com/user/orders']
+				['link' => 'https://www.notdopebxtch.com/orders']
 			);
 		}
 	}
@@ -125,7 +125,7 @@ class Order extends Model
 						$device->token, 
 						$this->notification_title,
 						$this->notification_body, 
-						['link' => 'https://www.notdopebxtch.com/user/orders']
+						['link' => 'https://www.notdopebxtch.com/orders?as_seller=true']
 					);
 				}
 			}
@@ -137,7 +137,7 @@ class Order extends Model
 							$device->token, 
 							$this->notification_title,
 							$this->notification_body, 
-							['link' => 'https://www.notdopebxtch.com/user/orders']
+							['link' => 'https://www.notdopebxtch.com/orders?as_seller=true']
 						);
 					}
 				}
