@@ -31,7 +31,7 @@ class RetailController extends Controller
 		$retails = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 		$retails->loadMissing(['retailer', 'retailer.image', 'product', 'product.brand', 'product.season', 'product.images',
 			'product.retails' => function($query) use ($user) {
-				$query->whereIn('retailer_id', $user->following_retailer->pluck('id'));
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
 			}, 'product.retails.retailer']);
 		return [
 			'page' => $page,
