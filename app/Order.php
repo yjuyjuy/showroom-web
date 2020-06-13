@@ -78,7 +78,7 @@ class Order extends Model
 
 	public function getNotificationBodyAttribute()
 	{
-		switch ($variable) {
+		switch ($this->status) {
 			case 'created':
 				return $this->product->displayName()." 尺码{$this->size}, 请核对库存后确认是否有货";
 			case 'confirmed':
