@@ -8,6 +8,7 @@ use App\Product;
 use App\Address;
 use App\Retailer;
 use App\Http\Controllers\Controller;
+use App\Jobs\PushNotification;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -134,7 +135,9 @@ class OrderController extends Controller
 			'zip' => $address->zip,
 			'status' => 'created',
 		]);
-		return $this->show(Order::create($data));
+		$order = Order::create($data);
+		$order->notifySeller();
+		return $this->show($order);
 	}
 
 	/**
@@ -168,6 +171,7 @@ class OrderController extends Controller
 			$order->confirmed_at = now();
 			$order->save();
 		}
+		$order->notifyCustomer();
 		return $this->show($order);
 	}
 
@@ -183,6 +187,7 @@ class OrderController extends Controller
 			// TODO: work out how to compensate customer
 			return ['message' => '请联系管理员',];
 		}
+		$order->notifyCustomer();
 		return $this->show($order);
 	}
 
@@ -208,6 +213,7 @@ class OrderController extends Controller
 			$order->shipped_at = $order->shipped_at ?? now();
 			$order->save();
 		}
+		$order->notifyCustomer();
 		return $this->show($order);
 	}
 
@@ -219,6 +225,7 @@ class OrderController extends Controller
 			$order->delivered_at = now();
 			$order->save();
 		}
+		$order->notifySeller();	
 		return $this->show($order);
 	}
 
@@ -230,6 +237,7 @@ class OrderController extends Controller
 			$order->completed_at = now();
 			$order->save();
 		}
+		$order->notifySeller();
 		return $this->show($order);
 	}
 
@@ -242,6 +250,7 @@ class OrderController extends Controller
 			$order->closed_at = now();
 			$order->save();
 		}
+		$order->notifySeller();
 		return $this->show($order);
 	}
 }
