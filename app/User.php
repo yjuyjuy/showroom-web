@@ -83,6 +83,10 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		return $this->belongsToMany(Product::class, 'user_product', 'user_id', 'product_id');
 	}
+	public function devices()
+	{
+		return $this->hasMany(Device::class);
+	}
 	# accessors, mutators
 	public function getIsAdminAttribute()
 	{
