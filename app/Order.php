@@ -80,37 +80,37 @@ class Order extends Model
 	{
 		switch ($variable) {
 			case 'created':
-				return $this->product->displayName()." 尺码{$order->size}, 请核对库存后确认是否有货";
+				return $this->product->displayName()." 尺码{$this->size}, 请核对库存后确认是否有货";
 			case 'confirmed':
-				return $this->product->displayName()." 尺码{$order->size}, 请尽快支付";
+				return $this->product->displayName()." 尺码{$this->size}, 请尽快支付";
 			case 'paid':
-				return $this->product->displayName()." 尺码{$order->size}, 请尽快发货";
+				return $this->product->displayName()." 尺码{$this->size}, 请尽快发货";
 			case 'shipped':
-				return $this->product->displayName()." 尺码{$order->size}, 请打开包裹检查后再签收";
+				return $this->product->displayName()." 尺码{$this->size}, 请打开包裹检查后再签收";
 			case 'delivered':
-				return $this->product->displayName()." 尺码{$order->size}";
+				return $this->product->displayName()." 尺码{$this->size}";
 			case 'completed':
-				return $this->product->displayName()." 尺码{$order->size}";
+				return $this->product->displayName()." 尺码{$this->size}";
 			case 'closed':
 				if ($this->reason == 'out of stock') {
-					return '抱歉, 您购买的'.$this->product->displayName()." 尺码{$order->size}, 卖家库存已售罄, 交易关闭";
+					return '抱歉, 您购买的'.$this->product->displayName()." 尺码{$this->size}, 卖家库存已售罄, 交易关闭";
 				} else if ($this->reason == 'cancelled by customer') {
-					return '抱歉, 您卖出的'.$this->product->displayName()." 尺码{$order->size}, 买家取消订单";
+					return '抱歉, 您卖出的'.$this->product->displayName()." 尺码{$this->size}, 买家取消订单";
 				} else {
-					return $this->product->displayName()." 尺码{$order->size}, 关闭原因: {$this->reason}";
+					return $this->product->displayName()." 尺码{$this->size}, 关闭原因: {$this->reason}";
 				}
 			default:
-				return $this->product->displayName()." 尺码{$order->size}";
+				return $this->product->displayName()." 尺码{$this->size}";
 		}
 	}
 
 	public function notifyCustomer()
 	{		
-		foreach($order->user->devices as $device) {
+		foreach($this->user->devices as $device) {
 			PushNotification::dispatch(
 				$device->token,
-				$order->notification_title,
-				$order->notification_body, 
+				$this->notification_title,
+				$this->notification_body, 
 				['link' => 'https://www.notdopebxtch.com/user/orders']
 			);
 		}
@@ -118,25 +118,25 @@ class Order extends Model
 
 	public function notifySeller()
 	{
-		if ($order->seller instanceof Vendor) {
-			foreach($order->seller->users as $user) {
+		if ($this->seller instanceof Vendor) {
+			foreach($this->seller->users as $user) {
 				foreach($user->devices as $device) {
 					PushNotification::dispatch(
 						$device->token, 
-						$order->notification_title,
-						$order->notification_body, 
+						$this->notification_title,
+						$this->notification_body, 
 						['link' => 'https://www.notdopebxtch.com/user/orders']
 					);
 				}
 			}
-		} else if ($order->seller instanceof Retailer) {
-			foreach ($order->seller->vendors as $vendor) {
+		} else if ($this->seller instanceof Retailer) {
+			foreach ($this->seller->vendors as $vendor) {
 				foreach($vendor->users as $user) {
 					foreach($user->devices as $device) {
 						PushNotification::dispatch(
 							$device->token, 
-							$order->notification_title,
-							$order->notification_body, 
+							$this->notification_title,
+							$this->notification_body, 
 							['link' => 'https://www.notdopebxtch.com/user/orders']
 						);
 					}
