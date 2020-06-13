@@ -8,7 +8,6 @@ use App\Product;
 use App\Address;
 use App\Retailer;
 use App\Http\Controllers\Controller;
-use App\Jobs\PushNotification;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
