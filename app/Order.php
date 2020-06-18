@@ -62,7 +62,7 @@ class Order extends Model
 			case 'delivered':
 				return '已确认收货';
 			case 'completed':
-				return '交易完成';
+				return '交易成功';
 			case 'closed':
 				if ($this->reason == 'out of stock') {
 					return '订单缺货';
