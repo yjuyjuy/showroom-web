@@ -8,6 +8,7 @@ use App\Product;
 use App\Address;
 use App\Retailer;
 use App\Http\Controllers\Controller;
+use App\Jobs\OrderTimeout;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -33,13 +34,14 @@ class OrderController extends Controller
 
 		if (request()->input('as_seller') && $vendor = auth()->user()->vendor) {
 			if ($retailer = $vendor->retailer) {
-				$query = Order::where(function($query) use ($vendor) {
+				$query = Order::where(function ($query) use ($vendor) {
 					$query->where('seller_id', $vendor->id)->where('seller_type', Vendor::class);
-				})->orWhere(function($query) use ($retailer) {
+				})->orWhere(function ($query) use ($retailer) {
 					$query->where('seller_id', $retailer->id)->where('seller_type', Retailer::class);
 				})->orderByDesc('created_at');
 			} else {
-			$query = $vendor->orders()->orderByDesc('created_at');}
+				$query = $vendor->orders()->orderByDesc('created_at');
+			}
 		} else {
 			$query = auth()->user()->orders()->orderByDesc('created_at');
 		}
@@ -47,7 +49,7 @@ class OrderController extends Controller
 		if (($status = request()->input('status')) && in_array($status, ['created', 'confirmed', 'paid', 'shipped'])) {
 			$query->where('status', $status);
 		}
-		
+
 		$total_pages = ceil($query->count() / $ITEMS_PER_PAGE);
 		$page = min(max(request()->query('page', 1), 1), $total_pages);
 		$orders = $query->forPage($page, $ITEMS_PER_PAGE)->get();
@@ -57,6 +59,29 @@ class OrderController extends Controller
 			'page' => $page,
 			'total_pages' => $total_pages,
 		];
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  \App\Order  $order
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show(Order $order)
+	{
+		$order->refresh();
+		$user = auth()->user();
+		if (($order->seller == $user->vendor || $order->seller == $user->vendor->retailer) && !$order->is_direct) {
+			$order->name = self::ADDRESS['name'];
+			$order->phone = self::ADDRESS['phone'];
+			$order->address1 = self::ADDRESS['address1'];
+			$order->address2 = self::ADDRESS['address2'];
+			$order->city = self::ADDRESS['city'];
+			$order->state = self::ADDRESS['state'];
+			$order->country = self::ADDRESS['country'];
+			$order->zip = self::ADDRESS['zip'];
+		}
+		return $order->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.image', 'seller',]);
 	}
 
 	/**
@@ -83,13 +108,13 @@ class OrderController extends Controller
 
 		$offer = Product::find($data['product_id'])->offers()->where('vendor_id', $data['seller_id'])->first();
 		if (!array_key_exists($data['size'], $offer->prices)) {
-			return ['message' => $data['size']." size is not available"];
+			return ['message' => $data['size'] . " size is not available"];
 		}
 		$price = $offer->prices[$data['size']];
 		if ($price != $data['price']) {
 			return ['message' => 'Prices don\'t match'];
 		}
-		
+
 		$shipping = 23;
 		if ($shipping != $data['shipping']) {
 			return ['message' => 'Shipping prices don\'t match'];
@@ -110,14 +135,14 @@ class OrderController extends Controller
 		if ($total != $data['total']) {
 			return ['message' => 'Total prices don\'t match'];
 		}
-		
+
 		$address = Address::find($data['address_id']);
 		unset($data['address_id']);
 
 		do {
 			$id = strtr(rtrim(base64_encode(random_bytes(6)), '='), '+/', '-_');
 		} while (Order::find($id));
-		
+
 		$data = array_merge($data, [
 			'id' => $id,
 			'user_id' => auth()->user()->id,
@@ -136,30 +161,8 @@ class OrderController extends Controller
 		]);
 		$order = Order::create($data);
 		$order->notifySeller();
+		OrderTimeout::dispatch($order)->delay(now()->addDays(1));
 		return $this->show($order);
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  \App\Order  $order
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show(Order $order)
-	{
-		$order->refresh();
-		$user = auth()->user();
-		if (($order->seller == $user->vendor || $order->seller == $user->vendor->retailer) && !$order->is_direct) {
-			$order->name = self::ADDRESS['name'];
-			$order->phone = self::ADDRESS['phone'];
-			$order->address1 = self::ADDRESS['address1'];
-			$order->address2 = self::ADDRESS['address2'];
-			$order->city = self::ADDRESS['city'];
-			$order->state = self::ADDRESS['state'];
-			$order->country = self::ADDRESS['country'];
-			$order->zip = self::ADDRESS['zip'];
-		}
-		return $order->loadMissing(['product', 'product.brand', 'product.color', 'product.season', 'product.image', 'seller',]);
 	}
 
 	public function confirm(Order $order)
@@ -169,8 +172,9 @@ class OrderController extends Controller
 			$order->status = 'confirmed';
 			$order->confirmed_at = now();
 			$order->save();
+			$order->notifyCustomer();
+			OrderTimeout::dispatch($order)->delay(now()->addDays(1));
 		}
-		$order->notifyCustomer();
 		return $this->show($order);
 	}
 
@@ -182,11 +186,11 @@ class OrderController extends Controller
 			$order->reason = 'out of stock';
 			$order->closed_at = now();
 			$order->save();
+			$order->notifyCustomer();
 		} elseif ($order->status == 'paid') {
 			// TODO: work out how to compensate customer
 			return ['message' => '请联系管理员',];
 		}
-		$order->notifyCustomer();
 		return $this->show($order);
 	}
 
@@ -211,8 +215,8 @@ class OrderController extends Controller
 			])['tracking'];
 			$order->shipped_at = $order->shipped_at ?? now();
 			$order->save();
+			$order->notifyCustomer();
 		}
-		$order->notifyCustomer();
 		return $this->show($order);
 	}
 
@@ -223,8 +227,9 @@ class OrderController extends Controller
 			$order->status = 'delivered';
 			$order->delivered_at = now();
 			$order->save();
+			$order->notifySeller();
 		}
-		$order->notifySeller();	
+		OrderTimeout::dispatch($order)->delay(now()->addDays(7));
 		return $this->show($order);
 	}
 
@@ -235,8 +240,8 @@ class OrderController extends Controller
 			$order->status = 'completed';
 			$order->completed_at = now();
 			$order->save();
+			$order->notifySeller();
 		}
-		$order->notifySeller();
 		return $this->show($order);
 	}
 
@@ -248,8 +253,8 @@ class OrderController extends Controller
 			$order->reason = 'cancelled by customer';
 			$order->closed_at = now();
 			$order->save();
+			$order->notifySeller();
 		}
-		$order->notifySeller();
 		return $this->show($order);
 	}
 }
