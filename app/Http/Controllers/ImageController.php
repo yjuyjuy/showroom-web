@@ -137,7 +137,10 @@ class ImageController extends Controller
 				// 	} catch (\Throwable $e) {
 				// 		return;
 				// 	}
+				} else {
+					return;
 				}
+
 				\App\Jobs\OptimizeImage::dispatch($path);
 				\App\Image::create([
 					'path' => $path,
