@@ -18,19 +18,19 @@ class Order extends Model
 	protected $casts = [
 		'is_direct' => 'boolean',
 	];
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
 		'confirmed_at',
 		'paid_at',
 		'shipped_at',
 		'delivered_at',
 		'completed_at',
 		'closed_at',
-    ];
+	];
 
 	public function user()
 	{
@@ -46,7 +46,7 @@ class Order extends Model
 	{
 		return $this->belongsTo(Product::class);
 	}
-	
+
 
 	public function getNotificationTitleAttribute()
 	{
@@ -68,6 +68,8 @@ class Order extends Model
 					return '订单缺货';
 				} else if ($this->reason == 'cancelled by customer') {
 					return '交易关闭';
+				} else if ($this->reason == 'timeout') {
+					return '交易关闭';
 				} else {
 					return '交易关闭';
 				}
@@ -80,37 +82,39 @@ class Order extends Model
 	{
 		switch ($this->status) {
 			case 'created':
-				return $this->product->displayName()." 尺码{$this->size}, 请核对库存后确认是否有货";
+				return $this->product->displayName() . " 尺码{$this->size}, 请核对库存后确认是否有货";
 			case 'confirmed':
-				return $this->product->displayName()." 尺码{$this->size}, 请尽快支付";
+				return $this->product->displayName() . " 尺码{$this->size}, 请尽快支付";
 			case 'paid':
-				return $this->product->displayName()." 尺码{$this->size}, 请尽快发货";
+				return $this->product->displayName() . " 尺码{$this->size}, 请尽快发货";
 			case 'shipped':
-				return $this->product->displayName()." 尺码{$this->size}, 收货时请打开包裹仔细检查后再签收";
+				return $this->product->displayName() . " 尺码{$this->size}, 收货时请打开包裹仔细检查后再签收";
 			case 'delivered':
-				return $this->product->displayName()." 尺码{$this->size}";
+				return $this->product->displayName() . " 尺码{$this->size}";
 			case 'completed':
-				return $this->product->displayName()." 尺码{$this->size}";
+				return $this->product->displayName() . " 尺码{$this->size}";
 			case 'closed':
 				if ($this->reason == 'out of stock') {
-					return '抱歉, 您购买的'.$this->product->displayName()." 尺码{$this->size}, 卖家库存已售罄, 交易关闭";
+					return '抱歉, 您购买的' . $this->product->displayName() . " 尺码{$this->size}, 卖家库存已售罄, 交易关闭";
 				} else if ($this->reason == 'cancelled by customer') {
-					return '抱歉, 您卖出的'.$this->product->displayName()." 尺码{$this->size}, 买家取消订单";
+					return '抱歉, 您卖出的' . $this->product->displayName() . " 尺码{$this->size}, 买家取消订单";
+				} else if ($this->reason == 'timeout') {
+					return $this->product->displayName() . " 尺码{$this->size}, 订单已超时自动关闭";
 				} else {
-					return $this->product->displayName()." 尺码{$this->size}, 关闭原因: {$this->reason}";
+					return $this->product->displayName() . " 尺码{$this->size}, 关闭原因: {$this->reason}";
 				}
 			default:
-				return $this->product->displayName()." 尺码{$this->size}";
+				return $this->product->displayName() . " 尺码{$this->size}";
 		}
 	}
 
 	public function notifyCustomer()
-	{		
-		foreach($this->user->devices as $device) {
+	{
+		foreach ($this->user->devices as $device) {
 			PushNotification::dispatch(
 				$device->token,
 				$this->notification_title,
-				$this->notification_body, 
+				$this->notification_body,
 				['link' => 'https://www.notdopebxtch.com/orders']
 			);
 		}
@@ -119,24 +123,24 @@ class Order extends Model
 	public function notifySeller()
 	{
 		if ($this->seller instanceof Vendor) {
-			foreach($this->seller->users as $user) {
-				foreach($user->devices as $device) {
+			foreach ($this->seller->users as $user) {
+				foreach ($user->devices as $device) {
 					PushNotification::dispatch(
-						$device->token, 
+						$device->token,
 						$this->notification_title,
-						$this->notification_body, 
+						$this->notification_body,
 						['link' => 'https://www.notdopebxtch.com/orders?as_seller=true']
 					);
 				}
 			}
 		} else if ($this->seller instanceof Retailer) {
 			foreach ($this->seller->vendors as $vendor) {
-				foreach($vendor->users as $user) {
-					foreach($user->devices as $device) {
+				foreach ($vendor->users as $user) {
+					foreach ($user->devices as $device) {
 						PushNotification::dispatch(
-							$device->token, 
+							$device->token,
 							$this->notification_title,
-							$this->notification_body, 
+							$this->notification_body,
 							['link' => 'https://www.notdopebxtch.com/orders?as_seller=true']
 						);
 					}
