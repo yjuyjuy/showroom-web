@@ -44,6 +44,11 @@ class CreateOrdersTable extends Migration
 			$table->timestamp('completed_at')->nullable();
 			$table->timestamp('closed_at')->nullable();
 			$table->timestamps();
+
+			$table->index('user_id');
+			$table->index('product_id');
+			$table->index('seller_id');
+			$table->index('seller_type');
 		});
 	}
 

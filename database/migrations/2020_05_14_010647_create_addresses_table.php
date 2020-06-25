@@ -25,6 +25,8 @@ class CreateAddressesTable extends Migration
 			$table->string('country');
 			$table->string('zip');
 			$table->timestamps();
+
+			$table->index('user_id');
 		});
 	}
 

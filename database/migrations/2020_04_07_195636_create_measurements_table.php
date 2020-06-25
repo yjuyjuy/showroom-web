@@ -15,11 +15,11 @@ class CreateMeasurementsTable extends Migration
     {
         Schema::create('measurements', function (Blueprint $table) {
             $table->bigIncrements('id');
-						$table->unsignedBigInteger('product_id');
-						$table->json('data');
+            $table->unsignedBigInteger('product_id');
+            $table->json('data');
             $table->timestamps();
 
-						$table->index('product_id');
+            $table->index('product_id');
         });
     }
 

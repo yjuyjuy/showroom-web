@@ -20,6 +20,8 @@ class CreateDevicesTable extends Migration
 			$table->enum('app', ['com.yjuyjuy.showroomseller', 'com.yjuyjuy.showroomcustomer']);
 			$table->timestamps();
 			$table->primary('token');
+
+			$table->index('user_id');
 		});
 	}
 
