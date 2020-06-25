@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-	public function index(Request $request, $query=false)
+	public function index(Request $request, $query = false)
 	{
+		$ITEMS_PER_PAGE = 48;
 		$user = auth()->user();
 		$vendor = $user->vendor ?? false;
 		if (!$query) {
@@ -57,13 +58,13 @@ class ProductController extends Controller
 				})->values();
 			}
 
-			$total_pages = ceil($products->count() / 48.0);
+			$total_pages = ceil($products->count() / $ITEMS_PER_PAGE);
 			$page = min(max($request->query('page', 1), 1), $total_pages);
-			$products = $products->forPage($page, 48);
+			$products = $products->forPage($page, $ITEMS_PER_PAGE);
 		} else {
-			$total_pages = ceil($query->count() / 48.0);
+			$total_pages = ceil($query->count() / $ITEMS_PER_PAGE);
 			$page = min(max($request->query('page', 1), 1), $total_pages);
-			$products = $query->forPage($page, 48)->get();
+			$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
 			$products->load(['retails', 'retails.retailer']);
 			if (!$user || !$user->is_admin) {
 				$products->map(function ($product) {
@@ -107,8 +108,10 @@ class ProductController extends Controller
 			}
 		} elseif (strpos($url, 'end') !== false) {
 			# end
-			if (preg_match('#notdopebxtch.com/end/[0-9]+#', $url, $results) ||
-			preg_match('#^end-([0-9]+)$#', $url, $results)) {
+			if (
+				preg_match('#notdopebxtch.com/end/[0-9]+#', $url, $results) ||
+				preg_match('#^end-([0-9]+)$#', $url, $results)
+			) {
 				$end_product = \App\EndProduct::find($results[1]);
 			} elseif (preg_match('#www\.endclothing\.com/[a-zA-Z]+/([^/]+)\.html#', $url, $results)) {
 				$end_product = \App\EndProduct::where('url', "https://www.endclothing.com/cn/{$results[1]}.html")->first();
@@ -117,7 +120,7 @@ class ProductController extends Controller
 				(new EndController())->export($end_product, $product);
 			}
 		} elseif (strpos($url, 'off') !== false && strpos($url, 'white') !== false) {
-			if (preg_match('#www\.notdopebxtch\.com/off-white/([^/]+)#', $url, $results) || preg_match('#www.off---white.com/.*/products/([^/]+)#', $url, $results)|| preg_match('#^offwhite-([0-9A-Za-z]+)$#', $url, $results)) {
+			if (preg_match('#www\.notdopebxtch\.com/off-white/([^/]+)#', $url, $results) || preg_match('#www.off---white.com/.*/products/([^/]+)#', $url, $results) || preg_match('#^offwhite-([0-9A-Za-z]+)$#', $url, $results)) {
 				# off-white
 				if ($offwhite_product = \App\OffWhiteProduct::find(strtoupper($results[1]))) {
 					(new OffWhiteController())->export($offwhite_product);
@@ -168,7 +171,7 @@ class ProductController extends Controller
 				$retail->hide();
 			});
 		}
-		$product->load(['images', 'brand','season','color', 'category']);
+		$product->load(['images', 'brand', 'season', 'color', 'category']);
 		return view('products.show', compact('product', 'user'));
 	}
 
@@ -211,8 +214,8 @@ class ProductController extends Controller
 			'name_cn' => ['string', 'max:255',],
 			'category' => ['exists:categories,id',],
 			'color' => ['exists:colors,id',],
-			'designer_style_id' => ['nullable','string','max:255',],
-			'comment' => ['nullable','string','max:255',],
+			'designer_style_id' => ['nullable', 'string', 'max:255',],
+			'comment' => ['nullable', 'string', 'max:255',],
 		]);
 	}
 
