@@ -19,7 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	 * @var array
 	 */
 	protected $fillable = [
-		'id', 'email', 'password','username','type'
+		'id', 'email', 'password', 'username', 'type'
 	];
 	/**
 	 * The attributes that should be hidden for arrays.
@@ -87,6 +87,17 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		return $this->hasMany(Device::class);
 	}
+	public function messages()
+	{
+	}
+	public function messages_sent()
+	{
+		return $this->morphToMany(Message::class, 'from');
+	}
+	public function messages_received()
+	{
+		return $this->morphToMany(Message::class, 'to');
+	}
 	# accessors, mutators
 	public function getIsAdminAttribute()
 	{
@@ -132,7 +143,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function setIsInvitedAttribute(Vendor $vendor)
 	{
 		if ($vendor) {
-			$this->type = 'invited:'.$vendor->id;
+			$this->type = 'invited:' . $vendor->id;
 		}
 	}
 	public function getInvitedByAttribute()

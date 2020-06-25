@@ -46,4 +46,12 @@ class Vendor extends Model
 	{
 		return $this->morphMany(Order::class, 'seller');
 	}
+	public function messages_sent()
+	{
+		return $this->morphToMany(Message::class, 'from');
+	}
+	public function messages_received()
+	{
+		return $this->morphToMany(Message::class, 'to');
+	}
 }
