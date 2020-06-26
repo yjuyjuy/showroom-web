@@ -15,12 +15,17 @@ class CreateMessageTable extends Migration
     {
         Schema::create('message', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('from_id');
-            $table->unsignedBigInteger('from_type');
-            $table->unsignedBigInteger('to_id');
-            $table->unsignedBigInteger('to_type');
+            $table->unsignedBigInteger('sender_id');
+            $table->unsignedBigInteger('sender_type');
+            $table->unsignedBigInteger('recipient_id');
+            $table->unsignedBigInteger('recipient_type');
             $table->string('content', 510);
             $table->timestamps();
+
+            $table->index('sender_id');
+            $table->index('sender_type');
+            $table->index('recipient_id');
+            $table->index('recipient_type');
         });
     }
 
