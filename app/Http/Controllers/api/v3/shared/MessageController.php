@@ -18,14 +18,14 @@ class MessageController extends Controller
         $ITEMS_PER_REQUEST = 10;
         $user =  auth()->user();
         $query = Message::take($ITEMS_PER_REQUEST);
-        $query->where(function($query) use ($user) {
+        $query->where(function ($query) use ($user) {
             $query->where('recipient_type', User::class)->where('recipient_id', $user->id);
         });
         if ($vendor = $user->vendor) {
             $query->where(function ($query) use ($vendor) {
                 $query->where('recipient_type', Vendor::class)->where('recipient_id', $vendor->id);
             });
-            
+
             if ($retailer = $vendor->retailer) {
                 $query->where(function ($query) use ($retailer) {
                     $query->where('recipient_type', Retailer::class)->where('recipient_id', $retailer->id);
@@ -50,7 +50,7 @@ class MessageController extends Controller
             'recipient_type' => ['required', Rule::in(['user', 'vendor', 'retailer'])],
             'content' => 'required|string|max:510',
         ]);
-        foreach($column in ['sender_type', 'recipient_type']) {
+        foreach (['sender_type', 'recipient_type'] as $column) {
             switch ($data[$column]) {
                 case 'user':
                     $data[$column] = User::class;
