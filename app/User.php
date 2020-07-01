@@ -141,6 +141,16 @@ class User extends Authenticatable implements MustVerifyEmail
 			return Vendor::find(explode(':', $this->type)[1]);
 		}
 	}
+	public function getAccountsAttribute()
+	{
+		$accounts = [$this];
+		if ($this->vendor) {
+			$accounts[] = $this->vendor;
+			if ($this->vendor->retailer) {
+				$accounts[] = $this->vendor->retailer;
+			}
+		}
+	}
 	public function isSuperAdmin()
 	{
 		return in_array($this->id, self::admin_user_ids);
