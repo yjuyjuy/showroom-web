@@ -77,4 +77,5 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	// Message model
 	Route::get('messages/pull', 'api\v3\seller\MessageController@pull');
 	Route::post('messages/push', 'api\v3\seller\MessageController@push');
+	Route::get('contacts', 'api\v3\seller\ContactController@index');
 });

@@ -18,25 +18,33 @@ class MessageController extends Controller
         $ITEMS_PER_REQUEST = 10;
         $user =  auth()->user();
         $query = Message::take($ITEMS_PER_REQUEST);
-        $query->where(function ($query) use ($user) {
-            $query->where('recipient_type', User::class)->where('recipient_id', $user->id);
-        });
-        if ($vendor = $user->vendor) {
-            $query->where(function ($query) use ($vendor) {
-                $query->where('recipient_type', Vendor::class)->where('recipient_id', $vendor->id);
+        $from = request('from');
+        if ($from && is_int($from)) $query->where('id', '>', $from);
+        $user_accounts = [$user];
+        $query->where(function ($query) use ($user, $user_accounts) {
+            $query->orWhere(function ($query) use ($user) {
+                $query->where('recipient_type', User::class)->where('recipient_id', $user->id);
             });
-
-            if ($retailer = $vendor->retailer) {
-                $query->where(function ($query) use ($retailer) {
-                    $query->where('recipient_type', Retailer::class)->where('recipient_id', $retailer->id);
+            if ($vendor = $user->vendor) {
+                $user_accounts[] = $vendor;
+                $query->orWhere(function ($query) use ($vendor) {
+                    $query->where('recipient_type', Vendor::class)->where('recipient_id', $vendor->id);
                 });
+
+                if ($retailer = $vendor->retailer) {
+                    $user_accounts[] = $retailer;
+                    $query->orWhere(function ($query) use ($retailer) {
+                        $query->where('recipient_type', Retailer::class)->where('recipient_id', $retailer->id);
+                    });
+                }
             }
-        }
-        $messages = $query->get();
+        });
+        $messages = $query->get()->load(['sender', 'recipient']);
         $count = $query->count();
         return [
-            'has_more' => $count > 0,
             'messages' => $messages,
+            'user_accounts' => $user_accounts,
+            'has_more' => $count > $messages->count(),
         ];
     }
 
