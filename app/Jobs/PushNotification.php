@@ -23,12 +23,12 @@ class PushNotification implements ShouldQueue
 	 *
 	 * @return void
 	 */
-	public function __construct($token, $title = null, $body = null, $data = null)
+	public function __construct($token, $title = null, $body = null, $data = [])
 	{
 		$this->token = $token;
 		$this->title = $title;
 		$this->body = $body;
-		$this->data = array_merge(['click_action' => 'FLUTTER_NOTIFICATION_CLICK'], $data ?? []);
+		$this->data = array_merge(['click_action' => 'FLUTTER_NOTIFICATION_CLICK'], $data);
 	}
 
 	/**
@@ -40,15 +40,15 @@ class PushNotification implements ShouldQueue
 	{
 		$response = Http::withHeaders([
 			'Content-Type' => 'application/json',
-			'Authorization' => 'key='.env('FCM_SERVER_KEY'),
+			'Authorization' => 'key=' . env('FCM_SERVER_KEY'),
 		])->post('https://fcm.googleapis.com/fcm/send', [
-			'to'=> $this->token,
+			'to' => $this->token,
 			'notification' => [
 				'title' => $this->title,
 				'body' => $this->body,
 			],
 			'data' => $this->data,
-			'priority'=>'high',
+			'priority' => 'high',
 		]);
 	}
 }
