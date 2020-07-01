@@ -20,7 +20,7 @@ class Message extends Model
         foreach ($accounts as $account) {
             if (
                 $this->sender_id == $account->id
-                && $this->sender_type == $account::class
+                && $account instanceof $this->sender_type
             ) {
                 return true;
             }
