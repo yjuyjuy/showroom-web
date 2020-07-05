@@ -19,7 +19,7 @@ class MessageController extends Controller
         $user =  auth()->user();
         $query = Message::take($ITEMS_PER_REQUEST);
         $from = request('from');
-        if ($from && is_int($from)) $query->where('id', '>', $from);
+        if (is_int($from)) $query->where('id', '>', $from);
         $user_accounts = [$user];
         $query->where(function ($query) use ($user, $user_accounts) {
             $query->orWhere(function ($query) use ($user) {
