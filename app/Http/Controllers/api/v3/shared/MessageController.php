@@ -19,8 +19,9 @@ class MessageController extends Controller
         $ITEMS_PER_REQUEST = 10;
         $user =  auth()->user();
         $query = Message::take($ITEMS_PER_REQUEST);
-        $from = request('from');
-        if (is_int($from)) $query->where('id', '>', $from);
+        $data = request()->validate(['from' => 'required|integer|min:0']);
+        $from = (int) $data['from'];
+        $query->where('id', '>', $from);
         $user_accounts = [$user];
         $query->where(function ($query) use ($user, $user_accounts) {
             $query->orWhere(function ($query) use ($user) {
