@@ -58,7 +58,7 @@ class MessageController extends Controller
         $user =  auth()->user();
         $data = $request->validate([
             'recipient_id' => 'required|int',
-            'recipient_type' => ['required', Rule::in(['user', 'vendor', 'retailer'])],
+            'recipient_type' => ['required', Rule::in([User::class, Vendor::class, Retailer::class])],
             'content' => 'required|string|max:510',
             'sent_at' => 'required|integer|min:1',
         ]);
