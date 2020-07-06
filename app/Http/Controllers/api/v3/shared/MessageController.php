@@ -67,10 +67,10 @@ class MessageController extends Controller
                 break;
             case 'retailer':
                 $cls = Retailer::class;
-                break;            
+                break;
         }
         $recipient = $cls::findOrFail($data['recipient_id']);
-        $sent_at = Carbon::createFromTimestamp($data['sent_at'])
+        $sent_at = Carbon::createFromTimestamp($data['sent_at']);
         if ($user->vendor) {
             if ($user->vendor == $recipient) {
                 $sender = $user;
@@ -85,7 +85,7 @@ class MessageController extends Controller
             }
         } else {
             $sender = $user;
-        }   
+        }
         $message = new Message();
         $message->content = $data['content'];
         $message->sent_at = $sent_at;
