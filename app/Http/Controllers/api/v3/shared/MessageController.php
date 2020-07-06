@@ -62,18 +62,7 @@ class MessageController extends Controller
             'content' => 'required|string|max:510',
             'sent_at' => 'required|integer|min:1',
         ]);
-        switch ($data['recipient_type']) {
-            case 'user':
-                $cls = User::class;
-                break;
-            case 'vendor':
-                $cls = Vendor::class;
-                break;
-            case 'retailer':
-                $cls = Retailer::class;
-                break;
-        }
-        $recipient = $cls::findOrFail($data['recipient_id']);
+        $recipient = $data['recipient_type']::findOrFail($data['recipient_id']);
         $sent_at = Carbon::createFromTimestamp($data['sent_at']);
         if ($user->vendor) {
             if ($user->vendor == $recipient) {
