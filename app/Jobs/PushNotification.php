@@ -41,7 +41,7 @@ class PushNotification implements ShouldQueue
 		$response = Http::withHeaders([
 			'Content-Type' => 'application/json',
 			'Authorization' => 'key=' . config('services.fcm.key'),
-		])->post(config('services.fcm.key'), [
+		])->post(config('services.fcm.url'), [
 			'to' => $this->token,
 			'notification' => [
 				'title' => $this->title,
