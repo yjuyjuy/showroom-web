@@ -108,7 +108,7 @@ class ProductController extends Controller
 	public function show(Product $product)
 	{
 		$user = auth()->user();
-		return $product->load([
+		return $product->loadMissing([
 			'brand', 'season', 'color', 'category', 'measurement',
 			'prices' => function ($query) use ($user) {
 				$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
@@ -116,7 +116,7 @@ class ProductController extends Controller
 			'prices.vendor',
 			'offers' => function ($query) use ($user) {
 				$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
-			}, 'offers.vendor', 'images',
+			}, 'offers.vendor', 'images', 'offers.vendor.image',
 		]);
 	}
 
