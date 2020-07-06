@@ -69,7 +69,7 @@ class ProductController extends Controller
 		}
 		$products->loadMissing(['brand', 'images', 'season', 'offers' => function($query) use ($user) {
 					$query->whereIn('vendor_id', $user->following_vendors->pluck('id'));
-				}, 'offers.vendor']);
+				}, 'offers.vendor', 'offers.vendor.image']);
 		return [
 			'page' => $page,
 			'total_pages' => $total_pages,
