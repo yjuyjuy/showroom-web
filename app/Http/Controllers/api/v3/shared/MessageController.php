@@ -70,10 +70,10 @@ class MessageController extends Controller
         $recipient = $data['recipient_type']::findOrFail($data['recipient_id']);
         $sent_at = Carbon::createFromTimestamp($data['sent_at']);
         if ($user->vendor) {
-            if ($user->vendor == $recipient) {
+            if ($user->vendor->is($recipient)) {
                 $sender = $user;
             } else if ($user->vendor->retailer) {
-                if ($user->vendor->retailer == $recipient) {
+                if ($user->vendor->retailer->is($recipient)) {
                     $sender = $user;
                 } else {
                     $sender = $user->vendor->retailer;
