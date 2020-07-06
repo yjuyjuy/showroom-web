@@ -21,7 +21,11 @@ class MessageController extends Controller
         $query = Message::take($ITEMS_PER_REQUEST);
         $data = request()->validate(['from' => 'required|integer|min:0']);
         $from = (int) $data['from'];
-        $query->where('id', '>', $from);
+        if ($from > 0) {
+            $query->where('id', '>', $from);
+        } else {
+            $query->where('created_at', '>', now()->subDays(7));
+        }
         $user_accounts = [$user];
         $query->where(function ($query) use ($user, $user_accounts) {
             $query->orWhere(function ($query) use ($user) {
@@ -43,18 +47,19 @@ class MessageController extends Controller
         });
         $messages = $query->get()->load(['sender', 'sender.image', 'recipient', 'recipient.image']);
         $messages->each(function ($message, $key) use ($user_accounts) {
-            $message->from_me = false;
             foreach ($user_accounts as $account) {
                 if ($message->sender->is($account)) {
                     $message->from_me = true;
+                    return;
                 }
             }
+            $message->from_me = false;
         });
-        $count = $query->count();
+        $count = $query->count() - $messages->count();
         return [
             'messages' => $messages,
             'user_accounts' => $user_accounts,
-            'has_more' => $count > $messages->count(),
+            'has_more' => $count > 0,
         ];
     }
 
