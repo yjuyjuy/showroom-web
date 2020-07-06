@@ -50,5 +50,6 @@ class PushNotification implements ShouldQueue
 			'data' => $this->data,
 			'priority' => 'high',
 		]);
+		$response->throw();
 	}
 }
