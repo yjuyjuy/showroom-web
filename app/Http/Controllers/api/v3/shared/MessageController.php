@@ -41,7 +41,7 @@ class MessageController extends Controller
                 }
             }
         });
-        $messages = $query->get()->load(['sender', 'recipient']);
+        $messages = $query->get()->load(['sender', 'sender.image', 'recipient', 'recipient.image']);
         $messages->each(function ($message, $key) {
             $message->from_me = false;
         });
