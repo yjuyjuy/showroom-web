@@ -9,6 +9,7 @@ use App\Retailer;
 use App\Http\Controllers\Controller;
 use App\Jobs\NotifyRecipient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
 class MessageController extends Controller
@@ -52,34 +53,45 @@ class MessageController extends Controller
     {
         $user =  auth()->user();
         $data = $request->validate([
-            'sender_id' => 'required|int',
-            'sender_type' => ['required', Rule::in(['user', 'vendor', 'retailer'])],
             'recipient_id' => 'required|int',
             'recipient_type' => ['required', Rule::in(['user', 'vendor', 'retailer'])],
             'content' => 'required|string|max:510',
+            'sent_at' => 'required|integer|min:1',
         ]);
-        foreach (['sender_type', 'recipient_type'] as $column) {
-            switch ($data[$column]) {
-                case 'user':
-                    $data[$column] = User::class;
-                    break;
-                case 'vendor':
-                    $data[$column] = Vendor::class;
-                    break;
-                case 'retailer':
-                    $data[$column] = Retailer::class;
-                    break;
+        switch ($data['recipient_type']) {
+            case 'user':
+                $cls = User::class;
+                break;
+            case 'vendor':
+                $cls = Vendor::class;
+                break;
+            case 'retailer':
+                $cls = Retailer::class;
+                break;            
+        }
+        $recipient = $cls::findOrFail($data['recipient_id']);
+        $sent_at = Carbon::createFromTimestamp($data['sent_at'])
+        if ($user->vendor) {
+            if ($user->vendor == $recipient) {
+                $sender = $user;
+            } else if ($user->vendor->retailer) {
+                if ($user->vendor->retailer == $recipient) {
+                    $sender = $user;
+                } else {
+                    $sender = $user->vendor->retailer;
+                }
+            } else {
+                $sender = $user->vendor;
             }
-        }
-        $sender = $data['sender_type']::find($data['sender_id']);
-        if (!$sender || ($sender != $user && $sender != $user->vendor && (!$user->vendor || $sender != $user->vendor->retailer))) {
-            abort(403, 'Invalid sender information');
-        }
-        $recipient = $data['recipient_type']::find($data['recipient_id']);
-        if (!$recipient) {
-            abort(403, 'Invalid recipient information');
-        }
-        $message = Message::create($data)->fresh();
+        } else {
+            $sender = $user;
+        }   
+        $message = new Message();
+        $message->content = $data['content'];
+        $message->sent_at = $sent_at;
+        $message->sender()->associate($sender);
+        $message->recipient()->associate($recipient);
+        $message->save()->refresh();
         NotifyRecipient::dispatch($message);
         return $message;
     }
