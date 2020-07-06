@@ -44,4 +44,9 @@ return [
         ],
     ],
 
+    'fcm' => [
+        'key' => env('FCM_SERVER_KEY'),
+        'url' => 'https://fcm.googleapis.com/fcm/send',
+    ]
+
 ];

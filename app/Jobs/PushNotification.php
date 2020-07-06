@@ -40,8 +40,8 @@ class PushNotification implements ShouldQueue
 	{
 		$response = Http::withHeaders([
 			'Content-Type' => 'application/json',
-			'Authorization' => 'key=' . env('FCM_SERVER_KEY'),
-		])->post('https://fcm.googleapis.com/fcm/send', [
+			'Authorization' => 'key=' . config('services.fcm.key'),
+		])->post(config('services.fcm.key'), [
 			'to' => $this->token,
 			'notification' => [
 				'title' => $this->title,
