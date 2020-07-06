@@ -95,8 +95,8 @@ class MessageController extends Controller
         $message->sender()->associate($sender);
         $message->recipient()->associate($recipient);
         $message->save();
-        NotifyRecipient::dispatch($message);
+        NotifyRecipient::dispatch($message->refresh());
         $message->from_me = true;
-        return $message->refresh();
+        return $message;
     }
 }
