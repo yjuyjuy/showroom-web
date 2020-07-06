@@ -41,6 +41,9 @@ class MessageController extends Controller
             }
         });
         $messages = $query->get()->load(['sender', 'recipient']);
+        $messages->each(function ($message, $key) {
+            $message->from_me = false;
+        });
         $count = $query->count();
         return [
             'messages' => $messages,
@@ -93,6 +96,7 @@ class MessageController extends Controller
         $message->recipient()->associate($recipient);
         $message->save()->refresh();
         NotifyRecipient::dispatch($message);
+        $message->from_me = true;
         return $message;
     }
 }
