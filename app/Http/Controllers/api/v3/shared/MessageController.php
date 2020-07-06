@@ -94,9 +94,9 @@ class MessageController extends Controller
         $message->sent_at = $sent_at;
         $message->sender()->associate($sender);
         $message->recipient()->associate($recipient);
-        $message->save()->refresh();
+        $message->save();
         NotifyRecipient::dispatch($message);
         $message->from_me = true;
-        return $message;
+        return $message->refresh();
     }
 }
