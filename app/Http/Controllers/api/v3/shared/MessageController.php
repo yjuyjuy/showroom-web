@@ -43,7 +43,7 @@ class MessageController extends Controller
         });
         $messages = $query->get()->load(['sender', 'sender.image', 'recipient', 'recipient.image']);
         $messages->each(function ($message, $key) use ($user_accounts) {
-            $message->from_me = $user_accounts->contains($message->sender);
+            $message->from_me = in_array($message->sender, $user_accounts);
         });
         $count = $query->count();
         return [
