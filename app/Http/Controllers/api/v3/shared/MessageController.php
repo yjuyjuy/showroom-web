@@ -11,6 +11,7 @@ use App\Jobs\NotifyRecipient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class MessageController extends Controller
 {
@@ -26,19 +27,19 @@ class MessageController extends Controller
         } else {
             $query->where('created_at', '>', now()->subDays(7));
         }
-        $user_accounts = [$user];
+        $user_accounts = new EloquentCollection([$user]);
         $query->where(function ($query) use ($user, $user_accounts) {
             $query->orWhere(function ($query) use ($user) {
                 $query->where('recipient_type', User::class)->where('recipient_id', $user->id);
             });
             if ($vendor = $user->vendor) {
-                $user_accounts[] = $vendor;
+                $user_accounts->add($vendor);
                 $query->orWhere(function ($query) use ($vendor) {
                     $query->where('recipient_type', Vendor::class)->where('recipient_id', $vendor->id);
                 });
 
                 if ($retailer = $vendor->retailer) {
-                    $user_accounts[] = $retailer;
+                    $user_accounts->add($retailer);
                     $query->orWhere(function ($query) use ($retailer) {
                         $query->where('recipient_type', Retailer::class)->where('recipient_id', $retailer->id);
                     });
@@ -47,13 +48,7 @@ class MessageController extends Controller
         });
         $messages = $query->get()->load(['sender', 'sender.image', 'recipient', 'recipient.image']);
         $messages->each(function ($message, $key) use ($user_accounts) {
-            foreach ($user_accounts as $account) {
-                if ($message->sender->is($account)) {
-                    $message->from_me = true;
-                    return;
-                }
-            }
-            $message->from_me = false;
+            $message->from_me = $user_accounts->contains($message->sender);
         });
         $count = $query->count() - $messages->count();
         return [
@@ -65,29 +60,42 @@ class MessageController extends Controller
 
     public function push(Request $request)
     {
-        $user =  auth()->user();
+        $user =  auth()->user()->load(['vendor', 'vendor.retailer']);
         $data = $request->validate([
             'recipient_id' => 'required|int',
             'recipient_type' => ['required', Rule::in([User::class, Vendor::class, Retailer::class])],
             'content' => 'required|string|max:510',
             'sent_at' => 'required|integer|min:1',
+            'reply_to' => 'sometimes|nullable|integer',
         ]);
         $recipient = $data['recipient_type']::findOrFail($data['recipient_id']);
         $sent_at = Carbon::createFromTimestamp($data['sent_at']);
-        if ($user->vendor) {
-            if ($user->vendor->is($recipient)) {
-                $sender = $user;
-            } else if ($user->vendor->retailer) {
-                if ($user->vendor->retailer->is($recipient)) {
-                    $sender = $user;
-                } else {
-                    $sender = $user->vendor->retailer;
+        $sender = $user;
+        if ($data['reply_to'] && $message = Message::find($data['reply_to'])) {
+            $user_accounts = new EloquentCollection([$user]);
+            if ($user->vendor) {
+                $user_accounts->add($user->vendor);
+                if ($user->vendor->retailer) {
+                    $user_accounts->add($user->vendor->retailer);
                 }
-            } else {
-                $sender = $user->vendor;
+            }
+            if ($user_accounts->contains($message->sender)) {
+                $sender = $message->sender;
+            } else if ($user_accounts->contains($message->recipient) {
+                $sender = $message->recipient;
             }
         } else {
-            $sender = $user;
+            if ($recipient instanceof User) {
+                if ($user->vendor) {
+                    if ($user->vendor->retailer) {
+                        $sender = $user->vendor->retailer;
+                    } else {
+                        $sender = $user->vendor;
+                    }
+                }
+            } else if ($recipient instanceof Vendor && $user->vendor) {
+                $sender = $user->vendor;                
+            }
         }
         $message = new Message();
         $message->content = $data['content'];
