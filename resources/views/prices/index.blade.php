@@ -39,6 +39,8 @@
 			<span class="mdc-floating-label">{{ __('vendor') }}</span>
 			<div class="mdc-line-ripple"></div>
 			</div>
+		@elseif(old('vendor'))
+			<input type="hidden" name="vendor" form="filter-vendor-form" value="{{ old('vendor') }}">
 		@endif
 	</div>
 	@foreach($products as $product)
