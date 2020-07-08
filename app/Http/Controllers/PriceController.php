@@ -13,20 +13,14 @@ class PriceController extends Controller
 	public function index(Request $request)
 	{
 		$user = auth()->user();
-		if ($request->has('vendor') && $request->hasValidSignature()) {
+		if ($request->has('vendor')) {
 			$vendor = Vendor::findOrFail($request->input('vendor'));
-		} else if ($user && $request->has('vendor') && $user->is_admin) {
-			$vendor = Vendor::findOrFail($request->input('vendor'));
-			return redirect()->temporarySignedRoute('prices.index', now()->addMinutes(30), [
-				'vendor' => $vendor->id, 'brand' => $request->input('brand'),
-			]);
 		} else if ($user && $vendor = $user->vendor) {
-			return redirect()->temporarySignedRoute('prices.index', now()->addMinutes(30), [
-				'vendor' => $vendor->id, 'brand' => $request->input('brand'),
-			]);
+			//
 		} else {
 			abort(403);
 		}
+		$can_edit = $user && ($user->is_admin || ($user->vendor && $vendor->is($user->vendor)));
 		$brand = $request->validate([
 			'brand' => 'nullable|exists:brands,id',
 		])['brand'] ?? null;
@@ -44,7 +38,7 @@ class PriceController extends Controller
 			return $product->prices->first()->created_at;
 		})->values();
 		$request->flash();
-		return view('prices.index', compact('vendor', 'products', 'user'));
+		return view('prices.index', compact('vendor', 'products', 'user', 'can_edit'));
 	}
 
 	public function create(Product $product)
