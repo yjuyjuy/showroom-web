@@ -9,7 +9,7 @@
 		<!-- CSRF Token -->
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 
-		<title>@yield('title','') - {{ env('APP_NAME', 'TheShowroom') }}</title>
+		<title>@yield('title','') - {{ env('APP_NAME', 'Showroom') }}</title>
 
 		<!-- Scripts -->
 		<script src="{{ secure_asset('js/app.js') }}" defer></script>
