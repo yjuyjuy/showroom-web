@@ -16,7 +16,7 @@ class PriceController extends Controller
 		if ($request->has('vendor')) {
 			$vendor = Vendor::findOrFail($request->input('vendor'));
 		} else if ($user && $vendor = $user->vendor) {
-			//
+			return redirect()->withInput(['vendor' => $vendor->id]);
 		} else {
 			abort(403);
 		}
