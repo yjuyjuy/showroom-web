@@ -14,15 +14,15 @@ class PriceController extends Controller
 	{
 		$user = auth()->user();
 		if ($request->has('vendor') && $request->hasValidSignature()) {
-			$vendor = Vendor::where('name', $request->input('vendor'))->firstOrFail();
+			$vendor = Vendor::findOrFail($request->input('vendor'));
 		} else if ($user && $request->has('vendor') && $user->is_admin) {
-			$vendor = Vendor::where('name', $request->input('vendor'))->firstOrFail();
+			$vendor = Vendor::findOrFail($request->input('vendor'));
 			return redirect()->temporarySignedRoute('prices.index', now()->addMinutes(30), [
-				'vendor' => $vendor, 'brand' => $request->input('brand'),
+				'vendor' => $vendor->id, 'brand' => $request->input('brand'),
 			]);
 		} else if ($user && $vendor = $user->vendor) {
 			return redirect()->temporarySignedRoute('prices.index', now()->addMinutes(30), [
-				'vendor' => $vendor, 'brand' => $request->input('brand'),
+				'vendor' => $vendor->id, 'brand' => $request->input('brand'),
 			]);
 		} else {
 			abort(403);
