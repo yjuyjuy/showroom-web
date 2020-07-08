@@ -24,7 +24,7 @@
 
 		<div class="mx-2"></div>
 
-		@if(auth()->user()->is_admin)
+		@if($user && $user->is_admin)
 			<div class="mdc-select mdc-select--autosubmit mb-4 optional-form-field" data-form="filter-vendor-form">
 			<input type="hidden" name="vendor" form="filter-vendor-form">
 			<i class="mdc-select__dropdown-icon"></i>
