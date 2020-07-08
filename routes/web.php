@@ -3,6 +3,8 @@
 Auth::routes(['verify' => true]);
 Route::redirect('/', '/products');
 
+Route::get('app', 'AppController@index')->name('app');
+
 # User model
 Route::middleware('auth')->group(function () {
 	Route::view('registered', 'auth.registered')->name('registered');

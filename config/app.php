@@ -56,6 +56,11 @@ return [
 
 	'asset_url' => env('ASSET_URL', null),
 
+	'ios_url' => env('IOS_URL', ''),
+
+	'android_url' => env('ANDROID_URL', ''),
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application Timezone

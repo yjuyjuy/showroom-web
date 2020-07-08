@@ -124,6 +124,8 @@
 						<a href="/" class="mdc-top-app-bar__title">{{config('app.name','app.name')}}@yield('header','')</a>
 					</section>
 					<section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+						<a href="{{ route('app') }}" class="material-icons mdc-top-app-bar__action-item"
+						aria-label="surprise">get_app</a>
 						<a href="{{ route('products.index', ['sort' => 'random']) }}"
 							 class="material-icons mdc-top-app-bar__action-item" aria-label="surprise">casino</a>
 					</section>
