@@ -65,6 +65,9 @@
 					<span class="price-grid__col">{{ __('retail') }}</span>
 					<span class="price-grid__col">{{ __('stock') }}</span>
 				</div>
+				@php
+					$can_edit = $user && ($user->vendor->is($vendor) || $user->is_admin);
+				@endphp
 				@foreach($product->prices as $price)
 					@foreach($price->data as $row)
 						<div class="price-grid__row">
@@ -72,15 +75,21 @@
 							<span class="price-grid__col">&yen;{{$row['offer']}}</span>
 							<span class="price-grid__col">&yen;{{$row['retail']}}</span>
 							<div class="price-grid__col d-flex justify-content-between align-items-center" style="margin: -12px;">
-								<button type="button" class="mdc-icon-button material-icons" onclick="axios.post('{{ route('prices.subtract', ['price' => $price, 'size' => $row['size']]) }}').then(response=>window.location.reload()).catch(error=>window.alert('action failed'))">remove</button>
+								<button type="button" class="mdc-icon-button material-icons"
+										@if($can_edit) onclick="axios.post('{{ route('prices.subtract', ['price' => $price, 'size' => $row['size']]) }}').then(response=>window.location.reload()).catch(error=>window.alert('action failed'))"
+										@else disabled @endif>remove</button>
 								<span>{{ $row['stock'] ?? 999 }}</span>
-								<button type="button" class="mdc-icon-button material-icons" onclick="axios.post('{{ route('prices.add', ['price' => $price, 'size' => $row['size']]) }}').then(response=>window.location.reload()).catch(error=>window.alert('action failed'))">add</button>
+								<button type="button" class="mdc-icon-button material-icons" 
+										@if($can_edit) onclick="axios.post('{{ route('prices.add', ['price' => $price, 'size' => $row['size']]) }}').then(response=>window.location.reload()).catch(error=>window.alert('action failed'))"
+										@else disabled @endif>add</button>
 							</div>
 						</div>
 					@endforeach
 					<div class="price-grid__footer d-flex justify-content-end">
 						<a href="{{route('prices.edit',['price'=>$price])}}" class="mdc-button">{{ __('edit') }}</a>
-						<button type="button" class="mdc-button mdc-button--error" onclick="axios.delete('/prices/{{$price->id}}').then(response => window.location.reload()).catch(error => window.alert('action failed'));">
+						<button type="button" class="mdc-button mdc-button--error" 
+								@if($can_edit) onclick="axios.delete('/prices/{{$price->id}}').then(response => window.location.reload()).catch(error => window.alert('action failed'));"
+								@else disabled @endif>
 							<span class="mdc-button__label">{{ __('delete') }}</span>
 						</button>
 					</div>

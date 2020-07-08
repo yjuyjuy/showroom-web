@@ -13,10 +13,19 @@ class PriceController extends Controller
 	public function index(Request $request)
 	{
 		$user = auth()->user();
-		if ($user->is_admin && ($vendor = $request->input('vendor'))) {
-			$vendor = Vendor::find($vendor);
+		if ($request->has('vendor') && $request->hasValidSignature()) {
+			$vendor = Vendor::findOrFail($request->input('vendor'));
+		} else if ($user && $request->has('vendor') && $user->is_admin) {
+			$vendor = Vendor::findOrFail($request->input('vendor'));
+			return redirect()->temporarySignedRoute('prices.index', now()->addMinutes(30), [
+				'vendor' => $vendor, 'brand' => $request->input('brand'),
+			]);
+		} else if ($user && $vendor = $user->vendor) {
+			return redirect()->temporarySignedRoute('prices.index', now()->addMinutes(30), [
+				'vendor' => $vendor, 'brand' => $request->input('brand'),
+			]);
 		} else {
-			$vendor = $user->vendor;
+			abort(403);
 		}
 		$brand = $request->validate([
 			'brand' => 'nullable|exists:brands,id',
@@ -29,12 +38,13 @@ class PriceController extends Controller
 		$products->loadMissing([
 			'images', 'brand', 'prices' => function ($query) use ($vendor) {
 				$query->where('vendor_id', $vendor->id)->orderBy('created_at', 'desc');
-			},]);
+			},
+		]);
 		$products = $products->sortBy(function ($product) {
 			return $product->prices->first()->created_at;
 		})->values();
 		$request->flash();
-		return view('prices.index', compact('vendor', 'products'));
+		return view('prices.index', compact('vendor', 'products', 'user'));
 	}
 
 	public function create(Product $product)
@@ -64,7 +74,7 @@ class PriceController extends Controller
 				$product->touch();
 			}
 			Log::create([
-				'content' => auth()->user()->username.'新增了'.$price->vendor->name.'的'.$product->displayName().'的价格',
+				'content' => auth()->user()->username . '新增了' . $price->vendor->name . '的' . $product->displayName() . '的价格',
 				'url' => route('products.show', ['product' => $product]),
 			]);
 		}
@@ -91,7 +101,7 @@ class PriceController extends Controller
 			$price->data = $data;
 			$price->save();
 			Log::create([
-				'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+				'content' => auth()->user()->username . '修改了' . $price->vendor->name . '的' . $price->product->displayName() . '的价格',
 				'url' => route('products.show', ['product' => $price->product]),
 			]);
 		}
@@ -116,12 +126,12 @@ class PriceController extends Controller
 		if ($should_log) {
 			if (empty($data)) {
 				Log::create([
-					'content' => auth()->user()->username.'删除了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+					'content' => auth()->user()->username . '删除了' . $price->vendor->name . '的' . $price->product->displayName() . '的价格',
 					'url' => route('products.show', ['product' => $price->product]),
 				]);
 			} else {
 				Log::create([
-					'content' => auth()->user()->username.'修改了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+					'content' => auth()->user()->username . '修改了' . $price->vendor->name . '的' . $price->product->displayName() . '的价格',
 					'url' => route('products.show', ['product' => $price->product]),
 				]);
 			}
@@ -155,7 +165,7 @@ class PriceController extends Controller
 		$this->authorize('delete', $price);
 		$price->delete();
 		Log::create([
-			'content' => auth()->user()->username.'删除了'.$price->vendor->name.'的'.$price->product->displayName().'的价格',
+			'content' => auth()->user()->username . '删除了' . $price->vendor->name . '的' . $price->product->displayName() . '的价格',
 			'url' => route('products.show', ['product' => $price->product]),
 		]);
 		return ['redirect' => route('products.show', ['product' => $price->product])];
@@ -164,11 +174,11 @@ class PriceController extends Controller
 	public function validateRequest()
 	{
 		return request()->validate([
-			'data' => ['required','json'],
-			'data.*.size' => ['required','string'],
-			'data.*.offer' => ['required','integer'],
-			'data.*.retail' => ['required','integer'],
-			'data.*.stock' => ['required','integer'],
+			'data' => ['required', 'json'],
+			'data.*.size' => ['required', 'string'],
+			'data.*.offer' => ['required', 'integer'],
+			'data.*.retail' => ['required', 'integer'],
+			'data.*.stock' => ['required', 'integer'],
 		]);
 	}
 }

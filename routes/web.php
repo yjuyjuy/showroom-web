@@ -40,8 +40,8 @@ Route::middleware('auth')->group(function () {
 });
 
 # Price model
+Route::get('prices', 'PriceController@index')->name('prices.index');
 Route::middleware(['auth', 'vendor'])->group(function () {
-	Route::get('prices', 'PriceController@index')->name('prices.index');
 	Route::patch('prices/{price}', 'PriceController@update')->name('prices.update');
 	Route::delete('prices/{price}', 'PriceController@destroy')->name('prices.destroy');
 	Route::get('prices/{price}/edit', 'PriceController@edit')->name('prices.edit');
