@@ -13,7 +13,7 @@
 		<div class="mdc-select__selected-text"></div>
 		<div class="mdc-select__menu mdc-menu mdc-menu-surface">
 			<ul class="mdc-list">
-				<li class="mdc-list-item" data-value="">{{ __('all brands') }}</li>
+				@if(old('brand')) <li class="mdc-list-item" data-value="">{{ __('all brands') }}</li> @endif
 				@foreach(\App\Brand::find($vendor->products()->pluck('brand_id')->unique()) as $brand)
 					<li class="mdc-list-item {{ old('brand') == $brand->id ? 'mdc-list-item--selected' : '' }}" data-value="{{ $brand->id }}">{{ $brand->name }}</li>
 				@endforeach
