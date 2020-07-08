@@ -14,9 +14,9 @@ class PriceController extends Controller
 	{
 		$user = auth()->user();
 		if ($request->has('vendor') && $request->hasValidSignature()) {
-			$vendor = Vendor::findOrFail($request->input('vendor'));
+			$vendor = Vendor::where('name', $request->input('vendor'))->firstOrFail();
 		} else if ($user && $request->has('vendor') && $user->is_admin) {
-			$vendor = Vendor::findOrFail($request->input('vendor'));
+			$vendor = Vendor::where('name', $request->input('vendor'))->firstOrFail();
 			return redirect()->temporarySignedRoute('prices.index', now()->addMinutes(30), [
 				'vendor' => $vendor, 'brand' => $request->input('brand'),
 			]);
