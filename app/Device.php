@@ -34,4 +34,14 @@ class Device extends Model
 	{
 		return $this->belongsTo(User::class);
 	}
+
+	public function getIsIosAttribute()
+	{
+		return $this->os === 'ios';
+	}
+
+	public function getIsAndroidAttribute()
+	{
+		return $this->os === 'android';
+	}
 }
