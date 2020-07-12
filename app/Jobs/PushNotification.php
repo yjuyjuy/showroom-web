@@ -66,13 +66,17 @@ class PushNotification implements ShouldQueue
 				$key = config('services.apns.key');
 				return JWT::encode($payload, $key);
 			});
-			$response = Http::withHeaders([
-				':method' => 'POST',
-				':path' => '/3/device/' . $device->token,
-				'authorization' => 'bearer ' . $jwt,
-				'apns-push-type' => 'alert',
-				'apns-topic' => $device->app,
-			])->post(config('services.apns.url'), [
+			$response = Http::withOptions(
+				[
+					'headers' => [
+						':method' => 'POST',
+						':path' => '/3/device/' . $device->token,
+						'authorization' => 'bearer ' . $jwt,
+						'apns-push-type' => 'alert',
+						'apns-topic' => $device->app,
+					], 'version' => 2.0,
+				]
+			)->post(config('services.apns.url'), [
 				'aps' => [
 					'alert' => [
 						'title' => $this->title,
