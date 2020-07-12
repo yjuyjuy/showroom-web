@@ -112,7 +112,7 @@ class Order extends Model
 	{
 		foreach ($this->user->devices as $device) {
 			PushNotification::dispatch(
-				$device->token,
+				$device,
 				$this->notification_title,
 				$this->notification_body,
 				['link' => 'https://www.notdopebxtch.com/orders']
@@ -126,7 +126,7 @@ class Order extends Model
 			foreach ($this->seller->users as $user) {
 				foreach ($user->devices as $device) {
 					PushNotification::dispatch(
-						$device->token,
+						$device,
 						$this->notification_title,
 						$this->notification_body,
 						['link' => 'https://www.notdopebxtch.com/orders?as_seller=true']
@@ -138,7 +138,7 @@ class Order extends Model
 				foreach ($vendor->users as $user) {
 					foreach ($user->devices as $device) {
 						PushNotification::dispatch(
-							$device->token,
+							$device,
 							$this->notification_title,
 							$this->notification_body,
 							['link' => 'https://www.notdopebxtch.com/orders?as_seller=true']

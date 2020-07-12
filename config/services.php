@@ -45,8 +45,15 @@ return [
     ],
 
     'fcm' => [
-        'key' => env('FCM_SERVER_KEY'),
-        'url' => 'https://fcm.googleapis.com/fcm/send',
-    ]
+        'key' => env('FCM_KEY'),
+        'url' => env('FCM_SERVER_URL'),
+    ],
+
+    'apns' => [
+        'key' => env('APNS_KEY'),
+        'key_id' => env('APNS_KEY_ID'),
+        'team_id' => env('APNS_TEAM_ID'),
+        'url' => env('APNS_SERVER_URL'),
+    ],
 
 ];

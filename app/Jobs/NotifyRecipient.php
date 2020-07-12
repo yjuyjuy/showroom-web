@@ -44,19 +44,20 @@ class NotifyRecipient implements ShouldQueue
 
         if ($recipient instanceof User) {
             foreach ($recipient->devices as $device) {
-                PushNotification::dispatch($device->token, $title, $body, $data);
+                PushNotification::dispatch($device, $title, $body, $data);
             }
         } else if ($recipient instanceof Vendor) {
             foreach ($recipient->users as $user) {
                 foreach ($user->devices as $device) {
-                    PushNotification::dispatch($device->token, $title, $body, $data);
+                    PushNotification::dispatch($device, $title, $body, $data);
                 }
             }
-        } else if ($recipient instanceof Retailer) {
+        }
+        else if ($recipient instanceof Retailer) {
             foreach ($recipient->vendors as $vendor) {
                 foreach ($vendor->users as $user) {
                     foreach ($user->devices as $device) {
-                        PushNotification::dispatch($device->token, $title, $body, $data);
+                        PushNotification::dispatch($device, $title, $body, $data);
                     }
                 }
             }

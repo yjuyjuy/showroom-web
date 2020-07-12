@@ -2,18 +2,20 @@
 
 namespace App\Jobs;
 
+use Firebase\JWT\JWT;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class PushNotification implements ShouldQueue
 {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	protected $token;
+	protected $device;
 	protected $title;
 	protected $body;
 	protected $data;
@@ -23,9 +25,9 @@ class PushNotification implements ShouldQueue
 	 *
 	 * @return void
 	 */
-	public function __construct($token, $title = null, $body = null, $data = [])
+	public function __construct($device, $title = null, $body = null, $data = [])
 	{
-		$this->token = $token;
+		$this->device = $device;
 		$this->title = $title;
 		$this->body = $body;
 		$this->data = array_merge(['click_action' => 'FLUTTER_NOTIFICATION_CLICK'], $data);
@@ -38,18 +40,46 @@ class PushNotification implements ShouldQueue
 	 */
 	public function handle()
 	{
-		$response = Http::withHeaders([
-			'Content-Type' => 'application/json',
-			'Authorization' => 'key=' . config('services.fcm.key'),
-		])->post(config('services.fcm.url'), [
-			'to' => $this->token,
-			'notification' => [
-				'title' => $this->title,
-				'body' => $this->body,
-			],
-			'data' => $this->data,
-			'priority' => 'high',
-		]);
-		$response->throw();
+		if ($device->is_android) {
+			$response = Http::withHeaders([
+				'Content-Type' => 'application/json',
+				'Authorization' => 'key=' . config('services.fcm.key'),
+			])->post(config('services.fcm.url'), [
+				'to' => $this->device->token,
+				'notification' => [
+					'title' => $this->title,
+					'body' => $this->body,
+				],
+				'data' => $this->data,
+				'priority' => 'high',
+			]);
+			$response->throw();
+		} else if ($device->is_ios) {
+			$jwt = Cache::remember('apns-jwt', 60 * 30, function () {
+				$payload = [
+					'alg' => 'ES256',
+					'kid' => config('services.apns.key_id'),
+					'iss' => config('services.apns.team_id'),
+					'iat' => now()->timestamp,
+				];
+				$key = config('services.apns.key');
+				return JWT::encode($payload, $key);
+			});
+			$response = Http::withHeaders([
+				'Content-Type' => 'application/json',
+				':path' => '/3/device/' . $device->token,
+				'authorization' => 'bearer ' . $jwt,
+				'apns-push-type' => 'alert',
+			])->post(config('services.apns.url'), [
+				'aps' => [
+					'alert' => [
+						'title' => $this->title,
+						'body' => $this->body,
+					],
+				],
+				'data' => $this->data,
+			]);
+			$response->throw();
+		}
 	}
 }
