@@ -74,7 +74,11 @@ class PushNotification implements ShouldQueue
 						'authorization' => 'bearer ' . $jwt,
 						'apns-push-type' => 'alert',
 						'apns-topic' => $device->app,
-					], 'version' => 2.0,
+					],
+					'version' => 2.0,
+					'curl' => [
+						CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+					],
 				]
 			)->post(config('services.apns.url'), [
 				'aps' => [
