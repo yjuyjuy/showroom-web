@@ -40,12 +40,13 @@ class PushNotification implements ShouldQueue
 	 */
 	public function handle()
 	{
+		$device = $this->device;
 		if ($device->is_android) {
 			$response = Http::withHeaders([
 				'Content-Type' => 'application/json',
 				'Authorization' => 'key=' . config('services.fcm.key'),
 			])->post(config('services.fcm.url'), [
-				'to' => $this->device->token,
+				'to' => $device->token,
 				'notification' => [
 					'title' => $this->title,
 					'body' => $this->body,
