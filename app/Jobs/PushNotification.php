@@ -67,7 +67,7 @@ class PushNotification implements ShouldQueue
 				return JWT::encode($payload, $key);
 			});
 			$response = Http::withHeaders([
-				'Content-Type' => 'application/json',
+				':method' => 'POST',
 				':path' => '/3/device/' . $device->token,
 				'authorization' => 'bearer ' . $jwt,
 				'apns-push-type' => 'alert',
