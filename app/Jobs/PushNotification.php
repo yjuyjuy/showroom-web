@@ -71,6 +71,7 @@ class PushNotification implements ShouldQueue
 				':path' => '/3/device/' . $device->token,
 				'authorization' => 'bearer ' . $jwt,
 				'apns-push-type' => 'alert',
+				'apns-topic' => $device->app,
 			])->post(config('services.apns.url'), [
 				'aps' => [
 					'alert' => [
