@@ -77,7 +77,7 @@ class PushNotification implements ShouldQueue
 					],
 					'version' => 2.0,
 					'curl' => [
-						CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+						'CURLOPT_SSLVERSION' => 'CURL_SSLVERSION_TLSv1_2'
 					],
 				]
 			)->post(config('services.apns.url'), [
