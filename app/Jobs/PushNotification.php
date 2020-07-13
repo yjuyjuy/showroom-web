@@ -62,8 +62,9 @@ class PushNotification implements ShouldQueue
 					'iat' => now()->timestamp,
 				];
 				$key = config('services.apns.key');
-				$kid = config('services.apns.key_id');
-				return JWT::encode($payload, $key, 'ES256', $kid);
+				$alg = 'ES256';
+				$keyId = config('services.apns.key_id');
+				return JWT::encode($payload, $key, $alg, $keyId);
 			});
 			$data = [
 				'aps' => [
@@ -80,21 +81,6 @@ class PushNotification implements ShouldQueue
 			if (!is_null($response)) {
 				throw Exception("Unexpected response: '$response'");
 			}
-			// $response = Http::withOptions(
-			// 	[
-			// 		'headers' => [
-			// 			'Content-Type' => 'application/json',
-			// 			'authorization' => 'bearer ' . $jwt,
-			// 			'apns-push-type' => 'alert',
-			// 			'apns-topic' => $device->app,
-			// 		],
-			// 		'version' => 2.0,
-			// 		'curl' => [
-			// 			'CURLOPT_SSLVERSION' => 'CURL_SSLVERSION_TLSv1_2'
-			// 		],
-			// 	]
-			// )->post(config('services.apns.url') . '/3/device/' . $device->token, );
-			// $response->throw();
 		}
 	}
 }
