@@ -69,8 +69,6 @@ class PushNotification implements ShouldQueue
 			$response = Http::withOptions(
 				[
 					'headers' => [
-						':method' => 'POST',
-						':path' => '/3/device/' . $device->token,
 						'authorization' => 'bearer ' . $jwt,
 						'apns-push-type' => 'alert',
 						'apns-topic' => $device->app,
@@ -80,7 +78,7 @@ class PushNotification implements ShouldQueue
 						'CURLOPT_SSLVERSION' => 'CURL_SSLVERSION_TLSv1_2'
 					],
 				]
-			)->post(config('services.apns.url'), [
+			)->post(config('services.apns.url') . '/3/device/' . $device->token, [
 				'aps' => [
 					'alert' => [
 						'title' => $this->title,
