@@ -62,21 +62,10 @@ class PushNotification implements ShouldQueue
 					'iat' => now()->timestamp,
 				];
 				$key = config('services.apns.key');
-				return JWT::encode($payload, $key, 'ES256', config('services.apns.key_id'));
+				$kid = config('services.apns.key_id');
+				return JWT::encode($payload, $key, 'ES256', $kid);
 			});
-			$response = Http::withOptions(
-				[
-					'headers' => [
-						'authorization' => 'bearer ' . $jwt,
-						'apns-push-type' => 'alert',
-						'apns-topic' => $device->app,
-					],
-					'version' => 2.0,
-					'curl' => [
-						'CURLOPT_SSLVERSION' => 'CURL_SSLVERSION_TLSv1_2'
-					],
-				]
-			)->post(config('services.apns.url') . '/3/device/' . $device->token, [
+			$data = [
 				'aps' => [
 					'alert' => [
 						'title' => $this->title,
@@ -84,8 +73,28 @@ class PushNotification implements ShouldQueue
 					],
 				],
 				'data' => $this->data,
-			]);
-			$response->throw();
+			];
+			$data = json_encode($data);
+			$url = config('services.apns.url') . '/3/device/' . $device->token;
+			$response = `curl -X POST -H "authorization: bearer $jwt" -H "apns-push-type: alert" -H "apns-topic: {$device->app}" -H "content-type: application/json" -d '$data' $url`;
+			if (!is_null($response)) {
+				throw Exception("Unexpected response: '$response'");
+			}
+			// $response = Http::withOptions(
+			// 	[
+			// 		'headers' => [
+			// 			'Content-Type' => 'application/json',
+			// 			'authorization' => 'bearer ' . $jwt,
+			// 			'apns-push-type' => 'alert',
+			// 			'apns-topic' => $device->app,
+			// 		],
+			// 		'version' => 2.0,
+			// 		'curl' => [
+			// 			'CURLOPT_SSLVERSION' => 'CURL_SSLVERSION_TLSv1_2'
+			// 		],
+			// 	]
+			// )->post(config('services.apns.url') . '/3/device/' . $device->token, );
+			// $response->throw();
 		}
 	}
 }
