@@ -58,13 +58,11 @@ class PushNotification implements ShouldQueue
 		} else if ($device->is_ios) {
 			$jwt = Cache::remember('apns-jwt', 60 * 30, function () {
 				$payload = [
-					'alg' => 'ES256',
-					'kid' => config('services.apns.key_id'),
 					'iss' => config('services.apns.team_id'),
 					'iat' => now()->timestamp,
 				];
 				$key = config('services.apns.key');
-				return JWT::encode($payload, $key);
+				return JWT::encode($payload, $key, 'ES256', config('services.apns.key_id'));
 			});
 			$response = Http::withOptions(
 				[
