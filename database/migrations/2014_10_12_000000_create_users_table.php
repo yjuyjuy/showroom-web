@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
 			$table->rememberToken();
 			$table->timestamps();
 
+			$table->index('username');
+			$table->index('email');
 			$table->index('vendor_id');
 		});
 	}
