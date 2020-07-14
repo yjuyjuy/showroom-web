@@ -36,7 +36,7 @@ class AuthController extends Controller
         $row = DB::table($this->table)
             ->where('email', $data['email'])
             ->where('token', (int) $data['token'])
-            ->where('created_at', '>', now()->subMinutes(5)->timestamp)
+            ->whereRaw('created_at > current_timestamp - interval 5 minute')
             ->first();
         if ($row) {
             return null;
@@ -55,7 +55,7 @@ class AuthController extends Controller
         $row = DB::table($this->table)
             ->where('email', $data['email'])
             ->where('token', (int) $data['token'])
-            ->where('created_at', '>', now()->subMinutes(5)->timestamp)
+            ->whereRaw('created_at > current_timestamp - interval 5 minute')
             ->first();
         if ($row) {
             $user = User::firstWhere('email', $data['email']);
