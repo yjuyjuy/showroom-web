@@ -19,7 +19,7 @@ Route::get('version', 'api\v1\VersionController');
 Route::post('register', 'api\v3\seller\RegisterController@register');
 Route::get('forgot_password', 'api\v3\shared\AuthController@forgot');
 Route::post('forgot_password', 'api\v3\shared\AuthController@verify');
-Route::post('reset_password', 'api\v3\shared\AuthController@reset');
+Route::patch('forgot_password', 'api\v3\shared\AuthController@reset');
 
 Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	// User model
