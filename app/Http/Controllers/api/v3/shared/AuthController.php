@@ -71,7 +71,7 @@ class AuthController extends Controller
             abort(403, 'Token not found');
         }
         $created_at = new Carbon($row->created_at);
-        $minutes = min(0, max(10, $minutes));
+        $minutes = max(0, min(10, $minutes));
         if (now()->isAfter($created_at->addMinutes($minutes))) {
             abort(403, 'Token expired');
         }
