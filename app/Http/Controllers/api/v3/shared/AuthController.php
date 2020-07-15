@@ -35,7 +35,7 @@ class AuthController extends Controller
     public function reset(Request $request)
     {
         $user = $this->validateUser($request);
-        $this->validateToken($request);
+        $this->validateToken($request, 10);
         $data = $request->validate([
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -57,7 +57,7 @@ class AuthController extends Controller
         }
     }
 
-    public function validateToken(Request $request)
+    public function validateToken(Request $request, int $minutes = 5)
     {
         $data = $request->validate([
             'email' => 'required|email',
@@ -71,7 +71,8 @@ class AuthController extends Controller
             abort(403, 'Token not found');
         }
         $created_at = new Carbon($row->created_at);
-        if (now()->isBefore($created_at->addMinutes(5))) {
+        $minutes = min(0, max(10, $minutes));
+        if (now()->isAfter($created_at->addMinutes($minutes))) {
             abort(403, 'Token expired');
         }
     }
