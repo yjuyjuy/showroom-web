@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\api\v3\shared;
 
+use App\Events\NewMessageReceivedEvent;
+use App\Events\NewMessageSentEvent;
 use App\Message;
 use App\User;
 use App\Vendor;
@@ -15,12 +17,12 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class MessageController extends Controller
 {
-    public function pull()
+    public function pull(Request $request)
     {
         $ITEMS_PER_REQUEST = 10;
-        $user =  auth()->user();
+        $user =  $request->user();
         $query = Message::take($ITEMS_PER_REQUEST);
-        $data = request()->validate(['from' => 'required|integer|min:0']);
+        $data = $request->validate(['from' => 'required|integer|min:0']);
         $from = (int) $data['from'];
         if ($from > 0) {
             $query->where('id', '>', $from);
@@ -48,63 +50,43 @@ class MessageController extends Controller
         });
         $messages = $query->get()->load(['sender', 'sender.image', 'recipient', 'recipient.image']);
         $messages->each(function ($message, $key) use ($user_accounts) {
-            $message->from_me = $user_accounts->contains($message->sender);
+            $message->from_user = $user_accounts->contains($message->sender);
         });
         $count = $query->count() - $messages->count();
         return [
             'messages' => $messages,
-            'user_accounts' => $user_accounts,
             'has_more' => $count > 0,
         ];
     }
 
     public function push(Request $request)
     {
-        $user =  auth()->user()->load(['vendor', 'vendor.retailer']);
+        $valid_type_rule = Rule::in([User::class, Vendor::class, Retailer::class]);
         $data = $request->validate([
+            'sender_id' => 'required|int',
+            'sender_type' => ['required', $valid_type_rule],
             'recipient_id' => 'required|int',
-            'recipient_type' => ['required', Rule::in([User::class, Vendor::class, Retailer::class])],
+            'recipient_type' => ['required', $valid_type_rule],
             'content' => 'required|string|max:510',
-            'sent_at' => 'required|integer|min:1',
-            'reply_to' => 'sometimes|nullable|integer',
+            'created_at' => 'required|integer|min:1',
         ]);
         $recipient = $data['recipient_type']::findOrFail($data['recipient_id']);
-        $sent_at = Carbon::createFromTimestamp($data['sent_at']);
-        $sender = $user;
-        if ($data['reply_to'] && $message = Message::find($data['reply_to'])) {
-            $user_accounts = new EloquentCollection([$user]);
-            if ($user->vendor) {
-                $user_accounts->add($user->vendor);
-                if ($user->vendor->retailer) {
-                    $user_accounts->add($user->vendor->retailer);
-                }
-            }
-            if ($user_accounts->contains($message->sender)) {
-                $sender = $message->sender;
-            } else if ($user_accounts->contains($message->recipient) {
-                $sender = $message->recipient;
-            }
-        } else {
-            if ($recipient instanceof User) {
-                if ($user->vendor) {
-                    if ($user->vendor->retailer) {
-                        $sender = $user->vendor->retailer;
-                    } else {
-                        $sender = $user->vendor;
-                    }
-                }
-            } else if ($recipient instanceof Vendor && $user->vendor) {
-                $sender = $user->vendor;                
-            }
-        }
+        $sender = $data['sender_type']::findOrFail($data['sender_id']);
+        $this->authorize('sentAs', $sender);
         $message = new Message();
         $message->content = $data['content'];
-        $message->sent_at = $sent_at;
+        $message->sent_at = Carbon::createFromTimestamp($data['created_at']);
         $message->sender()->associate($sender);
         $message->recipient()->associate($recipient);
         $message->save();
-        NotifyRecipient::dispatch($message->refresh());
-        $message->from_me = true;
+        $this->created($message);
         return $message;
+    }
+
+    public function created(Message $message)
+    {
+        $message->refresh()->loadMissing(['sender', 'sender.image', 'recipient', 'recipient.image']);
+        event(new NewMessageSentEvent($message));
+        event(new NewMessageReceivedEvent($message));
     }
 }
