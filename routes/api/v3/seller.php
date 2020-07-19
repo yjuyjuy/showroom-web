@@ -21,7 +21,7 @@ Route::get('forgot_password', 'api\v3\shared\AuthController@forgot');
 Route::post('forgot_password', 'api\v3\shared\AuthController@verify');
 Route::patch('forgot_password', 'api\v3\shared\AuthController@reset');
 
-Route::middleware(['auth:api', 'reseller:api'])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
 	// User model
 	Route::get('user', 'api\v3\seller\UserController@show');
 	Route::post('user', 'api\v3\seller\UserController@update');
@@ -81,4 +81,6 @@ Route::middleware(['auth:api', 'reseller:api'])->group(function () {
 	Route::get('messages/pull', 'api\v3\seller\MessageController@pull');
 	Route::post('messages/push', 'api\v3\seller\MessageController@push');
 	Route::get('contacts', 'api\v3\seller\ContactController@index');
+
+	Route::get('channels', 'api\v3\seller\ChannelController@index');
 });
