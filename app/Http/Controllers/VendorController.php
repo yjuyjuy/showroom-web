@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Vendor;
+use App\Retailer;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -116,11 +117,11 @@ class VendorController extends Controller
 			if ($vendor) {
 				return redirect()->route('vendor.products.index', ['vendor' => $vendor,]);
 			} else {
-				$message = '没有找到微信号是"'.$search.'"的同行';
+				$message = '没有找到同行"'.$name.'"';
 			}
 		}
 		$user = auth()->user();
-		$vendors = $user->fresh()->following_vendors;
+		$vendors = $user->following_vendors;
 		return view('vendor.following', compact('vendors', 'message'));
 	}
 
@@ -130,13 +131,13 @@ class VendorController extends Controller
 		$city = '上海';
 		$wechat_id = 'mel_donkeys';
 
-		$retailer = new App\Retailer();
+		$retailer = new Retailer();
 		$retailer->id = random_int(1000000000, 10000000000);
 		$retailer->name = $name;
 		$retailer->homepage = null;
 		$retailer->save();
 
-		$vendor = new App\Vendor();
+		$vendor = new Vendor();
 		$vendor->id = random_int(1000000000, 10000000000);
 		$vendor->name = $name;
 		$vendor->wechat_id = $wechat_id;
