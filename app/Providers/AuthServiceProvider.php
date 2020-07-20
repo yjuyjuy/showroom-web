@@ -17,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
 		'App\TaobaoShop' => 'App\Policies\TaobaoPolicy',
 				'App\VendorPrice' => 'App\Policies\PricePolicy',
 		'App\Vendor' => 'App\Policies\VendorPolicy',
+		'App\User' => 'App\Policies\MessagePolicy',
 	];
 
 	/**
