@@ -9,7 +9,7 @@ class MessagePolicy
 {
     use HandlesAuthorization;
 
-    public function sentAs(User $user, $sender)
+    public function sendAs(User $user, $sender)
     {
         return $user->is($sender) || ($user->vendor && ($user->vendor->is($sender) || ($user->vendor->retailer && $user->vendor->retailer->is($sender))));
     }
