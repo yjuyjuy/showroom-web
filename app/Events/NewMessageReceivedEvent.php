@@ -46,13 +46,13 @@ class NewMessageReceivedEvent implements ShouldBroadcast
         return [];
     }
 
-    /**
-     * The event's broadcast name.
-     *
-     * @return string
-     */
-    public function broadcastAs()
-    {
-        return 'message.received';
-    }
+    // /**
+    //  * The event's broadcast name.
+    //  *
+    //  * @return string
+    //  */
+    // public function broadcastAs()
+    // {
+    //     return 'message.received';
+    // }
 }

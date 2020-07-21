@@ -46,13 +46,13 @@ class NewMessageSentEvent implements ShouldBroadcast
         return [];
     }
 
-    /**
-     * The event's broadcast name.
-     *
-     * @return string
-     */
-    public function broadcastAs()
-    {
-        return 'message.sent';
-    }
+    // /**
+    //  * The event's broadcast name.
+    //  *
+    //  * @return string
+    //  */
+    // public function broadcastAs()
+    // {
+    //     return 'message.sent';
+    // }
 }
