@@ -11,11 +11,11 @@ class ChannelController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $channels = ['user.' . $user->id];
+        $channels = ['private-user.' . $user->id];
         if ($user->vendor) {
-            $channels[] = 'vendor.' . $user->vendor->id;
+            $channels[] = 'private-vendor.' . $user->vendor->id;
             if ($user->vendor->retailer) {
-                $channels[] = 'retailer.' . $user->vendor->retailer->id;
+                $channels[] = 'private-retailer.' . $user->vendor->retailer->id;
             }
         }
         return $channels;
