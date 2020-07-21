@@ -79,7 +79,7 @@ class PushNotification implements ShouldQueue
 			$url = config('services.apns.url') . '/3/device/' . $device->token;
 			$response = `curl -X POST -H "authorization: bearer $jwt" -H "apns-push-type: alert" -H "apns-topic: {$device->app}" -H "content-type: application/json" -d '$data' $url`;
 			if (!is_null($response)) {
-				throw Exception("Unexpected response: '$response'");
+				throw new \Exception("Unexpected response: '$response'");
 			}
 		}
 	}
