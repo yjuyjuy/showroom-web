@@ -84,6 +84,7 @@ class MessageController extends Controller
         $message = new Message();
         $message->content = $data['content'];
         $message->sent_at = Carbon::createFromTimestamp($data['created_at']);
+        $message->uuid = $data['uuid'];
         $message->sender()->associate($sender);
         $message->recipient()->associate($recipient);
         $message->save();
