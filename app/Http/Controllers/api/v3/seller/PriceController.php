@@ -53,7 +53,11 @@ class PriceController extends Controller
 			$vendor = auth()->user()->vendor;
 		}
 		$data = json_decode($this->validateRequest()['data'], true);
-		if (!empty($data)) {
+		if (!$data) {
+			return ['error' => 'Empty data'];
+		} else if (!$vendor) {
+			return ['error' => 'Seller not found'];
+		} else {
 			$price = $product->prices()->firstOrNew(['vendor_id' => $vendor->id]);
 			$price->data = $data;
 			$price->updated_at = NOW();
@@ -67,7 +71,6 @@ class PriceController extends Controller
 			]);
 			return ['price' => $price->load('vendor')];
 		}
-		return ['error' => 'Empty data'];
 	}
 
 	public function update(VendorPrice $price)
