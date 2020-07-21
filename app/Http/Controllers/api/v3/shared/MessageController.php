@@ -76,7 +76,7 @@ class MessageController extends Controller
             'recipient_type' => ['required', $valid_type_rule],
             'content' => 'required|string|max:510',
             'created_at' => 'required|integer|min:1',
-            'uuid' => 'required|uuid',
+            'uuid' => 'required|uuid|unique:messages,uuid',
         ]);
         $recipient = $data['recipient_type']::findOrFail($data['recipient_id']);
         $sender = $data['sender_type']::findOrFail($data['sender_id']);
