@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,5 +26,9 @@ class AppServiceProvider extends ServiceProvider
 	{
 		\App\VendorPrice::observe(\App\Observers\PriceObserver::class);
 		\Illuminate\Support\Facades\URL::forceScheme('https');
+
+		Gate::define('viewWebSocketsDashboard', function ($user = null) {
+			return $user && $user->is_admin;
+		});
 	}
 }
