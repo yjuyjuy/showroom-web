@@ -323,7 +323,8 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'predis'),
-            'prefix' => Str::slug(env('APP_NAME', 'laravel')),
+            'prefix' => '',
+            // 'prefix' => Str::slug(env('APP_NAME', 'laravel')),
         ],
 
         'default' => [
