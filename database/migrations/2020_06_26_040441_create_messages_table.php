@@ -20,6 +20,7 @@ class CreateMessagesTable extends Migration
             $table->unsignedBigInteger('recipient_id');
             $table->string('recipient_type');
             $table->string('content', 510);
+            $table->uuid('uuid');
             $table->timestamp('sent_at');
             $table->timestamps();
 
