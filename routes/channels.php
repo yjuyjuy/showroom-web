@@ -27,9 +27,3 @@ Broadcast::channel('vendor.{id}', function ($user, $id) {
 Broadcast::channel('retailer.{id}', function ($user, $id) {
     return (int) $user->vendor->retailer_id === (int) $id;
 });
-Broadcast::channel('order.{order}', function ($user, Order $order) {
-    if (!$order) return false;
-    return $user->id === $order->user_id || ($user->vendor &&
-        ($order->seller->is($user->vendor) ||
-            ($user->vendor->retailer && $order->seller->is($user->vendor->retailer))));
-});
