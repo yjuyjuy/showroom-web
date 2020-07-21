@@ -31,20 +31,27 @@ class MessageController extends Controller
         }
         $user_accounts = new EloquentCollection([$user]);
         $query->where(function ($query) use ($user, $user_accounts) {
-            $query->orWhere(function ($query) use ($user) {
-                $query->where('recipient_type', User::class)->where('recipient_id', $user->id);
-            });
+            foreach (['sender', 'recipient'] as $role) {
+                $query->orWhere(function ($query) use ($user, $role) {
+                    $query->where($role . '_type', User::class)->where($role . '_id', $user->id);
+                });
+            }
             if ($vendor = $user->vendor) {
                 $user_accounts->add($vendor);
-                $query->orWhere(function ($query) use ($vendor) {
-                    $query->where('recipient_type', Vendor::class)->where('recipient_id', $vendor->id);
-                });
+                foreach (['sender', 'recipient'] as $role) {
+                    $query->orWhere(function ($query) use ($vendor, $role) {
+                        $query->where($role . '_type', Vendor::class)->where($role . '_id', $vendor->id);
+                    });
+                }
+
 
                 if ($retailer = $vendor->retailer) {
                     $user_accounts->add($retailer);
-                    $query->orWhere(function ($query) use ($retailer) {
-                        $query->where('recipient_type', Retailer::class)->where('recipient_id', $retailer->id);
-                    });
+                    foreach (['sender', 'recipient'] as $role) {
+                        $query->orWhere(function ($query) use ($retailer, $role) {
+                            $query->where($role . '_type', Retailer::class)->where($role . '_id', $retailer->id);
+                        });
+                    }
                 }
             }
         });
