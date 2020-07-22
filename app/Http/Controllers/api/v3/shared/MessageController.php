@@ -83,13 +83,13 @@ class MessageController extends Controller
         }
         $recipient = $data['recipient_type']::findOrFail($data['recipient_id']);
         $sender = $data['sender_type']::findOrFail($data['sender_id']);
-        $this->authorize('sendAs', $sender);
         $message = new Message();
         $message->content = $data['content'];
         $message->sent_at = Carbon::createFromTimestamp($data['created_at']);
         $message->uuid = $data['uuid'];
         $message->sender()->associate($sender);
         $message->recipient()->associate($recipient);
+        $this->authorize('send', $message);
         $message->save();
         $this->created($message);
         return $message;

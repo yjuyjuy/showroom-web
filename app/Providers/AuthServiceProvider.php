@@ -15,9 +15,9 @@ class AuthServiceProvider extends ServiceProvider
 	 */
 	protected $policies = [
 		'App\TaobaoShop' => 'App\Policies\TaobaoPolicy',
-				'App\VendorPrice' => 'App\Policies\PricePolicy',
+		'App\VendorPrice' => 'App\Policies\PricePolicy',
 		'App\Vendor' => 'App\Policies\VendorPolicy',
-		'App\User' => 'App\Policies\MessagePolicy',
+		'App\Message' => 'App\Policies\MessagePolicy',
 	];
 
 	/**
