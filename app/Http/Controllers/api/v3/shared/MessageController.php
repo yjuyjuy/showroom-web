@@ -9,7 +9,6 @@ use App\User;
 use App\Vendor;
 use App\Retailer;
 use App\Http\Controllers\Controller;
-use App\Jobs\NotifyRecipient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
@@ -76,8 +75,12 @@ class MessageController extends Controller
             'recipient_type' => ['required', $valid_type_rule],
             'content' => 'required|string|max:510',
             'created_at' => 'required|integer|min:1',
-            'uuid' => 'required|uuid|unique:messages,uuid',
+            'uuid' => 'required|uuid',
         ]);
+        $message = Message::where('uuid', $data['uuid'])->first();
+        if ($message && $message->content == $data['content']) {
+            return $message->loadMissing(['sender', 'recipient', 'sender.image', 'recipietn.image']);
+        }
         $recipient = $data['recipient_type']::findOrFail($data['recipient_id']);
         $sender = $data['sender_type']::findOrFail($data['sender_id']);
         $this->authorize('sendAs', $sender);
