@@ -15,16 +15,16 @@ class ImageController extends Controller
 	{
 		umask(0);
 		request()->validate([
-			'product_id' => ['required','exists:products,id'],
-			'image' => ['required_without:images','file','mimetypes:image/*','max:10000'],
-			'images.*' => ['required_without:image','file','mimetypes:image/*','max:10000'],
-			'order' => ['required_with:image','numeric', 'min:1'],
+			'product_id' => ['required', 'exists:products,id'],
+			'image' => ['required_without:images', 'file', 'mimetypes:image/*', 'max:10000'],
+			'images.*' => ['required_without:image', 'file', 'mimetypes:image/*', 'max:10000'],
+			'order' => ['required_with:image', 'numeric', 'min:1'],
 		]);
 		if (request('images')) {
 			$order = \App\Product::find(request('product_id'))->images()->max('order');
 			foreach (request('images') as $uploadedFile) {
 				$order += 1;
-				$path = $uploadedFile->store('images/'.request('product_id'), 'public');
+				$path = $uploadedFile->store('images/' . request('product_id'), 'public');
 				\App\Jobs\OptimizeImage::dispatch($path);
 				\App\Image::create([
 					'path' => $path,
@@ -34,7 +34,7 @@ class ImageController extends Controller
 				]);
 			}
 		} else {
-			$path = request('image')->store('images/'.request('product_id'), 'public');
+			$path = request('image')->store('images/' . request('product_id'), 'public');
 			\App\Jobs\OptimizeImage::dispatch($path);
 			\App\Image::create([
 				'path' => $path,
@@ -57,7 +57,7 @@ class ImageController extends Controller
 	{
 		umask(0);
 		request()->validate([
-			'image' => ['required','file','mimetypes:image/*','max:10000'],
+			'image' => ['required', 'file', 'mimetypes:image/*', 'max:10000'],
 		]);
 		$this->destroy($image);
 		$path = request('image')->store("images/{$image->product_id}", 'public');
@@ -75,7 +75,7 @@ class ImageController extends Controller
 	public function move(Image $image)
 	{
 		request()->validate([
-			'order' => ['required','numeric', 'min:1'],
+			'order' => ['required', 'numeric', 'min:1'],
 		]);
 		$image->update([
 			'order' => request('order'),
@@ -103,8 +103,8 @@ class ImageController extends Controller
 	public function destroy(Image $image)
 	{
 		foreach (['', '_upsized.jpeg', '_400.jpeg', '_800.jpeg'] as $suffix) {
-			if (Storage::exists('public/'.$image->path.$suffix)) {
-				Storage::delete('public/'.$image->path.$suffix);
+			if (Storage::exists('public/' . $image->path . $suffix)) {
+				Storage::delete('public/' . $image->path . $suffix);
 			}
 		}
 		$image->delete();
@@ -115,39 +115,27 @@ class ImageController extends Controller
 		umask(0);
 		$order = $product->images()->max('order');
 		foreach ($images as $image) {
-			$original_filename = explode('?', array_reverse(explode('/', $image->url))[0])[0];
-			if (!$product->images()->where('source', $original_filename)->first()) {
-				$order += 1;
-				$path = 'images/'.$product->id.'/'.bin2hex(random_bytes(20)).'.jpeg';
-				$dir = dirname('storage/'.$path);
-				if (!is_dir($dir)) {
-					mkdir($dir, 0777, true);
-				}
-				if ($image->path && Storage::exists('public/'.$image->path)) {
-					try {
-						Storage::copy('public/'.$image->path, 'public/'.$path);
-					} catch (\Throwable $e) {
-						return;
+			try {
+				$original_filename = explode('?', array_reverse(explode('/', $image->url))[0])[0];
+				if (!$product->images()->where('source', $original_filename)->first() && $image->path && Storage::exists('public/' . $image->path)) {
+					$order += 1;
+					$path = 'images/' . $product->id . '/' . bin2hex(random_bytes(20)) . '.jpeg';
+					$dir = dirname('storage/' . $path);
+					if (!is_dir($dir)) {
+						mkdir($dir, 0777, true);
 					}
-				// } elseif ($image->url) {
-				// 	try {
-				// 		$f = fopen($image->url, 'r');
-				// 		file_put_contents('storage/'.$path, $f);
-				// 		fclose($f);
-				// 	} catch (\Throwable $e) {
-				// 		return;
-				// 	}
-				} else {
-					return;
+					Storage::copy('public/' . $image->path, 'public/' . $path);
+					\App\Jobs\OptimizeImage::dispatch($path);
+					\App\Image::create([
+						'path' => $path,
+						'source' => $original_filename,
+						'product_id' => $product->id,
+						'order' => $order,
+					]);
 				}
-
-				\App\Jobs\OptimizeImage::dispatch($path);
-				\App\Image::create([
-					'path' => $path,
-					'source' => $original_filename,
-					'product_id' => $product->id,
-					'order' => $order,
-				]);
+				//code...
+			} catch (\Throwable $th) {
+				continue;
 			}
 		}
 	}
