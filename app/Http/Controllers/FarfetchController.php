@@ -53,7 +53,7 @@ class FarfetchController extends Controller
 
 	public function show(FarfetchProduct $product)
 	{
-		$product->loadMissing(['category','designer','images']);
+		$product->loadMissing(['category', 'designer', 'images']);
 		return view('farfetch.show', compact('product'));
 	}
 
@@ -90,10 +90,13 @@ class FarfetchController extends Controller
 		$image_controller->import($farfetch_product->images, $product);
 		$farfetch_product->product_id = $product->id;
 		$farfetch_product->save();
-		foreach (\App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get() as $p) {
-			$image_controller->import($p->images, $product);
-			$p->product_id = $product->id;
-			$p->save();
+		$similar_products = \App\FarfetchProduct::where('designer_id', $farfetch_product->designer_id)->where('designer_style_id', $farfetch_product->designer_style_id)->where('colors', $farfetch_product->colors)->whereNull('product_id')->get();
+		if ($similar_products->count() <= 3) {
+			foreach ($similar_products as $p) {
+				$image_controller->import($p->images, $product);
+				$p->product_id = $product->id;
+				$p->save();
+			}
 		}
 		return redirect(route('products.show', ['product' => $product,]));
 	}
