@@ -30,7 +30,7 @@ class FarfetchProduct extends Model
 
 	public function displayName()
 	{
-		return ($this->designer->description ?? '').' '.($this->short_description ?? '');
+		return ($this->designer->description ?? '') . ' ' . ($this->short_description ?? '');
 	}
 
 	public function image()
@@ -58,19 +58,21 @@ class FarfetchProduct extends Model
 	public static function like(Product $product)
 	{
 		$query = self::where('product_id', $product->id);
-		foreach ($product->designer_style_ids as $id) {
-			$query->orWhere(function ($query) use ($id, $product) {
-				if (strlen($id) > 11) {
-					$query->where('designer_style_id', 'like', substr($id, 0, -4).'%');
-				} else {
-					$query->where('designer_style_id', 'like', $id.'%');
-				}
-				$query->whereIn(
-					'designer_id',
-					FarfetchDesigner::where('mapped_id', $product->brand_id)->pluck('id')->toArray()
-				);
-			});
+		if ($product->designer_style_id) {
+			foreach ($product->designer_style_ids as $id) {
+				$query->orWhere(function ($query) use ($id, $product) {
+					if (strlen($id) > 11) {
+						$query->where('designer_style_id', 'like', substr($id, 0, -4) . '%');
+					} else {
+						$query->where('designer_style_id', 'like', $id . '%');
+					}
+					$query->whereIn(
+						'designer_id',
+						FarfetchDesigner::where('mapped_id', $product->brand_id)->pluck('id')->toArray()
+					);
+				});
+			}
 		}
-		return $query->get();
+		return $query->limit(50)->get();
 	}
 }
