@@ -52,13 +52,11 @@ class Product extends Model
 	}
 	public function offers()
 	{
-		return $this->hasMany(OfferPrice::class);
-		;
+		return $this->hasMany(OfferPrice::class);		
 	}
 	public function images()
 	{
-		return $this->hasMany(Image::class)->orderBy('order');
-		;
+		return $this->hasMany(Image::class)->orderBy('order');		
 	}
 	public function image()
 	{
