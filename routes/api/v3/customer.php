@@ -40,6 +40,7 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('products/{product}', 'api\v3\customer\ProductController@show');
 	Route::post('products/{product}/follow', 'api\v3\customer\ProductController@follow');
 	Route::post('products/{product}/unfollow', 'api\v3\customer\ProductController@unfollow');
+	Route::get('products/{product}/similar', 'api\v3\customer\ProductController@similar');
 
 	// Order model
 	Route::get('orders', 'api\v3\customer\OrderController@index');
@@ -56,6 +57,9 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('farfetch/{product}', 'api\v3\shared\FarfetchController@show');
 	Route::get('farfetch/like/{product}', 'api\v3\shared\FarfetchController@like');
 
+	// EndProduct
+	Route::get('end/{product}', 'api\v3\shared\EndController@show');
+	
 	// Retailer model
 	Route::get('retailers', 'api\v3\customer\RetailerController@index');
 	Route::get('retailers/{retailer}', 'api\v3\customer\RetailerController@show');
