@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class FarfetchController extends Controller
 {
     public function show(FarfetchProduct $product) {
-        return $product->load(['images', 'designer', 'category', 'product']);
+        return $product->load(['images', 'designer', 'category']);
     }
 
     public function like(Product $product) {
