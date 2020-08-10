@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\api\v3\seller;
 
+use App\EndProduct;
+use App\FarfetchProduct;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Product;
@@ -133,5 +135,13 @@ class ProductController extends Controller
 	public function filterOptions()
 	{
 		return (new \App\Http\Controllers\ProductController())->filterOptions();
+	}
+
+	public function similar(Product $product)
+	{
+		return [
+			'farfetch' => FarfetchProduct::like($product),
+			'end' => EndProduct::like($product),
+		];
 	}
 }
