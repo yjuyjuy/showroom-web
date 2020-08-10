@@ -79,16 +79,18 @@ class EndProduct extends Model
 	public static function like(Product $product)
 	{
 		$query = self::where('product_id', $product->id);
-		foreach ($product->designer_style_ids as $id) {
-			$query->orWhere(function ($query) use ($id, $product) {
-				if (strlen($id) > 11) {
-					$query->where('sku', 'like', substr($id, 0, -4).'%');
-				} else {
-					$query->where('sku', 'like', $id.'%');
-				}
-				$query->whereIn('brand_name', \App\EndBrand::where('mapped_id', $product->brand_id)->pluck('name')->toArray());
-			});
+		if ($product->designer_style_id) {
+			foreach ($product->designer_style_ids as $id) {
+				$query->orWhere(function ($query) use ($id, $product) {
+					if (strlen($id) > 11) {
+						$query->where('sku', 'like', substr($id, 0, -4) . '%');
+					} else {
+						$query->where('sku', 'like', $id . '%');
+					}
+					$query->whereIn('brand_name', \App\EndBrand::where('mapped_id', $product->brand_id)->pluck('name')->toArray());
+				});
+			}
 		}
-		return $query->get();
+		return $query->limit(50)->get();
 	}
 }
