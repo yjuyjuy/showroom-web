@@ -7,10 +7,10 @@ use App\DiorProduct;
 use App\EndProduct;
 use App\FarfetchProduct;
 use App\GucciProduct;
-use App\Http\Controllers\Controller;
 use App\OffWhiteProduct;
 use App\Product;
 use App\SsenseProduct;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -26,7 +26,7 @@ class ProductController extends Controller
                 'ssense' => SsenseProduct::like($product),
                 'dior' => [],
                 'gucci' => [],
-                'offwhite' => [],
+                'off-white' => [],
                 'balenciaga' => [],
             ];
             if ($product->brand_id) {
@@ -37,7 +37,9 @@ class ProductController extends Controller
                 } else if ($product->brand_id == BalenciagaProduct::brand_id) {
                     $similar_products['balenciaga'] = BalenciagaProduct::like($product);
                 } else if ($product->brand_id == OffWhiteProduct::brand_id) {
-                    $similar_products['offwhite'] = OffWhiteProduct::like($product);
+                    $similar_products['off-white'] = OffWhiteProduct::like($product);
+                } else if ($product->brand_id == BalenciagaProduct::brand_id) {
+                    $similar_products['balenciaga'] = BalenciagaProduct::like($product);
                 }
             }
             return $similar_products;
