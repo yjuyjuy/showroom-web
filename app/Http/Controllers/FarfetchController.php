@@ -79,6 +79,7 @@ class FarfetchController extends Controller
 	public function export(FarfetchProduct $farfetch_product)
 	{
 		$product = Product::create([
+			'season_id' => 202,
 			'brand_id' => $farfetch_product->designer->mapped_id,
 			'designer_style_id' => $farfetch_product->designer_style_id,
 			'name_cn' => $farfetch_product->short_description,
