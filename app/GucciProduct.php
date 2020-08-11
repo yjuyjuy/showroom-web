@@ -26,10 +26,10 @@ class GucciProduct extends Model
 	 */
 	public $incrementing = false;
 	/**
-		* The "type" of the auto-incrementing ID.
-		*
-		* @var string
-		*/
+	 * The "type" of the auto-incrementing ID.
+	 *
+	 * @var string
+	 */
 	protected $keyType = 'string';
 
 	public const brand_id = 421758;
@@ -62,11 +62,13 @@ class GucciProduct extends Model
 	public static function like(Product $product)
 	{
 		$query = self::where('product_id', $product->id);
-		foreach ($product->designer_style_ids as $id) {
-			if (strlen($id) > 11) {
-				$query->orWhere('id', $id);
-			} else {
-				$query->orWhere('id', 'like', $id.'%');
+		if ($product->designer_style_id) {
+			foreach ($product->designer_style_ids as $id) {
+				if (strlen($id) > 11) {
+					$query->orWhere('id', $id);
+				} else {
+					$query->orWhere('id', 'like', $id . '%');
+				}
 			}
 		}
 		return $query->get();
