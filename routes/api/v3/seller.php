@@ -74,6 +74,7 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('dior/{product}', 'api\v3\shared\SourceProductController@dior');
 	Route::get('gucci/{product}', 'api\v3\shared\SourceProductController@gucci');
 	Route::get('off-white/{product}', 'api\v3\shared\SourceProductController@offwhite');
+	Route::get('balenciaga/{product}', 'api\v3\shared\SourceProductController@balenciaga');
 
 	// Vendor model
 	Route::get('vendors', 'api\v3\seller\VendorController@index');
