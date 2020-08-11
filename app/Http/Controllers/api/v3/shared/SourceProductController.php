@@ -7,13 +7,13 @@ use App\EndProduct;
 use App\FarfetchProduct;
 use App\Http\Controllers\Controller;
 
-class DiorController extends Controller
+class SourceProductController extends Controller
 {
     public function farfetch(FarfetchProduct $product)
     {
         return $product->load(['images', 'designer', 'category']);
     }
-    
+
     public function end(EndProduct $product)
     {
         return $product->load(['images']);
