@@ -45,6 +45,6 @@ class SourceProductController extends Controller
 
     public function ssense(SsenseProduct $product)
     {
-        return $product->load(['images', 'brand']);
+        return $product->load(['images']);
     }
 }
