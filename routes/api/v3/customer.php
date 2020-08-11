@@ -53,12 +53,10 @@ Route::middleware(['auth:api'])->group(function () {
 	// RetailPrice model
 	Route::get('prices', 'api\v3\customer\RetailController@index');
 
-	// FarfetchProduct
-	Route::get('farfetch/{product}', 'api\v3\shared\FarfetchController@show');
-	Route::get('farfetch/like/{product}', 'api\v3\shared\FarfetchController@like');
-
-	// EndProduct
-	Route::get('end/{product}', 'api\v3\shared\EndController@show');
+	// SourceProduct
+	Route::get('farfetch/{product}', 'api\v3\shared\SourceProductController@farfetch');
+	Route::get('end/{product}', 'api\v3\shared\SourceProductController@end');
+	Route::get('dior/{product}', 'api\v3\shared\SourceProductController@dior');
 	
 	// Retailer model
 	Route::get('retailers', 'api\v3\customer\RetailerController@index');

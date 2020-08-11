@@ -68,11 +68,10 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::patch('products/{product}/measurement', 'api\v3\seller\MeasurementController@update');
 	Route::delete('products/{product}/measurement', 'api\v3\seller\MeasurementController@destroy');
 
-	// FarfetchProduct
-	Route::get('farfetch/{product}', 'api\v3\shared\FarfetchController@show');
-
-	// EndProduct
-	Route::get('end/{product}', 'api\v3\shared\EndController@show');
+	// SourceProduct
+	Route::get('farfetch/{product}', 'api\v3\shared\SourceProductController@farfetch');
+	Route::get('end/{product}', 'api\v3\shared\SourceProductController@end');
+	Route::get('dior/{product}', 'api\v3\shared\SourceProductController@dior');
 
 	// Vendor model
 	Route::get('vendors', 'api\v3\seller\VendorController@index');
