@@ -72,6 +72,7 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('farfetch/{product}', 'api\v3\shared\SourceProductController@farfetch');
 	Route::get('end/{product}', 'api\v3\shared\SourceProductController@end');
 	Route::get('dior/{product}', 'api\v3\shared\SourceProductController@dior');
+	Route::get('gucci/{product}', 'api\v3\shared\SourceProductController@gucci');
 
 	// Vendor model
 	Route::get('vendors', 'api\v3\seller\VendorController@index');
