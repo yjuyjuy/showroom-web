@@ -136,12 +136,4 @@ class ProductController extends Controller
 	{
 		return (new \App\Http\Controllers\ProductController())->filterOptions();
 	}
-
-	public function similar(Product $product)
-	{
-		return [
-			'farfetch' => FarfetchProduct::like($product),
-			'end' => EndProduct::like($product),
-		];
-	}
 }

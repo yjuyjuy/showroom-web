@@ -40,7 +40,7 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('products/{product}', 'api\v3\customer\ProductController@show');
 	Route::post('products/{product}/follow', 'api\v3\customer\ProductController@follow');
 	Route::post('products/{product}/unfollow', 'api\v3\customer\ProductController@unfollow');
-	Route::get('products/{product}/similar', 'api\v3\customer\ProductController@similar');
+	Route::get('products/{product}/similar', 'api\v3\shared\ProductController@similar');
 
 	// Order model
 	Route::get('orders', 'api\v3\customer\OrderController@index');
