@@ -43,6 +43,8 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::post('products/{product}/unfollow', 'api\v3\seller\ProductController@unfollow');
 	Route::get('products/{product}/similar', 'api\v3\shared\ProductController@similar');
 
+	Route::get('brands', 'api\v3\shared\BrandController@index');
+
 	// Order model
 	Route::get('orders', 'api\v3\seller\OrderController@index');
 	Route::post('orders', 'api\v3\seller\OrderController@store');
@@ -83,9 +85,6 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('vendors/{vendor}', 'api\v3\seller\VendorController@show');
 	Route::post('vendors/{vendor}/follow', 'api\v3\seller\VendorController@follow');
 	Route::post('vendors/{vendor}/unfollow', 'api\v3\seller\VendorController@unfollow');
-
-	// Retailer model
-	Route::post('retailer', 'api\v3\seller\RetailerController@update');
 
 	// Message model
 	Route::get('messages/pull', 'api\v3\seller\MessageController@pull');
