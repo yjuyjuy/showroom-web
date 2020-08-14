@@ -43,6 +43,7 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('products/{product}/similar', 'api\v3\shared\ProductController@similar');
 
 	Route::get('brands', 'api\v3\shared\BrandController@index');
+	Route::get('categories', 'api\v3\shared\CategoryController@index');
 	
 	// Order model
 	Route::get('orders', 'api\v3\customer\OrderController@index');
