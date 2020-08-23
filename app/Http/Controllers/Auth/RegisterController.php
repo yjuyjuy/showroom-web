@@ -28,7 +28,7 @@ class RegisterController extends Controller
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/registered';
+	protected $redirectTo = '/following/retailers';
 
 	/**
 	 * Create a new controller instance.
@@ -52,7 +52,6 @@ class RegisterController extends Controller
 			'username' => ['required', 'string', 'max:255', 'unique:users'],
 			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
 			'password' => ['required', 'string', 'min:8', 'confirmed'],
-			'invite_code' => ['nullable', 'string'],
 		]);
 	}
 

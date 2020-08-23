@@ -34,17 +34,6 @@
 				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
 			</div>
 			@enderror
-
-			<label class="mdc-text-field optional-form-field mdc-card__action">
-				<input type="text" class="mdc-text-field__input" name="wechat_id" autocomplete="off" value="{{ $user->wechat_id ?? '' }}">
-				<span class="mdc-floating-label">{{ __('wechat_id') }}</span>
-				<div class="mdc-line-ripple"></div>
-			</label>
-			@error('wechat_id')
-			<div class="mdc-text-field-helper-line">
-				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
-			</div>
-			@enderror
 		</form>
 		<div class="mdc-card__actions justify-content-end">
 			<div class="mdc-card__action-buttons flex-wrap justify-content-end">

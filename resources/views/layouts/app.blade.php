@@ -56,12 +56,6 @@
 								<i class="material-icons mdc-list-item__graphic" aria-hidden="true">store</i>
 								<span class="mdc-list-item__text">查找卖家</span>
 							</a>
-							@if(!$user->is_rejected)
-								<a class="mdc-list-item" href="{{ route('account.status') }}">
-									<i class="material-icons mdc-list-item__graphic" aria-hidden="true">verified_user</i>
-									<span class="mdc-list-item__text">查看调货价</span>
-								</a>
-							@endif
 						@else
 							<a class="mdc-list-item" href="{{ route('following.vendors') }}">
 								<i class="material-icons mdc-list-item__graphic" aria-hidden="true">track_changes</i>
@@ -95,10 +89,6 @@
 							</a>
 						@endif
 						<hr class="mdc-list-divider">
-						<a class="mdc-list-item" href="{{ route('suggestion.create') }}">
-							<i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_comment</i>
-							<span class="mdc-list-item__text">功能建议</span>
-						</a>
 						<a class="mdc-list-item" href="{{ route('account.edit') }}">
 							<i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
 							<span class="mdc-list-item__text">我的信息</span>

@@ -14,8 +14,6 @@ Route::middleware('auth')->group(function () {
 
 	Route::patch('account', 'AccountController@update')->name('account.update');
 	Route::get('account/edit', 'AccountController@edit')->name('account.edit');
-	Route::get('account/status', 'AccountController@status')->name('account.status');
-	Route::post('account/status/request', 'AccountController@request')->name('account.request');
 
 	Route::get('following/products', 'ProductController@following')->name('following.products');
 	Route::get('following/vendors', 'VendorController@following')->name('following.vendors')->middleware('reseller');
@@ -173,9 +171,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
 	Route::get('admin', 'AdminController@index')->name('admin.index');
 	Route::get('admin/{function}', 'AdminController@call')->name('admin.call');
-
-	Route::get('suggestions', 'SuggestionController@index')->name('suggestions.index');
-	Route::post('suggestions/archive/{suggestion}', 'SuggestionController@archive')->name('suggestion.archive');
 
 	Route::get('requests', 'RequestController@index')->name('requests.index');
 	Route::post('requests/agree/{user}', 'RequestController@agree')->name('requests.agree');

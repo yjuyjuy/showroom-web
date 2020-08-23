@@ -51,17 +51,6 @@
 				<span class="mdc-floating-label">{{ __('Confirm Password') }}</span>
 				<div class="mdc-line-ripple"></div>
 			</label>
-
-			<label class="mdc-text-field mdc-card__action optional-form-field">
-				<input type="text" class="mdc-text-field__input" name="invite_code" value="{{ old('invite_code') }}" autocomplete="invite_code">
-				<span class="mdc-floating-label">同行邀请码</span>
-				<div class="mdc-line-ripple"></div>
-			</label>
-			@error('invite_code')
-			<div class="mdc-text-field-helper-line">
-				<div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">{{ $message }}</div>
-			</div>
-			@enderror
 		</form>
 		<div class="mdc-card__actions justify-content-end">
 			<div class="mdc-card__action-buttons flex-wrap justify-content-end">
