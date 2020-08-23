@@ -26,7 +26,7 @@
 		@foreach(range(1,max($images->max('order') + 1, 8)) as $order)
 		@forelse($images->where('order',$order) as $image)
 		<div class="col-6 col-md-3 pb-3">
-			<image-item src="{{$image->url}}" id="{{$image->id}}"></image-item>
+			<image-item src="{{$image->medium}}" id="{{$image->id}}"></image-item>
 			<span>#{{ $order }}</span>
 		</div>
 		@empty
