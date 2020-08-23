@@ -36,16 +36,13 @@ class ProductController extends Controller
 			$query->orderBy('created_at', 'desc');
 		}
 		if ($request->input('show_available_only') || $sort == 'price-high-to-low' || $sort == 'price-low-to-high') {
-			$query = $query->has('retails');
+			$query = $query->whereHas('retails', function ($query) use ($user) {
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+			});
 			$products = $query->get();
-			$products->load(['retails', 'retails.retailer']);
-			if (!$user || !$user->is_admin) {
-				$products->map(function ($product) {
-					$product->retails->map(function ($retail) {
-						$retail->hide();
-					});
-				});
-			}
+			$products->load(['retails' => function ($query) use ($user) {
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+			}, 'retails.retailer']);
 
 			if ($sort == 'price-high-to-low') {
 				$products = $products->sortByDesc(function ($product) {
@@ -65,14 +62,9 @@ class ProductController extends Controller
 			$total_pages = ceil($query->count() / $ITEMS_PER_PAGE);
 			$page = min(max($request->query('page', 1), 1), $total_pages);
 			$products = $query->forPage($page, $ITEMS_PER_PAGE)->get();
-			$products->load(['retails', 'retails.retailer']);
-			if (!$user || !$user->is_admin) {
-				$products->map(function ($product) {
-					$product->retails->map(function ($retail) {
-						$retail->hide();
-					});
-				});
-			}
+			$products->load(['retails' => function($query) use ($user) {
+				$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+			}, 'retails.retailer']);
 		}
 		$products->load(['brand', 'image']);
 
@@ -143,13 +135,10 @@ class ProductController extends Controller
 	public function show(Product $product)
 	{
 		$user = auth()->user();
-		$product->load('retails', 'retails.retailer');
+		$product->load(['retails' => function ($query) use ($user) {
+			$query->whereIn('retailer_id', $user->following_retailers->pluck('id'));
+		}, 'retails.retailer']);
 		if ($user) {
-			$product->retails->map(function ($retail) use ($user) {
-				if (!$user->following_retailers->contains($retail->retailer)) {
-					$retail->hide();
-				}
-			});
 			if ($user->is_admin) {
 				$product->load(['prices', 'prices.vendor']);
 			} elseif ($user->vendor) {
