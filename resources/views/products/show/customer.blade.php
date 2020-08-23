@@ -2,6 +2,6 @@
 	@forelse($product->getSizePrice('retail') as $size => $data)
 	<div><span>{{ $size }} - &yen;{{$data['price']}} - {{$data['retailer']}}</span></div>
 	@empty
-	<span>{{ __('not available') }}</span>
+	<span>{{ __('not available from your following sellers') }}</span>
 	@endforelse
 </div>
