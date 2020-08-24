@@ -180,7 +180,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 	Route::view('users', 'admin.users')->name('admin.users');
 });
 
-Route::get('storage/images/{options}/{filename}', 'ImageCacheController@getResponse');
+Route::get('storage/images/{options}/{filename}', 'ImageCacheController@getResponse')->where('filename', '.+');;
 
 // Google cloud health check
 Route::get('health', 'HealthController');
