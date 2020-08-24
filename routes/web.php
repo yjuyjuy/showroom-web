@@ -180,5 +180,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 	Route::view('users', 'admin.users')->name('admin.users');
 });
 
+Route::get('storage/images/{options}/{filename}', 'ImageCacheController@getResponse');
+
 // Google cloud health check
 Route::get('health', 'HealthController');
