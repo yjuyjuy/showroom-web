@@ -21,7 +21,6 @@ Route::middleware('auth')->group(function () {
 Route::get('following/retailers', 'RetailerController@following')->name('following.retailers');
 
 # Product model
-Route::get('products', 'ProductController@index')->name('products.index');
 Route::middleware('auth')->group(function () {
 	Route::middleware('admin')->group(function () {
 		Route::post('products', 'ProductController@store')->name('products.store')->middleware('admin');
@@ -30,7 +29,8 @@ Route::middleware('auth')->group(function () {
 		Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy')->middleware('admin');
 		Route::get('products/{product}/edit', 'ProductController@edit')->name('products.edit')->middleware('admin');
 	});
-
+	// TODO: fix products.index route for guests
+	Route::get('products', 'ProductController@index')->name('products.index');
 	Route::get('products/random', 'ProductController@random')->name('products.random');
 	Route::get('products/{product}', 'ProductController@show')->name('products.show');
 	Route::post('products/{product}/follow', 'ProductController@follow')->name('follow.product');
