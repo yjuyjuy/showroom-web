@@ -46,6 +46,9 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 		});
 
 		Telescope::filter(function (IncomingEntry $entry) {
+			if ($entry->type === 'request' && strpos('/storage', $entry->content['uri']) !== false) {
+				return false;
+			}
 			return true;
 		});
 	}
