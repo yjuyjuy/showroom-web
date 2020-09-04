@@ -11,7 +11,7 @@
 		@if($product->category)
 		<a href="{{ route('gucci.categories.index',['category' => $product->category]) }}"
 			 class="mdc-typography--headline6">
-			{{ $product->category->translated_description ?? '' }}
+			{{ $product->category->translated_description }}
 		</a>
 		@endif
 	</div>
