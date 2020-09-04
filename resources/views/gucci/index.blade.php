@@ -9,15 +9,52 @@
 <div id="products-index" class="">
 	<div class="d-flex">
 		<div class="mdc-menu-surface--anchor">
-			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>{{ __('category') }}</span></button>
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>
+				@if($category)
+					@if($category->parent)
+					{{ $category->parent->translated_description }}
+					@else
+					{{ $category->translated_description }}
+					@endif
+				@else
+				{{ __('category') }}
+				@endif</span></button>
 			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
-			  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-					@foreach($categories as $value)
-						<a class="mdc-list-item mdc-list-item__text" role="menuitem" href="{{ route('gucci.categories.index', ['category' => $value,]) }}">{{ implode(' - ', array_map('__', explode('-', $value))) }}</a>
-					@endforeach
-			  </ul>
+				<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+					@if($category)
+					<a class="mdc-list-item mdc-list-item__text" role="menuitem"
+						href="{{ route('gucci.index') }}">{{ __('all categories') }}</a>
+					@endif
+					@foreach(\App\GucciCategory::whereNull('parent_id')->get() as $main_category)
+					<a class="mdc-list-item mdc-list-item__text" role="menuitem"
+						href="{{ route('gucci.categories.index', ['category' => $main_category,]) }}">
+						{{ implode(' - ', array_map('__', explode('-', $main_category->translated_description ?? 'uncategorized'))) }}</a>
+					@endforeach </ul>
 			</div>
 		</div>
+		@if($category)
+		<div class="mdc-menu-surface--anchor">
+			<button type="button" class="mdc-button open-menu-button"><span class='mdc-button__label'>
+				@if($category->parent)
+				{{ $category->translated_description }}
+				@else
+				{{ __('subcategory') }}
+				@endif</span></button>
+			<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
+				<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+					@if($category->parent)
+					<a class="mdc-list-item mdc-list-item__text" role="menuitem"
+						href="{{ route('gucci.categories.index', ['category' => $category->parent,]) }}">
+						{{ __('all subcategories') }}</a>
+					@endif
+					@foreach(\App\GucciCategory::where('parent_id', $category->parent_id ?? $category->id)->get() as $sub_category) 
+					<a class="mdc-list-item mdc-list-item__text" role="menuitem"
+						href="{{ route('gucci.categories.index', ['category' => $sub_category,]) }}">
+						{{ implode(' - ', array_map('__', explode('-', $sub_category->translated_description))) }}</a>
+					@endforeach </ul>
+			</div>
+		</div>
+		@endif
 	</div>
 	@if($products->isEmpty())
 		<div class="my-5 text-center">

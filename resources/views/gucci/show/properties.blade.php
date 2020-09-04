@@ -1,12 +1,19 @@
 <div class="d-flex flex-column products-show__info--properties">
 	<div class="my-1">
-		<span class="mdc-typography--headline6" style="text-transform: uppercase;">
-			Gucci&nbsp;-&nbsp;
-		</span>
-		<a href="@if($product->category){{ route('gucci.categories.index',['category' => $product->category]) }}@endif"
+		<span class="mdc-typography--headline6" style="text-transform: uppercase;">Gucci&nbsp;-&nbsp;</span>
+		@if($product->category->parent ?? false)
+		<a href="{{ route('gucci.categories.index',['category' => $product->category->parent]) }}"
 			 class="mdc-typography--headline6">
-			{{ __($product->category_translation) }}
+			{{ $product->category->parent->translated_description }}
 		</a>
+		<span>&nbsp;-&nbsp;</span>
+		@endif
+		@if($product->category)
+		<a href="{{ route('gucci.categories.index',['category' => $product->category]) }}"
+			 class="mdc-typography--headline6">
+			{{ $product->category->translated_description ?? '' }}
+		</a>
+		@endif
 	</div>
 
 	<div class="my-1">

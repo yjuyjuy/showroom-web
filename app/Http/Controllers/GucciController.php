@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\GucciCategory;
 use App\Product;
 use App\GucciProduct;
 use App\GucciImage;
@@ -12,21 +13,24 @@ use Illuminate\Support\Str;
 
 class GucciController extends Controller
 {
-	public function index(Request $request, $category=null)
+	public function index(Request $request, GucciCategory $category=null)
 	{
-		$categories = $this->getCategories();
-		$query = GucciProduct::orderBy('id', 'desc');
-		if ($category && in_array($category, $categories)) {
-			$query->where('category', $category);
+		if ($category) {
+			if ($category->parent_id == null) {
+				$query = GucciProduct::whereIn('category_id', $category->children->pluck('id'));
+			} else {
+				$query = $category->products();
+			}
 		} else {
-			$category = null;
+			$query = GucciProduct::query();
 		}
+		$query->orderBy('created_at', 'desc');
 		$total_pages = ceil($query->count() / 48.0);
 		$page = min(max($request->query('page', 1), 1), $total_pages);
 		$products = $query->forPage($page, 48)->get();
 
 		$request->flash();
-		return view('gucci.index', compact('products', 'category', 'categories', 'page', 'total_pages'));
+		return view('gucci.index', compact('products', 'category', 'page', 'total_pages'));
 	}
 
 	public function show(GucciProduct $product)
