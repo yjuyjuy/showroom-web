@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-@if ($category) {{ implode(' - ', array_map('__', explode('-', $category))).' - Gucci' }}
+@if ($category) {{ $category->translated_description.' - Gucci' }}
 @else {{ 'Gucci' }} @endif
 @endsection
 
@@ -28,7 +28,7 @@
 					@foreach(\App\GucciCategory::whereNull('parent_id')->get() as $main_category)
 					<a class="mdc-list-item mdc-list-item__text" role="menuitem"
 						href="{{ route('gucci.categories.index', ['category' => $main_category,]) }}">
-						{{ implode(' - ', array_map('__', explode('-', $main_category->translated_description ?? 'uncategorized'))) }}</a>
+						{{ $main_category->translated_description }}</a>
 					@endforeach </ul>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 					@foreach(\App\GucciCategory::where('parent_id', $category->parent_id ?? $category->id)->get() as $sub_category) 
 					<a class="mdc-list-item mdc-list-item__text" role="menuitem"
 						href="{{ route('gucci.categories.index', ['category' => $sub_category,]) }}">
-						{{ implode(' - ', array_map('__', explode('-', $sub_category->translated_description))) }}</a>
+						{{ $sub_category->translated_description }}</a>
 					@endforeach </ul>
 			</div>
 		</div>

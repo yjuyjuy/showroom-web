@@ -16,7 +16,7 @@ class GucciController extends Controller
 	public function index(Request $request, GucciCategory $category=null)
 	{
 		if ($category) {
-			if ($category->parent_id == null) {
+			if ($category->children->isNotEmpty()) {
 				$query = GucciProduct::whereIn('category_id', $category->children->pluck('id'));
 			} else {
 				$query = $category->products();
