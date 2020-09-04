@@ -3,7 +3,7 @@
 		<span class="mdc-typography--headline6" style="text-transform: uppercase;">
 			Gucci&nbsp;-&nbsp;
 		</span>
-		<a href="{{ route('gucci.categories.index',['category' => $product->category]) }}"
+		<a href="@if($product->category){{ route('gucci.categories.index',['category' => $product->category]) }}@endif"
 			 class="mdc-typography--headline6">
 			{{ __($product->category_translation) }}
 		</a>
