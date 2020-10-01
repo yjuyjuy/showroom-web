@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
 	<div class="">
-		<carousel :images='@json($product->images->pluck('url')->toArray())'></carousel>
+		<carousel :images='@json($product->images->pluck('large')->toArray())'></carousel>
 	</div>
 
 	<div class="container__content d-flex flex-column">

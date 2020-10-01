@@ -24,6 +24,33 @@ class FarfetchImage extends Model
 		return $this->belongsTo(FarfetchProduct::class, 'product_id');
 	}
 
+	public function getSmallAttribute()
+	{
+		if ($this->path) {
+			return secure_asset(str_replace('images/', 'images/w200/', 'storage/' . $this->path));
+		} else {
+			return $this->attributes['url'];
+		}
+	}
+
+	public function getMediumAttribute()
+	{
+		if ($this->path) {
+			return secure_asset(str_replace('images/', 'images/w400/', 'storage/' . $this->path));
+		} else {
+			return $this->attributes['url'];
+		}
+	}
+
+	public function getLargeAttribute()
+	{
+		if ($this->path) {
+			return secure_asset(str_replace('images/', 'images/w800/', 'storage/' . $this->path));
+		} else {
+			return $this->attributes['url'];
+		}
+	}
+
 	public function getUrlAttribute()
 	{
 		if ($this->path) {
