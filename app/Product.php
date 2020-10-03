@@ -213,9 +213,16 @@ class Product extends Model
 			foreach ($this->retails as $retail) {
 				foreach ($retail->prices as $size => $price) {
 					if (!array_key_exists($size, $data) || $price < $data[$size]['price']) {
-						$data[$size] = ['price' => $price, 'retailer' => [$retail->retailer->name,],];
+						$data[$size] = [
+							'price' => $price,
+							'retailer' => [$retail->retailer->name,],
+							'updated_at' => $retail->updated_at,
+						];
 					} elseif ($price == $data[$size]['price']) {
 						$data[$size]['retailer'][] = $retail->retailer->name;
+						if ($retail->updated_at->isAfter($data[$size]['updated_at'])) {
+							$data[$size]['updated_at'] = $retail->updated_at;
+						}
 					}
 				}
 			}

@@ -22,8 +22,8 @@
 			@endforeach
 			<div class="price-grid__footer text-right d-flex justify-content-end align-items-center">
 				<div class="d-flex flex-column">
-					<span class="mt-3">{{ __('created at') }}: {{ $offer->created_at }}</span>
-					<span>{{ __('updated at') }}: {{ $offer->updated_at }}</span>
+					<span class="mt-3">{{ __('created at') }}: {{ $offer->created_at->isoFormat('MMMDo hh:mm') }}</span>
+					<span>{{ __('updated at') }}: {{ $offer->updated_at->isoFormat('MMMDo hh:mm') }}</span>
 				</div>
 			</div>
 		</div>
