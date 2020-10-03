@@ -513,5 +513,7 @@
 	"precious": "珍稀",
 	"skins": "皮革",
 	"top": "手提",
-	"handles": "包"
+	"handles": "包",
+	"created at": "发布时间",
+	"updated at": "最后更新"
 }
