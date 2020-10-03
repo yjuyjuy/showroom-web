@@ -49,7 +49,7 @@ class PriceObserver
 				if ($offer_price = $offers->firstWhere('vendor_id', $vendor->id)) {
 					$profit_rate = $vendor->pivot->profit_rate;
 					foreach ($offer_price->prices as $size => $price) {
-						if (!is_numeric($price)) echo $offer_price;
+						if (!is_numeric($price)) echo $price;
 						$calc_price = ceil($price * (100 + $profit_rate) / 1000) * 10 + 60;
 						$min_price = 0;
 						$data[$size] = min(max($calc_price, $min_price), $data[$size] ?? INF);
