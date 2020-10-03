@@ -25,7 +25,6 @@ class ImageController extends Controller
 			foreach (request('images') as $uploadedFile) {
 				$order += 1;
 				$path = $uploadedFile->store('images/' . request('product_id'), 'public');
-				\App\Jobs\OptimizeImage::dispatch($path);
 				\App\Image::create([
 					'path' => $path,
 					'source' => $uploadedFile->getClientOriginalName(),
@@ -35,7 +34,6 @@ class ImageController extends Controller
 			}
 		} else {
 			$path = request('image')->store('images/' . request('product_id'), 'public');
-			\App\Jobs\OptimizeImage::dispatch($path);
 			\App\Image::create([
 				'path' => $path,
 				'source' => request('image')->getClientOriginalName(),
@@ -61,7 +59,6 @@ class ImageController extends Controller
 		]);
 		$this->destroy($image);
 		$path = request('image')->store("images/{$image->product_id}", 'public');
-		\App\Jobs\OptimizeImage::dispatch($path);
 		\App\Image::create([
 			'path' => $path,
 			'source' => request('image')->getClientOriginalName(),
@@ -125,7 +122,6 @@ class ImageController extends Controller
 						mkdir($dir, 0777, true);
 					}
 					Storage::copy('public/' . $image->path, 'public/' . $path);
-					\App\Jobs\OptimizeImage::dispatch($path);
 					\App\Image::create([
 						'path' => $path,
 						'source' => $original_filename,
