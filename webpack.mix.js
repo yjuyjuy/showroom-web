@@ -15,3 +15,8 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css',{
       includePaths: ['node_modules'],
     });
+
+mix.browserSync({
+  port: 8000,
+  proxy: 'localhost:8080',
+});
