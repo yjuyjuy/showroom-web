@@ -85,23 +85,23 @@ Route::middleware(['auth', 'reseller'])->group(function () {
 	Route::get('vendor/{vendor}/products/{product}', 'VendorController@show')->name('vendor.products.show');
 });
 
-# Taobao
-Route::middleware('auth')->group(function () {
-	Route::post('taobao/link', 'TaobaoAdminController@link')->name('taobao.admin.link');
-	Route::post('taobao/unlink', 'TaobaoAdminController@unlink')->name('taobao.admin.unlink');
-	Route::post('taobao/ignore', 'TaobaoAdminController@ignore')->name('taobao.admin.ignore');
-	Route::get('taobao/admin', 'TaobaoAdminController@index')->name('admin.taobao.index')->middleware('admin');
-	Route::get('taobao/admin/links', 'TaobaoAdminController@links')->name('admin.taobao.links')->middleware('admin');
-	Route::get('taobao/admin/ignored', 'TaobaoAdminController@ignored')->name('admin.taobao.ignored')->middleware('admin');
-	Route::get('taobao/admin/linked', 'TaobaoAdminController@linked')->name('admin.taobao.linked')->middleware('admin');
-	Route::get('taobao/{shop}', 'TaobaoController@index')->name('taobao.products.index');
-	Route::get('taobao/{shop}/admin', 'TaobaoAdminController@admin')->name('taobao.admin');
-	Route::get('taobao/{shop}/admin/links', 'TaobaoAdminController@links')->name('taobao.admin.links');
-	Route::get('taobao/{shop}/admin/linked', 'TaobaoAdminController@linked')->name('taobao.admin.linked');
-	Route::get('taobao/{shop}/admin/ignored', 'TaobaoAdminController@ignored')->name('taobao.admin.ignored');
-	Route::get('taobao/{shop}/admin/diffs', 'TaobaoAdminController@diffs')->name('taobao.admin.diffs');
-	Route::get('taobao/{shop}/{product}', 'TaobaoController@show')->name('taobao.products.show');
-});
+// # Taobao
+// Route::middleware('auth')->group(function () {
+// 	Route::post('taobao/link', 'TaobaoAdminController@link')->name('taobao.admin.link');
+// 	Route::post('taobao/unlink', 'TaobaoAdminController@unlink')->name('taobao.admin.unlink');
+// 	Route::post('taobao/ignore', 'TaobaoAdminController@ignore')->name('taobao.admin.ignore');
+// 	Route::get('taobao/admin', 'TaobaoAdminController@index')->name('admin.taobao.index')->middleware('admin');
+// 	Route::get('taobao/admin/links', 'TaobaoAdminController@links')->name('admin.taobao.links')->middleware('admin');
+// 	Route::get('taobao/admin/ignored', 'TaobaoAdminController@ignored')->name('admin.taobao.ignored')->middleware('admin');
+// 	Route::get('taobao/admin/linked', 'TaobaoAdminController@linked')->name('admin.taobao.linked')->middleware('admin');
+// 	Route::get('taobao/{shop}', 'TaobaoController@index')->name('taobao.products.index');
+// 	Route::get('taobao/{shop}/admin', 'TaobaoAdminController@admin')->name('taobao.admin');
+// 	Route::get('taobao/{shop}/admin/links', 'TaobaoAdminController@links')->name('taobao.admin.links');
+// 	Route::get('taobao/{shop}/admin/linked', 'TaobaoAdminController@linked')->name('taobao.admin.linked');
+// 	Route::get('taobao/{shop}/admin/ignored', 'TaobaoAdminController@ignored')->name('taobao.admin.ignored');
+// 	Route::get('taobao/{shop}/admin/diffs', 'TaobaoAdminController@diffs')->name('taobao.admin.diffs');
+// 	Route::get('taobao/{shop}/{product}', 'TaobaoController@show')->name('taobao.products.show');
+// });
 
 # Websites
 Route::middleware('auth')->group(function () {
