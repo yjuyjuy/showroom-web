@@ -42,6 +42,8 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::post('products/{product}/follow', 'api\v3\seller\ProductController@follow');
 	Route::post('products/{product}/unfollow', 'api\v3\seller\ProductController@unfollow');
 	Route::get('products/{product}/similar', 'api\v3\shared\ProductController@similar');
+	
+	Route::post('images', 'api\v3\seller\ImageController@store')->middleware('admin');
 
 	Route::get('brands', 'api\v3\shared\BrandController@index');
 	Route::get('categories', 'api\v3\shared\CategoryController@index');
