@@ -51,6 +51,8 @@ class CustomFilter implements FilterInterface
                 $ratio = (float)($matches[1]);
             } else if (preg_match('/q([1-9][0-9]*)/', $option, $matches)) {
                 $quality = (int)($matches[1]);
+            } else if ($option === 'original') {
+                $ratio = 0;
             } else if ($option === 'square') {
                 $ratio = 1;
             } else if ($option === 'webp') {
@@ -65,15 +67,17 @@ class CustomFilter implements FilterInterface
         }
 
         // process image
-        if ($ratio == 1) {
-            $side = max($image->width(), $image->height());
-            $image->resizeCanvas($side, $side, null, false, 'ffffff');
-        } else {
-            $ratio = min(max($ratio, self::MIN_RATIO), self::MAX_RATIO);
-            if ($image->height() / $image->width() > $ratio) {
-                $image->resizeCanvas(round($image->height() / $ratio), $image->height(), null, false, 'ffffff');
+        if ($ratio > 0) {
+            if ($ratio == 1) {
+                $side = max($image->width(), $image->height());
+                $image->resizeCanvas($side, $side, null, false, 'ffffff');
             } else {
-                $image->resizeCanvas($image->width(), round($image->width() * $ratio), null, false, 'ffffff');
+                $ratio = min(max($ratio, self::MIN_RATIO), self::MAX_RATIO);
+                if ($image->height() / $image->width() > $ratio) {
+                    $image->resizeCanvas(round($image->height() / $ratio), $image->height(), null, false, 'ffffff');
+                } else {
+                    $image->resizeCanvas($image->width(), round($image->width() * $ratio), null, false, 'ffffff');
+                }
             }
         }
         $width = max(min($width, self::MAX_WIDTH), self::MIN_WIDTH);
