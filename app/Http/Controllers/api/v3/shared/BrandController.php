@@ -10,8 +10,6 @@ class BrandController extends Controller
 {
     public function index()
     {
-        $query = Brand::query();
-        $query->with(['product', 'product.image']);
-        return $query->get();
+        return Brand::all();
     }
 }
