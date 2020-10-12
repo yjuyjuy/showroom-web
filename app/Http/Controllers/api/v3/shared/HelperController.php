@@ -14,6 +14,6 @@ class HelperController extends Controller
     }
 
     public function geolocate(Request $request) {
-        return Http::get(self::GEO_API."/{$request->header['x-forwarded-for']}")->json();
+        return Http::get(self::GEO_API."/{$request->header('x-forwarded-for')}")->json();
     }
 }
