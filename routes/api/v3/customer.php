@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('version', 'api\v3\customer\VersionController');
+Route::get('ip', 'api\v3\shared\HelperController@ip');
+Route::get('base_url', 'api\v3\shared\HelperController@base_url');
 
 Route::post('register', 'api\v3\customer\RegisterController@register');
 Route::get('forgot_password', 'api\v3\shared\AuthController@forgot');
