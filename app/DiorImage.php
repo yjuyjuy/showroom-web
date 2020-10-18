@@ -27,7 +27,7 @@ class DiorImage extends Model
 	public function getUrlAttribute()
 	{
 		if ($this->path) {
-			return secure_asset('storage/'.$this->path);
+			return asset('storage/'.$this->path);
 		} else {
 			return $this->attributes['url'];
 		}
