@@ -5,17 +5,17 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="dns-prefetch" href="https://cdn.notdopebxtch.com/">
-		<link href="{{ asset('css/fonts.css') }}" rel="stylesheet">
+		<link href="/css/fonts.css" rel="stylesheet">
 		<!-- CSRF Token -->
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 
 		<title>@yield('title','') - {{ env('APP_NAME', 'Showroom') }}</title>
 
 		<!-- Scripts -->
-		<script src="{{ asset('js/app.js') }}" defer></script>
+		<script src="/js/app.js" defer></script>
 
 		<!-- Styles -->
-		<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+		<link href="/css/app.css" rel="stylesheet">
 
 	</head>
 
