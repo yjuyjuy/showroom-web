@@ -27,7 +27,7 @@ class FarfetchImage extends Model
 	public function getSmallAttribute()
 	{
 		if ($this->path) {
-			return asset(str_replace('images/', 'images/w200/', 'storage/' . $this->path));
+			return secure_asset(str_replace('images/', 'images/w200/', 'storage/' . $this->path));
 		} else {
 			return $this->attributes['url'];
 		}
@@ -36,7 +36,7 @@ class FarfetchImage extends Model
 	public function getMediumAttribute()
 	{
 		if ($this->path) {
-			return asset(str_replace('images/', 'images/w400/', 'storage/' . $this->path));
+			return secure_asset(str_replace('images/', 'images/w400/', 'storage/' . $this->path));
 		} else {
 			return $this->attributes['url'];
 		}
@@ -45,7 +45,7 @@ class FarfetchImage extends Model
 	public function getLargeAttribute()
 	{
 		if ($this->path) {
-			return asset(str_replace('images/', 'images/w800/', 'storage/' . $this->path));
+			return secure_asset(str_replace('images/', 'images/w800/', 'storage/' . $this->path));
 		} else {
 			return $this->attributes['url'];
 		}
@@ -54,7 +54,7 @@ class FarfetchImage extends Model
 	public function getUrlAttribute()
 	{
 		if ($this->path) {
-			return asset('storage/'.$this->path);
+			return secure_asset('storage/'.$this->path);
 		} else {
 			return $this->attributes['url'];
 		}

@@ -27,7 +27,7 @@ class LouisVuittonImage extends Model
 	public function getUrlAttribute()
 	{
 		if ($this->path) {
-			return asset('storage/'.$this->path);
+			return secure_asset('storage/'.$this->path);
 		} else {
 			return '';
 		}
