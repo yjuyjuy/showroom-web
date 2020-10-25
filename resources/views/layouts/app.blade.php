@@ -16,6 +16,11 @@
 		<!-- Styles -->
 		<link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
 
+		<link rel="shortcut icon" type="image/x-icon" href="/storage/icons/favicon.ico">
+		<link rel="apple-touch-icon" sizes="180x180" href="/storage/icons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/storage/icons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/storage/icons/favicon-16x16.png">
+		<link rel="manifest" href="/storage/icons/site.webmanifest">
 	</head>
 
 	<body>
