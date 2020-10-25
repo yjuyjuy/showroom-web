@@ -40,7 +40,7 @@ class CustomFilter implements FilterInterface
         $width = 400;
         $format = 'jpg';
         $quality = 90;
-        $options = explode('_', $this->options);
+        $options = explode('_', strtolower($this->options));
 
         // parse options
         foreach ($options as $option) {
