@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('version', 'api\v3\customer\VersionController');
 Route::get('ip', 'api\v3\shared\HelperController@ip');
 Route::get('geolocate', 'api\v3\shared\HelperController@geolocate');
+Route::get('server', 'api\v3\shared\HelperController@server');
 
 Route::post('register', 'api\v3\customer\RegisterController@register');
 Route::get('forgot_password', 'api\v3\shared\AuthController@forgot');
@@ -46,7 +47,7 @@ Route::middleware(['auth:api'])->group(function () {
 
 	Route::get('brands', 'api\v3\shared\BrandController@index');
 	Route::get('categories', 'api\v3\shared\CategoryController@index');
-	
+
 	// Order model
 	Route::get('orders', 'api\v3\customer\OrderController@index');
 	Route::post('orders', 'api\v3\customer\OrderController@store');
@@ -66,7 +67,7 @@ Route::middleware(['auth:api'])->group(function () {
 	Route::get('off-white/{product}', 'api\v3\shared\SourceProductController@offwhite');
 	Route::get('balenciaga/{product}', 'api\v3\shared\SourceProductController@balenciaga');
 	Route::get('ssense/{product}', 'api\v3\shared\SourceProductController@ssense');
-	
+
 	// Retailer model
 	Route::get('retailers', 'api\v3\customer\RetailerController@index');
 	Route::get('retailers/{retailer}', 'api\v3\customer\RetailerController@show');
