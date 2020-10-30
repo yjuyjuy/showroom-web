@@ -5,11 +5,11 @@
 @section('content')
 <div class="fullscreen-center">
 	<div class="d-flex flex-column">
-		<div class="text-center my-3">
-			@foreach ($links as $name => $link)	
+		@foreach ($links as $name => $link)	
+			<div class="text-center my-3">
 				<a href="{{ $link }}" class="mdc-typography--headline5">{{ $name }}</a>
-			@endforeach
-        </div>
+			</div>
+		@endforeach
 	</div>
 </div>
 @endsection
