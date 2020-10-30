@@ -11,12 +11,12 @@ class HelperController extends Controller
     const GEO_API = 'https://api.ipgeolocationapi.com/geolocate';
     const SERVERS = [
         'CN' => 'https://cn.notdopebxtch.com',
-        'US' => 'https://cn.notdopebxtch.com',
+        'US' => 'https://us.notdopebxtch.com',
         'default' => 'https://us.notdopebxtch.com',
     ];
     public function ip(Request $request)
     {
-        return $request->header('x-forwarded-for') ?? $request->header('remote_addr');
+        return $request->header('x-forwarded-for') ?? $request->ip();
     }
 
     public function geolocate(Request $request)
