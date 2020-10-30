@@ -60,6 +60,11 @@ return [
 
 	'android_url' => env('ANDROID_URL', ''),
 
+	'version' => [
+		'min' => env('MIN_APP_VERSION'),
+		'latest' => env('LATEST_APP_VERSION'),
+	],
+
 
 	/*
 	|--------------------------------------------------------------------------
