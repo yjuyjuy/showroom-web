@@ -3,7 +3,8 @@
 Auth::routes(['verify' => true]);
 Route::redirect('/', '/products');
 
-Route::get('app', 'AppController@index')->name('app');
+Route::redirect('app', 'download')->name('app');
+Route::get('download', 'DownloadController@index')->name('download');
 
 # User model
 Route::middleware('auth')->group(function () {
