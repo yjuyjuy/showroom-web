@@ -9,8 +9,8 @@ class DownloadController extends Controller
     public function index()
     {
         $links = [
-            'iOS' => config('app.ios_url'),
             'Android' => config('app.android_url'),
+            'iOS' => config('app.ios_url'),
         ];
         return view('download.index', compact('links'));
     }
