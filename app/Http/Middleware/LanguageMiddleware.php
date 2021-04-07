@@ -19,7 +19,7 @@ class LanguageMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!Session::has('language')) {
-            if ($request->routeIs('language.*')) {
+            if ($request->routeIs('language.*') || $request->is('storage/*')) {
                 return $next($request);
             } else {
                 return redirect(route('language.edit'));
