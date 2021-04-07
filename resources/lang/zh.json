@@ -514,6 +514,21 @@
 	"skins": "皮革",
 	"top": "手提",
 	"handles": "包",
-	"created at": "发布时间",
-	"updated at": "最后更新"
+	"Created at": "发布时间",
+	"Updated at": "最后更新",
+	"Not available": "暂无报价",
+	"Manage images": "管理图片",
+	"Repost": "转发",
+	"All Products": "所有商品",
+	"Wishlist": "关注的商品",
+	"Search Retailers": "查找卖家",
+	"Search Vendors": "查找同行",
+	"My Listings": "我的报价",
+	"Databases": "网站数据库",
+	"Admin Tools": "管理员功能",
+	"Create Product": "新建商品",
+	"Other Functions": "手动操作",
+	"Activity Logs": "操作日志",
+	"Profile": "我的账号",
+	"Language": "语言"
 }

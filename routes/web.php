@@ -5,6 +5,8 @@ Route::redirect('/', '/products');
 
 Route::redirect('app', 'download')->name('app');
 Route::get('download', 'DownloadController@index')->name('download');
+Route::get('language', 'LanguageController@edit')->name('language.edit');
+Route::post('language', 'LanguageController@update')->name('language.update');
 
 # User model
 Route::middleware('auth')->group(function () {

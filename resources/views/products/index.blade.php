@@ -26,7 +26,7 @@
 					</span>
 					@else
 					<span class="mdc-image-list__label mdc-theme--primary">
-						暂无报价
+						{{ __('Not available') }}
 					</span>
 					@endif
 				</div>
