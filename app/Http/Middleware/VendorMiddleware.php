@@ -15,7 +15,7 @@ class VendorMiddleware
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (auth()->user()->vendor) {
+		if (auth()->user()->is_admin || auth()->user()->vendor) {
 			return $next($request);
 		} else {
 			abort(403);
