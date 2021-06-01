@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Advanced Functions').' - '.__('Admin')))
+@section('title', __('Advanced Functions').' - '.__('Admin'))
 
 @section('content')
 <div class="fullscreen-center">
