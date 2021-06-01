@@ -40,17 +40,17 @@
 
 			@if($product->composition)
 			<div class="my-1">
-				<span>材质: {{ $product->composition }}</span>
+				<span>__('composition'): {{ $product->composition }}</span>
 			</div>
 			@endif
 			@if($product->model_is_wearing)
 			<div class="my-1">
-				<span>模特所穿尺码为{{ $product->model_is_wearing }}</span>
+				<span>{{ __('The model is wearing ') }} {{ $product->model_is_wearing }}</span>
 			</div>
 			@endif
 			@if($product->model_measurements)
 			<div class="my-1">
-				<span>模特资料: {{ $product->model_measurements }}</span>
+				<span>{{ __('Model measurements') }}: {{ $product->model_measurements }}</span>
 			</div>
 			@endif
 		</div>
@@ -66,35 +66,35 @@
 		</div>
 		<div>
 			<a href="{{ $product->url }}" class="ml-2 mdc-button mdc-button--unelevated" target="_blank">
-				<span class="mdc-button__label">打开Farfetch</span>
+				<span class="mdc-button__label">{{ __('Open') }}Farfetch</span>
 			</a>
 			@if($product->product)
 			<a href="{{ route('products.show', ['product' => $product->product,]) }}" class="ml-2 mdc-button mdc-button--unelevated">
-				<span class="mdc-button__label">查看报价</span>
+				<span class="mdc-button__label"> {{ __('View Offers') }} </span>
 			</a>
 			@endif
 			@can('create', \App\Product::class)
 			<div class="mdc-menu-surface--anchor d-inline-block">
 				<button type="button" class="mdc-button mdc-button--unelevated ml-2 open-menu-button">
-					<span class="mdc-button__label">操作</span>
+					<span class="mdc-button__label"> {{ __('Actions') }} </span>
 				</button>
 				<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
 					<ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
 						@if($product->product)
 						<a href="{{ route('farfetch.unlink', ['farfetch_product' => $product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
-							<span class="mdc-list-item__text">取消关联</span>
+							<span class="mdc-list-item__text"> {{ __('Unlink') }} </span>
 						</a>
 						<a href="{{ route('farfetch.merge', ['farfetch_product' => $product, 'product' => $product->product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
-							<span class="mdc-list-item__text">更新</span>
+							<span class="mdc-list-item__text"> {{ __('Update') }} </span>
 						</a>
 						@else
 						<a href="{{ route('farfetch.export', ['farfetch_product' => $product,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
-							<span class="mdc-list-item__text">上架新商品</span>
+							<span class="mdc-list-item__text"> {{ __('Create new product') }} </span>
 						</a>
 						@if($product->designer)
 							@foreach(\App\Product::where('designer_style_id', 'like', '%'.$product->designer_style_id.'%')->where('brand_id', $product->designer->mapped_id)->get() as $guess)
 							<a href="{{ route('farfetch.merge', ['farfetch_product' => $product, 'product' => $guess,]) }}" class="mdc-list-item mdc-list-item__text" role="menuitem">
-								<span class="mdc-list-item__text">合并至{{ __($guess->color->name ?? '-') }}</span>
+								<span class="mdc-list-item__text">{{ __('Link to ').__($guess->color->name ?? '-') }}</span>
 							</a>
 							@endforeach
 						@endif
@@ -106,7 +106,7 @@
 		</div>
 		@if($product->product_measurements)
 		<div class="text-left">
-			<span>尺寸:</span><br>
+			<span> {{ __('Measurements') }}:</span><br>
 			@foreach(explode("\n", $product->product_measurements) as $measurement)
 				<span>{{ $measurement }}</span><br><br>
 			@endforeach

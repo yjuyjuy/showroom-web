@@ -138,7 +138,7 @@ class Product extends Model
 					$cls = '\\App\\'.$brand_name.'Product';
 					if ($cls::brand_id == $this->brand_id) {
 						foreach ($cls::like($this) as $index => $product) {
-							$links['官网页面'.($index + 1)] = route(strtolower($brand_name).'.show', ['product' => urlencode($product->id)]);
+							$links[__('Official Page').($index + 1)] = route(strtolower($brand_name).'.show', ['product' => urlencode($product->id)]);
 						}
 						break;
 					}
@@ -146,7 +146,7 @@ class Product extends Model
 				foreach (['Farfetch', 'End', 'Ssense',] as $retailer_name) {
 					$cls = '\\App\\'.$retailer_name.'Product';
 					foreach ($cls::like($this) as $index => $product) {
-						$links[$retailer_name.'页面'.($index + 1).($product->colors ?? $product->color ?? '')] = route(strtolower($retailer_name).'.show', ['product' => $product]);
+						$links[$retailer_name.__(' Page').($index + 1).($product->colors ?? $product->color ?? '')] = route(strtolower($retailer_name).'.show', ['product' => $product]);
 					}
 				}
 				return $links;

@@ -10,12 +10,12 @@ class AdminController extends Controller
 	public function available_functions()
 	{
 		return [
-			'follow_all_retailers' => '关注所有卖家',
-			'follow_all_vendors' => '关注所有同行',
-			'sync_all_prices' => '同步farfetch, end, taobao价格',
-			'update_designer_style_id' => '根据图片名称更新货号',
-			'refactor_image_order' => 'refactor_image_order',
-			'find_farfetch_products' => 'find_farfetch_products',
+			'follow_all_retailers' => __("follow all retailers"),
+			'follow_all_vendors' => __("follow all vendors"),
+			'sync_all_prices' => __("sync farfetch, end, taobao prices"),
+			'update_designer_style_id' => __("extract designer style id from image file name"),
+			'refactor_image_order' => __("auto-reorder images"),
+			'find_farfetch_products' => __("auto-link Farfetch products"),
 		];
 	}
 

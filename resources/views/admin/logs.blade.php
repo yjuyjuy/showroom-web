@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '操作日志 - 管理员功能')
+@section('title', __('Logs').' - '.__('Admin'))
 
 @section('content')
 <div class="d-flex justify-content-center mt-4 mx-3">

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', '所有商品')
+@section('title', __('All Products'))
 
 @section('content')
 <div id="products-index" class="">
 	@include('products.index.express_filters')
 	@if($products->isEmpty())
 		<div class="my-5 text-center">
-			没有搜索到相关商品
+			{{ __('No related product found') }}
 		</div>
 	@else
 	<ul class="mdc-image-list main-image-list">

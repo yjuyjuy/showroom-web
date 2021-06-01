@@ -17,7 +17,7 @@
 					event.preventDefault();
 					var target = document.querySelector(this.dataset.target);
 					[].map.call(document.querySelectorAll('input[name=\'' + target.name + '\']'), (el)=>{el.checked=false;});
-					target.form.submit();">{{ __('All').__($key) }}</a>
+					target.form.submit();">{{ __('All ').__($key) }}</a>
 				@endif
 				@foreach($values as $value)
 					<a href="#" class="mdc-list-item mdc-list-item__text" role="menuitem" data-target="#filter-{{$key}}-{{$value->id}}-checkbox" onclick="

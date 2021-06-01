@@ -6,7 +6,7 @@
 		<div class="d-flex flex-wrap align-content-start">
 			<div class="mdc-menu-surface--anchor">
 				<button type="button" class="mdc-button open-menu-button">
-					<span class="mdc-button__label">{{ __('add price') }}</span>
+					<span class="mdc-button__label">{{ __('Add Offer') }}</span>
 					<i class="material-icons mdc-button__icon" aria-hidden="true">arrow_drop_down</i>
 				</button>
 				<div class="mdc-menu mdc-menu-surface mdc-menu--with-button">
